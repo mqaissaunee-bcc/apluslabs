@@ -1,0 +1,187 @@
+@lede Installing software looks simple until it isn't: the wrong architecture, a missing permission, a download you shouldn't trust. You will install and verify two Windows utilities, then install an office suite on Linux from packages at the command line.
+@vms Win7, Lubuntu
+
+== overview | Why this lab matters
+Every software install is a decision. Does the PC meet the requirements? Is it the 32-bit or 64-bit version? Does the user have rights to install it, and should they? Is the license OK for work use? Did the installer come from a source you trust?
+In this lab you install **7-Zip** (a compression tool) and **CPU-Z** (a hardware information tool) on Windows, watching where each one goes and what it adds. Then you install **LibreOffice** on Linux using `dpkg` and `sudo`, which shows how Linux handles the same job with packages instead of setup wizards.
+
+== environment | The environment you're working in
+| Machine | IP address | Account | Password |
+| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
+| Lubuntu | `192.168.1.11/24` | `sysadmin` | `Train1ng$` |
+
+| Installer | Location |
+| `7z1801` (7-Zip) | Win7: **Installs** folder on the desktop |
+| `cpu-z_1.83-en.exe` | Win7: **Installs** folder |
+| `LibreOffice_6.0.1_Linux_x86-64_deb.tar.gz` | Lubuntu: `~/Downloads` |
+!stuck Typos in the PDF | The CPU-Z install path is shown as `C:\Programs Files\CPU-Z`; it should be `C:\Program Files\CPU-Z`. The `dpkg` command shows an en dash (`–i`); type a normal hyphen: `-i`.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Run a downloaded `.exe` or `.msi` | Still common. **SmartScreen** may warn about less-common downloads; check the publisher before clicking Run anyway. |
+| Start > All Programs > 7-Zip | Start > **All apps** > 7-Zip |
+| Programs and Features to uninstall | Settings > Apps > **Installed apps** (`appwiz.cpl` still works) |
+| 7-Zip for archives | Windows 11 opens and creates **7z, RAR, and TAR** archives natively in File Explorer; 7-Zip still offers more options |
+| No package manager | **winget**: `winget install 7zip.7zip` installs from the Windows Package Manager; the **Microsoft Store** is another trusted source |
+| `dpkg -i *.deb` on Lubuntu | Same on Debian/Ubuntu; `sudo apt install ./file.deb` also resolves dependencies |
+
+== walkthrough | Walkthrough
+## Task 1: Install 7-Zip (Win7)
+### Run the installer
+Log in to **Win7**, open the **Installs** folder, and double-click **7z1801**. Accept the UAC prompt.
+!tip Why UAC appears | Only administrators can install software for all users. A standard user would be asked for an admin's credentials here; an admin is asked to confirm.
+### Keep the default location
+Leave the folder as `C:\Program Files\7-Zip` and click **Install**, then **Close**.
+!tip Program Files or Program Files (x86)? | On 64-bit Windows, 64-bit programs go in `C:\Program Files` and 32-bit programs in `C:\Program Files (x86)`. A 32-bit Windows has only `Program Files` and can't run 64-bit programs.
+### Find what it added
+Open **Start > All Programs > 7-Zip > 7-Zip File Manager**. Then in the Installs folder, right-click **7z1801**: the **7-Zip** submenu is new. Installers often add shortcuts, context-menu entries, and file associations as well as the program itself.
+!shot The right-click menu showing the 7-Zip submenu.
+## Task 2: Install CPU-Z (Win7)
+### Run the installer
+In **Installs**, double-click `cpu-z_1.83-en.exe`, click **Run** at the security warning, and accept UAC. Accept the agreement.
+### Choose the location and options
+Set the location to `C:\Program Files\CPU-Z` and click **Next**. Keep the Start Menu folder (**CPUID\CPU-Z**) and the desktop icon option, click **Install**, then **Finish**. Read the readme that opens and close it.
+### Explore CPU-Z
+Double-click the **CPUID CPU-Z** desktop icon and accept UAC. Look through the tabs:
+| Tab | Shows |
+| CPU | Processor model, cores, threads, clock speed, socket |
+| Caches | L1, L2, and L3 cache |
+| Mainboard | Motherboard model, chipset, BIOS version |
+| Memory | Total RAM, type, channels, timing |
+| SPD | Each RAM module by slot: size, speed, maker |
+| Graphics | GPU details |
+| Bench | A CPU benchmark |
+!shot CPU-Z on the CPU or SPD tab.
+CPU-Z only reads information and changes nothing. Close it.
+## Task 3: Install LibreOffice (Lubuntu)
+### Extract the archive
+Sign in to **Lubuntu** and open the **File Manager** from the taskbar. Go to **Downloads** and double-click `LibreOffice_6.0.1_Linux_x86-64_deb.tar.gz`. Click **Extract**, choose **Desktop**, click **Extract**, then **Quit**.
+### Go to the packages in a terminal
+Open **LXTerminal** from the taskbar and run:
+```
+cd Desktop
+ls
+cd LibreOffice_6.0.1.1_Linux_x86-64_deb
+cd DEBS
+ls
+```
+!stuck Where people get stuck | The extracted folder is named `...6.0.1.1...`, not `6.0.1` like the archive. Type `cd Li` and press [[Tab]] to complete it exactly.
+### Install every package with dpkg
+```
+sudo dpkg -i *.deb
+```
+Enter `Train1ng$` if `sudo` asks. `*.deb` installs every Debian package in the folder at once. Wait for the prompt to return, then type `exit`.
+!shot The terminal after `sudo dpkg -i *.deb` finishes.
+### Launch it
+Open **Start > Office > LibreOffice 6.0 Writer**.
+!shot LibreOffice Writer open on Lubuntu.
+The lab is complete.
+
+== reference | Reference: installing software
+### Before you install
+| Check | Why |
+| System requirements | CPU, RAM, storage, OS version, and graphics must meet the minimum |
+| 32-bit or 64-bit | A 64-bit OS runs both; a 32-bit OS runs only 32-bit |
+| Source | Vendor site, Microsoft Store, `winget`, or your organization's software portal. Avoid download mirrors and "free" cracked copies. |
+| Integrity | Compare the file's hash with the vendor's published one |
+| License | Personal, commercial, per-seat, subscription, open source |
+| Rights | Standard users can't install for all users; deploy centrally or elevate |
+| Impact | Will it change startup, firewall, file associations, or other apps? Test first on business PCs. |
+### Verify a download's hash
+```
+%% Windows (cmd)
+certutil -hashfile 7z1801.exe SHA256
+%% Windows (PowerShell)
+Get-FileHash .\7z1801.exe -Algorithm SHA256
+%% Linux
+sha256sum LibreOffice_6.0.1_Linux_x86-64_deb.tar.gz
+```
+### Windows install methods
+| Method | Example |
+| Setup program | `setup.exe`, double-click and follow the wizard |
+| Windows Installer package | `msiexec /i app.msi /qn` installs silently |
+| Package manager | `winget search 7zip`, `winget install 7zip.7zip`, `winget upgrade --all` |
+| Microsoft Store | Sandboxed apps with automatic updates |
+| Disc image | Right-click an `.iso` > Mount, then run setup |
+| Central deployment | Intune, Group Policy, or Configuration Manager in organizations |
+### Linux package tools
+| Distribution family | Low-level tool | Package manager |
+| Debian, Ubuntu, Lubuntu (`.deb`) | `dpkg` | `apt` (`apt-get`) |
+| Red Hat, Fedora, Rocky (`.rpm`) | `rpm` | `dnf` (formerly `yum`) |
+```
+%% Debian / Ubuntu
+sudo apt update
+sudo apt install libreoffice
+sudo apt upgrade
+sudo apt remove libreoffice
+dpkg -l | grep libreoffice
+%% Red Hat family
+sudo dnf install libreoffice
+```
+`dpkg` installs a package file but doesn't download missing dependencies; `apt` and `dnf` download and resolve them for you.
+### Uninstall cleanly
+| OS | How |
+| Windows | Settings > Apps > Installed apps, or `appwiz.cpl`; `winget uninstall <id>` |
+| Debian/Ubuntu | `sudo apt remove <pkg>` (`purge` also removes settings) |
+| Red Hat family | `sudo dnf remove <pkg>` |
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| "This app can't run on your PC" | A 64-bit program on 32-bit Windows, or the wrong platform | Download the right version; check System type |
+| Installer asks for admin credentials | You're a standard user | Have an admin install it or deploy it |
+| `cd LibreOffice_6.0.1_...` says no such directory | The folder name has `6.0.1.1` | Use [[Tab]] completion |
+| `dpkg: error: need an action option` | An en dash instead of a hyphen | Type `-i` with a normal hyphen |
+| `dpkg` reports dependency problems | dpkg doesn't fetch dependencies | Run `sudo apt -f install` (needs internet) or use `apt install ./*.deb` |
+| CPU-Z path error | The PDF's `Programs Files` typo | Use `C:\Program Files\CPU-Z` |
+
+== on-the-job | On the job
+| The ticket says | Consider | Action |
+| "Can you install this program I found online?" | Source, license, security | Check it's from the vendor and allowed; verify the hash; install or decline per policy |
+| "The program installed but won't start." | Requirements, architecture, dependencies | Check event logs and requirements; install missing runtimes (.NET, Visual C++) |
+| "Everyone in Accounting needs this app." | Deployment | Use central deployment or winget scripting, not 15 manual installs |
+| "The new tool slowed everything down." | Impact | Check startup items and services it added; uninstall if needed |
+| "I need Office on the Linux lab PCs." | Package manager | `sudo apt install libreoffice` |
+!tip Professional habit | Record what you installed, the version, and where it came from in the ticket. It makes updates and audits much easier.
+
+== exam | On the A+ exams
+**Core 2 (220-1202)** covers application installation: system requirements (CPU, 32/64-bit, RAM, storage, graphics), distribution methods (download, ISO/mountable image, Store, package manager), licensing, impact on the device, network, and organization, and Linux package management with `apt` and `dnf`.
+### High-yield facts
+- 64-bit Windows: `Program Files` for 64-bit apps, `Program Files (x86)` for 32-bit.
+- A 32-bit OS can't run 64-bit apps or use more than 4 GB of RAM.
+- Verify installers with a hash (`certutil -hashfile`, `Get-FileHash`, `sha256sum`).
+- `apt` (Debian/Ubuntu) and `dnf` (Red Hat family) resolve dependencies; `dpkg` and `rpm` don't.
+- `sudo` runs a command as root.
+- Mount an ISO to install from a disc image.
+
+== check | Check yourself
+?? A user tries to install a 64-bit program on a PC with 32-bit Windows. What happens and what's the fix?
+=> It won't run. Install the 32-bit version of the program, or upgrade to 64-bit Windows if the hardware supports it.
+?? What's the difference between `dpkg -i package.deb` and `apt install package`?
+=> `dpkg` installs a local package file without fetching dependencies. `apt` downloads the package and all its dependencies from the repositories.
+?? How do you confirm a downloaded installer hasn't been tampered with?
+=> Compute its hash (for example `certutil -hashfile file SHA256`) and compare it with the hash the vendor publishes.
+?? Where would Windows install a 32-bit application on a 64-bit PC?
+=> `C:\Program Files (x86)`
+?? Why did UAC prompt you even though sysadmin is an administrator?
+=> UAC asks administrators to confirm before changes that affect the whole system, such as installing software, so malware can't install silently.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] 7-Zip | The right-click menu showing the 7-Zip submenu.
+[] CPU-Z | CPU-Z on the CPU or SPD tab.
+[] dpkg | The terminal after `sudo dpkg -i *.deb` finishes.
+[] LibreOffice | LibreOffice Writer open on Lubuntu.
+
+== cheat | Cheat sheet
+## Windows
+- Check requirements and 32/64-bit first
+- `Program Files` (64-bit), `(x86)` (32-bit)
+- `winget install <id>`; `msiexec /i x.msi /qn`
+- Uninstall: Settings > Apps, `appwiz.cpl`
+- Verify: `certutil -hashfile file SHA256`
+## Linux
+- `sudo apt update && sudo apt install pkg`
+- `sudo dpkg -i *.deb` (no dependencies)
+- `sudo dnf install pkg` (Red Hat family)
+- `sha256sum file`
+- [[Tab]] completes long names

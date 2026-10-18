@@ -1,0 +1,194 @@
+@lede Regular maintenance keeps a PC fast, and backups are the only thing that saves a user's files when it fails. You will clean up and optimize a drive on a schedule, roll a system back with a restore point, and back up and restore files with two different Windows tools.
+
+== overview | Why this lab matters
+Maintenance and recovery are two sides of the same job. **Disk Cleanup** and **Optimize Drives** keep storage healthy and are easy to automate. **System Restore** undoes system changes such as a bad driver or update, without touching personal files. **Backup and Restore** and **File History** protect the personal files themselves.
+Knowing which tool fixes which problem is the point. A restore point won't bring back a deleted spreadsheet, and a file backup won't fix a broken driver. And a backup you've never restored from is only a hope, which is why this lab has you delete a folder and get it back.
+
+== environment | The environment you're working in
+| Machine | Computer name | Used for |
+| Win8.1 | Win8-1 | Disk Cleanup, scheduling, Optimize Drives, System Restore; hosts the `Backup` share |
+| Win7 | Win7 | Backup and Restore to drive **Data (E:)** |
+| Win10 | Win10 | File History to `\\WIN8-1\Backup` |
+All use `sysadmin` / `Train1ng$`. Win7 has an **Installs** folder on the desktop that you'll delete and restore.
+!stuck Typo in the PDF | After the System Restore reboot the PDF says `Train1ing$`. The password is `Train1ng$`.
+!tip Timing | System Restore takes about 8 minutes and the first backup about 4. Start them and read ahead while they run.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Disk Cleanup (`cleanmgr`) | Still included but deprecated. Settings > System > Storage > **Cleanup recommendations** and **Storage Sense** (automatic cleanup on a schedule) replace it. |
+| `cleanmgr /sageset:1` + Task Scheduler | Storage Sense does scheduled cleanup without a task. `cleanmgr /sagerun` still works. |
+| Defragment and Optimize Drives | Same tool (`dfrgui`). It defragments hard drives and sends **TRIM** to SSDs; it never defragments an SSD. |
+| System Protection > Create / System Restore | Same: `sysdm.cpl` > System Protection, or `rstrui`. Check that protection is **On** for C:; it isn't always enabled by default. |
+| Backup and Restore (Windows 7) | Still in Control Panel under that name; Microsoft calls it deprecated. |
+| File History | Still in Control Panel > File History (removed from Settings). The **Windows Backup** app backs up folders, apps, and settings to OneDrive. |
+
+== walkthrough | Walkthrough
+## Task 1: Disk Cleanup (Win8.1)
+### Run a cleanup
+Log in to **Win8.1**. Right-click **Start > Search**, type `disk cleanup`, and open **Free up disk space by deleting unnecessary files**. Wait for the scan.
+### Include system files
+Click **Clean up system files**. It rescans and adds system areas (such as old update files and error reports) that only an administrator can clean. Click each item to read its description, note the total space, and click **OK > Delete Files**. It takes 2–3 minutes and closes on its own.
+!shot The Disk Cleanup window after Clean up system files, showing the items and total space.
+## Task 2: Schedule a cleanup (Win8.1)
+### Save a cleanup profile
+Right-click **Start > Search**, type the command below, and open it:
+```
+cleanmgr /sageset:1
+```
+Click **Clean up system files**, check every box, and click **OK**. This saves your choices in the Registry as profile **1**.
+### Create a basic task
+Open **Control Panel > Administrative Tools > Task Scheduler** and click **Create Basic Task** in the Actions pane:
+| Wizard page | Value |
+| Name | `Disk Cleanup` |
+| Trigger | Weekly, recur every 1 week, today's day, start 10–15 minutes from now |
+| Action | Start a program |
+| Program/script | `C:\Windows\System32\cleanmgr.exe` |
+| Add arguments | `/sagerun:1` |
+Click **Finish**.
+### Set it for Windows 8.1 and watch it run
+In **Task Scheduler Library**, double-click **Disk Cleanup**, change **Configure for** to **Windows 8.1**, and click **OK**. When the start time passes, the status shows **Running**, or check **Last Run Time**.
+!shot Task Scheduler Library showing the Disk Cleanup task with its trigger or Last Run Time.
+## Task 3: Optimize the drive (Win8.1)
+### Turn on scheduled optimization
+In Administrative Tools, open **Defragment and Optimize Drives**. Under **Scheduled optimization**, click **Turn on**, check **Run on a schedule**, choose **Weekly**, and click **OK**.
+### Analyze, then optimize
+Select **(C:)** and click **Analyze**. Note the percent fragmented in **Current status**. Then click **Optimize** (3–4 minutes) and check the new percentage.
+!shot Optimize Drives showing C: after optimization.
+## Task 4: System Restore (Win8.1)
+### Create a restore point
+Open **Control Panel > System > System protection** and click **Create**. Name it `Background Configuration` and click **Create**, then **Close**.
+### Make a change you can see
+Right-click the desktop > **Personalize > Desktop Background**. Choose **Solid Colors** and a different color, and click **Save changes**.
+### Roll back
+Back on the **System Protection** tab, click **System Restore > Next**. Select **Background Configuration**, click **Next > Finish**, and confirm with **Yes**. Windows restarts (about 8 minutes). Sign back in: the background is the original color. Click **Close** on the confirmation.
+!shot The System Restore confirmation after signing back in.
+!tip What System Restore does and doesn't touch | It rolls back system files, installed programs, drivers, settings, and the Registry. It doesn't restore or delete personal files such as documents and photos.
+## Task 5: Backup and Restore (Win7)
+### Set up the backup
+Log in to **Win7**. Open **Start > All Programs > Maintenance > Backup and Restore > Set up backup**. Choose **Data (E:)** as the destination, then **Let me choose**. Check all the **Data Files** boxes and **Local Disk (C:)**, and *uncheck* **Include a system image**. Review the schedule and click **Save settings and run backup** (about 4 minutes).
+### Delete the Installs folder for real
+Right-click **Installs** on the desktop > **Delete > Yes**. Then right-click the **Recycle Bin > Empty Recycle Bin > Yes**. The folder is gone.
+### Restore it
+In Backup and Restore, click **Restore my files > Browse for folders**. Open **sysadmin's backup > Desktop**, select **Installs**, click **Add folder**, then **Next**. Keep **In the original location** and click **Restore**, then **Finish**. Open Installs to confirm the files are back.
+!shot The Restore Files window with the Installs folder selected, or the restored folder on the desktop.
+## Task 6: File History (Win10)
+### Point File History at a network share
+Log in to **Win10**. Open **Control Panel > Save backup copies of your files with File History**. Click **Select a network location > Add network location**, double-click **Win8-1**, select **Backup**, and click **Select folder**. Highlight `\\WIN8-1\Backup` and click **OK**.
+### Exclude everything but Documents
+Click **Exclude folders > Add** and add each library except Documents (Camera Roll, Music, Pictures, Saved Pictures, Videos), one at a time. Click **Save changes**. Look through **Advanced settings** (how often to save, how long to keep versions) and click **Cancel**.
+### Turn it on
+Click **Turn on**. When the first backup finishes you'll see its time, and **Run now** becomes available.
+!shot File History turned on, showing the network location and last backup time.
+### Find the backup on Win8.1
+On **Win8.1**, right-click **Start > Command Prompt (Admin)** and run:
+```
+cd C:\Users\sysadmin\Documents\Backup\sysadmin\Win10
+dir
+```
+You'll see **Configuration** and **Data** folders. The backed-up files are under Data.
+!shot The dir output on Win8.1 showing the File History folders.
+The lab is complete.
+
+== reference | Reference: maintenance and backup
+### Which tool fixes what
+| Problem | Tool | Restores |
+| Low disk space | Disk Cleanup, Storage Sense | Free space |
+| Slow hard drive | Optimize Drives (defragment) | File layout on HDDs |
+| Broken after a driver, update, or install | System Restore | System files, programs, Registry |
+| Deleted or overwritten file | File History, Previous Versions, backup | Personal files |
+| Dead drive or unbootable PC | System image, full backup, cloud backup | Everything |
+| Reinstall Windows but keep files | Reset this PC > Keep my files | Fresh Windows, files kept |
+### cleanmgr switches
+| Switch | Does |
+| `/sageset:n` | Choose items and save them as profile n |
+| `/sagerun:n` | Run profile n without prompts |
+| `/d C:` | Clean a specific drive |
+| `/verylowdisk` | Clean everything without asking and show a summary |
+### defrag from the command line
+```
+defrag C: /A
+defrag C: /O
+defrag /C /H /U
+```
+`/A` analyzes, `/O` does the right optimization for the media type (defrag or TRIM), and `/C /H /U` optimizes all volumes at normal priority with progress.
+### Restore points from the command line
+```
+%% Open System Restore
+rstrui
+%% Create a restore point (elevated PowerShell)
+Checkpoint-Computer -Description "Before driver update" -RestorePointType MODIFY_SETTINGS
+```
+### Backup types
+| Type | Backs up | Restore needs |
+| Full | Everything selected | The last full |
+| Incremental | Changes since the last backup of any kind | Last full + every incremental since |
+| Differential | Changes since the last full | Last full + the latest differential |
+| Synthetic full | Built from a full plus incrementals, without re-reading the source | The synthetic full |
+### The 3-2-1 rule
+Keep **3** copies of important data, on **2** different kinds of media, with **1** copy offsite (or in the cloud). File History to a share on the same network is one copy, not an offsite one.
+!tip Test your restores | Schedule a test restore, like the Installs folder in this lab. A backup job that reports success but can't be restored is worse than none, because nobody knows it's broken.
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| The scheduled cleanup never runs | Start time already passed, or the task is set for an older OS | Set the start a few minutes ahead; set Configure for to Windows 8.1 |
+| `cleanmgr /sageset:1` doesn't open from search | Search treats it as text | Run it from the Run box or a command prompt |
+| Create button is greyed out in System Protection | Protection is off for the drive | Click Configure and turn on system protection |
+| System Restore seems stuck | It takes about 8 minutes and restarts | Wait; don't reset the VM |
+| Installs isn't in the restore browser | Looking in the wrong place | sysadmin's backup > Desktop > Installs |
+| File History can't find Win8-1 | Discovery off, or Win8.1 isn't running | Turn on discovery on Win8.1, or type `\\WIN8-1\Backup` |
+| File History warns about encrypted files | EFS-encrypted files aren't backed up | Expected; decrypt them or back them up another way |
+
+== on-the-job | On the job
+| The ticket says | Where you look | Likely fix |
+| "My C: drive is full." | Settings > Storage, Disk Cleanup | Clean system files, enable Storage Sense, move large folders |
+| "It's been unstable since yesterday's driver install." | System Restore | Roll back to the restore point before the install |
+| "I saved over my report." | File History or the file's Properties > Previous Versions | Restore yesterday's version |
+| "My laptop was stolen." | Backups and cloud sync | Restore the user's data to a new PC from backup |
+| "The PC got slower over time." | Optimize Drives (HDD), Task Manager startup items | Defragment an HDD; check startup apps; consider an SSD |
+!tip Professional habit | Create a restore point yourself before you install a driver or make a big change on someone's PC. It takes a minute and gives you a way back.
+
+== exam | On the A+ exams
+**Core 2 (220-1202)** covers Disk Cleanup, Optimize Drives, System Restore, backup methods (full, incremental, differential, synthetic), backup rotation and the 3-2-1 rule, testing backups, and File History. It also covers Windows recovery options such as Reset this PC.
+### High-yield facts
+- System Restore fixes system changes, not deleted personal files.
+- Don't defragment SSDs; Optimize Drives sends TRIM instead.
+- Incremental: fastest backups, slowest restore. Differential: the reverse.
+- 3-2-1: three copies, two media types, one offsite.
+- Test restores on a schedule.
+- `cleanmgr /sageset:n` then `/sagerun:n` for automated cleanup.
+
+== check | Check yourself
+?? A user deleted a folder last week and emptied the Recycle Bin. Will System Restore get it back?
+=> No. System Restore doesn't restore personal files. Use File History, Previous Versions, or a backup.
+?? You do a full backup Sunday and differentials Monday through Thursday. The drive fails Friday morning. What do you restore?
+=> Sunday's full backup, then Thursday's differential.
+?? Why doesn't Windows defragment an SSD?
+=> SSDs have no moving parts, so fragmentation doesn't slow them, and extra writes wear them out. Optimize Drives sends TRIM instead.
+?? Which two commands set up and run a saved Disk Cleanup profile?
+=> `cleanmgr /sageset:1` to choose and save the items, then `cleanmgr /sagerun:1` to run them, for example from Task Scheduler.
+?? Your only backup is File History to a share on the office NAS. Does that meet 3-2-1?
+=> No. It's a second copy on one more device, but there's no offsite copy. Add a cloud or offsite backup.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] Cleanup | Disk Cleanup after Clean up system files, showing the total space.
+[] Schedule | The Disk Cleanup task in Task Scheduler Library with its trigger or Last Run Time.
+[] Optimize | Optimize Drives showing C: after optimization.
+[] Restore point | The System Restore confirmation after the reboot.
+[] File restore | The restored Installs folder on Win7 (or the Restore Files window).
+[] File History | File History turned on with the network location and last backup time.
+[] Backup files | The `dir` output on Win8.1 showing the File History folders.
+
+== cheat | Cheat sheet
+## Maintain
+- `cleanmgr` > Clean up system files
+- `cleanmgr /sageset:1` then `/sagerun:1`
+- Windows 11: Storage Sense
+- `dfrgui` or `defrag C: /O`
+- HDD: defragment. SSD: TRIM only.
+## Recover
+- Restore point first, then make the change
+- `rstrui` = System Restore (system, not files)
+- File History / Previous Versions = files
+- Full, incremental, differential
+- 3-2-1 and test the restore

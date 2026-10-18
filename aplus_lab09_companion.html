@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 09 Companion: Windows Control Panel & Settings | A+ Lab Companion</title>
+<meta name="description" content="Check installed updates, change display resolution, and configure Internet Options, Folder Options, and User Account Control.">
+<style>
+:root{
+  --bg:#E8ECF0; --surface:#FFFFFF; --surface-2:#F3F5F8; --ink:#14233A; --ink-2:#47576C;
+  --rule:#C7D0DA; --accent:#1C5689; --accent-ink:#FFFFFF; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
+  --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
+  --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
+  --fs:1rem; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
+a{color:var(--accent)} a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--tag);color:var(--tag-ink);padding:.7rem 1rem;z-index:20}
+.skip-link:focus{left:1rem;top:1rem}
+code,pre,kbd{font-family:var(--f-mono)}
+code.inl{background:var(--surface-2);border:1px solid var(--rule);border-radius:3px;padding:0 .3em;font-size:.92em}
+kbd{display:inline-block;border:1px solid var(--rule);border-bottom-width:3px;border-radius:4px;padding:0 .4em;background:var(--surface);font-size:.85em;line-height:1.5}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:76rem;margin:0 auto;padding:.4rem 1rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.1rem;color:var(--ink);text-decoration:none;margin-right:auto;display:flex;gap:.5rem;align-items:center}
+.brand .plug{display:inline-grid;place-items:center;width:2rem;height:2rem;background:var(--tag);color:var(--tag-ink);border-radius:4px;font-size:1rem}
+.ctl{display:flex;gap:.35rem;flex-wrap:wrap}
+.ctl button,.btn{min-height:44px;min-width:44px;padding:.3rem .75rem;border:1px solid var(--rule);background:var(--surface-2);color:var(--ink);border-radius:6px;font:inherit;font-size:.9rem;cursor:pointer}
+.ctl button:hover,.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* hero ticket — the one bold element */
+.ticket{max-width:76rem;margin:1.5rem auto 0;padding:0 1rem}
+.ticket-in{display:grid;grid-template-columns:1fr;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.stub{background:var(--tag);color:var(--tag-ink);padding:1rem 1.25rem;display:flex;flex-direction:column;justify-content:space-between;gap:.5rem;position:relative}
+.stub .lbl{font-size:.85rem;font-weight:600}
+.stub .no{font-family:var(--f-display);font-weight:700;white-space:nowrap;font-size:clamp(2.4rem,6vw,3.5rem);line-height:1;letter-spacing:-.01em}
+.stub .series{font-size:.8rem}
+.tk-body{padding:1.25rem 1.5rem 1.5rem}
+.tk-body h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.15;margin:0 0 .6rem;max-width:30ch}
+.lede{font-size:1.08rem;color:var(--ink-2);max-width:62ch;margin:0 0 1rem}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));gap:0;border-top:1px dashed var(--rule);margin:0}
+.fields div{padding:.6rem .75rem .5rem 0;border-bottom:1px dashed var(--rule)}
+.fields dt{font-size:.78rem;color:var(--ink-2)}
+.fields dd{margin:0;font-weight:600;font-size:.95rem}
+@media (min-width:720px){
+  .ticket-in{grid-template-columns:12rem 1fr}
+  .stub{border-right:2px dashed var(--tag-ink)}
+  .stub::before,.stub::after{content:"";position:absolute;right:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:1px solid var(--rule)}
+  .stub::before{top:-11px} .stub::after{bottom:-11px}
+}
+
+/* layout */
+.wrap{max-width:76rem;margin:0 auto;padding:1.5rem 1rem 3rem;display:grid;gap:2rem;grid-template-columns:1fr}
+@media (min-width:1000px){.wrap{grid-template-columns:15rem minmax(0,1fr)}}
+.toc{align-self:start}
+@media (min-width:1000px){.toc{position:sticky;top:4.5rem}}
+.toc details{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:.5rem .9rem}
+.toc summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+.toc ol{list-style:none;margin:.25rem 0 .5rem;padding:0}
+.toc li a{display:flex;justify-content:space-between;gap:.5rem;padding:.3rem .4rem;border-radius:4px;text-decoration:none;color:var(--ink);font-size:.92rem}
+.toc li a:hover{background:var(--surface-2)}
+.toc li a[aria-current="true"]{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--accent)}
+.toc .tick{color:var(--tip);font-weight:700}
+.meter{margin:.5rem 0 .25rem;height:10px;background:var(--surface-2);border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+.meter span{display:block;height:100%;width:0;background:var(--tip);transition:width .3s}
+.meter-txt{font-size:.85rem;color:var(--ink-2);margin:0}
+main{min-width:0}
+main section{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.25rem 1.5rem;margin:0 0 1.25rem;max-width:56rem}
+@media (max-width:600px){main section{padding:1rem}.ctl button{padding:.3rem .55rem}}
+main h2{font-family:var(--f-display);font-weight:700;font-size:1.55rem;line-height:1.2;margin:0 0 .75rem}
+main h3{font-size:1.1rem;margin:1.25rem 0 .4rem}
+main p,main li{max-width:68ch}
+.task-head{font-family:var(--f-display);font-weight:700;font-size:1.15rem;margin:1.75rem 0 .5rem;padding-top:1rem;border-top:2px solid var(--ink)}
+.task-head:first-of-type{border-top:0;padding-top:0}
+.step{border-left:3px solid var(--rule);padding:.1rem 0 .1rem 1rem;margin:1rem 0}
+.step h3{margin-top:0;display:flex;gap:.6rem;align-items:baseline}
+.step h3 .n{flex:none;display:inline-grid;place-items:center;min-width:1.8rem;height:1.8rem;border-radius:50%;background:var(--ink);color:var(--surface);font-size:.9rem}
+.call{border-radius:8px;padding:.75rem 1rem;margin:1rem 0;border:1px solid}
+.call .k{display:block;font-weight:700;margin-bottom:.2rem}
+.call p{margin:.25rem 0}
+.call.stuck{background:var(--stuck-bg);border-color:var(--stuck)} .call.stuck .k{color:var(--stuck)}
+.call.tip{background:var(--tip-bg);border-color:var(--tip)} .call.tip .k{color:var(--tip)}
+.call.now{background:var(--now-bg);border-color:var(--now)} .call.now .k{color:var(--now)}
+.shot{display:inline-block;background:var(--tag);color:var(--tag-ink);font-weight:700;font-size:.85rem;padding:.05rem .5rem;border-radius:3px;margin-right:.35rem}
+.shot::before{content:"\1F4F7\FE0E  "}
+p.shotline{margin:.5rem 0}
+pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
+pre.cmd .c{color:var(--code-dim)}
+.copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
+.tbl{overflow-x:auto;margin:.75rem 0}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;vertical-align:top;padding:.5rem .6rem;border-bottom:1px solid var(--rule)}
+th{background:var(--surface-2);font-weight:600}
+td code{white-space:nowrap}
+.done-row{display:flex;gap:.6rem;align-items:center;margin-top:1.25rem;padding-top:.75rem;border-top:1px dashed var(--rule)}
+input[type=checkbox]{width:1.3rem;height:1.3rem;accent-color:var(--tip);flex:none}
+.done-row label{min-height:44px;display:flex;align-items:center;cursor:pointer}
+.q{border-top:1px solid var(--rule);padding:.75rem 0}
+.q .ask{font-weight:600;margin:0 0 .4rem}
+.ans{display:none;margin-top:.5rem;padding:.6rem .8rem;background:var(--surface-2);border-radius:6px}
+.ans.open{display:block}
+.evidence ul{list-style:none;padding:0;margin:0}
+.evidence li{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px dashed var(--rule)}
+.evidence li label{cursor:pointer}
+.cheat{border:2px solid var(--ink);border-radius:8px;padding:1rem 1.25rem}
+.cheat .grid{display:grid;gap:1rem 1.5rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.cheat h3{margin:0 0 .3rem;font-family:var(--f-display)}
+.cheat ul{margin:0;padding-left:1.1rem;font-size:.93rem}
+.badges{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+.badge{border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:.05rem .65rem;font-size:.82rem;font-weight:600}
+footer{border-top:1px solid var(--rule);background:var(--surface);color:var(--ink-2);font-size:.88rem}
+footer .in{max-width:76rem;margin:0 auto;padding:1.25rem 1rem}
+footer p{margin:.25rem 0;max-width:80ch}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
+  body{background:#fff;color:#000} .wrap{display:block;padding:0}
+  main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
+  .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
+  .stub{background:#fff;border:2px solid #000}
+}
+</style>
+</head>
+<body data-prefix="aplus-lab09-v1:">
+<a href="#main" class="skip-link">Skip to main content</a>
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="index.html"><span class="plug" aria-hidden="true">A+</span>A+ Lab Companion</a>
+  <div class="ctl" role="group" aria-label="Page controls">
+    <button type="button" id="fs-down" aria-label="Decrease text size">A&minus;</button>
+    <button type="button" id="fs-up" aria-label="Increase text size">A+</button>
+    <button type="button" id="theme" aria-pressed="false">Dark mode</button>
+    <button type="button" id="print">Print</button>
+    <button type="button" id="clear">Clear progress</button>
+  </div>
+</div></header>
+<div class="ticket"><div class="ticket-in">
+  <div class="stub"><span class="lbl">Lab</span><span class="no">09</span><span class="series">CompTIA A+ Lab Series v4</span></div>
+  <div class="tk-body"><h1>Windows Control Panel & Settings</h1><p class="lede">Settings and Control Panel together hold almost every option a user will ask you to change. You will check the installed Windows version, adjust resolution and power plans, tighten browser privacy and security zones, show hidden files and extensions, and raise User Account Control.</p><dl class="fields"><div><dt>Time</dt><dd>40–50 min</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Machines</dt><dd>Win8.1, Win10</dd></div><div><dt>Exam domains</dt><dd>Core 2: Operating Systems<br>Core 2: Security</dd></div></dl></div>
+</div></div>
+<div class="wrap">
+<nav class="toc" aria-label="On this page"><details><summary>On this page</summary>
+<div id="meter" class="meter" role="progressbar" aria-label="Sections reviewed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="meter-bar"></span></div>
+<p id="meter-txt" class="meter-txt"></p>
+<ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#reference"><span>Reference: Settings, Control Panel, and shortcuts</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#exam"><span>On the A+ exams</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#check"><span>Check yourself</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#evidence"><span>Evidence to capture</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#cheat"><span>Cheat sheet</span><span class="tick" aria-hidden="true"></span></a></li></ol></details></nav>
+<main id="main" tabindex="-1">
+<section id="overview" aria-labelledby="h-overview">
+<h2 id="h-overview">Why this lab matters</h2>
+<p>A lot of help desk work is configuration: "my screen is too small," "my laptop goes to sleep during presentations," "I can't see the file extension," "is this PC up to date?" Each answer lives in a specific Settings page or Control Panel applet, and knowing where is what makes you fast.</p>
+<p>The lab also touches two settings with security weight. <strong>Show file extensions</strong> helps users spot a file named <code class="inl">invoice.pdf.exe</code> for what it is. <strong>User Account Control</strong> decides how loudly Windows warns before a program makes system changes. Both appear on the exam as security best practices, not just preferences.</p>
+
+<div class="done-row"><input type="checkbox" id="done-overview" data-done="overview"><label for="done-overview">Mark this section reviewed</label></div>
+</section>
+<section id="environment" aria-labelledby="h-environment">
+<h2 id="h-environment">The environment you're working in</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win8.1</td><td><code class="inl">192.168.1.8/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<p>The lab has no internet, so the Internet Explorer home page won't load. That doesn't affect any of the settings.</p>
+<div class="call tip"><span class="k">Internet Explorer is retired</span><p>Microsoft retired Internet Explorer in 2022. The <strong>Internet Options</strong> applet you'll use still matters: Windows uses it for proxy settings, security zones, and some app connections, and Edge reads several of these settings.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-environment" data-done="environment"><label for="done-environment">Mark this section reviewed</label></div>
+</section>
+<section id="then-now" aria-labelledby="h-then-now">
+<h2 id="h-then-now">Then vs. now: Windows 11</h2>
+<div class="tbl"><table><thead><tr><th scope="col">In the lab</th><th scope="col">On Windows 11</th></tr></thead><tbody><tr><td>Settings > System > About > Version and OS Build</td><td>Same page: Settings > System > <strong>About</strong> > Windows specifications. <code class="inl">winver</code> shows it too. Settings > <strong>Windows Update > Update history</strong> lists installed updates.</td></tr><tr><td>PC settings > PC and devices > Display</td><td>Settings > System > <strong>Display</strong> > Display resolution</td></tr><tr><td>Control Panel > Power Options > advanced settings</td><td>Settings > System > <strong>Power & battery</strong> for the basics; Control Panel > Power Options (or <code class="inl">powercfg.cpl</code>) still has the advanced settings</td></tr><tr><td>Internet Options (Internet Explorer)</td><td><code class="inl">inetcpl.cpl</code> still opens it. Browser privacy now lives in <strong>Edge > Settings > Privacy, search, and services</strong> and <strong>Cookies and site permissions</strong>.</td></tr><tr><td>Personalization > High Contrast theme</td><td>Settings > Accessibility > <strong>Contrast themes</strong></td></tr><tr><td>File Explorer View > Hidden items; Folder Options</td><td>File Explorer > <strong>View > Show > Hidden items</strong> and <strong>File name extensions</strong>. Folder Options is under the <strong>...</strong> menu > Options.</td></tr><tr><td>Action Center > Change User Account Control settings</td><td>Control Panel > User Accounts > <strong>Change User Account Control settings</strong>, or search "UAC"</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-then-now" data-done="then-now"><label for="done-then-now">Mark this section reviewed</label></div>
+</section>
+<section id="walkthrough" aria-labelledby="h-walkthrough">
+<h2 id="h-walkthrough">Walkthrough</h2>
+<p class="task-head">Task 1: Settings</p>
+<div class="step">
+<h3><span class="n">1</span>Check the Windows version and build (Win10)</h3>
+<p>Log in to <strong>Win10</strong>. Right-click <strong>Start > Settings > System</strong>, scroll down the left pane, and click <strong>About</strong>. Under <strong>Windows specifications</strong>, note the <strong>Version</strong> and <strong>OS Build</strong>. They tell you which feature update is installed.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The About page showing Version and OS Build.</p>
+<pre class="cmd"><code><span class="c">The same information from the Run box or a prompt</span>
+winver
+systeminfo | findstr /B /C:"OS Name" /C:"OS Version"</code></pre>
+</div>
+<div class="step">
+<h3><span class="n">2</span>Change the display resolution (Win8.1)</h3>
+<p>Log in to <strong>Win8.1</strong>. Open <strong>Start > PC settings > PC and devices > Display</strong>. The resolution is <code class="inl">1024 x 768</code>. Move the slider to <code class="inl">1280 x 768</code>, click <strong>Apply</strong>, then <strong>Keep changes</strong>. The screen gets wider. Change it back to <code class="inl">1024 x 768</code>.</p>
+<div class="call tip"><span class="k">Why Windows asks you to keep changes</span><p>If a resolution doesn't display, you can't see the button. Windows reverts automatically after about 15 seconds unless you confirm.</p></div>
+</div>
+<p class="task-head">Task 2: Power Options (Win8.1)</p>
+<div class="step">
+<h3><span class="n">3</span>Choose a plan</h3>
+<p>Go back to <strong>PC settings</strong> and click <strong>Control Panel</strong> at the bottom of the left pane. Set <strong>View by</strong> to <strong>Small icons</strong> and open <strong>Power Options</strong>. Select <strong>Balanced (recommended)</strong>, then click <strong>Change plan settings > Change advanced power settings</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">4</span>Change the advanced settings</h3>
+<p>Click <strong>Change settings that are currently unavailable</strong>, then set:</p>
+<div class="tbl"><table><thead><tr><th scope="col">Setting</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Hard disk > Turn off hard disk after</td><td>45 minutes</td></tr><tr><td>Sleep > Sleep after</td><td>Never (type <code class="inl">0</code>)</td></tr><tr><td>USB settings > USB selective suspend setting</td><td>Disabled</td></tr><tr><td>Display > Turn off display after</td><td>30 minutes</td></tr></tbody></table></div>
+<p>Click <strong>OK</strong> and close the plan window.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Power Options advanced settings window with your changes.</p>
+</div>
+<p class="task-head">Task 3: Internet Options (Win8.1)</p>
+<div class="step">
+<h3><span class="n">5</span>Clear browsing data</h3>
+<p>Right-click <strong>Start > Control Panel > Internet Options</strong>. Under <strong>Browsing history</strong>, click <strong>Delete</strong>. Make sure <strong>Tracking Protection, ActiveX Filtering and Do Not Track</strong> is unchecked, leave the other defaults, and click <strong>Delete</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">6</span>Change history settings</h3>
+<p>Click <strong>Settings</strong> under Browsing history. Select <strong>Every time I visit the webpage</strong>. On the <strong>History</strong> tab, set <strong>Days to keep pages in history</strong> to <code class="inl">10</code>. Click <strong>OK</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">7</span>Review security zones</h3>
+<p>Open the <strong>Security</strong> tab. Select <strong>Internet</strong> and click <strong>Custom level</strong> to see the many settings you can restrict, then <strong>Cancel</strong>.</p>
+<p>Select <strong>Trusted sites > Sites</strong>, uncheck <strong>Require server verification (https:) for all sites in this zone</strong>, enter the site address the lab gives you, click <strong>Add</strong>, then <strong>Close</strong>. Click <strong>Custom level</strong> for Trusted sites: most options are enabled, because you trust these sites. Click <strong>Cancel</strong>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Trusted sites window with a site added.</p>
+</div>
+<div class="step">
+<h3><span class="n">8</span>Block pop-ups and third-party cookies</h3>
+<p>On the <strong>Privacy</strong> tab, make sure <strong>Turn on Pop-up Blocker</strong> is checked, then click <strong>Advanced</strong>. Check <strong>Override automatic cookie handling</strong> and choose <strong>Block</strong> for <strong>Third-party Cookies</strong>. Click <strong>OK</strong> twice.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Advanced Privacy Settings window blocking third-party cookies.</p>
+</div>
+<p class="task-head">Task 4: Personalization (Win8.1)</p>
+<div class="step">
+<h3><span class="n">9</span>Apply a high contrast theme</h3>
+<p>In Control Panel, open <strong>Personalization</strong> and click <strong>High Contrast #1</strong>. Then click <strong>Desktop Background</strong>, pick a color, and click <strong>Save changes</strong>. Close the window.</p>
+</div>
+<p class="task-head">Task 5: Hidden files and extensions (Win8.1)</p>
+<div class="step">
+<h3><span class="n">10</span>Show hidden items</h3>
+<p>Open <strong>File Explorer > Local Disk (C:)</strong>. On the <strong>View</strong> tab, check <strong>Hidden items</strong>. The hidden <strong>ProgramData</strong> folder appears. Open <strong>Program Files > TightVNC</strong> and look at the file names.</p>
+</div>
+<div class="step">
+<h3><span class="n">11</span>Show file extensions</h3>
+<p>Open <strong>Control Panel > Folder Options > View</strong> and uncheck <strong>Hide extensions for known file types</strong>. Click <strong>OK</strong>. Back in the TightVNC folder, names now end in <code class="inl">.exe</code>, <code class="inl">.txt</code>, and so on.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The TightVNC folder showing file extensions.</p>
+</div>
+<p class="task-head">Task 6: User Account Control (Win8.1)</p>
+<div class="step">
+<h3><span class="n">12</span>Raise UAC to Always notify</h3>
+<p>Open <strong>Control Panel > Action Center > Change User Account Control settings</strong>. Drag the slider to the top, <strong>Always notify</strong>, and click <strong>OK</strong>. Accept the UAC prompt.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The UAC settings slider at Always notify.</p>
+<p>The lab is complete.</p>
+</div>
+
+<div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+<section id="reference" aria-labelledby="h-reference">
+<h2 id="h-reference">Reference: Settings, Control Panel, and shortcuts</h2>
+<h3>Control Panel applets you can open directly</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Applet</th><th scope="col">Command</th></tr></thead><tbody><tr><td>Programs and Features</td><td><code class="inl">appwiz.cpl</code></td></tr><tr><td>Network Connections</td><td><code class="inl">ncpa.cpl</code></td></tr><tr><td>System Properties</td><td><code class="inl">sysdm.cpl</code></td></tr><tr><td>Internet Options</td><td><code class="inl">inetcpl.cpl</code></td></tr><tr><td>Power Options</td><td><code class="inl">powercfg.cpl</code></td></tr><tr><td>Display</td><td><code class="inl">desk.cpl</code></td></tr><tr><td>Sound</td><td><code class="inl">mmsys.cpl</code></td></tr><tr><td>Mouse</td><td><code class="inl">main.cpl</code></td></tr><tr><td>Windows Defender Firewall</td><td><code class="inl">firewall.cpl</code></td></tr><tr><td>Date and Time</td><td><code class="inl">timedate.cpl</code></td></tr><tr><td>Region</td><td><code class="inl">intl.cpl</code></td></tr></tbody></table></div>
+<h3>Power plans and states</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Term</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td>Balanced / Power saver / High performance</td><td>Built-in plans trading performance against battery life</td></tr><tr><td>Sleep (S3)</td><td>RAM stays powered; fast to resume</td></tr><tr><td>Hibernate (S4)</td><td>RAM saved to <code class="inl">hiberfil.sys</code>, PC powers off; slower to resume, no battery used</td></tr><tr><td>Hybrid sleep</td><td>Sleep plus a hibernate file, for desktops</td></tr><tr><td>Fast startup</td><td>Shutdown saves the kernel to disk for faster boot. Can hide hardware changes and block firmware key presses.</td></tr><tr><td>USB selective suspend</td><td>Powers down idle USB devices; disable it if devices disconnect randomly</td></tr></tbody></table></div>
+<pre class="cmd"><code><span class="c">List plans, show the active one, and report battery or energy problems</span>
+powercfg /list
+powercfg /getactivescheme
+powercfg /batteryreport
+powercfg /energy</code></pre>
+<h3>UAC levels</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Level</th><th scope="col">Behavior</th></tr></thead><tbody><tr><td>Always notify</td><td>Prompts for any system change, including Windows settings, on the secure desktop</td></tr><tr><td>Notify only when apps try to make changes (default)</td><td>Prompts for apps, not for your own Windows setting changes</td></tr><tr><td>Same, without dimming the desktop</td><td>Prompt appears on the normal desktop (less protected)</td></tr><tr><td>Never notify</td><td>No prompts. Not recommended.</td></tr></tbody></table></div>
+<h3>Internet Options security zones</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Zone</th><th scope="col">Default level</th><th scope="col">Holds</th></tr></thead><tbody><tr><td>Internet</td><td>Medium-high</td><td>Everything not in another zone</td></tr><tr><td>Local intranet</td><td>Medium-low</td><td>Internal sites</td></tr><tr><td>Trusted sites</td><td>Medium</td><td>Sites you add and trust</td></tr><tr><td>Restricted sites</td><td>High</td><td>Sites you add and distrust</td></tr></tbody></table></div>
+<h3>Folder Options worth knowing</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Option</th><th scope="col">Why change it</th></tr></thead><tbody><tr><td>Hide extensions for known file types (uncheck)</td><td>See the real file type; spot <code class="inl">file.pdf.exe</code></td></tr><tr><td>Show hidden files, folders, and drives</td><td>Reach <code class="inl">ProgramData</code>, <code class="inl">AppData</code></td></tr><tr><td>Hide protected operating system files</td><td>Leave checked except when troubleshooting</td></tr><tr><td>Open File Explorer to</td><td>This PC or Home</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-reference" data-done="reference"><label for="done-reference">Mark this section reviewed</label></div>
+</section>
+<section id="stuck" aria-labelledby="h-stuck">
+<h2 id="h-stuck">Where people get stuck</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Problem</th><th scope="col">Why it happens</th><th scope="col">Fix</th></tr></thead><tbody><tr><td>Can't find About in Settings</td><td>It's at the bottom of System's left pane</td><td>Scroll down, or run <code class="inl">winver</code></td></tr><tr><td>Advanced power settings are greyed out</td><td>They need admin rights</td><td>Click <strong>Change settings that are currently unavailable</strong></td></tr><tr><td>Sleep after won't take "Never"</td><td>It's a number box</td><td>Type <code class="inl">0</code></td></tr><tr><td>Trusted sites won't add the address</td><td>Require server verification needs <code class="inl">https:</code></td><td>Uncheck that box, or use an https address</td></tr><tr><td>Can't find Folder Options</td><td>It's called File Explorer Options on Windows 10 and 11</td><td>Search for it, or use File Explorer's View options</td></tr><tr><td>UAC change prompts again</td><td>Changing UAC itself needs approval</td><td>Click Yes</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-stuck" data-done="stuck"><label for="done-stuck">Mark this section reviewed</label></div>
+</section>
+<section id="on-the-job" aria-labelledby="h-on-the-job">
+<h2 id="h-on-the-job">On the job</h2>
+<div class="tbl"><table><thead><tr><th scope="col">The ticket says</th><th scope="col">Where you look</th><th scope="col">Likely fix</th></tr></thead><tbody><tr><td>"My laptop sleeps in the middle of presentations."</td><td>Power plan</td><td>Raise sleep and display timeouts, or use presentation settings</td></tr><tr><td>"My USB headset keeps disconnecting."</td><td>Power Options > USB selective suspend</td><td>Disable it</td></tr><tr><td>"Everything on the screen is tiny."</td><td>Display > Scale</td><td>Raise scaling to 125–150%, not the resolution</td></tr><tr><td>"I got an email attachment called report.pdf and it won't open."</td><td>Folder Options</td><td>Show extensions; it may be <code class="inl">report.pdf.exe</code></td></tr><tr><td>"Which version of Windows do I have?"</td><td>Settings > System > About or <code class="inl">winver</code></td><td>Read the version and build</td></tr><tr><td>"I can't find AppData."</td><td>Hidden items</td><td>Show hidden items, or type <code class="inl">%appdata%</code> in File Explorer</td></tr></tbody></table></div>
+<div class="call tip"><span class="k">Professional habit</span><p>Change scaling before resolution. Lowering resolution blurs an LCD; scaling makes text bigger at the panel's native resolution.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-on-the-job" data-done="on-the-job"><label for="done-on-the-job">Mark this section reviewed</label></div>
+</section>
+<section id="exam" aria-labelledby="h-exam">
+<h2 id="h-exam">On the A+ exams</h2>
+<div class="badges"><span class="badge">Core 2: Operating Systems</span><span class="badge">Core 2: Security</span></div>
+<p><strong>Core 2 (220-1202)</strong> covers Windows Settings and Control Panel utilities by name and <code class="inl">.cpl</code> shortcut, power options (sleep, hibernate, fast startup, USB selective suspend, power plans), display settings, File Explorer options, Internet Options, and UAC as a security setting.</p>
+<h3>High-yield facts</h3>
+<ul><li><code class="inl">appwiz.cpl</code>, <code class="inl">ncpa.cpl</code>, <code class="inl">sysdm.cpl</code>, <code class="inl">inetcpl.cpl</code>, <code class="inl">powercfg.cpl</code>, <code class="inl">desk.cpl</code>, <code class="inl">firewall.cpl</code>, <code class="inl">mmsys.cpl</code>.</li><li>Hibernate saves RAM to disk and powers off; sleep keeps RAM powered.</li><li>Disable USB selective suspend when USB devices drop out.</li><li>Showing file extensions is a security best practice.</li><li>UAC's default is "Notify only when apps try to make changes"; Always notify is the most secure.</li><li><code class="inl">winver</code> shows the version and build.</li></ul>
+
+<div class="done-row"><input type="checkbox" id="done-exam" data-done="exam"><label for="done-exam">Mark this section reviewed</label></div>
+</section>
+<section id="check" aria-labelledby="h-check">
+<h2 id="h-check">Check yourself</h2>
+<div class="q"><p class="ask">1. A user's laptop battery is dead every morning even though they closed the lid. Which power setting helps?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Set the lid action or sleep to Hibernate (or hybrid sleep), which saves to disk and uses no battery overnight.</div></div>
+<div class="q"><p class="ask">2. A USB barcode scanner keeps disconnecting after a few minutes of inactivity. What do you change?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Disable USB selective suspend in the power plan's advanced settings.</div></div>
+<div class="q"><p class="ask">3. Why turn off "Hide extensions for known file types" on a user's PC?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">So the real file type shows. A file named <code class="inl">invoice.pdf.exe</code> would otherwise look like <code class="inl">invoice.pdf</code>.</div></div>
+<div class="q"><p class="ask">4. What's the most secure UAC setting, and what does it add over the default?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Always notify. It also prompts when you change Windows settings yourself, not just when apps make changes.</div></div>
+<div class="q"><p class="ask">5. Which command opens Internet Options directly?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans"><code class="inl">inetcpl.cpl</code></div></div>
+</section>
+<section id="evidence" aria-labelledby="h-evidence">
+<h2 id="h-evidence">Evidence to capture</h2>
+<p>Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.</p>
+<div class="evidence"><ul><li><input type="checkbox" id="ev1" data-evidence="ev1"><label for="ev1"><span class="shot">Version</span>Win10 About page showing Version and OS Build.</label></li><li><input type="checkbox" id="ev2" data-evidence="ev2"><label for="ev2"><span class="shot">Power</span>The Power Options advanced settings with your changes.</label></li><li><input type="checkbox" id="ev3" data-evidence="ev3"><label for="ev3"><span class="shot">Trusted sites</span>The Trusted sites window with a site added.</label></li><li><input type="checkbox" id="ev4" data-evidence="ev4"><label for="ev4"><span class="shot">Cookies</span>Advanced Privacy Settings blocking third-party cookies.</label></li><li><input type="checkbox" id="ev5" data-evidence="ev5"><label for="ev5"><span class="shot">Extensions</span>The TightVNC folder showing file extensions.</label></li><li><input type="checkbox" id="ev6" data-evidence="ev6"><label for="ev6"><span class="shot">UAC</span>The UAC slider at Always notify.</label></li></ul></div>
+</section>
+<section id="cheat" aria-labelledby="h-cheat">
+<h2 id="h-cheat">Cheat sheet</h2>
+<div class="cheat"><div class="grid">
+<div><h3>Find it fast</h3>
+<ul><li><code class="inl">winver</code>; Settings > System > About</li><li><code class="inl">powercfg.cpl</code>, <code class="inl">powercfg /batteryreport</code></li><li><code class="inl">inetcpl.cpl</code> Internet Options</li><li><code class="inl">appwiz.cpl</code> <code class="inl">ncpa.cpl</code> <code class="inl">sysdm.cpl</code> <code class="inl">desk.cpl</code></li><li>File Explorer > View > Show</li></ul>
+</div>
+<div><h3>Remember</h3>
+<ul><li>Sleep = RAM; hibernate = disk, power off</li><li>USB drops: disable selective suspend</li><li>Tiny text: change scaling, not resolution</li><li>Show extensions (security)</li><li>UAC: Always notify is most secure</li></ul>
+</div>
+</div></div>
+</section>
+</main></div>
+<footer><div class="in">
+  <p>Built for CompTIA A+ hands-on practice at Brookdale Community College, 2026. Open educational resource.</p>
+  <p>Companion to the NDG CompTIA A+ Lab Series v4 labs. This guide is independent and is not affiliated with or endorsed by CompTIA or Network Development Group. CompTIA A+ is a registered trademark of CompTIA, Inc.</p>
+</div></footer>
+<p id="live" class="sr" aria-live="polite"></p>
+<script>
+(function(){
+  var S={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
+         set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+         del:function(k){try{localStorage.removeItem(k)}catch(e){}}};
+  window.__S=S;
+  var root=document.documentElement, tb=document.getElementById('theme');
+  function isDark(){var t=root.getAttribute('data-theme'); if(t) return t==='dark';
+    return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;}
+  function paintTheme(){var d=isDark(); tb.setAttribute('aria-pressed',d?'true':'false'); tb.textContent=d?'Light mode':'Dark mode';}
+  var saved=S.get('aplus-theme'); if(saved) root.setAttribute('data-theme',saved);
+  paintTheme();
+  tb.addEventListener('click',function(){var n=isDark()?'light':'dark'; root.setAttribute('data-theme',n); S.set('aplus-theme',n); paintTheme();});
+  var sc=parseFloat(S.get('aplus-scale'))||1;
+  function setScale(v){sc=Math.min(1.4,Math.max(.85,Math.round(v*100)/100)); root.style.setProperty('--scale',sc); S.set('aplus-scale',sc);}
+  setScale(sc);
+  document.getElementById('fs-up').addEventListener('click',function(){setScale(sc+.1)});
+  document.getElementById('fs-down').addEventListener('click',function(){setScale(sc-.1)});
+  document.getElementById('print').addEventListener('click',function(){window.print()});
+})();
+
+(function(){
+  var S=window.__S, P=document.body.getAttribute('data-prefix');
+  var live=document.getElementById('live');
+  function say(t){live.textContent=t;}
+  function load(k){try{return JSON.parse(S.get(P+k))||{}}catch(e){return {}}}
+  var done=load('done'), ev=load('evidence');
+  var tracks=[].slice.call(document.querySelectorAll('[data-done]'));
+  var bar=document.getElementById('meter-bar'), txt=document.getElementById('meter-txt'), meter=document.getElementById('meter');
+  function refresh(){
+    var n=0; tracks.forEach(function(c){ if(c.checked) n++;
+      var a=document.querySelector('.toc a[href="#'+c.getAttribute('data-done')+'"] .tick'); if(a) a.textContent=c.checked?'\u2713':'';});
+    var pct=tracks.length?Math.round(n/tracks.length*100):0;
+    bar.style.width=pct+'%'; meter.setAttribute('aria-valuenow',pct);
+    txt.textContent=n+' of '+tracks.length+' sections reviewed';
+    S.set(P+'meta',JSON.stringify({done:n,total:tracks.length}));
+  }
+  tracks.forEach(function(c){ c.checked=!!done[c.getAttribute('data-done')];
+    c.addEventListener('change',function(){done[c.getAttribute('data-done')]=c.checked; S.set(P+'done',JSON.stringify(done)); refresh();});});
+  refresh();
+  [].forEach.call(document.querySelectorAll('[data-evidence]'),function(c){ c.checked=!!ev[c.getAttribute('data-evidence')];
+    c.addEventListener('change',function(){ev[c.getAttribute('data-evidence')]=c.checked; S.set(P+'evidence',JSON.stringify(ev));});});
+  document.getElementById('clear').addEventListener('click',function(){
+    if(!window.confirm('Clear your checkmarks on this lab page?')) return;
+    S.del(P+'done'); S.del(P+'evidence'); done={}; ev={};
+    [].forEach.call(document.querySelectorAll('[data-done],[data-evidence]'),function(c){c.checked=false;});
+    refresh(); say('Progress cleared for this lab.');});
+  [].forEach.call(document.querySelectorAll('.reveal'),function(b){
+    b.addEventListener('click',function(){var a=b.nextElementSibling, o=a.classList.toggle('open');
+      b.setAttribute('aria-expanded',o?'true':'false'); b.textContent=o?'Hide answer':'Show answer';});});
+  [].forEach.call(document.querySelectorAll('pre.cmd'),function(pre){
+    var b=document.createElement('button'); b.type='button'; b.className='copy'; b.textContent='Copy';
+    b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code'), clone=code.cloneNode(true);
+      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
+      function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
+      function fallback(){var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+        try{document.execCommand('copy'); ok();}catch(e){say('Copy failed; select the text instead.');} ta.remove();}
+    });});
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(l){l.setAttribute('aria-current', l.getAttribute('href')==='#'+e.target.id?'true':'false');});}});},
+      {rootMargin:'-20% 0px -70% 0px'});
+    [].forEach.call(document.querySelectorAll('main section[id]'),function(s){io.observe(s);});
+  }
+  var det=document.querySelector('.toc details');
+  if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
+})();
+</script>
+</body>
+</html>

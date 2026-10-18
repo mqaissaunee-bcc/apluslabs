@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 07 Companion: Disk Maintenance & Data Recovery | A+ Lab Companion</title>
+<meta name="description" content="Run and schedule Disk Cleanup, optimize drives, create restore points, and back up and find files across machines.">
+<style>
+:root{
+  --bg:#E8ECF0; --surface:#FFFFFF; --surface-2:#F3F5F8; --ink:#14233A; --ink-2:#47576C;
+  --rule:#C7D0DA; --accent:#1C5689; --accent-ink:#FFFFFF; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
+  --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
+  --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
+  --fs:1rem; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
+a{color:var(--accent)} a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--tag);color:var(--tag-ink);padding:.7rem 1rem;z-index:20}
+.skip-link:focus{left:1rem;top:1rem}
+code,pre,kbd{font-family:var(--f-mono)}
+code.inl{background:var(--surface-2);border:1px solid var(--rule);border-radius:3px;padding:0 .3em;font-size:.92em}
+kbd{display:inline-block;border:1px solid var(--rule);border-bottom-width:3px;border-radius:4px;padding:0 .4em;background:var(--surface);font-size:.85em;line-height:1.5}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:76rem;margin:0 auto;padding:.4rem 1rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.1rem;color:var(--ink);text-decoration:none;margin-right:auto;display:flex;gap:.5rem;align-items:center}
+.brand .plug{display:inline-grid;place-items:center;width:2rem;height:2rem;background:var(--tag);color:var(--tag-ink);border-radius:4px;font-size:1rem}
+.ctl{display:flex;gap:.35rem;flex-wrap:wrap}
+.ctl button,.btn{min-height:44px;min-width:44px;padding:.3rem .75rem;border:1px solid var(--rule);background:var(--surface-2);color:var(--ink);border-radius:6px;font:inherit;font-size:.9rem;cursor:pointer}
+.ctl button:hover,.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* hero ticket — the one bold element */
+.ticket{max-width:76rem;margin:1.5rem auto 0;padding:0 1rem}
+.ticket-in{display:grid;grid-template-columns:1fr;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.stub{background:var(--tag);color:var(--tag-ink);padding:1rem 1.25rem;display:flex;flex-direction:column;justify-content:space-between;gap:.5rem;position:relative}
+.stub .lbl{font-size:.85rem;font-weight:600}
+.stub .no{font-family:var(--f-display);font-weight:700;white-space:nowrap;font-size:clamp(2.4rem,6vw,3.5rem);line-height:1;letter-spacing:-.01em}
+.stub .series{font-size:.8rem}
+.tk-body{padding:1.25rem 1.5rem 1.5rem}
+.tk-body h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.15;margin:0 0 .6rem;max-width:30ch}
+.lede{font-size:1.08rem;color:var(--ink-2);max-width:62ch;margin:0 0 1rem}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));gap:0;border-top:1px dashed var(--rule);margin:0}
+.fields div{padding:.6rem .75rem .5rem 0;border-bottom:1px dashed var(--rule)}
+.fields dt{font-size:.78rem;color:var(--ink-2)}
+.fields dd{margin:0;font-weight:600;font-size:.95rem}
+@media (min-width:720px){
+  .ticket-in{grid-template-columns:12rem 1fr}
+  .stub{border-right:2px dashed var(--tag-ink)}
+  .stub::before,.stub::after{content:"";position:absolute;right:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:1px solid var(--rule)}
+  .stub::before{top:-11px} .stub::after{bottom:-11px}
+}
+
+/* layout */
+.wrap{max-width:76rem;margin:0 auto;padding:1.5rem 1rem 3rem;display:grid;gap:2rem;grid-template-columns:1fr}
+@media (min-width:1000px){.wrap{grid-template-columns:15rem minmax(0,1fr)}}
+.toc{align-self:start}
+@media (min-width:1000px){.toc{position:sticky;top:4.5rem}}
+.toc details{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:.5rem .9rem}
+.toc summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+.toc ol{list-style:none;margin:.25rem 0 .5rem;padding:0}
+.toc li a{display:flex;justify-content:space-between;gap:.5rem;padding:.3rem .4rem;border-radius:4px;text-decoration:none;color:var(--ink);font-size:.92rem}
+.toc li a:hover{background:var(--surface-2)}
+.toc li a[aria-current="true"]{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--accent)}
+.toc .tick{color:var(--tip);font-weight:700}
+.meter{margin:.5rem 0 .25rem;height:10px;background:var(--surface-2);border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+.meter span{display:block;height:100%;width:0;background:var(--tip);transition:width .3s}
+.meter-txt{font-size:.85rem;color:var(--ink-2);margin:0}
+main{min-width:0}
+main section{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.25rem 1.5rem;margin:0 0 1.25rem;max-width:56rem}
+@media (max-width:600px){main section{padding:1rem}.ctl button{padding:.3rem .55rem}}
+main h2{font-family:var(--f-display);font-weight:700;font-size:1.55rem;line-height:1.2;margin:0 0 .75rem}
+main h3{font-size:1.1rem;margin:1.25rem 0 .4rem}
+main p,main li{max-width:68ch}
+.task-head{font-family:var(--f-display);font-weight:700;font-size:1.15rem;margin:1.75rem 0 .5rem;padding-top:1rem;border-top:2px solid var(--ink)}
+.task-head:first-of-type{border-top:0;padding-top:0}
+.step{border-left:3px solid var(--rule);padding:.1rem 0 .1rem 1rem;margin:1rem 0}
+.step h3{margin-top:0;display:flex;gap:.6rem;align-items:baseline}
+.step h3 .n{flex:none;display:inline-grid;place-items:center;min-width:1.8rem;height:1.8rem;border-radius:50%;background:var(--ink);color:var(--surface);font-size:.9rem}
+.call{border-radius:8px;padding:.75rem 1rem;margin:1rem 0;border:1px solid}
+.call .k{display:block;font-weight:700;margin-bottom:.2rem}
+.call p{margin:.25rem 0}
+.call.stuck{background:var(--stuck-bg);border-color:var(--stuck)} .call.stuck .k{color:var(--stuck)}
+.call.tip{background:var(--tip-bg);border-color:var(--tip)} .call.tip .k{color:var(--tip)}
+.call.now{background:var(--now-bg);border-color:var(--now)} .call.now .k{color:var(--now)}
+.shot{display:inline-block;background:var(--tag);color:var(--tag-ink);font-weight:700;font-size:.85rem;padding:.05rem .5rem;border-radius:3px;margin-right:.35rem}
+.shot::before{content:"\1F4F7\FE0E  "}
+p.shotline{margin:.5rem 0}
+pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
+pre.cmd .c{color:var(--code-dim)}
+.copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
+.tbl{overflow-x:auto;margin:.75rem 0}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;vertical-align:top;padding:.5rem .6rem;border-bottom:1px solid var(--rule)}
+th{background:var(--surface-2);font-weight:600}
+td code{white-space:nowrap}
+.done-row{display:flex;gap:.6rem;align-items:center;margin-top:1.25rem;padding-top:.75rem;border-top:1px dashed var(--rule)}
+input[type=checkbox]{width:1.3rem;height:1.3rem;accent-color:var(--tip);flex:none}
+.done-row label{min-height:44px;display:flex;align-items:center;cursor:pointer}
+.q{border-top:1px solid var(--rule);padding:.75rem 0}
+.q .ask{font-weight:600;margin:0 0 .4rem}
+.ans{display:none;margin-top:.5rem;padding:.6rem .8rem;background:var(--surface-2);border-radius:6px}
+.ans.open{display:block}
+.evidence ul{list-style:none;padding:0;margin:0}
+.evidence li{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px dashed var(--rule)}
+.evidence li label{cursor:pointer}
+.cheat{border:2px solid var(--ink);border-radius:8px;padding:1rem 1.25rem}
+.cheat .grid{display:grid;gap:1rem 1.5rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.cheat h3{margin:0 0 .3rem;font-family:var(--f-display)}
+.cheat ul{margin:0;padding-left:1.1rem;font-size:.93rem}
+.badges{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+.badge{border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:.05rem .65rem;font-size:.82rem;font-weight:600}
+footer{border-top:1px solid var(--rule);background:var(--surface);color:var(--ink-2);font-size:.88rem}
+footer .in{max-width:76rem;margin:0 auto;padding:1.25rem 1rem}
+footer p{margin:.25rem 0;max-width:80ch}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
+  body{background:#fff;color:#000} .wrap{display:block;padding:0}
+  main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
+  .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
+  .stub{background:#fff;border:2px solid #000}
+}
+</style>
+</head>
+<body data-prefix="aplus-lab07-v1:">
+<a href="#main" class="skip-link">Skip to main content</a>
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="index.html"><span class="plug" aria-hidden="true">A+</span>A+ Lab Companion</a>
+  <div class="ctl" role="group" aria-label="Page controls">
+    <button type="button" id="fs-down" aria-label="Decrease text size">A&minus;</button>
+    <button type="button" id="fs-up" aria-label="Increase text size">A+</button>
+    <button type="button" id="theme" aria-pressed="false">Dark mode</button>
+    <button type="button" id="print">Print</button>
+    <button type="button" id="clear">Clear progress</button>
+  </div>
+</div></header>
+<div class="ticket"><div class="ticket-in">
+  <div class="stub"><span class="lbl">Lab</span><span class="no">07</span><span class="series">CompTIA A+ Lab Series v4</span></div>
+  <div class="tk-body"><h1>Disk Maintenance & Data Recovery</h1><p class="lede">Regular maintenance keeps a PC fast, and backups are the only thing that saves a user's files when it fails. You will clean up and optimize a drive on a schedule, roll a system back with a restore point, and back up and restore files with two different Windows tools.</p><dl class="fields"><div><dt>Time</dt><dd>60–75 min</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Machines</dt><dd>Win7, Win8.1, Win10</dd></div><div><dt>Exam domains</dt><dd>Core 2: Operating Systems<br>Core 2: Operational Procedures</dd></div></dl></div>
+</div></div>
+<div class="wrap">
+<nav class="toc" aria-label="On this page"><details><summary>On this page</summary>
+<div id="meter" class="meter" role="progressbar" aria-label="Sections reviewed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="meter-bar"></span></div>
+<p id="meter-txt" class="meter-txt"></p>
+<ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#reference"><span>Reference: maintenance and backup</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#exam"><span>On the A+ exams</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#check"><span>Check yourself</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#evidence"><span>Evidence to capture</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#cheat"><span>Cheat sheet</span><span class="tick" aria-hidden="true"></span></a></li></ol></details></nav>
+<main id="main" tabindex="-1">
+<section id="overview" aria-labelledby="h-overview">
+<h2 id="h-overview">Why this lab matters</h2>
+<p>Maintenance and recovery are two sides of the same job. <strong>Disk Cleanup</strong> and <strong>Optimize Drives</strong> keep storage healthy and are easy to automate. <strong>System Restore</strong> undoes system changes such as a bad driver or update, without touching personal files. <strong>Backup and Restore</strong> and <strong>File History</strong> protect the personal files themselves.</p>
+<p>Knowing which tool fixes which problem is the point. A restore point won't bring back a deleted spreadsheet, and a file backup won't fix a broken driver. And a backup you've never restored from is only a hope, which is why this lab has you delete a folder and get it back.</p>
+
+<div class="done-row"><input type="checkbox" id="done-overview" data-done="overview"><label for="done-overview">Mark this section reviewed</label></div>
+</section>
+<section id="environment" aria-labelledby="h-environment">
+<h2 id="h-environment">The environment you're working in</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">Computer name</th><th scope="col">Used for</th></tr></thead><tbody><tr><td>Win8.1</td><td>Win8-1</td><td>Disk Cleanup, scheduling, Optimize Drives, System Restore; hosts the <code class="inl">Backup</code> share</td></tr><tr><td>Win7</td><td>Win7</td><td>Backup and Restore to drive <strong>Data (E:)</strong></td></tr><tr><td>Win10</td><td>Win10</td><td>File History to <code class="inl">\\WIN8-1\Backup</code></td></tr></tbody></table></div>
+<p>All use <code class="inl">sysadmin</code> / <code class="inl">Train1ng$</code>. Win7 has an <strong>Installs</strong> folder on the desktop that you'll delete and restore.</p>
+<div class="call stuck"><span class="k">Typo in the PDF</span><p>After the System Restore reboot the PDF says <code class="inl">Train1ing$</code>. The password is <code class="inl">Train1ng$</code>.</p></div>
+<div class="call tip"><span class="k">Timing</span><p>System Restore takes about 8 minutes and the first backup about 4. Start them and read ahead while they run.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-environment" data-done="environment"><label for="done-environment">Mark this section reviewed</label></div>
+</section>
+<section id="then-now" aria-labelledby="h-then-now">
+<h2 id="h-then-now">Then vs. now: Windows 11</h2>
+<div class="tbl"><table><thead><tr><th scope="col">In the lab</th><th scope="col">On Windows 11</th></tr></thead><tbody><tr><td>Disk Cleanup (<code class="inl">cleanmgr</code>)</td><td>Still included but deprecated. Settings > System > Storage > <strong>Cleanup recommendations</strong> and <strong>Storage Sense</strong> (automatic cleanup on a schedule) replace it.</td></tr><tr><td><code class="inl">cleanmgr /sageset:1</code> + Task Scheduler</td><td>Storage Sense does scheduled cleanup without a task. <code class="inl">cleanmgr /sagerun</code> still works.</td></tr><tr><td>Defragment and Optimize Drives</td><td>Same tool (<code class="inl">dfrgui</code>). It defragments hard drives and sends <strong>TRIM</strong> to SSDs; it never defragments an SSD.</td></tr><tr><td>System Protection > Create / System Restore</td><td>Same: <code class="inl">sysdm.cpl</code> > System Protection, or <code class="inl">rstrui</code>. Check that protection is <strong>On</strong> for C:; it isn't always enabled by default.</td></tr><tr><td>Backup and Restore (Windows 7)</td><td>Still in Control Panel under that name; Microsoft calls it deprecated.</td></tr><tr><td>File History</td><td>Still in Control Panel > File History (removed from Settings). The <strong>Windows Backup</strong> app backs up folders, apps, and settings to OneDrive.</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-then-now" data-done="then-now"><label for="done-then-now">Mark this section reviewed</label></div>
+</section>
+<section id="walkthrough" aria-labelledby="h-walkthrough">
+<h2 id="h-walkthrough">Walkthrough</h2>
+<p class="task-head">Task 1: Disk Cleanup (Win8.1)</p>
+<div class="step">
+<h3><span class="n">1</span>Run a cleanup</h3>
+<p>Log in to <strong>Win8.1</strong>. Right-click <strong>Start > Search</strong>, type <code class="inl">disk cleanup</code>, and open <strong>Free up disk space by deleting unnecessary files</strong>. Wait for the scan.</p>
+</div>
+<div class="step">
+<h3><span class="n">2</span>Include system files</h3>
+<p>Click <strong>Clean up system files</strong>. It rescans and adds system areas (such as old update files and error reports) that only an administrator can clean. Click each item to read its description, note the total space, and click <strong>OK > Delete Files</strong>. It takes 2–3 minutes and closes on its own.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Disk Cleanup window after Clean up system files, showing the items and total space.</p>
+</div>
+<p class="task-head">Task 2: Schedule a cleanup (Win8.1)</p>
+<div class="step">
+<h3><span class="n">3</span>Save a cleanup profile</h3>
+<p>Right-click <strong>Start > Search</strong>, type the command below, and open it:</p>
+<pre class="cmd"><code>cleanmgr /sageset:1</code></pre>
+<p>Click <strong>Clean up system files</strong>, check every box, and click <strong>OK</strong>. This saves your choices in the Registry as profile <strong>1</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">4</span>Create a basic task</h3>
+<p>Open <strong>Control Panel > Administrative Tools > Task Scheduler</strong> and click <strong>Create Basic Task</strong> in the Actions pane:</p>
+<div class="tbl"><table><thead><tr><th scope="col">Wizard page</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Name</td><td><code class="inl">Disk Cleanup</code></td></tr><tr><td>Trigger</td><td>Weekly, recur every 1 week, today's day, start 10–15 minutes from now</td></tr><tr><td>Action</td><td>Start a program</td></tr><tr><td>Program/script</td><td><code class="inl">C:\Windows\System32\cleanmgr.exe</code></td></tr><tr><td>Add arguments</td><td><code class="inl">/sagerun:1</code></td></tr></tbody></table></div>
+<p>Click <strong>Finish</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">5</span>Set it for Windows 8.1 and watch it run</h3>
+<p>In <strong>Task Scheduler Library</strong>, double-click <strong>Disk Cleanup</strong>, change <strong>Configure for</strong> to <strong>Windows 8.1</strong>, and click <strong>OK</strong>. When the start time passes, the status shows <strong>Running</strong>, or check <strong>Last Run Time</strong>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>Task Scheduler Library showing the Disk Cleanup task with its trigger or Last Run Time.</p>
+</div>
+<p class="task-head">Task 3: Optimize the drive (Win8.1)</p>
+<div class="step">
+<h3><span class="n">6</span>Turn on scheduled optimization</h3>
+<p>In Administrative Tools, open <strong>Defragment and Optimize Drives</strong>. Under <strong>Scheduled optimization</strong>, click <strong>Turn on</strong>, check <strong>Run on a schedule</strong>, choose <strong>Weekly</strong>, and click <strong>OK</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">7</span>Analyze, then optimize</h3>
+<p>Select <strong>(C:)</strong> and click <strong>Analyze</strong>. Note the percent fragmented in <strong>Current status</strong>. Then click <strong>Optimize</strong> (3–4 minutes) and check the new percentage.</p>
+<p class="shotline"><span class="shot">Screenshot</span>Optimize Drives showing C: after optimization.</p>
+</div>
+<p class="task-head">Task 4: System Restore (Win8.1)</p>
+<div class="step">
+<h3><span class="n">8</span>Create a restore point</h3>
+<p>Open <strong>Control Panel > System > System protection</strong> and click <strong>Create</strong>. Name it <code class="inl">Background Configuration</code> and click <strong>Create</strong>, then <strong>Close</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">9</span>Make a change you can see</h3>
+<p>Right-click the desktop > <strong>Personalize > Desktop Background</strong>. Choose <strong>Solid Colors</strong> and a different color, and click <strong>Save changes</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">10</span>Roll back</h3>
+<p>Back on the <strong>System Protection</strong> tab, click <strong>System Restore > Next</strong>. Select <strong>Background Configuration</strong>, click <strong>Next > Finish</strong>, and confirm with <strong>Yes</strong>. Windows restarts (about 8 minutes). Sign back in: the background is the original color. Click <strong>Close</strong> on the confirmation.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The System Restore confirmation after signing back in.</p>
+<div class="call tip"><span class="k">What System Restore does and doesn't touch</span><p>It rolls back system files, installed programs, drivers, settings, and the Registry. It doesn't restore or delete personal files such as documents and photos.</p></div>
+</div>
+<p class="task-head">Task 5: Backup and Restore (Win7)</p>
+<div class="step">
+<h3><span class="n">11</span>Set up the backup</h3>
+<p>Log in to <strong>Win7</strong>. Open <strong>Start > All Programs > Maintenance > Backup and Restore > Set up backup</strong>. Choose <strong>Data (E:)</strong> as the destination, then <strong>Let me choose</strong>. Check all the <strong>Data Files</strong> boxes and <strong>Local Disk (C:)</strong>, and <em>uncheck</em> <strong>Include a system image</strong>. Review the schedule and click <strong>Save settings and run backup</strong> (about 4 minutes).</p>
+</div>
+<div class="step">
+<h3><span class="n">12</span>Delete the Installs folder for real</h3>
+<p>Right-click <strong>Installs</strong> on the desktop > <strong>Delete > Yes</strong>. Then right-click the <strong>Recycle Bin > Empty Recycle Bin > Yes</strong>. The folder is gone.</p>
+</div>
+<div class="step">
+<h3><span class="n">13</span>Restore it</h3>
+<p>In Backup and Restore, click <strong>Restore my files > Browse for folders</strong>. Open <strong>sysadmin's backup > Desktop</strong>, select <strong>Installs</strong>, click <strong>Add folder</strong>, then <strong>Next</strong>. Keep <strong>In the original location</strong> and click <strong>Restore</strong>, then <strong>Finish</strong>. Open Installs to confirm the files are back.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Restore Files window with the Installs folder selected, or the restored folder on the desktop.</p>
+</div>
+<p class="task-head">Task 6: File History (Win10)</p>
+<div class="step">
+<h3><span class="n">14</span>Point File History at a network share</h3>
+<p>Log in to <strong>Win10</strong>. Open <strong>Control Panel > Save backup copies of your files with File History</strong>. Click <strong>Select a network location > Add network location</strong>, double-click <strong>Win8-1</strong>, select <strong>Backup</strong>, and click <strong>Select folder</strong>. Highlight <code class="inl">\\WIN8-1\Backup</code> and click <strong>OK</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">15</span>Exclude everything but Documents</h3>
+<p>Click <strong>Exclude folders > Add</strong> and add each library except Documents (Camera Roll, Music, Pictures, Saved Pictures, Videos), one at a time. Click <strong>Save changes</strong>. Look through <strong>Advanced settings</strong> (how often to save, how long to keep versions) and click <strong>Cancel</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">16</span>Turn it on</h3>
+<p>Click <strong>Turn on</strong>. When the first backup finishes you'll see its time, and <strong>Run now</strong> becomes available.</p>
+<p class="shotline"><span class="shot">Screenshot</span>File History turned on, showing the network location and last backup time.</p>
+</div>
+<div class="step">
+<h3><span class="n">17</span>Find the backup on Win8.1</h3>
+<p>On <strong>Win8.1</strong>, right-click <strong>Start > Command Prompt (Admin)</strong> and run:</p>
+<pre class="cmd"><code>cd C:\Users\sysadmin\Documents\Backup\sysadmin\Win10
+dir</code></pre>
+<p>You'll see <strong>Configuration</strong> and <strong>Data</strong> folders. The backed-up files are under Data.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The dir output on Win8.1 showing the File History folders.</p>
+<p>The lab is complete.</p>
+</div>
+
+<div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+<section id="reference" aria-labelledby="h-reference">
+<h2 id="h-reference">Reference: maintenance and backup</h2>
+<h3>Which tool fixes what</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Problem</th><th scope="col">Tool</th><th scope="col">Restores</th></tr></thead><tbody><tr><td>Low disk space</td><td>Disk Cleanup, Storage Sense</td><td>Free space</td></tr><tr><td>Slow hard drive</td><td>Optimize Drives (defragment)</td><td>File layout on HDDs</td></tr><tr><td>Broken after a driver, update, or install</td><td>System Restore</td><td>System files, programs, Registry</td></tr><tr><td>Deleted or overwritten file</td><td>File History, Previous Versions, backup</td><td>Personal files</td></tr><tr><td>Dead drive or unbootable PC</td><td>System image, full backup, cloud backup</td><td>Everything</td></tr><tr><td>Reinstall Windows but keep files</td><td>Reset this PC > Keep my files</td><td>Fresh Windows, files kept</td></tr></tbody></table></div>
+<h3>cleanmgr switches</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Switch</th><th scope="col">Does</th></tr></thead><tbody><tr><td><code class="inl">/sageset:n</code></td><td>Choose items and save them as profile n</td></tr><tr><td><code class="inl">/sagerun:n</code></td><td>Run profile n without prompts</td></tr><tr><td><code class="inl">/d C:</code></td><td>Clean a specific drive</td></tr><tr><td><code class="inl">/verylowdisk</code></td><td>Clean everything without asking and show a summary</td></tr></tbody></table></div>
+<h3>defrag from the command line</h3>
+<pre class="cmd"><code>defrag C: /A
+defrag C: /O
+defrag /C /H /U</code></pre>
+<p><code class="inl">/A</code> analyzes, <code class="inl">/O</code> does the right optimization for the media type (defrag or TRIM), and <code class="inl">/C /H /U</code> optimizes all volumes at normal priority with progress.</p>
+<h3>Restore points from the command line</h3>
+<pre class="cmd"><code><span class="c">Open System Restore</span>
+rstrui
+<span class="c">Create a restore point (elevated PowerShell)</span>
+Checkpoint-Computer -Description "Before driver update" -RestorePointType MODIFY_SETTINGS</code></pre>
+<h3>Backup types</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Type</th><th scope="col">Backs up</th><th scope="col">Restore needs</th></tr></thead><tbody><tr><td>Full</td><td>Everything selected</td><td>The last full</td></tr><tr><td>Incremental</td><td>Changes since the last backup of any kind</td><td>Last full + every incremental since</td></tr><tr><td>Differential</td><td>Changes since the last full</td><td>Last full + the latest differential</td></tr><tr><td>Synthetic full</td><td>Built from a full plus incrementals, without re-reading the source</td><td>The synthetic full</td></tr></tbody></table></div>
+<h3>The 3-2-1 rule</h3>
+<p>Keep <strong>3</strong> copies of important data, on <strong>2</strong> different kinds of media, with <strong>1</strong> copy offsite (or in the cloud). File History to a share on the same network is one copy, not an offsite one.</p>
+<div class="call tip"><span class="k">Test your restores</span><p>Schedule a test restore, like the Installs folder in this lab. A backup job that reports success but can't be restored is worse than none, because nobody knows it's broken.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-reference" data-done="reference"><label for="done-reference">Mark this section reviewed</label></div>
+</section>
+<section id="stuck" aria-labelledby="h-stuck">
+<h2 id="h-stuck">Where people get stuck</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Problem</th><th scope="col">Why it happens</th><th scope="col">Fix</th></tr></thead><tbody><tr><td>The scheduled cleanup never runs</td><td>Start time already passed, or the task is set for an older OS</td><td>Set the start a few minutes ahead; set Configure for to Windows 8.1</td></tr><tr><td><code class="inl">cleanmgr /sageset:1</code> doesn't open from search</td><td>Search treats it as text</td><td>Run it from the Run box or a command prompt</td></tr><tr><td>Create button is greyed out in System Protection</td><td>Protection is off for the drive</td><td>Click Configure and turn on system protection</td></tr><tr><td>System Restore seems stuck</td><td>It takes about 8 minutes and restarts</td><td>Wait; don't reset the VM</td></tr><tr><td>Installs isn't in the restore browser</td><td>Looking in the wrong place</td><td>sysadmin's backup > Desktop > Installs</td></tr><tr><td>File History can't find Win8-1</td><td>Discovery off, or Win8.1 isn't running</td><td>Turn on discovery on Win8.1, or type <code class="inl">\\WIN8-1\Backup</code></td></tr><tr><td>File History warns about encrypted files</td><td>EFS-encrypted files aren't backed up</td><td>Expected; decrypt them or back them up another way</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-stuck" data-done="stuck"><label for="done-stuck">Mark this section reviewed</label></div>
+</section>
+<section id="on-the-job" aria-labelledby="h-on-the-job">
+<h2 id="h-on-the-job">On the job</h2>
+<div class="tbl"><table><thead><tr><th scope="col">The ticket says</th><th scope="col">Where you look</th><th scope="col">Likely fix</th></tr></thead><tbody><tr><td>"My C: drive is full."</td><td>Settings > Storage, Disk Cleanup</td><td>Clean system files, enable Storage Sense, move large folders</td></tr><tr><td>"It's been unstable since yesterday's driver install."</td><td>System Restore</td><td>Roll back to the restore point before the install</td></tr><tr><td>"I saved over my report."</td><td>File History or the file's Properties > Previous Versions</td><td>Restore yesterday's version</td></tr><tr><td>"My laptop was stolen."</td><td>Backups and cloud sync</td><td>Restore the user's data to a new PC from backup</td></tr><tr><td>"The PC got slower over time."</td><td>Optimize Drives (HDD), Task Manager startup items</td><td>Defragment an HDD; check startup apps; consider an SSD</td></tr></tbody></table></div>
+<div class="call tip"><span class="k">Professional habit</span><p>Create a restore point yourself before you install a driver or make a big change on someone's PC. It takes a minute and gives you a way back.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-on-the-job" data-done="on-the-job"><label for="done-on-the-job">Mark this section reviewed</label></div>
+</section>
+<section id="exam" aria-labelledby="h-exam">
+<h2 id="h-exam">On the A+ exams</h2>
+<div class="badges"><span class="badge">Core 2: Operating Systems</span><span class="badge">Core 2: Operational Procedures</span></div>
+<p><strong>Core 2 (220-1202)</strong> covers Disk Cleanup, Optimize Drives, System Restore, backup methods (full, incremental, differential, synthetic), backup rotation and the 3-2-1 rule, testing backups, and File History. It also covers Windows recovery options such as Reset this PC.</p>
+<h3>High-yield facts</h3>
+<ul><li>System Restore fixes system changes, not deleted personal files.</li><li>Don't defragment SSDs; Optimize Drives sends TRIM instead.</li><li>Incremental: fastest backups, slowest restore. Differential: the reverse.</li><li>3-2-1: three copies, two media types, one offsite.</li><li>Test restores on a schedule.</li><li><code class="inl">cleanmgr /sageset:n</code> then <code class="inl">/sagerun:n</code> for automated cleanup.</li></ul>
+
+<div class="done-row"><input type="checkbox" id="done-exam" data-done="exam"><label for="done-exam">Mark this section reviewed</label></div>
+</section>
+<section id="check" aria-labelledby="h-check">
+<h2 id="h-check">Check yourself</h2>
+<div class="q"><p class="ask">1. A user deleted a folder last week and emptied the Recycle Bin. Will System Restore get it back?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">No. System Restore doesn't restore personal files. Use File History, Previous Versions, or a backup.</div></div>
+<div class="q"><p class="ask">2. You do a full backup Sunday and differentials Monday through Thursday. The drive fails Friday morning. What do you restore?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Sunday's full backup, then Thursday's differential.</div></div>
+<div class="q"><p class="ask">3. Why doesn't Windows defragment an SSD?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">SSDs have no moving parts, so fragmentation doesn't slow them, and extra writes wear them out. Optimize Drives sends TRIM instead.</div></div>
+<div class="q"><p class="ask">4. Which two commands set up and run a saved Disk Cleanup profile?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans"><code class="inl">cleanmgr /sageset:1</code> to choose and save the items, then <code class="inl">cleanmgr /sagerun:1</code> to run them, for example from Task Scheduler.</div></div>
+<div class="q"><p class="ask">5. Your only backup is File History to a share on the office NAS. Does that meet 3-2-1?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">No. It's a second copy on one more device, but there's no offsite copy. Add a cloud or offsite backup.</div></div>
+</section>
+<section id="evidence" aria-labelledby="h-evidence">
+<h2 id="h-evidence">Evidence to capture</h2>
+<p>Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.</p>
+<div class="evidence"><ul><li><input type="checkbox" id="ev1" data-evidence="ev1"><label for="ev1"><span class="shot">Cleanup</span>Disk Cleanup after Clean up system files, showing the total space.</label></li><li><input type="checkbox" id="ev2" data-evidence="ev2"><label for="ev2"><span class="shot">Schedule</span>The Disk Cleanup task in Task Scheduler Library with its trigger or Last Run Time.</label></li><li><input type="checkbox" id="ev3" data-evidence="ev3"><label for="ev3"><span class="shot">Optimize</span>Optimize Drives showing C: after optimization.</label></li><li><input type="checkbox" id="ev4" data-evidence="ev4"><label for="ev4"><span class="shot">Restore point</span>The System Restore confirmation after the reboot.</label></li><li><input type="checkbox" id="ev5" data-evidence="ev5"><label for="ev5"><span class="shot">File restore</span>The restored Installs folder on Win7 (or the Restore Files window).</label></li><li><input type="checkbox" id="ev6" data-evidence="ev6"><label for="ev6"><span class="shot">File History</span>File History turned on with the network location and last backup time.</label></li><li><input type="checkbox" id="ev7" data-evidence="ev7"><label for="ev7"><span class="shot">Backup files</span>The <code class="inl">dir</code> output on Win8.1 showing the File History folders.</label></li></ul></div>
+</section>
+<section id="cheat" aria-labelledby="h-cheat">
+<h2 id="h-cheat">Cheat sheet</h2>
+<div class="cheat"><div class="grid">
+<div><h3>Maintain</h3>
+<ul><li><code class="inl">cleanmgr</code> > Clean up system files</li><li><code class="inl">cleanmgr /sageset:1</code> then <code class="inl">/sagerun:1</code></li><li>Windows 11: Storage Sense</li><li><code class="inl">dfrgui</code> or <code class="inl">defrag C: /O</code></li><li>HDD: defragment. SSD: TRIM only.</li></ul>
+</div>
+<div><h3>Recover</h3>
+<ul><li>Restore point first, then make the change</li><li><code class="inl">rstrui</code> = System Restore (system, not files)</li><li>File History / Previous Versions = files</li><li>Full, incremental, differential</li><li>3-2-1 and test the restore</li></ul>
+</div>
+</div></div>
+</section>
+</main></div>
+<footer><div class="in">
+  <p>Built for CompTIA A+ hands-on practice at Brookdale Community College, 2026. Open educational resource.</p>
+  <p>Companion to the NDG CompTIA A+ Lab Series v4 labs. This guide is independent and is not affiliated with or endorsed by CompTIA or Network Development Group. CompTIA A+ is a registered trademark of CompTIA, Inc.</p>
+</div></footer>
+<p id="live" class="sr" aria-live="polite"></p>
+<script>
+(function(){
+  var S={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
+         set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+         del:function(k){try{localStorage.removeItem(k)}catch(e){}}};
+  window.__S=S;
+  var root=document.documentElement, tb=document.getElementById('theme');
+  function isDark(){var t=root.getAttribute('data-theme'); if(t) return t==='dark';
+    return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;}
+  function paintTheme(){var d=isDark(); tb.setAttribute('aria-pressed',d?'true':'false'); tb.textContent=d?'Light mode':'Dark mode';}
+  var saved=S.get('aplus-theme'); if(saved) root.setAttribute('data-theme',saved);
+  paintTheme();
+  tb.addEventListener('click',function(){var n=isDark()?'light':'dark'; root.setAttribute('data-theme',n); S.set('aplus-theme',n); paintTheme();});
+  var sc=parseFloat(S.get('aplus-scale'))||1;
+  function setScale(v){sc=Math.min(1.4,Math.max(.85,Math.round(v*100)/100)); root.style.setProperty('--scale',sc); S.set('aplus-scale',sc);}
+  setScale(sc);
+  document.getElementById('fs-up').addEventListener('click',function(){setScale(sc+.1)});
+  document.getElementById('fs-down').addEventListener('click',function(){setScale(sc-.1)});
+  document.getElementById('print').addEventListener('click',function(){window.print()});
+})();
+
+(function(){
+  var S=window.__S, P=document.body.getAttribute('data-prefix');
+  var live=document.getElementById('live');
+  function say(t){live.textContent=t;}
+  function load(k){try{return JSON.parse(S.get(P+k))||{}}catch(e){return {}}}
+  var done=load('done'), ev=load('evidence');
+  var tracks=[].slice.call(document.querySelectorAll('[data-done]'));
+  var bar=document.getElementById('meter-bar'), txt=document.getElementById('meter-txt'), meter=document.getElementById('meter');
+  function refresh(){
+    var n=0; tracks.forEach(function(c){ if(c.checked) n++;
+      var a=document.querySelector('.toc a[href="#'+c.getAttribute('data-done')+'"] .tick'); if(a) a.textContent=c.checked?'\u2713':'';});
+    var pct=tracks.length?Math.round(n/tracks.length*100):0;
+    bar.style.width=pct+'%'; meter.setAttribute('aria-valuenow',pct);
+    txt.textContent=n+' of '+tracks.length+' sections reviewed';
+    S.set(P+'meta',JSON.stringify({done:n,total:tracks.length}));
+  }
+  tracks.forEach(function(c){ c.checked=!!done[c.getAttribute('data-done')];
+    c.addEventListener('change',function(){done[c.getAttribute('data-done')]=c.checked; S.set(P+'done',JSON.stringify(done)); refresh();});});
+  refresh();
+  [].forEach.call(document.querySelectorAll('[data-evidence]'),function(c){ c.checked=!!ev[c.getAttribute('data-evidence')];
+    c.addEventListener('change',function(){ev[c.getAttribute('data-evidence')]=c.checked; S.set(P+'evidence',JSON.stringify(ev));});});
+  document.getElementById('clear').addEventListener('click',function(){
+    if(!window.confirm('Clear your checkmarks on this lab page?')) return;
+    S.del(P+'done'); S.del(P+'evidence'); done={}; ev={};
+    [].forEach.call(document.querySelectorAll('[data-done],[data-evidence]'),function(c){c.checked=false;});
+    refresh(); say('Progress cleared for this lab.');});
+  [].forEach.call(document.querySelectorAll('.reveal'),function(b){
+    b.addEventListener('click',function(){var a=b.nextElementSibling, o=a.classList.toggle('open');
+      b.setAttribute('aria-expanded',o?'true':'false'); b.textContent=o?'Hide answer':'Show answer';});});
+  [].forEach.call(document.querySelectorAll('pre.cmd'),function(pre){
+    var b=document.createElement('button'); b.type='button'; b.className='copy'; b.textContent='Copy';
+    b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code'), clone=code.cloneNode(true);
+      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
+      function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
+      function fallback(){var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+        try{document.execCommand('copy'); ok();}catch(e){say('Copy failed; select the text instead.');} ta.remove();}
+    });});
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(l){l.setAttribute('aria-current', l.getAttribute('href')==='#'+e.target.id?'true':'false');});}});},
+      {rootMargin:'-20% 0px -70% 0px'});
+    [].forEach.call(document.querySelectorAll('main section[id]'),function(s){io.observe(s);});
+  }
+  var det=document.querySelector('.toc details');
+  if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
+})();
+</script>
+</body>
+</html>

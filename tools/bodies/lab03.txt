@@ -1,0 +1,210 @@
+@lede Most "the internet is down" calls are solved on the PC itself. You will set a static IP address, lock down sharing settings, run the built-in troubleshooters, and work through the command-line tools a technician uses to prove where a connection breaks.
+
+== overview | Why this lab matters
+Before you blame the network, check the PC. Is the adapter enabled? Does it have a valid IP address, subnet mask, gateway, and DNS server? Can it reach its neighbor? Its gateway? A name?
+This lab gives you both halves of that check. The **graphical** side is Network and Sharing Center, adapter properties, sharing profiles, and the troubleshooters. The **command-line** side is `ipconfig`, `ping`, `tracert`, `netstat`, `net`, and `nslookup`. The command line is faster, works over a remote session, and gives you output you can paste into a ticket.
+
+== environment | The environment you're working in
+| Machine | Computer name | IP address | Account | Password |
+| Win7 | Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
+| Win8.1 | Win8-1 | `192.168.1.8/24` | `sysadmin` | `Train1ng$` |
+| Win10 | Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+All three machines are on one flat subnet with no router, internet, or DNS server. That's why `tracert` shows one hop and `nslookup` can't resolve names. Those results are expected here.
+!tip Good to know before you start | In Task 1 you change Win7 to `192.168.1.77`. Later commands run from **Win10** and target Win8.1 at `192.168.1.8`, so the change doesn't break anything.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Control Panel > Network and Sharing Center | Settings > **Network & internet**. Control Panel's Network and Sharing Center still exists but most links open Settings. |
+| Change adapter settings > IPv4 Properties | Settings > Network & internet > Ethernet (or Wi-Fi) > **IP assignment** > Edit. `ncpa.cpl` still opens the classic Network Connections window. |
+| Change advanced sharing settings | Settings > Network & internet > **Advanced network settings > Advanced sharing settings** |
+| Home or Work / Public profiles | **Private** and **Public** network profiles, set per network |
+| Network troubleshooter | Settings > System > Troubleshoot > Other troubleshooters, which now hands off to the **Get Help** app. Advanced network settings > **Network reset** reinstalls adapters. |
+| `ipconfig`, `ping`, `tracert`, `netstat`, `net`, `nslookup` | All the same. PowerShell adds `Test-NetConnection`, `Get-NetIPConfiguration`, and `Resolve-DnsName`. |
+
+== walkthrough | Walkthrough
+## Task 1: Network and Sharing Center (Win7)
+### Open Network and Sharing Center
+Log in to **Win7**. Open **Start > Control Panel**, set **View by** to **Small icons**, and click **Network and Sharing Center**. Read the options: set up a new connection or network, connect to a network, sharing options, and troubleshoot problems. Click **Connect to a network**; only an Unidentified network shows here.
+### Set a static IP address
+Click **Change adapter settings**, right-click **Local Area Connection**, and choose **Properties**. Double-click **Internet Protocol Version 4 (TCP/IPv4)** and change the IP address to `192.168.1.77`. Leave the subnet mask as `255.255.255.0`. Click **OK** twice.
+!shot The IPv4 Properties window showing 192.168.1.77.
+### Confirm it from the command line
+Open **Start**, type `cmd`, and open it. Run:
+```
+ipconfig /all
+```
+Check that the IPv4 address reads `192.168.1.77`. Type `exit`, then go back to Network and Sharing Center.
+## Task 2: Advanced sharing settings (Win7)
+### Lock down the current profile
+Click **Change advanced sharing settings**. For the **Home or Work** profile:
+| Setting | Choose |
+| File and printer sharing | Turn off |
+| Media streaming | Off, unless you need it (it opens several firewall ports) |
+| File sharing connections | 128-bit encryption |
+| Password protected sharing | Turn on |
+Read the remaining options, then click **Save changes**.
+!shot The Advanced sharing settings page with your choices.
+## Task 3: Troubleshooters
+### Run the Network Adapter troubleshooter (Win7)
+In Network and Sharing Center, click **Troubleshoot problems > Network Adapter > Next**. Watch what it checks. It should find nothing wrong. Click **Close**.
+### Run the network troubleshooter (Win10)
+Log in to **Win10**. Open **Start > Settings > Network & Internet**, and under **Status** click **Troubleshoot**. Read what it reports. Because there's no internet here, it will likely report a problem it can't fix. Click **Close**.
+!shot The Win10 network troubleshooter's results.
+## Task 4: Network command-line tools (Win10)
+### Open an elevated prompt
+Click **Start**, type `cmd`, right-click **Command Prompt**, and choose **Run as administrator**. Accept UAC.
+### ipconfig
+```
+ipconfig /?
+ipconfig
+ipconfig /all
+```
+From `ipconfig /all`, answer: what's the adapter's MAC address (Physical Address)? Is DHCP enabled? Which DNS servers are set?
+!shot The ipconfig /all output with the Physical Address and DHCP lines visible.
+### ping and tracert
+```
+ping 192.168.1.8
+tracert 192.168.1.8
+```
+Both reach Win8.1. `tracert` shows a single hop because the machines share one subnet.
+### netstat
+```
+netstat -help
+netstat -an | more
+```
+`-a` shows all connections and listening ports; `-n` shows addresses and ports as numbers instead of names. Press [[Space]] to page through the output.
+### net accounts and net use
+```
+net
+net accounts
+net use
+```
+`net accounts` shows password and lockout policy. `net use` with no options lists mapped drives. There are none yet.
+### Map and remove a network drive
+```
+net use * "\\Win8-1\Users\sysadmin\Downloads" /user:sysadmin Train1ng$
+net use
+net use Z: /delete
+```
+The `*` picks the next free drive letter (Z: here). Run `net use` to see the mapping, then delete it.
+!stuck Where people get stuck | The PDF shows this command with curly quotes, which cmd won't accept. Type straight quotes, or use the Copy button here. The computer name is `Win8-1` with a hyphen.
+!shot The net use output showing the Z: drive mapped.
+### nslookup
+```
+nslookup
+```
+With no DNS server in the lab, nslookup reports that it can't find the server. On a real network it names your DNS server and lets you query names. Type `exit` to leave nslookup.
+The lab is complete.
+
+== reference | Reference: network tools
+### ipconfig
+| Command | Does |
+| `ipconfig` | Address, mask, and gateway for each adapter |
+| `ipconfig /all` | Adds MAC address, DHCP status and server, lease times, DNS servers |
+| `ipconfig /release` | Gives back the DHCP address |
+| `ipconfig /renew` | Asks DHCP for an address |
+| `ipconfig /flushdns` | Clears the local DNS cache |
+| `ipconfig /displaydns` | Shows the DNS cache |
+### ping, tracert, and pathping
+| Command | Does |
+| `ping <host>` | Four echo requests; shows replies and round-trip time |
+| `ping -t <host>` | Pings until you press [[Ctrl]]+[[C]] |
+| `ping -n 10 <host>` | Sends 10 requests |
+| `ping -4` or `-6` | Forces IPv4 or IPv6 |
+| `ping -a <IP>` | Resolves the address to a name |
+| `tracert <host>` | Lists each router hop to the destination |
+| `tracert -d <host>` | Skips name lookups, so it runs faster |
+| `pathping <host>` | Combines tracert with per-hop packet loss statistics |
+### netstat
+| Option | Does |
+| `-a` | All connections and listening ports |
+| `-n` | Numbers instead of names |
+| `-b` | The program that owns each connection (needs admin) |
+| `-o` | The process ID (PID) for each connection |
+| `-r` | The routing table |
+| `-e` | Ethernet statistics |
+### net commands
+| Command | Does |
+| `net use` | List, map (`net use Z: \\server\share`), or delete (`/delete`) drives |
+| `net use Z: \\server\share /persistent:yes` | Reconnect at every sign-in |
+| `net user` | List or manage local users (Lab 04) |
+| `net accounts` | Password and lockout policy |
+| `net share` | List or create shares on this PC (Lab 05) |
+| `net view \\computer` | List a computer's shares |
+### Other tools you should know
+| Command | Does |
+| `nslookup <name>` | Queries DNS; `nslookup <name> 8.8.8.8` asks a specific server |
+| `hostname` | Shows the computer name |
+| `arp -a` | Shows the IP-to-MAC table |
+| `route print` | Shows the routing table |
+| `netsh winsock reset` | Repairs a damaged network stack (restart after) |
+### Reading an IP address
+| You see | It means |
+| `169.254.x.x` | APIPA: DHCP didn't answer. Check the cable, the DHCP server, or the adapter. |
+| `127.0.0.1` | Loopback; ping it to test the local TCP/IP stack |
+| `10.x`, `172.16–31.x`, `192.168.x` | Private addresses used inside a network |
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| `net use` says the syntax is incorrect | Curly quotes from the PDF | Retype with straight quotes or use this page's Copy button |
+| "The network path was not found" | Wrong computer name or Win8.1 isn't running | Use `Win8-1` with a hyphen; make sure Win8.1 is powered on |
+| ping times out | Windows Firewall on the target blocks ICMP echo | Expected on some networks; enable the echo rule or test another way |
+| `netstat -b` is refused | Needs an elevated prompt | Run cmd as administrator |
+| nslookup can't find a server | The lab has no DNS server | Expected here |
+| Win7's address didn't change | Edited the wrong adapter or didn't click OK twice | Reopen IPv4 Properties and confirm |
+
+== on-the-job | On the job
+Work from the PC outward. Each step that passes moves the problem further away.
+| Step | Command | If it fails |
+| 1. Is TCP/IP working on this PC? | `ping 127.0.0.1` | Reset the stack: `netsh winsock reset`, reinstall the adapter |
+| 2. Does it have a valid address? | `ipconfig /all` | 169.254 means no DHCP: check cable, Wi-Fi, DHCP server; try `/release` and `/renew` |
+| 3. Can it reach the gateway? | `ping <default gateway>` | Local network problem: cable, switch port, VLAN, Wi-Fi |
+| 4. Can it reach beyond the gateway? | `ping 8.8.8.8` | Router or ISP problem |
+| 5. Do names resolve? | `nslookup example.com` | DNS problem: check DNS servers, `ipconfig /flushdns` |
+!tip Professional habit | Paste the `ipconfig /all` output into the ticket. The next tech can see the MAC, DHCP server, lease, and DNS without asking the user again.
+
+== exam | On the A+ exams
+**Core 2 (220-1202)** expects you to know these Windows networking commands and when to use them: `ipconfig`, `ping`, `tracert`, `pathping`, `netstat`, `nslookup`, `net use`, `net user`, and `hostname`. **Core 1 (220-1201)** covers IP addressing, DHCP, DNS, and troubleshooting connectivity.
+### High-yield facts
+- A `169.254.x.x` address means the PC couldn't reach a DHCP server.
+- `ipconfig /flushdns` clears stale DNS entries after a server or site moves.
+- `tracert` shows where along the path packets stop; `pathping` adds per-hop loss.
+- `netstat -an` lists connections and listening ports; `-b` names the program.
+- `net use` maps drives; `/persistent:yes` keeps them after restart.
+- Public profile turns sharing and discovery off; Private allows them.
+
+== check | Check yourself
+?? A PC shows the address 169.254.10.20. What happened?
+=> It didn't get an address from DHCP and assigned itself an APIPA address. Check the cable or Wi-Fi, the DHCP server, then run `ipconfig /release` and `ipconfig /renew`.
+?? Users can reach sites by IP address but not by name. Which tool and what fix?
+=> It's a DNS problem. Use `nslookup` to test, check the DNS servers in `ipconfig /all`, and run `ipconfig /flushdns`.
+?? You suspect malware is talking to an outside server. Which command shows active connections and the programs that own them?
+=> `netstat -anb` from an elevated prompt (or `-ano` and match the PID in Task Manager).
+?? Write the command to map the share `\\fileserver\sales` to S: and keep it after reboot.
+=> `net use S: \\fileserver\sales /persistent:yes`
+?? Why did tracert show only one hop in this lab?
+=> All three machines are on the same subnet, so packets go directly to the destination without passing a router.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] Static IP | Win7 IPv4 Properties showing 192.168.1.77.
+[] Sharing | The Advanced sharing settings page with file sharing off and password protected sharing on.
+[] Troubleshooter | The Win10 network troubleshooter results.
+[] ipconfig | `ipconfig /all` on Win10 showing the Physical Address and DHCP status.
+[] net use | `net use` output showing the mapped Z: drive.
+
+== cheat | Cheat sheet
+## Commands
+- `ipconfig /all` `/release` `/renew` `/flushdns`
+- `ping <host>` `-t` `-n 10`
+- `tracert -d <host>`; `pathping <host>`
+- `netstat -anb` (admin)
+- `net use Z: \\host\share /persistent:yes`
+- `nslookup <name>`
+## Troubleshoot outward
+- `ping 127.0.0.1` (stack)
+- `ipconfig` (169.254 = no DHCP)
+- ping the gateway (local network)
+- ping 8.8.8.8 (internet path)
+- nslookup a name (DNS)
+- Windows 11: Settings > Network & internet

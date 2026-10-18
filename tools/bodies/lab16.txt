@@ -1,0 +1,182 @@
+@lede A virtual machine is a whole computer running as software inside another one. You will check that Win10's hardware can host VMs, enable Hyper-V from PowerShell, build a VM with memory, a virtual switch, and a virtual disk, and install Lubuntu into it from an ISO.
+@vms Win10
+
+== overview | Why this lab matters
+Virtualization is everywhere: the lab machines you're using are VMs, most servers are VMs, and cloud services are built on the same idea. On a workstation, VMs let you test software or updates safely, run an older OS for a legacy app, try a Linux distribution, or open something suspicious in isolation.
+**Hyper-V** is Microsoft's hypervisor. It's built into Pro, Enterprise, and Education editions but has to be turned on, and it needs hardware support: a 64-bit CPU with virtualization extensions and SLAT. You'll confirm the hardware, enable the feature, then make the choices every VM needs: **generation**, **memory**, **network switch**, **virtual disk**, and **install media**.
+
+== environment | The environment you're working in
+| Machine | IP address | Account | Password |
+| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+
+| New VM setting | Value |
+| Name | `New-Lubuntu` |
+| Generation | 1 |
+| Startup memory | `2048` MB, Dynamic Memory off |
+| Network | Default Switch |
+| Virtual disk | 10 GB |
+| Install media | The Lubuntu 18.04.3 desktop `.iso` in `C:\Users\sysadmin\Desktop\ToolBox` |
+| Lubuntu user | Your name `Student`, user `student`, computer `MY-VM`, password `Train1ng$` |
+!tip Nested virtualization | Win10 is itself a VM, so you're running a VM inside a VM. It works because the lab host exposes virtualization extensions to Win10, but expect the new VM to be slow.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| `systeminfo` > Hyper-V Requirements | Same. Task Manager > Performance > CPU also shows **Virtualization: Enabled**. |
+| `Enable-WindowsOptionalFeature ... Microsoft-Hyper-V` | Same command, or **Turn Windows features on or off** (`optionalfeatures`). Still Pro, Enterprise, and Education only. |
+| Generation 1 VM | **Generation 2** is the usual choice: UEFI firmware, Secure Boot, and faster boot. For Linux, set Secure Boot's template to **Microsoft UEFI Certificate Authority**. |
+| Hyper-V Manager | Same, plus **Quick Create** for ready-made VM images |
+| Separate VM for testing | **Windows Sandbox** (a disposable Windows desktop that's wiped when you close it) is a lighter option for testing files and apps |
+
+== walkthrough | Walkthrough
+## Task 1: Check the hardware
+### Run systeminfo in an elevated PowerShell
+Log in to **Win10**. Search for `PowerShell`, right-click **Windows PowerShell > Run as administrator**, and accept UAC. Run:
+```
+systeminfo.exe
+```
+Scroll to the bottom. **Hyper-V Requirements** either lists four "Yes" items (VM Monitor Mode Extensions, virtualization enabled in firmware, SLAT, Data Execution Prevention) or says **A hypervisor has been detected**, which means one is already running. Either way, this PC can run Hyper-V.
+!shot The Hyper-V Requirements section of systeminfo.
+!tip A correction to the PDF | The PDF calls the CPU feature "VT-c." The extensions Hyper-V needs are **Intel VT-x** or **AMD-V**, plus SLAT (Intel EPT or AMD RVI), turned on in the firmware (Lab 01-A).
+## Task 2: Enable Hyper-V
+### Enable the feature
+In the same PowerShell window, run:
+```
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All
+```
+Read the output, press [[Y]] and [[Enter]] to restart.
+!stuck Where people get stuck | The PDF splits this command across two lines. Type it as one line, or use the Copy button.
+### Confirm it in Windows Features
+After signing back in, search for `turn windows features on or off` and open it. **Hyper-V** is checked. Click **OK**.
+!shot Windows Features with Hyper-V checked.
+## Task 3: Create the VM
+### Start the wizard
+Search for **Hyper-V Manager**, right-click it > **Run as administrator**. Choose **Action > New > Virtual Machine** and click **Next**.
+### Work through the settings
+| Wizard page | Choose |
+| Specify Name and Location | `New-Lubuntu` |
+| Specify Generation | Generation 1 |
+| Assign Memory | `2048` MB; uncheck **Use Dynamic Memory** |
+| Configure Networking | **Default Switch** |
+| Connect Virtual Hard Disk | Create a new disk, size `10` GB |
+| Installation Options | **Install an operating system from a bootable CD/DVD-ROM > Image file (.iso)**, browse to the Lubuntu ISO in ToolBox |
+Review the summary and click **Finish**.
+!stuck The ISO name in the PDF | The PDF shows the file as `...desktop-amd6.iso`. The real name ends in `amd64.iso`. Browse to ToolBox and pick the Lubuntu ISO you see.
+!shot Hyper-V Manager listing New-Lubuntu.
+## Task 4: Install Lubuntu
+### Start the VM and boot the live image
+Right-click **New-Lubuntu > Connect**, then click **Start**. Choose **English**, then **Try Lubuntu without installation** with the arrow keys and [[Enter]].
+### Run the installer
+On the live desktop, double-click **Install Lubuntu 18.04.3 LTS** (drag the window to the center if it's cut off). Then:
+| Installer step | Choose |
+| Language, keyboard | English, default layout |
+| Updates and other software | Normal installation (updates are greyed out with no internet) |
+| Installation type | Default (erase disk and install); read the other options, then **Install Now > Continue** |
+| Where are you? | Your location |
+| Who are you? | Name `Student`, user `student`, computer `MY-VM`, password `Train1ng$`, **Require my password to log in** |
+!tip "Erase disk" is safe here | It erases only the VM's new 10 GB virtual disk, not Win10's drive.
+### Restart and sign in
+When the install finishes, click **Restart Now**, and press [[Enter]] when asked to remove the install media. Sign in with `Train1ng$` and close the Update information window.
+!shot The new Lubuntu VM at its desktop inside the Hyper-V connection window.
+The lab is complete.
+
+== reference | Reference: virtualization
+### Hypervisor types
+| Type | Runs on | Examples |
+| Type 1 (bare metal) | Directly on the hardware | Hyper-V (even on Windows, it sits below the OS), VMware ESXi, Proxmox, KVM |
+| Type 2 (hosted) | As an app on an OS | VirtualBox, VMware Workstation, Parallels |
+### Hyper-V requirements
+| Requirement | Detail |
+| Edition | Windows Pro, Enterprise, or Education (64-bit) |
+| CPU | 64-bit with SLAT and VT-x or AMD-V, enabled in firmware |
+| Memory | 4 GB minimum; more for each running VM |
+| Storage | Space for each virtual disk |
+### VM building blocks
+| Part | Choices |
+| Generation | Gen 1: legacy BIOS, IDE boot, older OSs. Gen 2: UEFI, Secure Boot, SCSI boot, faster. |
+| Memory | Static, or **Dynamic Memory** that grows and shrinks with demand |
+| Virtual switch | **External** (shares the physical NIC, VM is on the real network), **Internal** (host and VMs only), **Private** (VMs only), **Default Switch** (NAT through the host) |
+| Virtual disk | `.vhdx` file; **dynamically expanding** (grows as used) or **fixed size** (allocated up front) |
+| Checkpoints | Snapshots you can roll back to before a risky change |
+### PowerShell for Hyper-V
+```
+Get-VM
+New-VM -Name Test01 -MemoryStartupBytes 2GB -Generation 2 -NewVHDPath C:\VMs\Test01.vhdx -NewVHDSizeBytes 20GB -SwitchName "Default Switch"
+Start-VM -Name Test01
+Checkpoint-VM -Name Test01 -SnapshotName "Before update"
+Stop-VM -Name Test01
+```
+### Why use VMs
+| Use | Example |
+| Sandbox | Open a suspicious file or test malware removal safely |
+| Test and development | Try an update, script, or new app before production |
+| Legacy software | Run an app that needs an older OS |
+| Cross-platform | Run Linux on a Windows PC |
+| Consolidation | Many servers on one physical host |
+### Cloud models (Core 1)
+| Model | You manage | Example |
+| IaaS | OS, apps, data | Cloud VMs |
+| PaaS | Apps and data | Managed app platforms and databases |
+| SaaS | Just your data and users | Microsoft 365, web email |
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| Hyper-V Requirements say "No" | Virtualization is off in firmware, or the CPU lacks SLAT | Enable VT-x/AMD-V in BIOS/UEFI; check the CPU |
+| `Enable-WindowsOptionalFeature` errors | Not elevated, or a line break in the command | Run as administrator; type it on one line |
+| No Hyper-V on a home PC | Home edition | Use VirtualBox (Type 2) or upgrade to Pro |
+| ISO not found | The PDF's file name is truncated | Browse ToolBox and choose the Lubuntu ISO |
+| VM boots to "No operating system" | ISO not attached or boot order wrong | VM Settings > DVD Drive > Image file; check BIOS boot order |
+| Installer window is cut off | Low VM resolution | Drag the window, or hold [[Alt]] and drag |
+| VM runs very slowly | Nested virtualization in the lab | Expected; give it time |
+
+== on-the-job | On the job
+| Request | Approach |
+| "Can I test this update before we roll it out?" | Clone a VM of a standard PC, checkpoint it, apply the update, test, roll back |
+| "Our accounting app only runs on an old Windows." | Run that OS in a VM, isolated from the internet if it's unsupported |
+| "I need Linux for a class but I have a Windows laptop." | Hyper-V or VirtualBox VM, or WSL for command-line work |
+| "Is this attachment safe?" | Open it in Windows Sandbox or an isolated VM, never on the user's PC |
+| "VMs are slow on this PC." | Check RAM, CPU virtualization settings, and disk; use an SSD and avoid over-allocating memory |
+!tip Professional habit | Take a checkpoint before every risky change in a VM. It's the fastest undo you'll ever have, but delete old checkpoints so they don't fill the disk.
+
+== exam | On the A+ exams
+**Core 1 (220-1201)** covers virtualization: purposes (sandbox, test development, application virtualization, legacy software), resource requirements, security requirements, Type 1 and Type 2 hypervisors, plus cloud computing concepts and models. **Core 2 (220-1202)** covers Windows edition features, including which editions include Hyper-V.
+### High-yield facts
+- Type 1 hypervisors run on bare metal; Type 2 run on a host OS.
+- Hyper-V needs a 64-bit Pro/Enterprise/Education edition and VT-x or AMD-V with SLAT enabled in firmware.
+- Virtualization must be turned on in BIOS/UEFI.
+- External switch = real network; Internal = host and VMs; Private = VMs only.
+- Each VM needs its own OS license and its own security updates and antimalware.
+- IaaS, PaaS, SaaS: how much the provider manages.
+
+== check | Check yourself
+?? systeminfo says "Virtualization Enabled In Firmware: No." What do you do?
+=> Restart into BIOS/UEFI setup and enable Intel VT-x or AMD-V, then save and restart.
+?? A user with Windows 11 Home wants to run a Linux VM. Can they use Hyper-V?
+=> No; Hyper-V isn't in Home. They can use a Type 2 hypervisor such as VirtualBox, or upgrade to Pro.
+?? Which virtual switch type lets a VM appear on the physical network like any other PC?
+=> External.
+?? Is Hyper-V a Type 1 or Type 2 hypervisor?
+=> Type 1. Once enabled, it runs directly on the hardware and Windows itself runs in a privileged partition above it.
+?? Why should a VM have antimalware and updates even though it's "just a VM"?
+=> It's a full OS on the network with the same vulnerabilities as a physical PC, and a compromised VM can attack other systems.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] Requirements | The Hyper-V Requirements section of systeminfo.
+[] Feature | Windows Features with Hyper-V checked.
+[] VM created | Hyper-V Manager listing New-Lubuntu.
+[] Installed | The Lubuntu desktop running in the New-Lubuntu connection window.
+
+== cheat | Cheat sheet
+## Hyper-V
+- Pro/Enterprise/Education, 64-bit
+- VT-x or AMD-V + SLAT, on in firmware
+- `systeminfo` > Hyper-V Requirements
+- `Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All`
+- Gen 2 = UEFI, Secure Boot
+- Switches: External, Internal, Private, Default
+## Concepts
+- Type 1 = bare metal; Type 2 = hosted
+- Checkpoints before risky changes
+- Sandbox, testing, legacy apps
+- IaaS / PaaS / SaaS
+- Each VM needs licensing and patching

@@ -1,0 +1,252 @@
+@lede Windows ships with an antivirus, a firewall, and two kinds of encryption, and most users never touch their settings. You will run an offline malware scan, read the device health report, allow and remove apps in the firewall, write a custom rule that blocks ping, encrypt a file with EFS, and encrypt and decrypt a whole drive with BitLocker.
+@vms Win7, Win10
+
+== overview | Why this lab matters
+The built-in security tools are good enough that many organizations rely on them, but only if they're configured and checked. This lab covers the three layers.
+**Microsoft Defender Antivirus** finds and removes malware; the **offline scan** reboots into a clean environment to catch malware that hides while Windows is running. **Windows Defender Firewall** decides which traffic gets in and out, per program, port, and network profile; you'll write a custom rule and prove it works with `ping`. **Encryption** protects data if a device is lost or stolen: **EFS** encrypts individual files for one user, and **BitLocker** encrypts an entire drive.
+Encryption has one hard rule: **back up the key**. Lose the EFS certificate or the BitLocker recovery key and the data is gone for good.
+
+== environment | The environment you're working in
+| Machine | IP address | Account | Password |
+| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
+| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+
+| Item | Value |
+| user1 on Win7 | `SuperSecret` |
+| EFS key backup password | `mypassword` |
+| EFS key file name | `EFS-key` |
+| BitLocker password | `Train1ng$` |
+| BitLocker recovery key file | `EFS-Recover` (saved with the XPS Document Writer) |
+The VMs have no TPM chip, so Task 6 first changes Group Policy to allow BitLocker with a password instead.
+!tip Timing | The offline scan reboots Win10; you'll cancel it after a few minutes. BitLocker encryption and decryption run in the background and take several minutes each.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Windows Defender Security Center | The **Windows Security** app: Virus & threat protection, Account protection, Firewall & network protection, App & browser control, Device security, Device performance & health, Family options |
+| Windows Defender Offline scan | **Microsoft Defender Antivirus (offline scan)** under Virus & threat protection > Scan options |
+| Device performance & health > Fresh start | Fresh start is gone; use Settings > System > Recovery > **Reset this PC** (Keep my files) |
+| Firewall settings | Same three places: Windows Security, Control Panel > Windows Defender Firewall, and `wf.msc` |
+| BitLocker without TPM via Group Policy | Rarely needed: Windows 11 **requires TPM 2.0**. BitLocker is in Pro, Enterprise, and Education. |
+| No encryption on Home editions | Windows 11 Home has **Device encryption** (a simpler BitLocker) on supported hardware; the recovery key is saved to the Microsoft account |
+| EFS | Still in Pro and above, not Home |
+
+== walkthrough | Walkthrough
+## Task 1: Malware scans (Win10)
+### Open the security dashboard
+Log in to **Win10**. Search for `Windows Defender` and open **Windows Defender Security Center**. The Home page shows the status of each area: a green check is good, a yellow **!** needs attention.
+### Look at the scan types
+Click **Virus & threat protection**. **Quick scan** checks the places malware usually hides. Click **Run a new advanced scan** to see **Full scan**, **Custom scan**, and **Windows Defender Offline scan**.
+!shot The advanced scan options page.
+### Start an offline scan
+Select **Windows Defender Offline scan > Scan now > Scan** and accept UAC. Windows signs you out and restarts into the Defender environment. With no internet it skips the definition update and starts scanning. After a few minutes, click **Cancel scan**; Windows then boots normally.
+!tip When to use the offline scan | Rootkits and some other malware hide from scanners while Windows is running. Booting into a separate environment means the malware isn't loaded, so the scanner can see and remove it.
+## Task 2: Health report (Win10)
+### Read device health
+Sign back in. Open the Windows Defender icon from the hidden tray icons, then **Device performance & health**. Check the **Health report**: storage capacity, device drivers, and apps and software. Green is good, yellow is a recommendation, red is a warning.
+!shot The Device performance & health report.
+## Task 3: Firewall profiles (Win10)
+### Look at the Private profile
+Click **Firewall & network protection > Private network**. Note the switch that turns the firewall on or off for this profile. Click back and close the window.
+## Task 4: Allowed apps (Win10)
+### Open the firewall in Control Panel
+Right-click **Start > Run**, enter `Control Panel`, and open **System and Security > Windows Defender Firewall**. Click **Turn Windows Defender Firewall on or off** to see the per-profile settings, then go back.
+### Allow Windows Media Player on Private networks
+Click **Allow an app or feature through Windows Defender Firewall** (click **Change settings** if the list is greyed out). Select **Windows Media Player > Details**, read it, and click **OK**. Check the box beside Windows Media Player: **Private** is checked automatically.
+### Add an app that isn't listed
+Click **Allow another app > Browse**, go to `C:\Program Files\Windows Photo Viewer`, select `ImagingDevices.exe`, and click **Open > Add**. **Imaging Devices Console** appears, allowed on Private.
+!shot The allowed apps list with Windows Media Player and Imaging Devices Console allowed.
+### Remove it again
+Select **Imaging Devices Console > Remove > Yes**, then **OK**.
+## Task 5: Firewall rules (Win10 and Win7)
+### Confirm ping works both ways
+In Windows Defender Firewall, click **Advanced settings** to open **Windows Defender Firewall with Advanced Security**. Open **cmd** on Win10 and on Win7 and test:
+```
+%% On Win10
+ping 192.168.1.7
+%% On Win7
+ping 192.168.1.10
+```
+Both succeed.
+### Find the built-in ping rule
+On Win10, click **Inbound Rules** and find **File and Printer Sharing (Echo Request - ICMPv4-In)** for the **Private** profile. Right-click it: it's enabled, which is why Win7 can ping Win10. Leave it enabled.
+### Create a rule that blocks ping
+Right-click **Inbound Rules > New Rule** and set:
+| Wizard step | Choose |
+| Rule type | Custom |
+| Program | All programs |
+| Protocol and Ports | ICMPv4 > **Customize** > Specific ICMP types > **Echo Request** |
+| Scope | Defaults |
+| Action | Block the connection |
+| Profile | Defaults (Domain, Private, Public) |
+| Name | `Block Incoming ICMPv4 Echo Requests` |
+!shot The new Block Incoming ICMPv4 Echo Requests rule in the Inbound Rules list.
+### Test the block
+On **Win7**, run `ping 192.168.1.10` again. It now times out, because a **block** rule beats the built-in allow rule.
+!shot Win7's ping to Win10 timing out.
+### Disable the block and test again
+On Win10, right-click **Block Incoming ICMPv4 Echo Requests > Disable Rule**. On Win7, `ping 192.168.1.10` succeeds again.
+!stuck The PDF has this backwards | It says ping fails *after* you disable the block rule. It's the reverse: ping fails while the block rule is enabled and works again once you disable it.
+## Task 6: Encrypting File System (Win7)
+### Encrypt a file
+On **Win7**, create a text file on the desktop named `encrypted`. Right-click it > **Properties > Advanced**, check **Encrypt contents to secure data**, and click **OK** twice. Choose **Encrypt the file only** and click **OK**. The file name turns green.
+### Back up the encryption key
+Click the **Back up your encryption key** notification > **Back up now (recommended)**. In the Certificate Export Wizard, keep the default format (a `.pfx` file), set the password to `mypassword`, name the file `EFS-key`, and click **Finish**. Note where it saved.
+!shot The Certificate Export Wizard's final page showing the EFS-key file location.
+### Test access as another user
+Double-click **encrypted**: it opens for sysadmin with no extra prompt. Now **Switch user** to **user1** (`SuperSecret`), browse to `C:\Users\sysadmin\Desktop` (enter `Train1ng$` if asked), and open **encrypted**. Access is denied.
+!shot The access denied message when user1 opens the encrypted file.
+Log off user1.
+## Task 7: BitLocker without a TPM (Win10)
+### Allow BitLocker with a password
+On **Win10**, open `gpedit.msc` and go to **Computer Configuration > Administrative Templates > Windows Components > BitLocker Drive Encryption > Operating System Drives**. Double-click **Require additional authentication at startup**, select **Enabled**, and click **OK**. Make sure **Allow BitLocker without a compatible TPM** is checked in that setting's options.
+### Turn on BitLocker
+Open **Control Panel > BitLocker Drive Encryption > Turn on BitLocker**. Choose **Enter a password** and enter `Train1ng$` twice.
+### Save the recovery key
+Choose **Print the recovery key**, select **Microsoft XPS Document Writer**, and save it as `EFS-Recover` in Documents.
+!tip Recovery key handling | On real devices, save the recovery key to the Microsoft account, Active Directory or Entra ID, or a secure file stored *off* the encrypted drive. The 48-digit key is the only way in if the password is forgotten or the hardware changes.
+### Encrypt
+Choose **Encrypt used disk space only**, then **New encryption mode**. Uncheck **Run BitLocker system check** and click **Start encrypting**. Click the notification to watch progress and **Close** when it finishes.
+!shot BitLocker Drive Encryption showing C: with BitLocker on.
+## Task 8: Check and turn off BitLocker with PowerShell (Win10)
+### Check status
+Search for **PowerShell ISE**, right-click it > **Run as administrator**, and run:
+```
+manage-bde -status
+```
+C: shows as fully encrypted with **XTS-AES 128**.
+### Decrypt
+```
+Disable-BitLocker -MountPoint "C:"
+manage-bde -off C:
+manage-bde -status
+```
+Decryption continues in the background; run `manage-bde -status` again to watch the percentage drop. Type `exit` when it's done.
+!stuck Typed straight from the PDF? | The PDF shows `manage-bde –status` with an en dash. Use a normal hyphen.
+!shot manage-bde -status showing decryption in progress or complete.
+The lab is complete.
+
+== reference | Reference: Windows security tools
+### Windows Security areas
+| Area | Covers |
+| Virus & threat protection | Scans, real-time protection, ransomware protection (Controlled folder access), exclusions |
+| Account protection | Windows Hello, dynamic lock |
+| Firewall & network protection | Firewall per profile, allowed apps, advanced settings |
+| App & browser control | SmartScreen, Smart App Control, exploit protection |
+| Device security | Core isolation, Secure Boot, TPM (security processor) status |
+| Device performance & health | Storage, drivers, apps, battery |
+### Scan types
+| Scan | Use |
+| Quick | Daily check of common malware locations |
+| Full | Every file; slow |
+| Custom | A specific drive, folder, or file |
+| Offline | Reboots to a clean environment for rootkits and stubborn malware |
+### Firewall concepts
+| Term | Meaning |
+| Inbound rule | Controls traffic arriving at this PC |
+| Outbound rule | Controls traffic leaving this PC (allowed by default) |
+| Connection security rule | Requires IPsec authentication between computers |
+| Profiles | Domain, Private, Public; each has its own settings and rules |
+| Rule order | Block rules beat allow rules |
+```
+%% Firewall from the command line
+wf.msc
+netsh advfirewall show allprofiles
+netsh advfirewall firewall add rule name="Block ping" protocol=icmpv4:8,any dir=in action=block
+%% PowerShell
+Get-NetFirewallProfile
+New-NetFirewallRule -DisplayName "Allow App" -Direction Inbound -Program "C:\App\app.exe" -Action Allow
+```
+### EFS compared with BitLocker
+| | EFS | BitLocker |
+| Encrypts | Individual files and folders | An entire volume |
+| Tied to | One user's certificate | The PC (TPM, password, PIN, or USB key) |
+| Protects against | Other users on the same PC | A lost or stolen drive or device |
+| Editions | Pro, Enterprise, Education | Pro, Enterprise, Education (Home has Device encryption) |
+| Key backup | Export the certificate (`.pfx`) | Save the 48-digit recovery key |
+| Removable drives | No | **BitLocker To Go** |
+### BitLocker commands
+```
+manage-bde -status
+manage-bde -on C:
+manage-bde -off C:
+manage-bde -protectors -get C:
+%% PowerShell
+Get-BitLockerVolume
+Enable-BitLocker -MountPoint "C:" -RecoveryPasswordProtector
+Disable-BitLocker -MountPoint "C:"
+```
+### Malware removal steps (CompTIA order)
+| Step | Action |
+| 1 | Investigate and verify malware symptoms |
+| 2 | Quarantine the infected system |
+| 3 | Disable System Restore (Windows) |
+| 4 | Remediate: update the antimalware software, then scan and remove (Safe Mode or offline scan) |
+| 5 | Schedule scans and run updates |
+| 6 | Enable System Restore and create a restore point |
+| 7 | Educate the end user |
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| Win10 won't come back after the offline scan | It's still scanning | Click Cancel scan when the option appears; wait for the reboot |
+| Allowed apps list is greyed out | Needs admin rights | Click **Change settings** |
+| `ImagingDevices.exe` not found | Looking in the wrong folder | `C:\Program Files\Windows Photo Viewer` |
+| Ping still works after the block rule | The rule's ICMP type or profile is wrong, or you pinged the wrong IP | Check Echo Request is selected and the rule is enabled; ping `192.168.1.10` |
+| No green file name after EFS | Folder Options hides it, or it's not NTFS | Check the file's Advanced attributes |
+| "This device can't use a Trusted Platform Module" | The Group Policy change didn't apply | Enable the policy with **Allow BitLocker without a compatible TPM** checked |
+| `manage-bde –status` errors | En dash from the PDF | Type `-status` with a hyphen |
+
+== on-the-job | On the job
+| The ticket says | Where you look | Likely fix |
+| "Pop-ups everywhere and the PC is slow." | Windows Security scans | Follow the malware removal steps; offline scan if needed |
+| "Our new app can't talk to the server." | Firewall allowed apps / inbound rules | Allow the program or its port on the right profile only |
+| "We need to know laptops are encrypted." | `manage-bde -status`, Intune/MDM reports | Turn on BitLocker and escrow recovery keys centrally |
+| "BitLocker is asking for a recovery key." | The recovery key location | Look it up in the Microsoft account or AD/Entra ID; find out what changed (firmware update, hardware) |
+| "I can't open my files after a reinstall." | EFS | Import the backed-up `.pfx` certificate; without it the files can't be recovered |
+!tip Professional habit | Before you suspend or remove BitLocker for a firmware update, make sure you have the recovery key. Resume protection afterward.
+
+== exam | On the A+ exams
+**Core 2 (220-1202)** covers Windows Security and Defender Antivirus, Windows Defender Firewall (profiles, rules, allowed apps, ports), EFS and BitLocker (including BitLocker To Go and recovery keys), edition differences, malware types and the malware removal procedure, and data-at-rest encryption as a best practice.
+### High-yield facts
+- EFS encrypts files per user; BitLocker encrypts whole volumes; BitLocker To Go encrypts removable drives.
+- BitLocker needs Pro or higher; it prefers a TPM; back up the 48-digit recovery key.
+- Offline scans catch malware that hides while Windows is running.
+- Firewall block rules override allow rules; outbound traffic is allowed by default.
+- Malware removal: investigate, quarantine, disable System Restore, remediate, schedule, re-enable restore, educate.
+- `manage-bde -status` checks BitLocker; `wf.msc` opens the advanced firewall.
+
+== check | Check yourself
+?? A laptop with sensitive data might be stolen. EFS or BitLocker?
+=> BitLocker. It encrypts the whole drive, so nothing is readable without unlocking the device. EFS only protects specific files from other users.
+?? A user reinstalled Windows and now can't open EFS-encrypted files from their old drive. What would have prevented this?
+=> Exporting the EFS certificate and private key (`.pfx`) before the reinstall, then importing it afterward.
+?? You create an inbound rule blocking ICMPv4 Echo Request, but the built-in Echo Request allow rule is also enabled. Can the PC be pinged?
+=> No. Block rules take precedence over allow rules.
+?? Why disable System Restore during malware removal?
+=> Restore points can contain the malware, so restoring one later could reinfect the PC. Re-enable it and create a clean restore point after cleanup.
+?? Which command shows whether a drive is encrypted with BitLocker?
+=> `manage-bde -status` (or `Get-BitLockerVolume` in PowerShell).
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] Scan options | The advanced scan options page with Offline scan available.
+[] Health | The Device performance & health report.
+[] Allowed apps | The allowed apps list with Windows Media Player and Imaging Devices Console.
+[] Rule | The Block Incoming ICMPv4 Echo Requests rule in Inbound Rules.
+[] Blocked ping | Win7's ping to Win10 timing out while the rule is enabled.
+[] EFS key | The Certificate Export Wizard showing the EFS-key file location.
+[] EFS denied | Access denied when user1 opens the encrypted file.
+[] BitLocker | BitLocker showing C: encrypted, and `manage-bde -status` output.
+
+== cheat | Cheat sheet
+## Defend
+- Windows Security: quick, full, custom, offline scans
+- `wf.msc` advanced firewall
+- Block beats allow; profiles: Domain, Private, Public
+- `netsh advfirewall show allprofiles`
+- Malware: investigate, quarantine, disable restore, remediate, schedule, re-enable, educate
+## Encrypt
+- EFS: per file, per user; export the `.pfx`
+- BitLocker: whole volume, Pro+, TPM preferred
+- BitLocker To Go: USB drives
+- Save the 48-digit recovery key off the drive
+- `manage-bde -status`, `-on`, `-off`

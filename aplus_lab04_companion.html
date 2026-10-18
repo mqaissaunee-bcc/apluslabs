@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 04 Companion: Windows Users & Groups | A+ Lab Companion</title>
+<meta name="description" content="Create and manage local accounts, use Local Users and Groups, set local Group Policy, and open Active Directory Users and Computers.">
+<style>
+:root{
+  --bg:#E8ECF0; --surface:#FFFFFF; --surface-2:#F3F5F8; --ink:#14233A; --ink-2:#47576C;
+  --rule:#C7D0DA; --accent:#1C5689; --accent-ink:#FFFFFF; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
+  --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
+  --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
+  --fs:1rem; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
+a{color:var(--accent)} a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--tag);color:var(--tag-ink);padding:.7rem 1rem;z-index:20}
+.skip-link:focus{left:1rem;top:1rem}
+code,pre,kbd{font-family:var(--f-mono)}
+code.inl{background:var(--surface-2);border:1px solid var(--rule);border-radius:3px;padding:0 .3em;font-size:.92em}
+kbd{display:inline-block;border:1px solid var(--rule);border-bottom-width:3px;border-radius:4px;padding:0 .4em;background:var(--surface);font-size:.85em;line-height:1.5}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:76rem;margin:0 auto;padding:.4rem 1rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.1rem;color:var(--ink);text-decoration:none;margin-right:auto;display:flex;gap:.5rem;align-items:center}
+.brand .plug{display:inline-grid;place-items:center;width:2rem;height:2rem;background:var(--tag);color:var(--tag-ink);border-radius:4px;font-size:1rem}
+.ctl{display:flex;gap:.35rem;flex-wrap:wrap}
+.ctl button,.btn{min-height:44px;min-width:44px;padding:.3rem .75rem;border:1px solid var(--rule);background:var(--surface-2);color:var(--ink);border-radius:6px;font:inherit;font-size:.9rem;cursor:pointer}
+.ctl button:hover,.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* hero ticket — the one bold element */
+.ticket{max-width:76rem;margin:1.5rem auto 0;padding:0 1rem}
+.ticket-in{display:grid;grid-template-columns:1fr;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.stub{background:var(--tag);color:var(--tag-ink);padding:1rem 1.25rem;display:flex;flex-direction:column;justify-content:space-between;gap:.5rem;position:relative}
+.stub .lbl{font-size:.85rem;font-weight:600}
+.stub .no{font-family:var(--f-display);font-weight:700;white-space:nowrap;font-size:clamp(2.4rem,6vw,3.5rem);line-height:1;letter-spacing:-.01em}
+.stub .series{font-size:.8rem}
+.tk-body{padding:1.25rem 1.5rem 1.5rem}
+.tk-body h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.15;margin:0 0 .6rem;max-width:30ch}
+.lede{font-size:1.08rem;color:var(--ink-2);max-width:62ch;margin:0 0 1rem}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));gap:0;border-top:1px dashed var(--rule);margin:0}
+.fields div{padding:.6rem .75rem .5rem 0;border-bottom:1px dashed var(--rule)}
+.fields dt{font-size:.78rem;color:var(--ink-2)}
+.fields dd{margin:0;font-weight:600;font-size:.95rem}
+@media (min-width:720px){
+  .ticket-in{grid-template-columns:12rem 1fr}
+  .stub{border-right:2px dashed var(--tag-ink)}
+  .stub::before,.stub::after{content:"";position:absolute;right:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:1px solid var(--rule)}
+  .stub::before{top:-11px} .stub::after{bottom:-11px}
+}
+
+/* layout */
+.wrap{max-width:76rem;margin:0 auto;padding:1.5rem 1rem 3rem;display:grid;gap:2rem;grid-template-columns:1fr}
+@media (min-width:1000px){.wrap{grid-template-columns:15rem minmax(0,1fr)}}
+.toc{align-self:start}
+@media (min-width:1000px){.toc{position:sticky;top:4.5rem}}
+.toc details{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:.5rem .9rem}
+.toc summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+.toc ol{list-style:none;margin:.25rem 0 .5rem;padding:0}
+.toc li a{display:flex;justify-content:space-between;gap:.5rem;padding:.3rem .4rem;border-radius:4px;text-decoration:none;color:var(--ink);font-size:.92rem}
+.toc li a:hover{background:var(--surface-2)}
+.toc li a[aria-current="true"]{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--accent)}
+.toc .tick{color:var(--tip);font-weight:700}
+.meter{margin:.5rem 0 .25rem;height:10px;background:var(--surface-2);border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+.meter span{display:block;height:100%;width:0;background:var(--tip);transition:width .3s}
+.meter-txt{font-size:.85rem;color:var(--ink-2);margin:0}
+main{min-width:0}
+main section{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.25rem 1.5rem;margin:0 0 1.25rem;max-width:56rem}
+@media (max-width:600px){main section{padding:1rem}.ctl button{padding:.3rem .55rem}}
+main h2{font-family:var(--f-display);font-weight:700;font-size:1.55rem;line-height:1.2;margin:0 0 .75rem}
+main h3{font-size:1.1rem;margin:1.25rem 0 .4rem}
+main p,main li{max-width:68ch}
+.task-head{font-family:var(--f-display);font-weight:700;font-size:1.15rem;margin:1.75rem 0 .5rem;padding-top:1rem;border-top:2px solid var(--ink)}
+.task-head:first-of-type{border-top:0;padding-top:0}
+.step{border-left:3px solid var(--rule);padding:.1rem 0 .1rem 1rem;margin:1rem 0}
+.step h3{margin-top:0;display:flex;gap:.6rem;align-items:baseline}
+.step h3 .n{flex:none;display:inline-grid;place-items:center;min-width:1.8rem;height:1.8rem;border-radius:50%;background:var(--ink);color:var(--surface);font-size:.9rem}
+.call{border-radius:8px;padding:.75rem 1rem;margin:1rem 0;border:1px solid}
+.call .k{display:block;font-weight:700;margin-bottom:.2rem}
+.call p{margin:.25rem 0}
+.call.stuck{background:var(--stuck-bg);border-color:var(--stuck)} .call.stuck .k{color:var(--stuck)}
+.call.tip{background:var(--tip-bg);border-color:var(--tip)} .call.tip .k{color:var(--tip)}
+.call.now{background:var(--now-bg);border-color:var(--now)} .call.now .k{color:var(--now)}
+.shot{display:inline-block;background:var(--tag);color:var(--tag-ink);font-weight:700;font-size:.85rem;padding:.05rem .5rem;border-radius:3px;margin-right:.35rem}
+.shot::before{content:"\1F4F7\FE0E  "}
+p.shotline{margin:.5rem 0}
+pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
+pre.cmd .c{color:var(--code-dim)}
+.copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
+.tbl{overflow-x:auto;margin:.75rem 0}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;vertical-align:top;padding:.5rem .6rem;border-bottom:1px solid var(--rule)}
+th{background:var(--surface-2);font-weight:600}
+td code{white-space:nowrap}
+.done-row{display:flex;gap:.6rem;align-items:center;margin-top:1.25rem;padding-top:.75rem;border-top:1px dashed var(--rule)}
+input[type=checkbox]{width:1.3rem;height:1.3rem;accent-color:var(--tip);flex:none}
+.done-row label{min-height:44px;display:flex;align-items:center;cursor:pointer}
+.q{border-top:1px solid var(--rule);padding:.75rem 0}
+.q .ask{font-weight:600;margin:0 0 .4rem}
+.ans{display:none;margin-top:.5rem;padding:.6rem .8rem;background:var(--surface-2);border-radius:6px}
+.ans.open{display:block}
+.evidence ul{list-style:none;padding:0;margin:0}
+.evidence li{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px dashed var(--rule)}
+.evidence li label{cursor:pointer}
+.cheat{border:2px solid var(--ink);border-radius:8px;padding:1rem 1.25rem}
+.cheat .grid{display:grid;gap:1rem 1.5rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.cheat h3{margin:0 0 .3rem;font-family:var(--f-display)}
+.cheat ul{margin:0;padding-left:1.1rem;font-size:.93rem}
+.badges{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+.badge{border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:.05rem .65rem;font-size:.82rem;font-weight:600}
+footer{border-top:1px solid var(--rule);background:var(--surface);color:var(--ink-2);font-size:.88rem}
+footer .in{max-width:76rem;margin:0 auto;padding:1.25rem 1rem}
+footer p{margin:.25rem 0;max-width:80ch}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
+  body{background:#fff;color:#000} .wrap{display:block;padding:0}
+  main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
+  .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
+  .stub{background:#fff;border:2px solid #000}
+}
+</style>
+</head>
+<body data-prefix="aplus-lab04-v1:">
+<a href="#main" class="skip-link">Skip to main content</a>
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="index.html"><span class="plug" aria-hidden="true">A+</span>A+ Lab Companion</a>
+  <div class="ctl" role="group" aria-label="Page controls">
+    <button type="button" id="fs-down" aria-label="Decrease text size">A&minus;</button>
+    <button type="button" id="fs-up" aria-label="Increase text size">A+</button>
+    <button type="button" id="theme" aria-pressed="false">Dark mode</button>
+    <button type="button" id="print">Print</button>
+    <button type="button" id="clear">Clear progress</button>
+  </div>
+</div></header>
+<div class="ticket"><div class="ticket-in">
+  <div class="stub"><span class="lbl">Lab</span><span class="no">04</span><span class="series">CompTIA A+ Lab Series v4</span></div>
+  <div class="tk-body"><h1>Windows Users & Groups</h1><p class="lede">Every person on a PC should have their own account with only the rights they need. You will create standard and administrator accounts three ways, add a user to the Administrators group, enforce a password policy with Group Policy, and open the tools used to manage domain accounts.</p><dl class="fields"><div><dt>Time</dt><dd>60–75 min</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Machines</dt><dd>Win7, Win8.1, Win10</dd></div><div><dt>Exam domains</dt><dd>Core 2: Operating Systems<br>Core 2: Security</dd></div></dl></div>
+</div></div>
+<div class="wrap">
+<nav class="toc" aria-label="On this page"><details><summary>On this page</summary>
+<div id="meter" class="meter" role="progressbar" aria-label="Sections reviewed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="meter-bar"></span></div>
+<p id="meter-txt" class="meter-txt"></p>
+<ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#reference"><span>Reference: accounts, groups, and policy</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#exam"><span>On the A+ exams</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#check"><span>Check yourself</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#evidence"><span>Evidence to capture</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#cheat"><span>Cheat sheet</span><span class="tick" aria-hidden="true"></span></a></li></ol></details></nav>
+<main id="main" tabindex="-1">
+<section id="overview" aria-labelledby="h-overview">
+<h2 id="h-overview">Why this lab matters</h2>
+<p>Accounts are the first security control on any PC. A <strong>standard user</strong> can run programs and change their own settings. An <strong>administrator</strong> can install software, change system settings, and read other users' files. Giving everyone admin rights is the most common way a small malware problem becomes a big one.</p>
+<p>You'll see the two ways Windows creates accounts: the friendly <strong>Settings/User Accounts</strong> path, and <strong>Local Users and Groups</strong> (<code class="inl">lusrmgr.msc</code>), which gives you every field and group membership. Then you'll use the <strong>Local Group Policy Editor</strong> to make Windows enforce password rules instead of just hoping people follow them. Finally you'll install <strong>RSAT</strong> and open <strong>Active Directory Users and Computers</strong>, the tool most help desks use all day in a domain.</p>
+
+<div class="done-row"><input type="checkbox" id="done-overview" data-done="overview"><label for="done-overview">Mark this section reviewed</label></div>
+</section>
+<section id="environment" aria-labelledby="h-environment">
+<h2 id="h-environment">The environment you're working in</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code class="inl">192.168.1.7/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win8.1</td><td><code class="inl">192.168.1.8/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<p>Accounts you'll create:</p>
+<div class="tbl"><table><thead><tr><th scope="col">User</th><th scope="col">Where</th><th scope="col">Password</th><th scope="col">Type</th></tr></thead><tbody><tr><td>Logan</td><td>Win7</td><td><code class="inl">Password1</code></td><td>Standard</td></tr><tr><td>Logan</td><td>Win8.1 and Win10</td><td><code class="inl">Password1</code></td><td>Changed to Administrator</td></tr><tr><td>Sal (Sal A.)</td><td>Win7</td><td><code class="inl">SuperSecret</code></td><td>Added to Administrators</td></tr></tbody></table></div>
+<div class="call stuck"><span class="k">Typo in the PDF</span><p>In a few places the PDF spells the sysadmin password as <code class="inl">Train1ing$</code>. The real password is still <code class="inl">Train1ng$</code>.</p></div>
+<p>The machines are in a <strong>workgroup</strong>, not a domain, so the Active Directory tools in Task 4 open but can't connect to anything. The point is to learn where they are and what they do.</p>
+
+<div class="done-row"><input type="checkbox" id="done-environment" data-done="environment"><label for="done-environment">Mark this section reviewed</label></div>
+</section>
+<section id="then-now" aria-labelledby="h-then-now">
+<h2 id="h-then-now">Then vs. now: Windows 11</h2>
+<div class="tbl"><table><thead><tr><th scope="col">In the lab</th><th scope="col">On Windows 11</th></tr></thead><tbody><tr><td>Control Panel > User Accounts > Manage another account</td><td>Settings > Accounts > <strong>Other users</strong> > Add account. Control Panel's User Accounts now sends you there.</td></tr><tr><td>PC Settings / Family & other people > Add someone else</td><td>Settings > Accounts > Other users. Choose <strong>I don't have this person's sign-in information > Add a user without a Microsoft account</strong> for a local account.</td></tr><tr><td>Security questions for local accounts</td><td>Still asked when you create a local account in Settings. <code class="inl">lusrmgr.msc</code> and <code class="inl">net user</code> skip them.</td></tr><tr><td><code class="inl">lusrmgr.msc</code> / Computer Management</td><td>Same, in <strong>Pro, Enterprise, and Education</strong> only. Home edition has no Local Users and Groups or <code class="inl">gpedit.msc</code>.</td></tr><tr><td>RSAT downloaded as an .msu file</td><td>RSAT is a <strong>Feature on Demand</strong>: Settings > System > Optional features > View features, search "RSAT".</td></tr><tr><td>Control Panel > Administrative Tools</td><td>Start > All apps > <strong>Windows Tools</strong></td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-then-now" data-done="then-now"><label for="done-then-now">Mark this section reviewed</label></div>
+</section>
+<section id="walkthrough" aria-labelledby="h-walkthrough">
+<h2 id="h-walkthrough">Walkthrough</h2>
+<p class="task-head">Task 1: Create accounts the easy way</p>
+<div class="step">
+<h3><span class="n">1</span>Create a standard user on Win7</h3>
+<p>Log in to <strong>Win7</strong>. Open <strong>Control Panel > User Accounts and Family Safety > User Accounts > Manage another account > Create a new account</strong>. Name it <code class="inl">Logan</code>, leave <strong>Standard user</strong> selected, and click <strong>Create Account</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">2</span>Give Logan a password</h3>
+<p>Click <strong>Logan > Create a password</strong>. Enter <code class="inl">Password1</code> twice and click <strong>Create password</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">3</span>Test what a standard user can't do</h3>
+<p>Log off and sign in as <strong>Logan</strong>. Open <strong>Computer</strong> and try to open <code class="inl">C:\Users\sysadmin</code>. You're refused because the folder belongs to another user. Click <strong>Cancel</strong>.</p>
+<p>Now open <strong>Control Panel > User Accounts > Manage another account</strong>. UAC asks for an <strong>administrator's password</strong>. Click <strong>No</strong>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The UAC prompt asking for administrator credentials while signed in as Logan.</p>
+<div class="call tip"><span class="k">This is how admins should work</span><p>Day-to-day work in a standard account, typing admin credentials only when UAC asks, limits what malware can do if you open something bad.</p></div>
+<p>Log off Logan.</p>
+</div>
+<div class="step">
+<h3><span class="n">4</span>Create an account on Win8.1 and make it an administrator</h3>
+<p>Log in to <strong>Win8.1</strong> as sysadmin. Open <strong>Start > PC Settings > Accounts > Other accounts > Add an account</strong>. Create a local account: user name <code class="inl">Logan</code>, password <code class="inl">Password1</code>, hint <code class="inl">A password with 1</code>. Click <strong>Next</strong>, then <strong>Finish</strong>.</p>
+<p>Click <strong>Logan > Edit</strong>, set <strong>Account type</strong> to <strong>Administrator</strong>, and click <strong>OK</strong>. Sign out (move the pointer to the top-right corner for the charms bar, then Start > sysadmin > Sign out) and sign in as Logan. Windows sets up the new profile.</p>
+</div>
+<div class="step">
+<h3><span class="n">5</span>Do the same on Win10</h3>
+<p>Log in to <strong>Win10</strong> as sysadmin. Open <strong>Start > Settings > Accounts > Family & other people > Add someone else to this PC</strong>. Create <code class="inl">Logan</code> with password <code class="inl">Password1</code> and these security answers:</p>
+<div class="tbl"><table><thead><tr><th scope="col">Question</th><th scope="col">Answer</th></tr></thead><tbody><tr><td>First pet's name</td><td><code class="inl">Logan Jr</code></td></tr><tr><td>City where you were born</td><td><code class="inl">BigCity</code></td></tr><tr><td>Childhood nickname</td><td><code class="inl">Kidd</code></td></tr></tbody></table></div>
+<p>Click <strong>Logan > Change account type</strong>, choose <strong>Administrator</strong>, and click <strong>OK</strong>. Sign in as Logan to confirm.</p>
+<p class="shotline"><span class="shot">Screenshot</span>Win10 Settings showing Logan listed as an Administrator, local account.</p>
+</div>
+<p class="task-head">Task 2: Local Users and Groups (Win7)</p>
+<div class="step">
+<h3><span class="n">6</span>Open Computer Management</h3>
+<p>On <strong>Win7</strong>, sign in as sysadmin. Right-click <strong>Computer</strong> on the desktop and choose <strong>Manage</strong>. Expand <strong>Local Users and Groups</strong> and open <strong>Users</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">7</span>Create Sal</h3>
+<p>Right-click empty space and choose <strong>New User</strong>:</p>
+<div class="tbl"><table><thead><tr><th scope="col">Field</th><th scope="col">Value</th></tr></thead><tbody><tr><td>User name</td><td><code class="inl">Sal</code></td></tr><tr><td>Full name</td><td><code class="inl">Sal A.</code></td></tr><tr><td>Description</td><td><code class="inl">Analyst</code></td></tr><tr><td>Password</td><td><code class="inl">SuperSecret</code></td></tr></tbody></table></div>
+<p>Uncheck <strong>User must change password at next logon</strong>, check <strong>Password never expires</strong>, then click <strong>Create</strong> and <strong>Close</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">8</span>Add Sal to Administrators</h3>
+<p>Open <strong>Groups</strong>, double-click <strong>Administrators</strong>, and click <strong>Add</strong>. Type <code class="inl">Sal</code>, click <strong>Check Names</strong> (it becomes <code class="inl">WIN7\Sal</code>, underlined), and click <strong>OK</strong> twice.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Administrators Properties window listing Sal as a member.</p>
+<p>Close Computer Management, log off, and sign in as <strong>Sal A.</strong> Sal can now open other users' folders.</p>
+</div>
+<p class="task-head">Task 3: Enforce a password policy (Win8.1)</p>
+<div class="step">
+<h3><span class="n">9</span>Open the Local Group Policy Editor</h3>
+<p>On <strong>Win8.1</strong>, sign out of Logan and sign in as sysadmin. Right-click <strong>Start > Search</strong>, type <code class="inl">gpedit.msc</code>, and open it.</p>
+</div>
+<div class="step">
+<h3><span class="n">10</span>Set the password policy</h3>
+<p>Expand <strong>Computer Configuration > Windows Settings > Security Settings > Account Policies > Password Policy</strong> and double-click each setting:</p>
+<div class="tbl"><table><thead><tr><th scope="col">Policy</th><th scope="col">Set to</th></tr></thead><tbody><tr><td>Maximum password age</td><td>90 days</td></tr><tr><td>Minimum password length</td><td>8 characters</td></tr><tr><td>Password must meet complexity requirements</td><td>Enabled</td></tr></tbody></table></div>
+<p class="shotline"><span class="shot">Screenshot</span>The Password Policy pane showing all three settings.</p>
+</div>
+<div class="step">
+<h3><span class="n">11</span>Restart and test the policy</h3>
+<p>Right-click <strong>Start > Shut down or sign out > Restart</strong>. Sign in as <strong>Logan</strong> (<code class="inl">Password1</code>). In the NETLAB+ toolbar, open the Win8.1 tab's menu and choose <strong>Send CTRL+ALT+DEL</strong>, then click <strong>Change a password</strong>.</p>
+<p>Try the new password <code class="inl">Pass2</code>. It's refused because it's too short. Click <strong>OK</strong>, try again with <code class="inl">Password2</code>, and it's accepted. Sign out and back in as Logan with <code class="inl">Password2</code>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The error saying the password doesn't meet policy requirements.</p>
+<div class="call stuck"><span class="k">Where people get stuck</span><p><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Del</kbd> on your own keyboard goes to <em>your</em> computer, not the VM. Use the NETLAB+ <strong>Send CTRL+ALT+DEL</strong> menu item.</p></div>
+</div>
+<p class="task-head">Task 4: Active Directory tools (Win10)</p>
+<div class="step">
+<h3><span class="n">12</span>Install RSAT</h3>
+<p>On <strong>Win10</strong>, sign out of Logan and sign in as sysadmin. Open the <strong>Toolbox</strong> folder on the desktop and double-click <code class="inl">WindowsTH-RSAT_WS_1709-x64.msu</code>. Click <strong>Yes</strong>, then <strong>I Accept</strong>. It takes a few minutes. Click <strong>Close</strong> when it finishes.</p>
+</div>
+<div class="step">
+<h3><span class="n">13</span>Open Active Directory Users and Computers</h3>
+<p>Open <strong>Control Panel</strong>, set <strong>Small icons</strong>, and open <strong>Administrative Tools</strong>. Note the AD tools RSAT added, then double-click <strong>Active Directory Users and Computers</strong>. Read the warning that this tool manages domain accounts, not local ones, and click <strong>OK</strong>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>Administrative Tools listing the Active Directory snap-ins.</p>
+<p>The console opens but can't reach a domain controller. Right-click <strong>Active Directory Users and Computers</strong> in the left pane to see <strong>Change Domain</strong> and <strong>Change Domain Controller</strong>. The lab is complete.</p>
+</div>
+
+<div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+<section id="reference" aria-labelledby="h-reference">
+<h2 id="h-reference">Reference: accounts, groups, and policy</h2>
+<h3>Built-in local groups</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Group</th><th scope="col">Members can</th></tr></thead><tbody><tr><td>Administrators</td><td>Do anything on this PC</td></tr><tr><td>Users</td><td>Run programs and change their own settings (standard user)</td></tr><tr><td>Guests</td><td>Very limited, temporary access; the Guest account is disabled by default</td></tr><tr><td>Power Users</td><td>Kept for old programs; has no extra rights on current Windows</td></tr><tr><td>Remote Desktop Users</td><td>Sign in through RDP (Lab 11)</td></tr><tr><td>Backup Operators</td><td>Back up and restore files regardless of permissions</td></tr></tbody></table></div>
+<h3>Local accounts and Microsoft accounts</h3>
+<div class="tbl"><table><thead><tr><th scope="col"></th><th scope="col">Local account</th><th scope="col">Microsoft account</th></tr></thead><tbody><tr><td>Signs in with</td><td>User name and password stored on this PC</td><td>An email address checked by Microsoft</td></tr><tr><td>Syncs settings and OneDrive</td><td>No</td><td>Yes</td></tr><tr><td>Works offline</td><td>Yes</td><td>Yes, after first sign-in</td></tr><tr><td>Typical use</td><td>Shared or lab PCs, service accounts</td><td>Home PCs</td></tr></tbody></table></div>
+<h3>Manage accounts from the command line</h3>
+<pre class="cmd"><code><span class="c">List local users</span>
+net user
+<span class="c">Create a user, then add them to Administrators</span>
+net user Sal SuperSecret /add /fullname:"Sal A." /comment:Analyst
+net localgroup Administrators Sal /add
+<span class="c">Disable or delete an account</span>
+net user Sal /active:no
+net user Sal /delete
+<span class="c">Show or set password policy without Group Policy</span>
+net accounts
+net accounts /minpwlen:8 /maxpwage:90</code></pre>
+<h3>Password and lockout policies</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Policy</th><th scope="col">Controls</th></tr></thead><tbody><tr><td>Enforce password history</td><td>How many old passwords can't be reused</td></tr><tr><td>Maximum password age</td><td>Days before a password must change</td></tr><tr><td>Minimum password age</td><td>Days before a user can change it again (stops cycling back to the old one)</td></tr><tr><td>Minimum password length</td><td>Shortest allowed password</td></tr><tr><td>Complexity requirements</td><td>Three of four: upper case, lower case, digit, symbol; can't contain the user name</td></tr><tr><td>Account lockout threshold</td><td>Failed attempts before the account locks</td></tr><tr><td>Account lockout duration</td><td>How long it stays locked</td></tr></tbody></table></div>
+<div class="call tip"><span class="k">Current password advice</span><p>NIST guidance (SP 800-63B) now favors <strong>long passphrases</strong> and checking against breached-password lists over forced periodic changes and complexity rules. Many organizations still set both, and the exam may ask about either. Add MFA wherever you can.</p></div>
+<h3>Active Directory tools from RSAT</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Tool</th><th scope="col">Used for</th></tr></thead><tbody><tr><td>Active Directory Users and Computers (<code class="inl">dsa.msc</code>)</td><td>Reset passwords, unlock accounts, manage group membership and OUs</td></tr><tr><td>Active Directory Administrative Center</td><td>The same tasks plus PowerShell history and the AD Recycle Bin</td></tr><tr><td>Group Policy Management (<code class="inl">gpmc.msc</code>)</td><td>Create and link domain Group Policy Objects</td></tr><tr><td>Active Directory Sites and Services</td><td>Sites, subnets, and replication</td></tr><tr><td>Active Directory Domains and Trusts</td><td>Trusts and functional levels</td></tr></tbody></table></div>
+<h3>Workgroup compared with domain</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Workgroup</th><th scope="col">Domain</th></tr></thead><tbody><tr><td>Each PC keeps its own accounts</td><td>Accounts live on a domain controller</td></tr><tr><td>Best for a handful of PCs</td><td>Scales to thousands</td></tr><tr><td>Policy set on each PC (<code class="inl">gpedit.msc</code>)</td><td>Policy pushed centrally with Group Policy</td></tr><tr><td>Any Windows edition</td><td>Joining requires Pro, Enterprise, or Education</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-reference" data-done="reference"><label for="done-reference">Mark this section reviewed</label></div>
+</section>
+<section id="stuck" aria-labelledby="h-stuck">
+<h2 id="h-stuck">Where people get stuck</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Problem</th><th scope="col">Why it happens</th><th scope="col">Fix</th></tr></thead><tbody><tr><td>sysadmin password rejected</td><td>The PDF typo <code class="inl">Train1ing$</code></td><td>Use <code class="inl">Train1ng$</code></td></tr><tr><td>Check Names can't find Sal</td><td>Spelling, or Sal wasn't created</td><td>Check Users; type <code class="inl">Sal</code>, not <code class="inl">Sal A.</code> (that's the full name)</td></tr><tr><td>Password policy doesn't take effect</td><td>The PC wasn't restarted, or you tested as sysadmin who already had a password</td><td>Restart, then change Logan's password</td></tr><tr><td><code class="inl">Password2</code> rejected too</td><td>Complexity counts three of four categories; it has upper, lower, and a digit, so it should pass. Check for a typo in the confirm box</td><td>Retype both boxes carefully</td></tr><tr><td>Ctrl+Alt+Del opens your own security screen</td><td>Your keyboard shortcut goes to your PC</td><td>Use NETLAB+ Send CTRL+ALT+DEL</td></tr><tr><td>ADUC shows "domain could not be found"</td><td>The lab is a workgroup</td><td>Expected; explore the menus instead</td></tr><tr><td><code class="inl">gpedit.msc</code> or <code class="inl">lusrmgr.msc</code> missing on a home PC</td><td>Windows Home doesn't include them</td><td>Use Settings or <code class="inl">net user</code>, or upgrade to Pro</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-stuck" data-done="stuck"><label for="done-stuck">Mark this section reviewed</label></div>
+</section>
+<section id="on-the-job" aria-labelledby="h-on-the-job">
+<h2 id="h-on-the-job">On the job</h2>
+<div class="tbl"><table><thead><tr><th scope="col">The ticket says</th><th scope="col">Where you look</th><th scope="col">Likely fix</th></tr></thead><tbody><tr><td>"I'm locked out."</td><td>ADUC (domain) or <code class="inl">lusrmgr.msc</code> (local)</td><td>Unlock the account; reset the password if needed</td></tr><tr><td>"The new hire can't install the software they need."</td><td>Group membership</td><td>Install it for them, or grant rights through a managed process; avoid making them a full admin</td></tr><tr><td>"I keep getting asked for an admin password."</td><td>UAC prompts on a standard account</td><td>Expected; an admin enters credentials or deploys the app</td></tr><tr><td>"Passwords must be stronger company-wide."</td><td>Group Policy (domain) or Local Security Policy (<code class="inl">secpol.msc</code>)</td><td>Set length, history, and lockout policy</td></tr><tr><td>"An employee left today."</td><td>ADUC or local users</td><td>Disable the account first; delete later after data is handed off</td></tr></tbody></table></div>
+<div class="call tip"><span class="k">Professional habit</span><p>Disable an account before you delete it. Deleting removes its unique security ID (SID), and recreating an account with the same name doesn't restore its permissions or files.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-on-the-job" data-done="on-the-job"><label for="done-on-the-job">Mark this section reviewed</label></div>
+</section>
+<section id="exam" aria-labelledby="h-exam">
+<h2 id="h-exam">On the A+ exams</h2>
+<div class="badges"><span class="badge">Core 2: Operating Systems</span><span class="badge">Core 2: Security</span></div>
+<p><strong>Core 2 (220-1202)</strong> covers local users and groups, Microsoft and local accounts, <code class="inl">lusrmgr.msc</code>, <code class="inl">gpedit.msc</code>, <code class="inl">net user</code>, the principle of least privilege, password best practices, and Active Directory basics (domain, OU, security group, Group Policy, login scripts, home folders, folder redirection). It also asks which Windows editions include these tools.</p>
+<h3>High-yield facts</h3>
+<ul><li>Least privilege: users work as standard users; admins elevate through UAC only when needed.</li><li><code class="inl">lusrmgr.msc</code> and <code class="inl">gpedit.msc</code> are not in Windows Home.</li><li>Account Policies live under Computer Configuration > Windows Settings > Security Settings.</li><li>Lockout threshold, history, length, and complexity are the four policies most asked about.</li><li>ADUC (<code class="inl">dsa.msc</code>) manages domain users; it's installed with RSAT.</li><li>Disable departed users' accounts; don't delete them right away.</li></ul>
+
+<div class="done-row"><input type="checkbox" id="done-exam" data-done="exam"><label for="done-exam">Mark this section reviewed</label></div>
+</section>
+<section id="check" aria-labelledby="h-check">
+<h2 id="h-check">Check yourself</h2>
+<div class="q"><p class="ask">1. A user needs to install one approved application but shouldn't be a permanent admin. What's the least-privilege approach?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Keep them a standard user. An admin enters credentials at the UAC prompt to install it, or the app is deployed centrally.</div></div>
+<div class="q"><p class="ask">2. You created a password policy with gpedit.msc but users can still set short passwords. Name two things to check.</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Whether the PC was restarted (or <code class="inl">gpupdate /force</code> was run), and whether the setting is under Computer Configuration > Account Policies > Password Policy. Policy only applies when a password is next changed.</div></div>
+<div class="q"><p class="ask">3. What's the command to add the local user Sal to the Administrators group?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans"><code class="inl">net localgroup Administrators Sal /add</code></div></div>
+<div class="q"><p class="ask">4. A small office has 6 PCs and no server. Workgroup or domain?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">A workgroup. Domains need a domain controller and are worth it at larger scale or when central policy is required.</div></div>
+<div class="q"><p class="ask">5. Why did Logan's first attempt with Pass2 fail?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">It's only 5 characters, below the 8-character minimum you set in Password Policy.</div></div>
+</section>
+<section id="evidence" aria-labelledby="h-evidence">
+<h2 id="h-evidence">Evidence to capture</h2>
+<p>Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.</p>
+<div class="evidence"><ul><li><input type="checkbox" id="ev1" data-evidence="ev1"><label for="ev1"><span class="shot">Standard user</span>The UAC prompt asking for admin credentials while signed in as Logan on Win7.</label></li><li><input type="checkbox" id="ev2" data-evidence="ev2"><label for="ev2"><span class="shot">Admin account</span>Win10 Settings showing Logan as an Administrator local account.</label></li><li><input type="checkbox" id="ev3" data-evidence="ev3"><label for="ev3"><span class="shot">Group</span>The Administrators Properties window listing Sal.</label></li><li><input type="checkbox" id="ev4" data-evidence="ev4"><label for="ev4"><span class="shot">Policy</span>The Password Policy settings in gpedit.msc on Win8.1.</label></li><li><input type="checkbox" id="ev5" data-evidence="ev5"><label for="ev5"><span class="shot">Policy enforced</span>The error refusing Pass2 as Logan's new password.</label></li><li><input type="checkbox" id="ev6" data-evidence="ev6"><label for="ev6"><span class="shot">RSAT</span>Administrative Tools listing the Active Directory snap-ins on Win10.</label></li></ul></div>
+</section>
+<section id="cheat" aria-labelledby="h-cheat">
+<h2 id="h-cheat">Cheat sheet</h2>
+<div class="cheat"><div class="grid">
+<div><h3>Accounts</h3>
+<ul><li><code class="inl">lusrmgr.msc</code> local users and groups (not Home)</li><li><code class="inl">net user &lt;name&gt; &lt;pass&gt; /add</code></li><li><code class="inl">net localgroup Administrators &lt;name&gt; /add</code></li><li>Settings > Accounts > Other users</li><li>Disable before delete</li></ul>
+</div>
+<div><h3>Policy</h3>
+<ul><li><code class="inl">gpedit.msc</code> > Computer Config > Windows Settings > Security Settings > Account Policies</li><li><code class="inl">secpol.msc</code> Local Security Policy</li><li><code class="inl">gpupdate /force</code> applies changes now</li><li><code class="inl">net accounts</code> to view policy</li><li>Domain: ADUC <code class="inl">dsa.msc</code>, GPMC <code class="inl">gpmc.msc</code> (RSAT)</li></ul>
+</div>
+</div></div>
+</section>
+</main></div>
+<footer><div class="in">
+  <p>Built for CompTIA A+ hands-on practice at Brookdale Community College, 2026. Open educational resource.</p>
+  <p>Companion to the NDG CompTIA A+ Lab Series v4 labs. This guide is independent and is not affiliated with or endorsed by CompTIA or Network Development Group. CompTIA A+ is a registered trademark of CompTIA, Inc.</p>
+</div></footer>
+<p id="live" class="sr" aria-live="polite"></p>
+<script>
+(function(){
+  var S={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
+         set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+         del:function(k){try{localStorage.removeItem(k)}catch(e){}}};
+  window.__S=S;
+  var root=document.documentElement, tb=document.getElementById('theme');
+  function isDark(){var t=root.getAttribute('data-theme'); if(t) return t==='dark';
+    return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;}
+  function paintTheme(){var d=isDark(); tb.setAttribute('aria-pressed',d?'true':'false'); tb.textContent=d?'Light mode':'Dark mode';}
+  var saved=S.get('aplus-theme'); if(saved) root.setAttribute('data-theme',saved);
+  paintTheme();
+  tb.addEventListener('click',function(){var n=isDark()?'light':'dark'; root.setAttribute('data-theme',n); S.set('aplus-theme',n); paintTheme();});
+  var sc=parseFloat(S.get('aplus-scale'))||1;
+  function setScale(v){sc=Math.min(1.4,Math.max(.85,Math.round(v*100)/100)); root.style.setProperty('--scale',sc); S.set('aplus-scale',sc);}
+  setScale(sc);
+  document.getElementById('fs-up').addEventListener('click',function(){setScale(sc+.1)});
+  document.getElementById('fs-down').addEventListener('click',function(){setScale(sc-.1)});
+  document.getElementById('print').addEventListener('click',function(){window.print()});
+})();
+
+(function(){
+  var S=window.__S, P=document.body.getAttribute('data-prefix');
+  var live=document.getElementById('live');
+  function say(t){live.textContent=t;}
+  function load(k){try{return JSON.parse(S.get(P+k))||{}}catch(e){return {}}}
+  var done=load('done'), ev=load('evidence');
+  var tracks=[].slice.call(document.querySelectorAll('[data-done]'));
+  var bar=document.getElementById('meter-bar'), txt=document.getElementById('meter-txt'), meter=document.getElementById('meter');
+  function refresh(){
+    var n=0; tracks.forEach(function(c){ if(c.checked) n++;
+      var a=document.querySelector('.toc a[href="#'+c.getAttribute('data-done')+'"] .tick'); if(a) a.textContent=c.checked?'\u2713':'';});
+    var pct=tracks.length?Math.round(n/tracks.length*100):0;
+    bar.style.width=pct+'%'; meter.setAttribute('aria-valuenow',pct);
+    txt.textContent=n+' of '+tracks.length+' sections reviewed';
+    S.set(P+'meta',JSON.stringify({done:n,total:tracks.length}));
+  }
+  tracks.forEach(function(c){ c.checked=!!done[c.getAttribute('data-done')];
+    c.addEventListener('change',function(){done[c.getAttribute('data-done')]=c.checked; S.set(P+'done',JSON.stringify(done)); refresh();});});
+  refresh();
+  [].forEach.call(document.querySelectorAll('[data-evidence]'),function(c){ c.checked=!!ev[c.getAttribute('data-evidence')];
+    c.addEventListener('change',function(){ev[c.getAttribute('data-evidence')]=c.checked; S.set(P+'evidence',JSON.stringify(ev));});});
+  document.getElementById('clear').addEventListener('click',function(){
+    if(!window.confirm('Clear your checkmarks on this lab page?')) return;
+    S.del(P+'done'); S.del(P+'evidence'); done={}; ev={};
+    [].forEach.call(document.querySelectorAll('[data-done],[data-evidence]'),function(c){c.checked=false;});
+    refresh(); say('Progress cleared for this lab.');});
+  [].forEach.call(document.querySelectorAll('.reveal'),function(b){
+    b.addEventListener('click',function(){var a=b.nextElementSibling, o=a.classList.toggle('open');
+      b.setAttribute('aria-expanded',o?'true':'false'); b.textContent=o?'Hide answer':'Show answer';});});
+  [].forEach.call(document.querySelectorAll('pre.cmd'),function(pre){
+    var b=document.createElement('button'); b.type='button'; b.className='copy'; b.textContent='Copy';
+    b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code'), clone=code.cloneNode(true);
+      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
+      function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
+      function fallback(){var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+        try{document.execCommand('copy'); ok();}catch(e){say('Copy failed; select the text instead.');} ta.remove();}
+    });});
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(l){l.setAttribute('aria-current', l.getAttribute('href')==='#'+e.target.id?'true':'false');});}});},
+      {rootMargin:'-20% 0px -70% 0px'});
+    [].forEach.call(document.querySelectorAll('main section[id]'),function(s){io.observe(s);});
+  }
+  var det=document.querySelector('.toc details');
+  if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
+})();
+</script>
+</body>
+</html>

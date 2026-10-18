@@ -1,0 +1,265 @@
+@lede When the desktop won't load or you're working remotely, the command line is how you get things done. You will navigate, create, copy, rename, and delete files and folders in the Windows Command Prompt and the Linux terminal, and manage processes from an elevated prompt.
+@vms Win8.1, Lubuntu
+
+== overview | Why this lab matters
+Every technician needs the command line. It works in Windows Recovery when the desktop won't start, over a remote shell, in scripts (Lab 17), and on the Linux servers and appliances you'll meet sooner than you expect.
+This lab does the same set of jobs twice, once in **Windows cmd** and once in the **Linux shell**: find out where you are, list what's there, move around, make folders and files, copy, rename, and delete. Doing them side by side is the fastest way to learn both, because the ideas are identical and only the command names change.
+You'll also see why some commands need an **elevated** (administrator) prompt, and use `tasklist` and `taskkill` to end a process without Task Manager.
+
+== environment | The environment you're working in
+| Machine | IP address | Account | Password |
+| Win8.1 | `192.168.1.8/24` | `sysadmin` | `Train1ng$` |
+| Lubuntu | `192.168.1.11/24` | `sysadmin` | `Train1ng$` |
+On Lubuntu, open the terminal from **Menu > System Tools > LXTerminal**.
+!tip Good habits from the first command | Press [[Up]] to recall the last command, [[Tab]] to complete a file or folder name, and [[Ctrl]]+[[C]] to stop a command that's waiting or running. All three work in both cmd and the Linux shell.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Right-click Start > Command Prompt | Right-click Start > **Terminal**. Windows Terminal opens PowerShell by default; choose **Command Prompt** from the tab drop-down. |
+| Command Prompt (Admin) | Right-click Start > **Terminal (Admin)** |
+| cmd commands (`dir`, `cd`, `md`, `copy`, `del`, `rd`) | All work in cmd. In PowerShell most work too, as aliases for PowerShell cmdlets. |
+| `shutdown /l` to sign out | Same |
+| Lubuntu LXTerminal | On Windows 11 you can also run a Linux shell locally with **WSL** (`wsl --install`) |
+
+== walkthrough | Walkthrough
+## Task 1: Windows Command Prompt
+### Open cmd and get help
+Log in to **Win8.1**, right-click **Start > Command Prompt**, and try both ways of getting help:
+```
+dir /?
+help dir
+```
+### List your home folder
+```
+dir
+```
+You're in `C:\Users\sysadmin`. Open **File Explorer**, go to `C:\Users\sysadmin`, and compare. It's the same set of folders, shown two ways.
+### Move around
+```
+cd
+cd Documents
+cd
+dir
+cls
+cd ..
+```
+`cd` alone prints where you are. In the `dir` listing, `.` is the current folder and `..` is the parent. `cls` clears the screen.
+### Make folders
+```
+md CLI
+cd CLI
+md Meeting
+dir
+```
+### Create a file by redirection
+```
+date
+```
+`date` shows the date and waits for a new one. Press [[Ctrl]]+[[C]] to cancel. Now send its output to a file:
+```
+date>calendar
+```
+Press [[Enter]] once more to get the prompt back. Then:
+```
+dir
+type calendar
+```
+!stuck Where people get stuck | `date>calendar` looks frozen because `date` is still waiting for input. It isn't; press [[Enter]].
+### Copy, rename, and delete
+```
+copy calendar calendar.bk
+move calendar.bk trash
+del trash
+rd Meeting
+dir
+exit
+```
+`move` also renames a file when the destination is a new name in the same folder.
+!shot The cmd window showing the CLI folder listing after the copy, move, and delete commands.
+## Task 2: Elevated prompt and processes (Win8.1)
+### Open Command Prompt (Admin)
+Right-click **Start > Command Prompt (Admin)** and accept UAC. The title bar says **Administrator**, and you start in `C:\WINDOWS\system32`.
+### Use a wildcard and launch a program
+```
+dir notepad*
+notepad.exe
+```
+The `*` matches anything, so `notepad*` finds every file starting with "notepad".
+### List and end a process
+```
+tasklist
+taskkill /IM notepad.exe
+taskkill /?
+tasklist
+```
+Find **notepad.exe** in the first list and note its **PID** and **Mem Usage**. After `taskkill`, it's gone from the second list. `/IM` means "image name".
+!shot The tasklist and taskkill output showing notepad.exe ended.
+### Sign out from the command line
+```
+shutdown /?
+shutdown /l
+```
+## Task 3: Linux shell (Lubuntu)
+### Open the terminal and look around
+Sign in to **Lubuntu**, open **Menu > System Tools > LXTerminal**, and run:
+```
+pwd
+ls
+ls -l
+```
+`pwd` prints the working directory (`/home/sysadmin`, shown as `~`). `ls -l` adds permissions, owner, size, and date.
+### Move into Documents
+```
+cd Documents
+pwd
+ls
+```
+### Make folders and a file
+```
+mkdir Test
+ls
+cd Test
+pwd
+mkdir Redirect
+ls -l > example
+ls
+cat example
+```
+`>` sends the output of `ls -l` into a file named `example`; `cat` displays it.
+!tip The shell doesn't confirm | Most Linux commands print nothing when they succeed. No message means it worked. Check with `ls`.
+### Copy, rename, and delete files
+```
+cp example example.bk
+cat example.bk
+mv example.bk sample
+ls
+rm sample
+rm example
+ls
+```
+### Remove a folder that isn't empty
+```
+cd ..
+rmdir Test
+ls Test
+rm -r Test
+ls
+exit
+```
+`rmdir` refuses because `Test` still contains `Redirect`. `rm -r` removes a folder and everything in it.
+!stuck Be careful with rm -r | Linux has no Recycle Bin from the shell. `rm -r` deletes immediately and permanently, and with `sudo` it can delete system files.
+!shot The terminal showing rmdir failing, then rm -r succeeding.
+The lab is complete.
+
+== reference | Reference: Windows and Linux commands
+### The same job in both shells
+| Job | Windows cmd | Linux |
+| Where am I? | `cd` | `pwd` |
+| List files | `dir` | `ls`, `ls -l`, `ls -a` |
+| Change folder | `cd folder`, `cd ..`, `cd \` | `cd folder`, `cd ..`, `cd ~` |
+| Make a folder | `md` or `mkdir` | `mkdir` (`mkdir -p a/b/c` for nested) |
+| Remove an empty folder | `rd` or `rmdir` | `rmdir` |
+| Remove a folder and contents | `rd /s` | `rm -r` |
+| Copy | `copy` (files), `xcopy`, `robocopy` (folders) | `cp`, `cp -r` |
+| Move or rename | `move`, `ren` | `mv` |
+| Delete a file | `del` | `rm` |
+| Show a file | `type` | `cat`, `less` |
+| Clear the screen | `cls` | `clear` |
+| Help | `command /?`, `help command` | `man command`, `command --help` |
+| Running processes | `tasklist` | `ps aux`, `top` |
+| End a process | `taskkill /IM name` or `/PID n` | `kill PID`, `pkill name` |
+| Find text | `findstr` | `grep` |
+| Network config | `ipconfig` | `ip addr` (`ifconfig` on older systems) |
+| Run as admin | Elevated prompt | `sudo command` |
+### Redirection and pipes (both shells)
+| Symbol | Does | Example |
+| `>` | Send output to a file, replacing it | `dir > list.txt` |
+| `>>` | Append output to a file | `echo done >> log.txt` |
+| `\|` | Feed one command's output to the next | `tasklist \| findstr notepad` |
+| `*` | Wildcard, any characters | `dir *.txt`, `ls *.txt` |
+### More Windows commands on the exam
+| Command | Does |
+| `robocopy src dst /e` | Robust folder copy with retries; `/mir` mirrors |
+| `xcopy src dst /s /e` | Copies folders and subfolders |
+| `chkdsk C: /f` | Checks and fixes file system errors (`/r` also finds bad sectors) |
+| `format D: /fs:ntfs` | Formats a volume |
+| `diskpart` | Interactive disk and partition tool |
+| `sfc /scannow` | Repairs Windows system files (Lab 12) |
+| `gpupdate /force`, `gpresult /r` | Apply and show Group Policy |
+| `winver` | Shows the Windows version |
+| `shutdown /r /t 0`, `/s`, `/l`, `/a` | Restart, shut down, sign out, abort a pending shutdown |
+### More Linux commands on the exam
+| Command | Does |
+| `sudo`, `su` | Run as root; switch user |
+| `chmod`, `chown` | Change permissions and ownership |
+| `apt`, `dnf` | Install software (Lab 13) |
+| `nano`, `vi` | Edit text files |
+| `df -h`, `du -sh` | Disk free space; folder size |
+| `find / -name file` | Find files by name |
+| `grep text file` | Search inside files |
+| `ip addr`, `ping`, `dig` | Network info and tests |
+| `passwd` | Change a password |
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| "is not recognized as an internal or external command" | Typo, or the program isn't in the PATH or current folder | Check spelling; `cd` to its folder or use the full path |
+| `cd Documents` fails in Linux | Linux names are case-sensitive | Type `Documents` with a capital D, or press [[Tab]] |
+| `cd` in cmd doesn't change drives | `cd` changes folders, not drives | Type the drive letter alone, like `D:`, or use `cd /d D:\folder` |
+| A path with spaces fails | The space splits it into two arguments | Wrap it in quotes: `cd "Program Files"` |
+| `rmdir` won't delete a folder | It isn't empty | Linux: `rm -r`. Windows: `rd /s` |
+| Access denied in cmd | The command needs elevation | Open Command Prompt (Admin) |
+| The prompt seems frozen | A command is waiting for input | Press [[Enter]] or [[Ctrl]]+[[C]] |
+
+== on-the-job | On the job
+| Situation | Command line approach |
+| Windows won't boot to the desktop | Windows Recovery > Command Prompt: `chkdsk`, `sfc /scannow /offbootdir=C:\ /offwindir=C:\Windows`, copy files off |
+| A program hangs and Task Manager won't open | `tasklist`, then `taskkill /IM name.exe /F` |
+| Copy a user's profile to a new PC | `robocopy C:\Users\old D:\Backup\old /e` |
+| Check disk space on a Linux server | `df -h` |
+| Find which log mentions an error | `findstr /i error *.log` or `grep -i error *.log` |
+!tip Professional habit | Before a command that deletes or overwrites, run `dir` or `ls` first so you know exactly what it will act on.
+
+== exam | On the A+ exams
+**Core 2 (220-1202)** expects you to know Windows commands (`cd`, `dir`, `md`, `rmdir`, `copy`, `xcopy`, `robocopy`, `del`, `tasklist`, `taskkill`, `shutdown`, `chkdsk`, `format`, `diskpart`, `sfc`, `gpupdate`, `gpresult`, `winver`, `net`) and Linux commands (`ls`, `pwd`, `cd`, `mv`, `cp`, `rm`, `mkdir`, `chmod`, `chown`, `sudo`, `su`, `apt`, `dnf`, `grep`, `find`, `ps`, `top`, `ip`, `df`, `man`, `nano`, `cat`), and when an elevated prompt is required.
+### High-yield facts
+- `command /?` is help in cmd; `man command` in Linux.
+- `taskkill /IM name /F` force-ends a process by name; `/PID` by number.
+- `robocopy` is the most robust Windows copy tool; `/mir` mirrors.
+- Linux is case-sensitive; Windows isn't.
+- `rm -r` deletes directories recursively and permanently.
+- `sudo` runs one command as root; an elevated prompt does the same job in Windows.
+
+== check | Check yourself
+?? Which cmd command shows your current folder, and what's the Linux equivalent?
+=> `cd` with nothing after it in cmd; `pwd` in Linux.
+?? Write the command that ends every running copy of chrome.exe immediately.
+=> `taskkill /IM chrome.exe /F`
+?? You run `rmdir Projects` in Linux and get "Directory not empty." What do you run instead?
+=> `rm -r Projects` (after checking its contents with `ls Projects`).
+?? What's the difference between `>` and `>>`?
+=> `>` replaces the file's contents with the output; `>>` adds the output to the end of the file.
+?? Why did you open Command Prompt (Admin) for some tasks?
+=> Some commands change system settings or other users' processes, which Windows allows only from an elevated prompt, even when you're signed in as an administrator.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] Windows files | The cmd window showing the CLI folder after the copy, move, and delete commands.
+[] Processes | tasklist and taskkill output showing notepad.exe ended.
+[] Linux files | The terminal showing `cat example` output in ~/Documents/Test.
+[] Linux delete | The terminal showing rmdir failing and rm -r succeeding.
+
+== cheat | Cheat sheet
+## Windows cmd
+- `cd` `dir` `md` `rd /s` `cls`
+- `copy` `move` `ren` `del` `type`
+- `robocopy src dst /e`
+- `tasklist`, `taskkill /IM x /F`
+- `shutdown /r /t 0`, `/l`
+- `command /?`
+## Linux
+- `pwd` `ls -l` `cd ~` `mkdir` `clear`
+- `cp` `mv` `rm` `rm -r` `cat`
+- `ps aux`, `kill PID`
+- `sudo command`
+- `man command`
+- Case matters; no confirmation

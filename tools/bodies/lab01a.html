@@ -1,0 +1,298 @@
+<section id="overview" data-track>
+<h2>Why this lab matters</h2>
+<p>Every PC runs code before the operating system starts. That code is the <strong>firmware</strong>: the older <strong>BIOS</strong> or the newer <strong>UEFI</strong>. It tests the hardware at power-on (the POST), decides which drive to boot from, and holds settings such as boot passwords, Secure Boot, and the TPM. When a PC won't boot from a USB stick, won't accept a Windows 11 upgrade, or keeps forgetting the date, the fix is often in firmware setup.</p>
+<p>Once Windows is running, <strong>Device Manager</strong> is the technician's first stop for hardware. It shows every device Windows knows about, flags the ones with problems, and lets you update, roll back, disable, or uninstall the driver that runs each one.</p>
+<p>By the end you should be able to get into firmware setup two different ways, change the boot order safely, and read a device's driver, events, and resources in Device Manager.</p>
+</section>
+
+<section id="environment" data-track>
+<h2>The environment you're working in</h2>
+<p>Three Windows virtual machines on one subnet. You use <strong>Win7</strong> for the BIOS tasks and Device Manager through Control Panel, and <strong>Win10</strong> for the UEFI route and Device Manager through Run.</p>
+<div class="tbl"><table>
+<thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead>
+<tbody>
+<tr><td>Win7</td><td><code>192.168.1.7/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr>
+<tr><td>Win8.1</td><td><code>192.168.1.8/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr>
+<tr><td>Win10</td><td><code>192.168.1.10/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr>
+</tbody></table></div>
+<div class="call tip"><span class="k">Good to know before you start</span>
+<p>These VMs use <strong>legacy BIOS</strong> (a PhoenixBIOS setup utility), not UEFI. That's why the UEFI Firmware Settings tile won't appear in Task 1.2. The lab is showing you the route, not expecting the tile to be there.</p>
+<p>The password is <code class="inl">Train1ng$</code> with the digit 1 in place of the letter i.</p></div>
+</section>
+
+<section id="then-now" data-track>
+<h2>Then vs. now: Windows 11</h2>
+<p>The lab machines run Windows 7, 8.1, and 10, all of which Microsoft no longer supports (Windows 10 support ended in October 2025). The A+ 220-1202 exam and the PCs you'll service run Windows 11. Here's where each lab step lives now.</p>
+<div class="tbl"><table>
+<thead><tr><th scope="col">In the lab</th><th scope="col">On Windows 11</th></tr></thead>
+<tbody>
+<tr><td>Restart and press <kbd>F2</kbd> to reach setup</td><td>Still works on many PCs, but fast boot often skips the key prompt. Use Advanced startup or <code class="inl">shutdown /r /fw /t 0</code> instead.</td></tr>
+<tr><td>Settings &gt; Update &amp; Security &gt; Recovery &gt; Advanced startup</td><td>Settings &gt; System &gt; Recovery &gt; Advanced startup &gt; <strong>Restart now</strong></td></tr>
+<tr><td>Control Panel &gt; Device Manager</td><td>Right-click Start (<kbd>Win</kbd>+<kbd>X</kbd>) &gt; Device Manager, or search "Device Manager"</td></tr>
+<tr><td>Right-click Start &gt; Run &gt; <code class="inl">devmgmt.msc</code></td><td>Same, or press <kbd>Win</kbd>+<kbd>R</kbd></td></tr>
+<tr><td>VMs boot with legacy BIOS</td><td>Windows 11 requires UEFI firmware that is Secure Boot capable and a TPM 2.0 chip. Firmware settings now decide whether a PC can even install the OS.</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="walkthrough" data-track>
+<h2>Walkthrough</h2>
+
+<p class="task-head">Task 1: Firmware setup (BIOS and UEFI)</p>
+
+<div class="step">
+<h3><span class="n">1</span>Get into BIOS setup on Win7</h3>
+<p>On the Win7 login screen, click the arrow beside <strong>Shut down</strong> and choose <strong>Restart</strong>. As soon as the screen goes dark, press <kbd>F2</kbd> repeatedly until the PhoenixBIOS Setup Utility opens.</p>
+<div class="call stuck"><span class="k">Where people get stuck</span>
+<p>The VM console has to have keyboard focus, or your <kbd>F2</kbd> presses go nowhere. Click inside the console window <em>before</em> you click Restart. If Windows starts loading, let it finish, restart, and try again.</p></div>
+</div>
+
+<div class="step">
+<h3><span class="n">2</span>Tour the menus</h3>
+<p>There's no mouse in this utility. Use the arrow keys to move between tabs, <kbd>Enter</kbd> to select, and the key guide along the bottom of the screen for everything else.</p>
+<div class="tbl"><table>
+<thead><tr><th scope="col">Tab</th><th scope="col">What it controls</th></tr></thead>
+<tbody>
+<tr><td>Main</td><td>System date and time, basic configuration, installed memory</td></tr>
+<tr><td>Advanced</td><td>Ports, interrupts, I/O device configuration</td></tr>
+<tr><td>Security</td><td>Supervisor and user passwords, boot-sector protection</td></tr>
+<tr><td>Boot</td><td>The order the firmware tries boot devices</td></tr>
+<tr><td>Exit</td><td>Save changes, discard changes, or load defaults</td></tr>
+</tbody></table></div>
+<p>Look, but don't change anything except the boot order. A wrong firmware setting can stop the machine from booting.</p>
+</div>
+
+<div class="step">
+<h3><span class="n">3</span>Change the boot order</h3>
+<p>Open the <strong>Boot</strong> tab. Highlight <strong>Removable Devices</strong> and press <kbd>-</kbd> to move it down one place so <strong>Hard Drive</strong> is first. In this utility, <kbd>+</kbd> moves an item up and <kbd>-</kbd> moves it down.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Boot tab with Hard Drive at the top of the list.</p>
+<div class="call tip"><span class="k">Why a tech does this</span>
+<p>Putting the internal drive first stops the PC from trying to boot from a USB stick someone left plugged in. When you <em>need</em> to boot from USB to reinstall or repair, most PCs have a one-time boot menu (often <kbd>F12</kbd>) so you don't have to change the order at all.</p></div>
+</div>
+
+<div class="step">
+<h3><span class="n">4</span>Save and exit</h3>
+<p>Go to the <strong>Exit</strong> tab, highlight <strong>Exit Saving Changes</strong>, press <kbd>Enter</kbd>, and confirm with <strong>Yes</strong>. Many setup utilities also accept <kbd>F10</kbd> as save and exit. Win7 restarts with the new order.</p>
+</div>
+
+<div class="step">
+<h3><span class="n">5</span>Reach UEFI from inside Windows 10</h3>
+<p>Log in to <strong>Win10</strong> as <code class="inl">sysadmin</code>. Open <strong>Start &gt; Settings &gt; Update &amp; Security &gt; Recovery</strong>, and under <strong>Advanced startup</strong> click <strong>Restart now</strong>. When the blue <strong>Choose an option</strong> screen appears, click <strong>Troubleshoot &gt; Advanced options</strong>.</p>
+<p>On a UEFI PC you would see a <strong>UEFI Firmware Settings</strong> tile here, which restarts straight into setup. This VM uses legacy BIOS, so the tile is missing. That is expected.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Advanced options screen showing the tiles that are available.</p>
+<p>The same menu can be reached from the command line. Run these in an elevated Command Prompt on a real PC:</p>
+<pre class="cmd"><code><span class="c">:: Restart into the Advanced startup (Choose an option) menu</span>
+shutdown /r /o /t 0
+
+<span class="c">:: Restart straight into UEFI firmware setup (UEFI PCs only)</span>
+shutdown /r /fw /t 0</code></pre>
+<p>You can also hold <kbd>Shift</kbd> while you click <strong>Restart</strong> on the Start menu or login screen.</p>
+</div>
+
+<div class="step">
+<h3><span class="n">6</span>Back out and boot normally</h3>
+<p>Click the back arrow until you return to <strong>Choose an option</strong>, then click <strong>Continue</strong> to start Windows.</p>
+</div>
+
+<p class="task-head">Task 2: Device Manager</p>
+
+<div class="step">
+<h3><span class="n">7</span>Open Device Manager from Control Panel (Win7)</h3>
+<p>Log in to <strong>Win7</strong>. Open <strong>Start &gt; Control Panel</strong>, set <strong>View by</strong> to <strong>Small icons</strong>, and click <strong>Device Manager</strong>.</p>
+</div>
+
+<div class="step">
+<h3><span class="n">8</span>Show hidden devices and read the hardware</h3>
+<p>Open the <strong>View</strong> menu and choose <strong>Show hidden devices</strong>. That adds non-Plug and Play drivers, low-level system drivers, and devices that are no longer connected. Expand <strong>Processors</strong> to see the CPU model and speed, then expand <strong>Mice and other pointing devices</strong>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>Device Manager with hidden devices shown and Processors expanded.</p>
+</div>
+
+<div class="step">
+<h3><span class="n">9</span>Inspect a driver, and don't roll it back</h3>
+<p>Right-click <strong>VMware Pointing Device</strong> and choose <strong>Properties</strong>. On the <strong>Driver</strong> tab, click <strong>Roll Back Driver</strong>, read the prompt, and click <strong>No</strong>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Driver tab or the Roll Back confirmation prompt.</p>
+<p>Then open the <strong>Resources</strong> tab. It lists the I/O ranges and IRQ the device uses, and a <strong>Conflicting device list</strong> at the bottom. Don't change these settings. Close the windows when you're done.</p>
+</div>
+
+<div class="step">
+<h3><span class="n">10</span>Open Device Manager with Run (Win10)</h3>
+<p>Switch to <strong>Win10</strong>. Right-click <strong>Start</strong>, choose <strong>Run</strong>, and enter:</p>
+<pre class="cmd"><code>devmgmt.msc</code></pre>
+</div>
+
+<div class="step">
+<h3><span class="n">11</span>Read a device's history in the Events tab</h3>
+<p>Expand <strong>Display adapters</strong>, right-click the adapter, and choose <strong>Properties</strong>. Windows 10 adds an <strong>Events</strong> tab that Windows 7 doesn't have. It lists when the device was installed, configured, started, or updated. Click <strong>View All Events</strong> to open Event Viewer, then look at the <strong>Details</strong> tab.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Events tab or the Event Viewer details for the display adapter.</p>
+<p>Close Event Viewer and the Properties window. The lab is complete.</p>
+</div>
+</section>
+
+<section id="reference" data-track>
+<h2>Reference: firmware and Device Manager</h2>
+
+<h3>BIOS compared with UEFI</h3>
+<div class="tbl"><table>
+<thead><tr><th scope="col"></th><th scope="col">Legacy BIOS</th><th scope="col">UEFI</th></tr></thead>
+<tbody>
+<tr><th scope="row">Interface</th><td>Text menus, keyboard only</td><td>Often graphical, with mouse support</td></tr>
+<tr><th scope="row">Boot disk format</th><td>MBR: disks up to about 2 TB, four primary partitions</td><td>GPT: very large disks, up to 128 partitions in Windows</td></tr>
+<tr><th scope="row">Security</th><td>Setup and boot passwords</td><td>Adds Secure Boot, which blocks unsigned boot loaders</td></tr>
+<tr><th scope="row">Windows 11</th><td>Not supported</td><td>Required, with Secure Boot capability and TPM 2.0</td></tr>
+<tr><th scope="row">Older OS support</th><td>Native</td><td>Through CSM (Compatibility Support Module) if the board offers it</td></tr>
+</tbody></table></div>
+
+<h3>Firmware settings you'll be asked about</h3>
+<ul>
+<li><strong>Boot options:</strong> boot order, one-time boot menu, USB and network (PXE) boot.</li>
+<li><strong>Passwords:</strong> a supervisor (administrator) password protects setup; a user or power-on password is needed to boot at all.</li>
+<li><strong>Secure Boot and TPM:</strong> both needed for Windows 11, and the TPM is used by BitLocker (Lab 15).</li>
+<li><strong>Virtualization:</strong> Intel VT-x or AMD-V must be on for Hyper-V (Lab 16).</li>
+<li><strong>Hardware monitoring:</strong> CPU temperature, fan speeds, and voltages.</li>
+<li><strong>USB permissions:</strong> enable or disable ports, often for security.</li>
+</ul>
+
+<h3>Getting into setup</h3>
+<p>The key depends on the board maker, not Windows. Watch the boot screen or check the manual. Common setup keys are <kbd>Del</kbd>, <kbd>F2</kbd>, <kbd>F10</kbd>, <kbd>F1</kbd>, and <kbd>Esc</kbd>. One-time boot menus are often <kbd>F12</kbd>, <kbd>F11</kbd>, <kbd>F9</kbd>, or <kbd>F8</kbd>.</p>
+
+<h3>Ways to open Device Manager</h3>
+<div class="tbl"><table>
+<thead><tr><th scope="col">Method</th><th scope="col">How</th></tr></thead>
+<tbody>
+<tr><td>Run or a command prompt</td><td><code>devmgmt.msc</code></td></tr>
+<tr><td>Power User menu</td><td><kbd>Win</kbd>+<kbd>X</kbd> &gt; Device Manager</td></tr>
+<tr><td>Computer Management</td><td><code>compmgmt.msc</code> &gt; System Tools &gt; Device Manager</td></tr>
+<tr><td>Control Panel</td><td>Small icons view &gt; Device Manager</td></tr>
+</tbody></table></div>
+
+<h3>Reading the device list</h3>
+<div class="tbl"><table>
+<thead><tr><th scope="col">You see</th><th scope="col">It means</th></tr></thead>
+<tbody>
+<tr><td>Yellow triangle with "!"</td><td>The device has a problem. Open Properties &gt; General to read the error code.</td></tr>
+<tr><td>Down arrow on the icon</td><td>The device is disabled.</td></tr>
+<tr><td>"Unknown device" or "Other devices"</td><td>Windows has no driver for it.</td></tr>
+<tr><td>Faded (grey) icon</td><td>A hidden device, or one that isn't currently connected.</td></tr>
+</tbody></table></div>
+
+<h3>Error codes worth knowing</h3>
+<div class="tbl"><table>
+<thead><tr><th scope="col">Code</th><th scope="col">Meaning</th><th scope="col">First thing to try</th></tr></thead>
+<tbody>
+<tr><td>Code 10</td><td>This device cannot start</td><td>Update or reinstall the driver</td></tr>
+<tr><td>Code 22</td><td>The device is disabled</td><td>Right-click &gt; Enable device</td></tr>
+<tr><td>Code 28</td><td>Drivers aren't installed</td><td>Install the maker's driver</td></tr>
+<tr><td>Code 43</td><td>Windows stopped the device because it reported problems</td><td>Reseat or replace the hardware, then reinstall the driver</td></tr>
+</tbody></table></div>
+
+<h3>Driver tab buttons</h3>
+<div class="tbl"><table>
+<thead><tr><th scope="col">Button</th><th scope="col">Use it when</th></tr></thead>
+<tbody>
+<tr><td>Driver Details</td><td>You need the driver file names and versions</td></tr>
+<tr><td>Update Driver</td><td>A newer driver should fix a bug or add support</td></tr>
+<tr><td>Roll Back Driver</td><td>A device broke right after a driver update. Greyed out if there's no earlier driver saved.</td></tr>
+<tr><td>Disable Device</td><td>You want the device off without removing its driver</td></tr>
+<tr><td>Uninstall Device</td><td>You want a clean reinstall. Use Action &gt; Scan for hardware changes to detect it again.</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="stuck" data-track>
+<h2>Where people get stuck</h2>
+<div class="tbl"><table>
+<thead><tr><th scope="col">Problem</th><th scope="col">Why it happens</th><th scope="col">Fix</th></tr></thead>
+<tbody>
+<tr><td><kbd>F2</kbd> doesn't open BIOS setup</td><td>The console didn't have keyboard focus, or the VM booted past the prompt</td><td>Click inside the console first, restart, and press <kbd>F2</kbd> repeatedly</td></tr>
+<tr><td>The mouse does nothing in setup</td><td>Legacy BIOS setup is keyboard-only</td><td>Use the arrow keys, <kbd>Enter</kbd>, and the keys listed at the bottom of the screen</td></tr>
+<tr><td><kbd>+</kbd> doesn't move the boot item</td><td>On some keyboards <kbd>+</kbd> needs <kbd>Shift</kbd></td><td>Use <kbd>Shift</kbd>+<kbd>=</kbd> or the numeric keypad</td></tr>
+<tr><td>No UEFI Firmware Settings tile</td><td>The VM uses legacy BIOS</td><td>Expected. Note what tiles are present and continue.</td></tr>
+<tr><td>Can't find Control Panel on the Win10 right-click Start menu</td><td>Later Windows 10 builds replaced it with Settings</td><td>Use <code class="inl">devmgmt.msc</code> from Run, as in Task 2.2</td></tr>
+<tr><td>Roll Back Driver is greyed out</td><td>No earlier driver version is stored</td><td>Nothing to roll back to. Click No or Cancel and move on.</td></tr>
+<tr><td>Clicked Yes on Roll Back by mistake</td><td>The previous driver was restored</td><td>Use Update Driver to search automatically, or tell your instructor before resetting the VM</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="on-the-job" data-track>
+<h2>On the job</h2>
+<p>Help desk tickets that this lab prepares you for:</p>
+<div class="tbl"><table>
+<thead><tr><th scope="col">The ticket says</th><th scope="col">Where you look</th><th scope="col">Likely fix</th></tr></thead>
+<tbody>
+<tr><td>"The new webcam doesn't work."</td><td>Device Manager: yellow "!" or Unknown device</td><td>Install the maker's driver; check the error code</td></tr>
+<tr><td>"The screen flickers since the last update."</td><td>Display adapter &gt; Driver and Events tabs</td><td>Roll back the display driver</td></tr>
+<tr><td>"It won't boot from my USB stick."</td><td>Firmware boot order or one-time boot menu</td><td>Boot from the menu; check that USB boot is enabled and Secure Boot accepts the media</td></tr>
+<tr><td>"Windows 11 says this PC can't run it."</td><td>Firmware: boot mode, Secure Boot, TPM</td><td>Switch to UEFI, enable Secure Boot and TPM (the disk must be GPT)</td></tr>
+<tr><td>"The clock is wrong every time I turn it on."</td><td>Firmware date and time</td><td>Replace the CMOS battery (usually a CR2032 coin cell)</td></tr>
+</tbody></table></div>
+<div class="call tip"><span class="k">Professional habit</span>
+<p>Before you change a firmware setting on someone else's PC, write down the current value. If the change causes a problem, you can put it back exactly, and your ticket notes show what you did.</p></div>
+</section>
+
+<section id="exam" data-track>
+<h2>On the A+ exams</h2>
+<div class="badges"><span class="badge">Core 1: Hardware</span><span class="badge">Core 1: Hardware &amp; Network Troubleshooting</span><span class="badge">Core 2: Operating Systems</span></div>
+<p><strong>Core 1 (220-1201)</strong> expects you to configure BIOS/UEFI settings and to recognize firmware-related symptoms. <strong>Core 2 (220-1202)</strong> lists Device Manager among the Windows tools you should know by name and by its <code class="inl">.msc</code> shortcut.</p>
+<h3>High-yield facts</h3>
+<ul>
+<li>The setup key comes from the board maker, not the operating system.</li>
+<li>UEFI pairs with GPT disks; legacy BIOS pairs with MBR. Windows 11 requires UEFI, Secure Boot capability, and TPM 2.0.</li>
+<li>Supervisor password protects setup; user or power-on password protects booting.</li>
+<li>Wrong time and lost settings after power-off point to a dead CMOS battery.</li>
+<li><code class="inl">devmgmt.msc</code> opens Device Manager. A yellow "!" means a problem; a down arrow means disabled.</li>
+<li>Roll Back Driver is the first fix when a device fails right after a driver update.</li>
+</ul>
+</section>
+
+<section id="check">
+<h2>Check yourself</h2>
+<div class="q"><p class="ask">1. A user's PC keeps trying to boot from a USB drive left in the port. What setting do you change, and where?</p>
+<button type="button" class="btn reveal" aria-expanded="false">Show answer</button>
+<div class="ans">The boot order, in BIOS/UEFI setup. Put the internal drive first. For the rare times you need USB boot, use the one-time boot menu instead.</div></div>
+<div class="q"><p class="ask">2. You're upgrading a PC to Windows 11 and the check fails on Secure Boot. The disk is MBR. What has to change?</p>
+<button type="button" class="btn reveal" aria-expanded="false">Show answer</button>
+<div class="ans">Secure Boot needs UEFI boot mode, and UEFI boots from GPT disks. Convert the disk to GPT (Windows includes the <code class="inl">mbr2gpt</code> tool), switch firmware to UEFI, then enable Secure Boot.</div></div>
+<div class="q"><p class="ask">3. A network adapter stopped working right after a driver update. What's the fastest fix in Device Manager?</p>
+<button type="button" class="btn reveal" aria-expanded="false">Show answer</button>
+<div class="ans">Properties &gt; Driver &gt; Roll Back Driver, which restores the previous driver version.</div></div>
+<div class="q"><p class="ask">4. Why might the UEFI Firmware Settings tile be missing from Advanced options?</p>
+<button type="button" class="btn reveal" aria-expanded="false">Show answer</button>
+<div class="ans">The PC is running in legacy BIOS mode (or Windows was installed in legacy mode). The tile appears only on UEFI installations.</div></div>
+<div class="q"><p class="ask">5. What does Show hidden devices add to the Device Manager list?</p>
+<button type="button" class="btn reveal" aria-expanded="false">Show answer</button>
+<div class="ans">Non-Plug and Play drivers, low-level system drivers, drivers installed by other software, and devices that were installed but aren't connected now.</div></div>
+</section>
+
+<section id="evidence">
+<h2>Evidence to capture</h2>
+<p>Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.</p>
+<div class="evidence"><ul>
+<li><input type="checkbox" id="ev1" data-evidence="ev1"><label for="ev1"><span class="shot">Boot order</span>The PhoenixBIOS Boot tab with Hard Drive first.</label></li>
+<li><input type="checkbox" id="ev2" data-evidence="ev2"><label for="ev2"><span class="shot">Advanced options</span>The Win10 Advanced options screen reached through Advanced startup.</label></li>
+<li><input type="checkbox" id="ev3" data-evidence="ev3"><label for="ev3"><span class="shot">Hidden devices</span>Device Manager on Win7 with hidden devices shown and Processors expanded.</label></li>
+<li><input type="checkbox" id="ev4" data-evidence="ev4"><label for="ev4"><span class="shot">Driver tab</span>The pointing device's Driver tab or the Roll Back prompt.</label></li>
+<li><input type="checkbox" id="ev5" data-evidence="ev5"><label for="ev5"><span class="shot">Device events</span>The display adapter's Events tab or its Event Viewer details on Win10.</label></li>
+</ul></div>
+</section>
+
+<section id="cheat">
+<h2>Cheat sheet</h2>
+<div class="cheat"><div class="grid">
+<div><h3>Firmware</h3><ul>
+<li>Setup key: <kbd>Del</kbd>, <kbd>F2</kbd>, <kbd>F10</kbd>, <kbd>Esc</kbd> (board-specific)</li>
+<li>One-time boot menu: often <kbd>F12</kbd></li>
+<li>From Windows: <kbd>Shift</kbd>+Restart</li>
+<li><code>shutdown /r /o /t 0</code> opens Advanced startup</li>
+<li><code>shutdown /r /fw /t 0</code> opens UEFI setup</li>
+<li>UEFI + GPT + Secure Boot + TPM 2.0 for Windows 11</li>
+<li>Clock resets: CMOS battery</li>
+</ul></div>
+<div><h3>Device Manager</h3><ul>
+<li><code>devmgmt.msc</code> or <kbd>Win</kbd>+<kbd>X</kbd></li>
+<li>View &gt; Show hidden devices</li>
+<li>"!" problem, down arrow disabled</li>
+<li>Code 10 can't start, 22 disabled, 28 no driver, 43 reported problem</li>
+<li>Broke after update: Roll Back Driver</li>
+<li>Clean reinstall: Uninstall, then Scan for hardware changes</li>
+<li>Events tab: device history (Windows 10 and later)</li>
+</ul></div>
+</div></div>
+</section>

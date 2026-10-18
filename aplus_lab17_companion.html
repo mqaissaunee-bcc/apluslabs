@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 17 Companion: Writing Basic Scripts | A+ Lab Companion</title>
+<meta name="description" content="Write and run a Windows batch file, a PowerShell script, and a Bash script.">
+<style>
+:root{
+  --bg:#E8ECF0; --surface:#FFFFFF; --surface-2:#F3F5F8; --ink:#14233A; --ink-2:#47576C;
+  --rule:#C7D0DA; --accent:#1C5689; --accent-ink:#FFFFFF; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
+  --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
+  --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
+  --fs:1rem; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
+a{color:var(--accent)} a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--tag);color:var(--tag-ink);padding:.7rem 1rem;z-index:20}
+.skip-link:focus{left:1rem;top:1rem}
+code,pre,kbd{font-family:var(--f-mono)}
+code.inl{background:var(--surface-2);border:1px solid var(--rule);border-radius:3px;padding:0 .3em;font-size:.92em}
+kbd{display:inline-block;border:1px solid var(--rule);border-bottom-width:3px;border-radius:4px;padding:0 .4em;background:var(--surface);font-size:.85em;line-height:1.5}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:76rem;margin:0 auto;padding:.4rem 1rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.1rem;color:var(--ink);text-decoration:none;margin-right:auto;display:flex;gap:.5rem;align-items:center}
+.brand .plug{display:inline-grid;place-items:center;width:2rem;height:2rem;background:var(--tag);color:var(--tag-ink);border-radius:4px;font-size:1rem}
+.ctl{display:flex;gap:.35rem;flex-wrap:wrap}
+.ctl button,.btn{min-height:44px;min-width:44px;padding:.3rem .75rem;border:1px solid var(--rule);background:var(--surface-2);color:var(--ink);border-radius:6px;font:inherit;font-size:.9rem;cursor:pointer}
+.ctl button:hover,.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* hero ticket — the one bold element */
+.ticket{max-width:76rem;margin:1.5rem auto 0;padding:0 1rem}
+.ticket-in{display:grid;grid-template-columns:1fr;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.stub{background:var(--tag);color:var(--tag-ink);padding:1rem 1.25rem;display:flex;flex-direction:column;justify-content:space-between;gap:.5rem;position:relative}
+.stub .lbl{font-size:.85rem;font-weight:600}
+.stub .no{font-family:var(--f-display);font-weight:700;white-space:nowrap;font-size:clamp(2.4rem,6vw,3.5rem);line-height:1;letter-spacing:-.01em}
+.stub .series{font-size:.8rem}
+.tk-body{padding:1.25rem 1.5rem 1.5rem}
+.tk-body h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.15;margin:0 0 .6rem;max-width:30ch}
+.lede{font-size:1.08rem;color:var(--ink-2);max-width:62ch;margin:0 0 1rem}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));gap:0;border-top:1px dashed var(--rule);margin:0}
+.fields div{padding:.6rem .75rem .5rem 0;border-bottom:1px dashed var(--rule)}
+.fields dt{font-size:.78rem;color:var(--ink-2)}
+.fields dd{margin:0;font-weight:600;font-size:.95rem}
+@media (min-width:720px){
+  .ticket-in{grid-template-columns:12rem 1fr}
+  .stub{border-right:2px dashed var(--tag-ink)}
+  .stub::before,.stub::after{content:"";position:absolute;right:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:1px solid var(--rule)}
+  .stub::before{top:-11px} .stub::after{bottom:-11px}
+}
+
+/* layout */
+.wrap{max-width:76rem;margin:0 auto;padding:1.5rem 1rem 3rem;display:grid;gap:2rem;grid-template-columns:1fr}
+@media (min-width:1000px){.wrap{grid-template-columns:15rem minmax(0,1fr)}}
+.toc{align-self:start}
+@media (min-width:1000px){.toc{position:sticky;top:4.5rem}}
+.toc details{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:.5rem .9rem}
+.toc summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+.toc ol{list-style:none;margin:.25rem 0 .5rem;padding:0}
+.toc li a{display:flex;justify-content:space-between;gap:.5rem;padding:.3rem .4rem;border-radius:4px;text-decoration:none;color:var(--ink);font-size:.92rem}
+.toc li a:hover{background:var(--surface-2)}
+.toc li a[aria-current="true"]{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--accent)}
+.toc .tick{color:var(--tip);font-weight:700}
+.meter{margin:.5rem 0 .25rem;height:10px;background:var(--surface-2);border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+.meter span{display:block;height:100%;width:0;background:var(--tip);transition:width .3s}
+.meter-txt{font-size:.85rem;color:var(--ink-2);margin:0}
+main{min-width:0}
+main section{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.25rem 1.5rem;margin:0 0 1.25rem;max-width:56rem}
+@media (max-width:600px){main section{padding:1rem}.ctl button{padding:.3rem .55rem}}
+main h2{font-family:var(--f-display);font-weight:700;font-size:1.55rem;line-height:1.2;margin:0 0 .75rem}
+main h3{font-size:1.1rem;margin:1.25rem 0 .4rem}
+main p,main li{max-width:68ch}
+.task-head{font-family:var(--f-display);font-weight:700;font-size:1.15rem;margin:1.75rem 0 .5rem;padding-top:1rem;border-top:2px solid var(--ink)}
+.task-head:first-of-type{border-top:0;padding-top:0}
+.step{border-left:3px solid var(--rule);padding:.1rem 0 .1rem 1rem;margin:1rem 0}
+.step h3{margin-top:0;display:flex;gap:.6rem;align-items:baseline}
+.step h3 .n{flex:none;display:inline-grid;place-items:center;min-width:1.8rem;height:1.8rem;border-radius:50%;background:var(--ink);color:var(--surface);font-size:.9rem}
+.call{border-radius:8px;padding:.75rem 1rem;margin:1rem 0;border:1px solid}
+.call .k{display:block;font-weight:700;margin-bottom:.2rem}
+.call p{margin:.25rem 0}
+.call.stuck{background:var(--stuck-bg);border-color:var(--stuck)} .call.stuck .k{color:var(--stuck)}
+.call.tip{background:var(--tip-bg);border-color:var(--tip)} .call.tip .k{color:var(--tip)}
+.call.now{background:var(--now-bg);border-color:var(--now)} .call.now .k{color:var(--now)}
+.shot{display:inline-block;background:var(--tag);color:var(--tag-ink);font-weight:700;font-size:.85rem;padding:.05rem .5rem;border-radius:3px;margin-right:.35rem}
+.shot::before{content:"\1F4F7\FE0E  "}
+p.shotline{margin:.5rem 0}
+pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
+pre.cmd .c{color:var(--code-dim)}
+.copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
+.tbl{overflow-x:auto;margin:.75rem 0}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;vertical-align:top;padding:.5rem .6rem;border-bottom:1px solid var(--rule)}
+th{background:var(--surface-2);font-weight:600}
+td code{white-space:nowrap}
+.done-row{display:flex;gap:.6rem;align-items:center;margin-top:1.25rem;padding-top:.75rem;border-top:1px dashed var(--rule)}
+input[type=checkbox]{width:1.3rem;height:1.3rem;accent-color:var(--tip);flex:none}
+.done-row label{min-height:44px;display:flex;align-items:center;cursor:pointer}
+.q{border-top:1px solid var(--rule);padding:.75rem 0}
+.q .ask{font-weight:600;margin:0 0 .4rem}
+.ans{display:none;margin-top:.5rem;padding:.6rem .8rem;background:var(--surface-2);border-radius:6px}
+.ans.open{display:block}
+.evidence ul{list-style:none;padding:0;margin:0}
+.evidence li{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px dashed var(--rule)}
+.evidence li label{cursor:pointer}
+.cheat{border:2px solid var(--ink);border-radius:8px;padding:1rem 1.25rem}
+.cheat .grid{display:grid;gap:1rem 1.5rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.cheat h3{margin:0 0 .3rem;font-family:var(--f-display)}
+.cheat ul{margin:0;padding-left:1.1rem;font-size:.93rem}
+.badges{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+.badge{border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:.05rem .65rem;font-size:.82rem;font-weight:600}
+footer{border-top:1px solid var(--rule);background:var(--surface);color:var(--ink-2);font-size:.88rem}
+footer .in{max-width:76rem;margin:0 auto;padding:1.25rem 1rem}
+footer p{margin:.25rem 0;max-width:80ch}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
+  body{background:#fff;color:#000} .wrap{display:block;padding:0}
+  main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
+  .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
+  .stub{background:#fff;border:2px solid #000}
+}
+</style>
+</head>
+<body data-prefix="aplus-lab17-v1:">
+<a href="#main" class="skip-link">Skip to main content</a>
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="index.html"><span class="plug" aria-hidden="true">A+</span>A+ Lab Companion</a>
+  <div class="ctl" role="group" aria-label="Page controls">
+    <button type="button" id="fs-down" aria-label="Decrease text size">A&minus;</button>
+    <button type="button" id="fs-up" aria-label="Increase text size">A+</button>
+    <button type="button" id="theme" aria-pressed="false">Dark mode</button>
+    <button type="button" id="print">Print</button>
+    <button type="button" id="clear">Clear progress</button>
+  </div>
+</div></header>
+<div class="ticket"><div class="ticket-in">
+  <div class="stub"><span class="lbl">Lab</span><span class="no">17</span><span class="series">CompTIA A+ Lab Series v4</span></div>
+  <div class="tk-body"><h1>Writing Basic Scripts</h1><p class="lede">Anything you type more than twice is worth scripting. You will write the same system-information report three ways (a Windows batch file, a PowerShell script, and a Bash script), run each one, and deal with the safety settings that stop scripts from running.</p><dl class="fields"><div><dt>Time</dt><dd>45–60 min</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Machines</dt><dd>Win10, Lubuntu</dd></div><div><dt>Exam domains</dt><dd>Core 2: Operational Procedures</dd></div></dl></div>
+</div></div>
+<div class="wrap">
+<nav class="toc" aria-label="On this page"><details><summary>On this page</summary>
+<div id="meter" class="meter" role="progressbar" aria-label="Sections reviewed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="meter-bar"></span></div>
+<p id="meter-txt" class="meter-txt"></p>
+<ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#reference"><span>Reference: scripting</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#exam"><span>On the A+ exams</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#check"><span>Check yourself</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#evidence"><span>Evidence to capture</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#cheat"><span>Cheat sheet</span><span class="tick" aria-hidden="true"></span></a></li></ol></details></nav>
+<main id="main" tabindex="-1">
+<section id="overview" aria-labelledby="h-overview">
+<h2 id="h-overview">Why this lab matters</h2>
+<p>Scripts turn a checklist into one command. A technician uses them to gather information from many PCs the same way, map drives at sign-in, install software, clean up temp files, or restart a stuck service on a schedule (Lab 02's Task Scheduler can run any of these).</p>
+<p>This lab writes one job, "report this PC's OS, hardware, and network," in the three scripting languages you're most likely to meet: <strong>batch</strong> (<code class="inl">.bat</code>) for classic Windows, <strong>PowerShell</strong> (<code class="inl">.ps1</code>) for modern Windows administration, and <strong>Bash</strong> (<code class="inl">.sh</code>) for Linux. Comparing them line by line shows that the logic is the same and only the syntax changes.</p>
+<p>You'll also meet each platform's guardrail: PowerShell's <strong>execution policy</strong> and Linux's <strong>execute permission</strong>.</p>
+
+<div class="done-row"><input type="checkbox" id="done-overview" data-done="overview"><label for="done-overview">Mark this section reviewed</label></div>
+</section>
+<section id="environment" aria-labelledby="h-environment">
+<h2 id="h-environment">The environment you're working in</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Lubuntu</td><td><code class="inl">192.168.1.11/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<div class="tbl"><table><thead><tr><th scope="col">Script</th><th scope="col">Saved as</th></tr></thead><tbody><tr><td>Batch</td><td><code class="inl">C:\Users\sysadmin\Sysinfo.bat</code></td></tr><tr><td>PowerShell</td><td><code class="inl">C:\Users\sysadmin\win10info.ps1</code></td></tr><tr><td>Bash</td><td><code class="inl">/home/sysadmin/lhostinfo.sh</code></td></tr></tbody></table></div>
+<div class="call stuck"><span class="k">Copying from the PDF</span><p>The PDF's scripts contain curly quotes (<code class="inl">“ ”</code>) and en dashes (<code class="inl">–a</code>, <code class="inl">–h</code>, <code class="inl">–i</code>) that the shells don't understand, and two long lines are wrapped. Use the versions on this page; they're corrected and have Copy buttons.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-environment" data-done="environment"><label for="done-environment">Mark this section reviewed</label></div>
+</section>
+<section id="then-now" aria-labelledby="h-then-now">
+<h2 id="h-then-now">Then vs. now: Windows 11</h2>
+<div class="tbl"><table><thead><tr><th scope="col">In the lab</th><th scope="col">On Windows 11</th></tr></thead><tbody><tr><td>Notepad to write scripts</td><td>Notepad still works; <strong>Visual Studio Code</strong> is what most admins use (syntax highlighting, PowerShell extension)</td></tr><tr><td>PowerShell ISE</td><td>Still included but no longer developed. Use <strong>Windows Terminal</strong> with PowerShell, or VS Code.</td></tr><tr><td>Windows PowerShell 5.1</td><td>Still built in. <strong>PowerShell 7</strong> (<code class="inl">pwsh</code>) is the current cross-platform version, installed separately.</td></tr><tr><td><code class="inl">wmic</code> in the batch file</td><td><strong>Deprecated</strong>; newer Windows 11 builds don't include it by default. Use PowerShell's <code class="inl">Get-CimInstance</code> instead.</td></tr><tr><td><code class="inl">Get-WmiObject</code> in the PowerShell script</td><td>Works in 5.1 but not in PowerShell 7. Use <code class="inl">Get-CimInstance</code> (same classes).</td></tr><tr><td>Bash only on Linux</td><td><strong>WSL</strong> runs Bash on Windows: <code class="inl">wsl --install</code></td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-then-now" data-done="then-now"><label for="done-then-now">Mark this section reviewed</label></div>
+</section>
+<section id="walkthrough" aria-labelledby="h-walkthrough">
+<h2 id="h-walkthrough">Walkthrough</h2>
+<p class="task-head">Task 1: A Windows batch file (Win10)</p>
+<div class="step">
+<h3><span class="n">1</span>Look at the available commands</h3>
+<p>Log in to <strong>Win10</strong>, open <strong>Command Prompt</strong>, and run:</p>
+<pre class="cmd"><code>help | more</code></pre>
+<p>Press <kbd>Space</kbd> for the next page and <kbd>Q</kbd> to quit. Find <code class="inl">echo</code>, <code class="inl">findstr</code>, <code class="inl">rem</code>, and <code class="inl">systeminfo</code>.</p>
+</div>
+<div class="step">
+<h3><span class="n">2</span>Write the script in Notepad</h3>
+<p>Open <strong>Notepad</strong> and type (or copy) the script:</p>
+<pre class="cmd"><code>:: This batch file reveals OS, hardware, and networking configuration.
+TITLE My System Info
+ECHO Please wait... Checking system information.
+:: Section 1: OS information.
+ECHO ============================
+ECHO OS INFO
+ECHO ============================
+rem findstr searches for a text string. Enter findstr /? for details.
+systeminfo | findstr /c:"OS Name"
+systeminfo | findstr /c:"OS Version"
+systeminfo | findstr /c:"System Type"
+:: Section 2: Hardware information.
+ECHO ============================
+ECHO HARDWARE INFO
+ECHO ============================
+systeminfo | findstr /c:"Total Physical Memory"
+wmic cpu get name
+:: Section 3: Networking information.
+ECHO ============================
+ECHO NETWORK INFO
+ECHO ============================
+ipconfig | findstr IPv4 &gt;&gt; info.txt
+ipconfig | findstr IPv6 &gt;&gt; info.txt
+PAUSE</code></pre>
+</div>
+<div class="step">
+<h3><span class="n">3</span>Save it as a .bat file</h3>
+<p>Choose <strong>File > Save As</strong>, go to <code class="inl">C:\Users\sysadmin</code>, set <strong>Save as type</strong> to <strong>All Files</strong>, and name it <code class="inl">Sysinfo.bat</code>.</p>
+<div class="call stuck"><span class="k">Where people get stuck</span><p>If Save as type stays on <strong>Text Documents</strong>, Notepad saves <code class="inl">Sysinfo.bat.txt</code>, which won't run. Choose All Files, or put the name in quotes: <code class="inl">"Sysinfo.bat"</code>. Run <code class="inl">dir</code> to check.</p></div>
+</div>
+<div class="step">
+<h3><span class="n">4</span>Run it</h3>
+<pre class="cmd"><code>dir
+Sysinfo.bat</code></pre>
+<p>Watch the OS and hardware sections print on screen. Press any key at <code class="inl">PAUSE</code>. The network lines don't appear because <code class="inl">&gt;&gt;</code> sent them to a file:</p>
+<pre class="cmd"><code>dir
+more info.txt</code></pre>
+<p class="shotline"><span class="shot">Screenshot</span>The batch file's output in Command Prompt.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The contents of info.txt.</p>
+<p>Close Command Prompt and Notepad.</p>
+</div>
+<p class="task-head">Task 2: A PowerShell script (Win10)</p>
+<div class="step">
+<h3><span class="n">5</span>Open PowerShell ISE as administrator</h3>
+<p>Search for <code class="inl">PowerShell ISE</code>, right-click it > <strong>Run as administrator</strong>, and accept UAC. Move to your home folder:</p>
+<pre class="cmd"><code>cd C:\Users\sysadmin</code></pre>
+</div>
+<div class="step">
+<h3><span class="n">6</span>Write the script</h3>
+<p>Choose <strong>File > New</strong> and enter:</p>
+<pre class="cmd"><code>Write-Output "Computer name is:"
+Get-Content env:computername
+Write-Output "Windows version is:"
+(Get-WmiObject -Class Win32_OperatingSystem).Caption
+Write-Output "CPU is:"
+Get-WmiObject Win32_Processor | findstr "Name"
+Write-Output "Total Memory is:"
+[Math]::Round((Get-WmiObject -Class Win32_ComputerSystem -ComputerName localhost).TotalPhysicalMemory/1Gb)
+Write-Output "The Disks that are installed and their freespace:"
+Get-WmiObject -Class Win32_LogicalDisk -Filter "DriveType = '3'"
+Write-Output "IPv4 addresses:"
+Get-NetIPAddress -AddressFamily IPv4 | Sort-Object -Property InterfaceIndex | Format-Table</code></pre>
+<p>Save it as <code class="inl">C:\Users\sysadmin\win10info.ps1</code>.</p>
+</div>
+<div class="step">
+<h3><span class="n">7</span>Try to run it</h3>
+<pre class="cmd"><code>.\win10info.ps1</code></pre>
+<p>It fails with <strong>running scripts is disabled on this system</strong>. That's the execution policy doing its job.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The execution policy error.</p>
+</div>
+<div class="step">
+<h3><span class="n">8</span>Allow local scripts, then run it again</h3>
+<pre class="cmd"><code>Set-ExecutionPolicy RemoteSigned
+.\win10info.ps1</code></pre>
+<p>Click <strong>Yes to All</strong> at the prompt. The script now runs.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The win10info.ps1 output.</p>
+<div class="call tip"><span class="k">What RemoteSigned means</span><p>Scripts you write on this PC run; scripts downloaded from the internet must be signed by a trusted publisher. It's the usual choice for admins. On a real PC, <code class="inl">Set-ExecutionPolicy RemoteSigned -Scope CurrentUser</code> changes it only for you.</p></div>
+</div>
+<div class="step">
+<h3><span class="n">9</span>Compare the two scripts</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Batch</th><th scope="col">PowerShell</th></tr></thead><tbody><tr><td><code class="inl">ECHO text</code></td><td><code class="inl">Write-Output "text"</code></td></tr><tr><td><code class="inl">%COMPUTERNAME%</code></td><td><code class="inl">$env:computername</code> (or <code class="inl">Get-Content env:computername</code>)</td></tr><tr><td><code class="inl">systeminfo</code> piped to <code class="inl">findstr</code></td><td><code class="inl">Get-WmiObject</code> / <code class="inl">Get-CimInstance</code> returning objects with named properties</td></tr><tr><td><code class="inl">&gt;&gt; info.txt</code></td><td><code class="inl">Out-File info.txt -Append</code> (or <code class="inl">&gt;&gt;</code>)</td></tr></tbody></table></div>
+</div>
+<p class="task-head">Task 3: A Bash script (Lubuntu)</p>
+<div class="step">
+<h3><span class="n">10</span>Open nano</h3>
+<p>Sign in to <strong>Lubuntu</strong>, open <strong>Menu > System Tools > LXTerminal</strong>, and run:</p>
+<pre class="cmd"><code>nano</code></pre>
+</div>
+<div class="step">
+<h3><span class="n">11</span>Write the script</h3>
+<pre class="cmd"><code>#!/bin/bash
+echo "Computer name is: " $HOSTNAME
+echo "Operating System and distribution:"
+lsb_release -a
+echo "CPU cores"
+cat /proc/cpuinfo | grep processor
+echo "All available memory"
+cat /proc/meminfo | grep "MemTotal"
+echo "All disk space available."
+df -h
+echo "All IP addresses"
+ip addr show
+echo "Show the hostname IP address."
+hostname -i</code></pre>
+<div class="call tip"><span class="k">The first line matters</span><p><code class="inl">#!/bin/bash</code> (the <strong>shebang</strong>) tells Linux which interpreter runs the file.</p></div>
+</div>
+<div class="step">
+<h3><span class="n">12</span>Save it</h3>
+<p>Press <kbd>Ctrl</kbd>+<kbd>O</kbd>, type <code class="inl">lhostinfo.sh</code>, and press <kbd>Enter</kbd>. Press <kbd>Ctrl</kbd>+<kbd>X</kbd> to leave nano (or keep it open and use a second terminal).</p>
+</div>
+<div class="step">
+<h3><span class="n">13</span>Make it executable and run it</h3>
+<p>Open a second terminal (or use the same one) and run:</p>
+<pre class="cmd"><code>chmod 755 lhostinfo.sh
+ls -l lhostinfo.sh
+./lhostinfo.sh</code></pre>
+<p><code class="inl">ls -l</code> now shows <code class="inl">-rwxr-xr-x</code>: the <code class="inl">x</code> is execute permission. <code class="inl">./</code> tells Bash the script is in the current folder, which isn't in the search path.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The <code class="inl">ls -l</code> line showing execute permission, and the script's output.</p>
+<p>The lab is complete.</p>
+</div>
+
+<div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+<section id="reference" aria-labelledby="h-reference">
+<h2 id="h-reference">Reference: scripting</h2>
+<h3>Script types on the exam</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Extension</th><th scope="col">Language</th><th scope="col">Runs on</th></tr></thead><tbody><tr><td><code class="inl">.bat</code>, <code class="inl">.cmd</code></td><td>Windows batch</td><td>Windows Command Prompt</td></tr><tr><td><code class="inl">.ps1</code></td><td>PowerShell</td><td>Windows (and PowerShell 7 on macOS and Linux)</td></tr><tr><td><code class="inl">.vbs</code></td><td>VBScript</td><td>Windows Script Host (deprecated)</td></tr><tr><td><code class="inl">.sh</code></td><td>Bash / shell script</td><td>Linux, macOS, WSL</td></tr><tr><td><code class="inl">.js</code></td><td>JavaScript</td><td>Browsers, Node.js, Windows Script Host</td></tr><tr><td><code class="inl">.py</code></td><td>Python</td><td>Any OS with Python installed</td></tr></tbody></table></div>
+<h3>The building blocks (all languages)</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Concept</th><th scope="col">Batch</th><th scope="col">PowerShell</th><th scope="col">Bash</th></tr></thead><tbody><tr><td>Variable</td><td><code class="inl">set NAME=value</code>, <code class="inl">%NAME%</code></td><td><code class="inl">$name = "value"</code></td><td><code class="inl">name=value</code>, <code class="inl">$name</code></td></tr><tr><td>Comment</td><td><code class="inl">rem</code> or <code class="inl">::</code></td><td><code class="inl">#</code></td><td><code class="inl">#</code></td></tr><tr><td>Print</td><td><code class="inl">echo</code></td><td><code class="inl">Write-Output</code></td><td><code class="inl">echo</code></td></tr><tr><td>Condition</td><td><code class="inl">if exist file (...)</code></td><td><code class="inl">if ($x -gt 5) { }</code></td><td><code class="inl">if [ -f file ]; then ... fi</code></td></tr><tr><td>Loop</td><td><code class="inl">for %%f in (*.txt) do ...</code></td><td><code class="inl">foreach ($f in $list) { }</code></td><td><code class="inl">for f in *.txt; do ...; done</code></td></tr><tr><td>Pause</td><td><code class="inl">pause</code></td><td><code class="inl">Read-Host</code></td><td><code class="inl">read</code></td></tr></tbody></table></div>
+<h3>PowerShell execution policies</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Policy</th><th scope="col">Allows</th></tr></thead><tbody><tr><td>Restricted</td><td>No scripts (default on Windows client editions)</td></tr><tr><td>AllSigned</td><td>Only scripts signed by a trusted publisher</td></tr><tr><td>RemoteSigned</td><td>Local scripts; downloaded scripts must be signed</td></tr><tr><td>Unrestricted</td><td>All scripts, with a warning for downloaded ones</td></tr><tr><td>Bypass</td><td>Everything, no warnings (for automation tools)</td></tr></tbody></table></div>
+<pre class="cmd"><code>Get-ExecutionPolicy -List
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+<span class="c">Run one script without changing the policy</span>
+powershell -ExecutionPolicy Bypass -File .\script.ps1</code></pre>
+<h3>Linux permissions</h3>
+<div class="tbl"><table><thead><tr><th scope="col"><code class="inl">chmod</code> value</th><th scope="col">Means</th></tr></thead><tbody><tr><td><code class="inl">755</code></td><td>Owner: read, write, execute; group and others: read, execute</td></tr><tr><td><code class="inl">700</code></td><td>Owner only, full access</td></tr><tr><td><code class="inl">644</code></td><td>Owner read/write; others read (normal for data files)</td></tr><tr><td><code class="inl">+x</code></td><td>Add execute (<code class="inl">chmod +x script.sh</code>)</td></tr></tbody></table></div>
+<h3>Common uses for scripts</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Task</th><th scope="col">Example</th></tr></thead><tbody><tr><td>Basic automation</td><td>Restart a service, clear temp files, gather inventory</td></tr><tr><td>Map drives at sign-in</td><td><code class="inl">net use S: \\server\share</code> in a login script</td></tr><tr><td>Install applications</td><td><code class="inl">winget install</code> or <code class="inl">msiexec /i app.msi /qn</code> in a loop</td></tr><tr><td>Automated backups</td><td><code class="inl">robocopy</code> on a schedule</td></tr><tr><td>Gather information</td><td>This lab's reports, run on every PC</td></tr><tr><td>Initiate updates</td><td><code class="inl">winget upgrade --all</code>, <code class="inl">sudo apt upgrade -y</code></td></tr></tbody></table></div>
+<h3>Scripting risks</h3>
+<ul><li>A script runs with your rights; a mistake as admin can delete or misconfigure a lot, fast.</li><li>Downloaded scripts can be malicious; read before you run, and keep execution policy on.</li><li>Avoid storing passwords in plain text inside scripts.</li><li>Scripts can exhaust resources (an infinite loop) or crash a system if untested; test in a VM first (Lab 16).</li></ul>
+
+<div class="done-row"><input type="checkbox" id="done-reference" data-done="reference"><label for="done-reference">Mark this section reviewed</label></div>
+</section>
+<section id="stuck" aria-labelledby="h-stuck">
+<h2 id="h-stuck">Where people get stuck</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Problem</th><th scope="col">Why it happens</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code class="inl">Sysinfo.bat</code> isn't recognized</td><td>Saved as <code class="inl">Sysinfo.bat.txt</code></td><td>Save as type: All Files; rename with <code class="inl">ren</code></td></tr><tr><td><code class="inl">wmic</code> is not recognized</td><td>WMIC is removed from newer Windows</td><td>Use <code class="inl">powershell -c "Get-CimInstance Win32_Processor | Select Name"</code></td></tr><tr><td>"running scripts is disabled"</td><td>Execution policy is Restricted</td><td><code class="inl">Set-ExecutionPolicy RemoteSigned</code> from an elevated prompt</td></tr><tr><td><code class="inl">.\win10info.ps1</code> not found</td><td>You're still in <code class="inl">C:\WINDOWS\system32</code></td><td><code class="inl">cd C:\Users\sysadmin</code> first</td></tr><tr><td>The Total Memory line errors</td><td>It was split across two lines</td><td>Keep it on one line</td></tr><tr><td><code class="inl">lsb_release: invalid option</code></td><td>En dash from the PDF</td><td>Type <code class="inl">-a</code> with a hyphen</td></tr><tr><td><code class="inl">Permission denied</code> running the Bash script</td><td>No execute permission</td><td><code class="inl">chmod 755 lhostinfo.sh</code></td></tr><tr><td><code class="inl">lhostinfo.sh: command not found</code></td><td>Bash doesn't search the current folder</td><td>Run it as <code class="inl">./lhostinfo.sh</code></td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-stuck" data-done="stuck"><label for="done-stuck">Mark this section reviewed</label></div>
+</section>
+<section id="on-the-job" aria-labelledby="h-on-the-job">
+<h2 id="h-on-the-job">On the job</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Request</th><th scope="col">Script approach</th></tr></thead><tbody><tr><td>"Collect the specs of all 40 PCs."</td><td>A PowerShell inventory script that writes CSV, run remotely or at sign-in</td></tr><tr><td>"Everyone needs the S: drive mapped."</td><td>A login script or Group Policy drive mapping</td></tr><tr><td>"Clean temp files on lab PCs nightly."</td><td>A batch or PowerShell script in Task Scheduler</td></tr><tr><td>"Install the same apps on every new laptop."</td><td>A winget script</td></tr><tr><td>"Check disk space on the Linux servers."</td><td>A Bash script with <code class="inl">df -h</code>, run by <code class="inl">cron</code></td></tr></tbody></table></div>
+<div class="call tip"><span class="k">Professional habit</span><p>Put a comment at the top of every script saying what it does, who wrote it, and when. Six months later, that person will be you.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-on-the-job" data-done="on-the-job"><label for="done-on-the-job">Mark this section reviewed</label></div>
+</section>
+<section id="exam" aria-labelledby="h-exam">
+<h2 id="h-exam">On the A+ exams</h2>
+<div class="badges"><span class="badge">Core 2: Operational Procedures</span></div>
+<p><strong>Core 2 (220-1202)</strong> covers script file types (<code class="inl">.bat</code>, <code class="inl">.ps1</code>, <code class="inl">.vbs</code>, <code class="inl">.sh</code>, <code class="inl">.js</code>, <code class="inl">.py</code>), use cases (basic automation, restarting machines, remapping drives, installing applications, automated backups, gathering information, initiating updates), and risks (introducing malware, inadvertent system changes, browser or system crashes from mishandled resources).</p>
+<h3>High-yield facts</h3>
+<ul><li><code class="inl">.bat</code> = batch, <code class="inl">.ps1</code> = PowerShell, <code class="inl">.vbs</code> = VBScript, <code class="inl">.sh</code> = shell, <code class="inl">.js</code> = JavaScript, <code class="inl">.py</code> = Python.</li><li>PowerShell's default execution policy on Windows clients blocks scripts; RemoteSigned is the usual admin setting.</li><li>Linux scripts need execute permission (<code class="inl">chmod +x</code> or <code class="inl">755</code>) and a shebang line.</li><li><code class="inl">&gt;</code> overwrites a file; <code class="inl">&gt;&gt;</code> appends.</li><li>Test scripts in a VM or on one PC before running them everywhere.</li><li>Never run a downloaded script you haven't read.</li></ul>
+
+<div class="done-row"><input type="checkbox" id="done-exam" data-done="exam"><label for="done-exam">Mark this section reviewed</label></div>
+</section>
+<section id="check" aria-labelledby="h-check">
+<h2 id="h-check">Check yourself</h2>
+<div class="q"><p class="ask">1. Which file extension identifies a PowerShell script, and which a Linux shell script?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans"><code class="inl">.ps1</code> for PowerShell; <code class="inl">.sh</code> for a shell script.</div></div>
+<div class="q"><p class="ask">2. A PowerShell script won't run and says scripts are disabled. What's the safe fix?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Set the execution policy to RemoteSigned (ideally <code class="inl">-Scope CurrentUser</code>), which allows local scripts while still requiring downloaded ones to be signed.</div></div>
+<div class="q"><p class="ask">3. Why didn't the network information appear on screen when Sysinfo.bat ran?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">The <code class="inl">ipconfig</code> lines used <code class="inl">&gt;&gt; info.txt</code>, which redirected the output into a file instead of the screen.</div></div>
+<div class="q"><p class="ask">4. Your Bash script gives "Permission denied." What do you run?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans"><code class="inl">chmod 755 script.sh</code> (or <code class="inl">chmod +x script.sh</code>), then run it with <code class="inl">./script.sh</code>.</div></div>
+<div class="q"><p class="ask">5. Name two risks of running scripts as an administrator.</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">A mistake can make widespread, hard-to-undo system changes; and a malicious or tampered script gets full control of the system.</div></div>
+</section>
+<section id="evidence" aria-labelledby="h-evidence">
+<h2 id="h-evidence">Evidence to capture</h2>
+<p>Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.</p>
+<div class="evidence"><ul><li><input type="checkbox" id="ev1" data-evidence="ev1"><label for="ev1"><span class="shot">Batch output</span>Sysinfo.bat running in Command Prompt.</label></li><li><input type="checkbox" id="ev2" data-evidence="ev2"><label for="ev2"><span class="shot">info.txt</span><code class="inl">more info.txt</code> showing the IPv4 and IPv6 lines.</label></li><li><input type="checkbox" id="ev3" data-evidence="ev3"><label for="ev3"><span class="shot">Policy error</span>The PowerShell execution policy error.</label></li><li><input type="checkbox" id="ev4" data-evidence="ev4"><label for="ev4"><span class="shot">PowerShell output</span>win10info.ps1 running after setting RemoteSigned.</label></li><li><input type="checkbox" id="ev5" data-evidence="ev5"><label for="ev5"><span class="shot">Bash</span><code class="inl">ls -l</code> showing execute permission and the lhostinfo.sh output.</label></li></ul></div>
+</section>
+<section id="cheat" aria-labelledby="h-cheat">
+<h2 id="h-cheat">Cheat sheet</h2>
+<div class="cheat"><div class="grid">
+<div><h3>Windows</h3>
+<ul><li><code class="inl">.bat</code>: <code class="inl">@ECHO OFF</code>, <code class="inl">rem</code>/<code class="inl">::</code>, <code class="inl">PAUSE</code></li><li>Save as type: All Files</li><li><code class="inl">.ps1</code>: <code class="inl">Write-Output</code>, <code class="inl">Get-CimInstance</code></li><li><code class="inl">Set-ExecutionPolicy RemoteSigned -Scope CurrentUser</code></li><li><code class="inl">.\script.ps1</code> from its folder</li><li><code class="inl">&gt;</code> overwrite, <code class="inl">&gt;&gt;</code> append</li></ul>
+</div>
+<div><h3>Linux</h3>
+<ul><li><code class="inl">#!/bin/bash</code> first line</li><li><code class="inl">nano file.sh</code>; <kbd>Ctrl</kbd>+<kbd>O</kbd> save, <kbd>Ctrl</kbd>+<kbd>X</kbd> exit</li><li><code class="inl">chmod 755 file.sh</code></li><li><code class="inl">./file.sh</code></li><li><code class="inl">$HOSTNAME</code>, <code class="inl">df -h</code>, <code class="inl">ip addr</code></li></ul>
+</div>
+</div></div>
+</section>
+</main></div>
+<footer><div class="in">
+  <p>Built for CompTIA A+ hands-on practice at Brookdale Community College, 2026. Open educational resource.</p>
+  <p>Companion to the NDG CompTIA A+ Lab Series v4 labs. This guide is independent and is not affiliated with or endorsed by CompTIA or Network Development Group. CompTIA A+ is a registered trademark of CompTIA, Inc.</p>
+</div></footer>
+<p id="live" class="sr" aria-live="polite"></p>
+<script>
+(function(){
+  var S={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
+         set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+         del:function(k){try{localStorage.removeItem(k)}catch(e){}}};
+  window.__S=S;
+  var root=document.documentElement, tb=document.getElementById('theme');
+  function isDark(){var t=root.getAttribute('data-theme'); if(t) return t==='dark';
+    return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;}
+  function paintTheme(){var d=isDark(); tb.setAttribute('aria-pressed',d?'true':'false'); tb.textContent=d?'Light mode':'Dark mode';}
+  var saved=S.get('aplus-theme'); if(saved) root.setAttribute('data-theme',saved);
+  paintTheme();
+  tb.addEventListener('click',function(){var n=isDark()?'light':'dark'; root.setAttribute('data-theme',n); S.set('aplus-theme',n); paintTheme();});
+  var sc=parseFloat(S.get('aplus-scale'))||1;
+  function setScale(v){sc=Math.min(1.4,Math.max(.85,Math.round(v*100)/100)); root.style.setProperty('--scale',sc); S.set('aplus-scale',sc);}
+  setScale(sc);
+  document.getElementById('fs-up').addEventListener('click',function(){setScale(sc+.1)});
+  document.getElementById('fs-down').addEventListener('click',function(){setScale(sc-.1)});
+  document.getElementById('print').addEventListener('click',function(){window.print()});
+})();
+
+(function(){
+  var S=window.__S, P=document.body.getAttribute('data-prefix');
+  var live=document.getElementById('live');
+  function say(t){live.textContent=t;}
+  function load(k){try{return JSON.parse(S.get(P+k))||{}}catch(e){return {}}}
+  var done=load('done'), ev=load('evidence');
+  var tracks=[].slice.call(document.querySelectorAll('[data-done]'));
+  var bar=document.getElementById('meter-bar'), txt=document.getElementById('meter-txt'), meter=document.getElementById('meter');
+  function refresh(){
+    var n=0; tracks.forEach(function(c){ if(c.checked) n++;
+      var a=document.querySelector('.toc a[href="#'+c.getAttribute('data-done')+'"] .tick'); if(a) a.textContent=c.checked?'\u2713':'';});
+    var pct=tracks.length?Math.round(n/tracks.length*100):0;
+    bar.style.width=pct+'%'; meter.setAttribute('aria-valuenow',pct);
+    txt.textContent=n+' of '+tracks.length+' sections reviewed';
+    S.set(P+'meta',JSON.stringify({done:n,total:tracks.length}));
+  }
+  tracks.forEach(function(c){ c.checked=!!done[c.getAttribute('data-done')];
+    c.addEventListener('change',function(){done[c.getAttribute('data-done')]=c.checked; S.set(P+'done',JSON.stringify(done)); refresh();});});
+  refresh();
+  [].forEach.call(document.querySelectorAll('[data-evidence]'),function(c){ c.checked=!!ev[c.getAttribute('data-evidence')];
+    c.addEventListener('change',function(){ev[c.getAttribute('data-evidence')]=c.checked; S.set(P+'evidence',JSON.stringify(ev));});});
+  document.getElementById('clear').addEventListener('click',function(){
+    if(!window.confirm('Clear your checkmarks on this lab page?')) return;
+    S.del(P+'done'); S.del(P+'evidence'); done={}; ev={};
+    [].forEach.call(document.querySelectorAll('[data-done],[data-evidence]'),function(c){c.checked=false;});
+    refresh(); say('Progress cleared for this lab.');});
+  [].forEach.call(document.querySelectorAll('.reveal'),function(b){
+    b.addEventListener('click',function(){var a=b.nextElementSibling, o=a.classList.toggle('open');
+      b.setAttribute('aria-expanded',o?'true':'false'); b.textContent=o?'Hide answer':'Show answer';});});
+  [].forEach.call(document.querySelectorAll('pre.cmd'),function(pre){
+    var b=document.createElement('button'); b.type='button'; b.className='copy'; b.textContent='Copy';
+    b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code'), clone=code.cloneNode(true);
+      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
+      function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
+      function fallback(){var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+        try{document.execCommand('copy'); ok();}catch(e){say('Copy failed; select the text instead.');} ta.remove();}
+    });});
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(l){l.setAttribute('aria-current', l.getAttribute('href')==='#'+e.target.id?'true':'false');});}});},
+      {rootMargin:'-20% 0px -70% 0px'});
+    [].forEach.call(document.querySelectorAll('main section[id]'),function(s){io.observe(s);});
+  }
+  var det=document.querySelector('.toc details');
+  if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
+})();
+</script>
+</body>
+</html>

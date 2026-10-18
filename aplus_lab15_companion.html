@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 15 Companion: Security & Privacy | A+ Lab Companion</title>
+<meta name="description" content="Scan with Microsoft Defender, manage the firewall and its rules, and encrypt with EFS and BitLocker.">
+<style>
+:root{
+  --bg:#E8ECF0; --surface:#FFFFFF; --surface-2:#F3F5F8; --ink:#14233A; --ink-2:#47576C;
+  --rule:#C7D0DA; --accent:#1C5689; --accent-ink:#FFFFFF; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
+  --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
+  --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
+  --fs:1rem; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
+a{color:var(--accent)} a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--tag);color:var(--tag-ink);padding:.7rem 1rem;z-index:20}
+.skip-link:focus{left:1rem;top:1rem}
+code,pre,kbd{font-family:var(--f-mono)}
+code.inl{background:var(--surface-2);border:1px solid var(--rule);border-radius:3px;padding:0 .3em;font-size:.92em}
+kbd{display:inline-block;border:1px solid var(--rule);border-bottom-width:3px;border-radius:4px;padding:0 .4em;background:var(--surface);font-size:.85em;line-height:1.5}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:76rem;margin:0 auto;padding:.4rem 1rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.1rem;color:var(--ink);text-decoration:none;margin-right:auto;display:flex;gap:.5rem;align-items:center}
+.brand .plug{display:inline-grid;place-items:center;width:2rem;height:2rem;background:var(--tag);color:var(--tag-ink);border-radius:4px;font-size:1rem}
+.ctl{display:flex;gap:.35rem;flex-wrap:wrap}
+.ctl button,.btn{min-height:44px;min-width:44px;padding:.3rem .75rem;border:1px solid var(--rule);background:var(--surface-2);color:var(--ink);border-radius:6px;font:inherit;font-size:.9rem;cursor:pointer}
+.ctl button:hover,.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* hero ticket — the one bold element */
+.ticket{max-width:76rem;margin:1.5rem auto 0;padding:0 1rem}
+.ticket-in{display:grid;grid-template-columns:1fr;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.stub{background:var(--tag);color:var(--tag-ink);padding:1rem 1.25rem;display:flex;flex-direction:column;justify-content:space-between;gap:.5rem;position:relative}
+.stub .lbl{font-size:.85rem;font-weight:600}
+.stub .no{font-family:var(--f-display);font-weight:700;white-space:nowrap;font-size:clamp(2.4rem,6vw,3.5rem);line-height:1;letter-spacing:-.01em}
+.stub .series{font-size:.8rem}
+.tk-body{padding:1.25rem 1.5rem 1.5rem}
+.tk-body h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.15;margin:0 0 .6rem;max-width:30ch}
+.lede{font-size:1.08rem;color:var(--ink-2);max-width:62ch;margin:0 0 1rem}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));gap:0;border-top:1px dashed var(--rule);margin:0}
+.fields div{padding:.6rem .75rem .5rem 0;border-bottom:1px dashed var(--rule)}
+.fields dt{font-size:.78rem;color:var(--ink-2)}
+.fields dd{margin:0;font-weight:600;font-size:.95rem}
+@media (min-width:720px){
+  .ticket-in{grid-template-columns:12rem 1fr}
+  .stub{border-right:2px dashed var(--tag-ink)}
+  .stub::before,.stub::after{content:"";position:absolute;right:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:1px solid var(--rule)}
+  .stub::before{top:-11px} .stub::after{bottom:-11px}
+}
+
+/* layout */
+.wrap{max-width:76rem;margin:0 auto;padding:1.5rem 1rem 3rem;display:grid;gap:2rem;grid-template-columns:1fr}
+@media (min-width:1000px){.wrap{grid-template-columns:15rem minmax(0,1fr)}}
+.toc{align-self:start}
+@media (min-width:1000px){.toc{position:sticky;top:4.5rem}}
+.toc details{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:.5rem .9rem}
+.toc summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+.toc ol{list-style:none;margin:.25rem 0 .5rem;padding:0}
+.toc li a{display:flex;justify-content:space-between;gap:.5rem;padding:.3rem .4rem;border-radius:4px;text-decoration:none;color:var(--ink);font-size:.92rem}
+.toc li a:hover{background:var(--surface-2)}
+.toc li a[aria-current="true"]{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--accent)}
+.toc .tick{color:var(--tip);font-weight:700}
+.meter{margin:.5rem 0 .25rem;height:10px;background:var(--surface-2);border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+.meter span{display:block;height:100%;width:0;background:var(--tip);transition:width .3s}
+.meter-txt{font-size:.85rem;color:var(--ink-2);margin:0}
+main{min-width:0}
+main section{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.25rem 1.5rem;margin:0 0 1.25rem;max-width:56rem}
+@media (max-width:600px){main section{padding:1rem}.ctl button{padding:.3rem .55rem}}
+main h2{font-family:var(--f-display);font-weight:700;font-size:1.55rem;line-height:1.2;margin:0 0 .75rem}
+main h3{font-size:1.1rem;margin:1.25rem 0 .4rem}
+main p,main li{max-width:68ch}
+.task-head{font-family:var(--f-display);font-weight:700;font-size:1.15rem;margin:1.75rem 0 .5rem;padding-top:1rem;border-top:2px solid var(--ink)}
+.task-head:first-of-type{border-top:0;padding-top:0}
+.step{border-left:3px solid var(--rule);padding:.1rem 0 .1rem 1rem;margin:1rem 0}
+.step h3{margin-top:0;display:flex;gap:.6rem;align-items:baseline}
+.step h3 .n{flex:none;display:inline-grid;place-items:center;min-width:1.8rem;height:1.8rem;border-radius:50%;background:var(--ink);color:var(--surface);font-size:.9rem}
+.call{border-radius:8px;padding:.75rem 1rem;margin:1rem 0;border:1px solid}
+.call .k{display:block;font-weight:700;margin-bottom:.2rem}
+.call p{margin:.25rem 0}
+.call.stuck{background:var(--stuck-bg);border-color:var(--stuck)} .call.stuck .k{color:var(--stuck)}
+.call.tip{background:var(--tip-bg);border-color:var(--tip)} .call.tip .k{color:var(--tip)}
+.call.now{background:var(--now-bg);border-color:var(--now)} .call.now .k{color:var(--now)}
+.shot{display:inline-block;background:var(--tag);color:var(--tag-ink);font-weight:700;font-size:.85rem;padding:.05rem .5rem;border-radius:3px;margin-right:.35rem}
+.shot::before{content:"\1F4F7\FE0E  "}
+p.shotline{margin:.5rem 0}
+pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
+pre.cmd .c{color:var(--code-dim)}
+.copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
+.tbl{overflow-x:auto;margin:.75rem 0}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;vertical-align:top;padding:.5rem .6rem;border-bottom:1px solid var(--rule)}
+th{background:var(--surface-2);font-weight:600}
+td code{white-space:nowrap}
+.done-row{display:flex;gap:.6rem;align-items:center;margin-top:1.25rem;padding-top:.75rem;border-top:1px dashed var(--rule)}
+input[type=checkbox]{width:1.3rem;height:1.3rem;accent-color:var(--tip);flex:none}
+.done-row label{min-height:44px;display:flex;align-items:center;cursor:pointer}
+.q{border-top:1px solid var(--rule);padding:.75rem 0}
+.q .ask{font-weight:600;margin:0 0 .4rem}
+.ans{display:none;margin-top:.5rem;padding:.6rem .8rem;background:var(--surface-2);border-radius:6px}
+.ans.open{display:block}
+.evidence ul{list-style:none;padding:0;margin:0}
+.evidence li{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px dashed var(--rule)}
+.evidence li label{cursor:pointer}
+.cheat{border:2px solid var(--ink);border-radius:8px;padding:1rem 1.25rem}
+.cheat .grid{display:grid;gap:1rem 1.5rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.cheat h3{margin:0 0 .3rem;font-family:var(--f-display)}
+.cheat ul{margin:0;padding-left:1.1rem;font-size:.93rem}
+.badges{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+.badge{border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:.05rem .65rem;font-size:.82rem;font-weight:600}
+footer{border-top:1px solid var(--rule);background:var(--surface);color:var(--ink-2);font-size:.88rem}
+footer .in{max-width:76rem;margin:0 auto;padding:1.25rem 1rem}
+footer p{margin:.25rem 0;max-width:80ch}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
+  body{background:#fff;color:#000} .wrap{display:block;padding:0}
+  main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
+  .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
+  .stub{background:#fff;border:2px solid #000}
+}
+</style>
+</head>
+<body data-prefix="aplus-lab15-v1:">
+<a href="#main" class="skip-link">Skip to main content</a>
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="index.html"><span class="plug" aria-hidden="true">A+</span>A+ Lab Companion</a>
+  <div class="ctl" role="group" aria-label="Page controls">
+    <button type="button" id="fs-down" aria-label="Decrease text size">A&minus;</button>
+    <button type="button" id="fs-up" aria-label="Increase text size">A+</button>
+    <button type="button" id="theme" aria-pressed="false">Dark mode</button>
+    <button type="button" id="print">Print</button>
+    <button type="button" id="clear">Clear progress</button>
+  </div>
+</div></header>
+<div class="ticket"><div class="ticket-in">
+  <div class="stub"><span class="lbl">Lab</span><span class="no">15</span><span class="series">CompTIA A+ Lab Series v4</span></div>
+  <div class="tk-body"><h1>Security & Privacy</h1><p class="lede">Windows ships with an antivirus, a firewall, and two kinds of encryption, and most users never touch their settings. You will run an offline malware scan, read the device health report, allow and remove apps in the firewall, write a custom rule that blocks ping, encrypt a file with EFS, and encrypt and decrypt a whole drive with BitLocker.</p><dl class="fields"><div><dt>Time</dt><dd>75–90 min</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Machines</dt><dd>Win7, Win10</dd></div><div><dt>Exam domains</dt><dd>Core 2: Security</dd></div></dl></div>
+</div></div>
+<div class="wrap">
+<nav class="toc" aria-label="On this page"><details><summary>On this page</summary>
+<div id="meter" class="meter" role="progressbar" aria-label="Sections reviewed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="meter-bar"></span></div>
+<p id="meter-txt" class="meter-txt"></p>
+<ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#reference"><span>Reference: Windows security tools</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#exam"><span>On the A+ exams</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#check"><span>Check yourself</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#evidence"><span>Evidence to capture</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#cheat"><span>Cheat sheet</span><span class="tick" aria-hidden="true"></span></a></li></ol></details></nav>
+<main id="main" tabindex="-1">
+<section id="overview" aria-labelledby="h-overview">
+<h2 id="h-overview">Why this lab matters</h2>
+<p>The built-in security tools are good enough that many organizations rely on them, but only if they're configured and checked. This lab covers the three layers.</p>
+<p><strong>Microsoft Defender Antivirus</strong> finds and removes malware; the <strong>offline scan</strong> reboots into a clean environment to catch malware that hides while Windows is running. <strong>Windows Defender Firewall</strong> decides which traffic gets in and out, per program, port, and network profile; you'll write a custom rule and prove it works with <code class="inl">ping</code>. <strong>Encryption</strong> protects data if a device is lost or stolen: <strong>EFS</strong> encrypts individual files for one user, and <strong>BitLocker</strong> encrypts an entire drive.</p>
+<p>Encryption has one hard rule: <strong>back up the key</strong>. Lose the EFS certificate or the BitLocker recovery key and the data is gone for good.</p>
+
+<div class="done-row"><input type="checkbox" id="done-overview" data-done="overview"><label for="done-overview">Mark this section reviewed</label></div>
+</section>
+<section id="environment" aria-labelledby="h-environment">
+<h2 id="h-environment">The environment you're working in</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code class="inl">192.168.1.7/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<div class="tbl"><table><thead><tr><th scope="col">Item</th><th scope="col">Value</th></tr></thead><tbody><tr><td>user1 on Win7</td><td><code class="inl">SuperSecret</code></td></tr><tr><td>EFS key backup password</td><td><code class="inl">mypassword</code></td></tr><tr><td>EFS key file name</td><td><code class="inl">EFS-key</code></td></tr><tr><td>BitLocker password</td><td><code class="inl">Train1ng$</code></td></tr><tr><td>BitLocker recovery key file</td><td><code class="inl">EFS-Recover</code> (saved with the XPS Document Writer)</td></tr></tbody></table></div>
+<p>The VMs have no TPM chip, so Task 6 first changes Group Policy to allow BitLocker with a password instead.</p>
+<div class="call tip"><span class="k">Timing</span><p>The offline scan reboots Win10; you'll cancel it after a few minutes. BitLocker encryption and decryption run in the background and take several minutes each.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-environment" data-done="environment"><label for="done-environment">Mark this section reviewed</label></div>
+</section>
+<section id="then-now" aria-labelledby="h-then-now">
+<h2 id="h-then-now">Then vs. now: Windows 11</h2>
+<div class="tbl"><table><thead><tr><th scope="col">In the lab</th><th scope="col">On Windows 11</th></tr></thead><tbody><tr><td>Windows Defender Security Center</td><td>The <strong>Windows Security</strong> app: Virus & threat protection, Account protection, Firewall & network protection, App & browser control, Device security, Device performance & health, Family options</td></tr><tr><td>Windows Defender Offline scan</td><td><strong>Microsoft Defender Antivirus (offline scan)</strong> under Virus & threat protection > Scan options</td></tr><tr><td>Device performance & health > Fresh start</td><td>Fresh start is gone; use Settings > System > Recovery > <strong>Reset this PC</strong> (Keep my files)</td></tr><tr><td>Firewall settings</td><td>Same three places: Windows Security, Control Panel > Windows Defender Firewall, and <code class="inl">wf.msc</code></td></tr><tr><td>BitLocker without TPM via Group Policy</td><td>Rarely needed: Windows 11 <strong>requires TPM 2.0</strong>. BitLocker is in Pro, Enterprise, and Education.</td></tr><tr><td>No encryption on Home editions</td><td>Windows 11 Home has <strong>Device encryption</strong> (a simpler BitLocker) on supported hardware; the recovery key is saved to the Microsoft account</td></tr><tr><td>EFS</td><td>Still in Pro and above, not Home</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-then-now" data-done="then-now"><label for="done-then-now">Mark this section reviewed</label></div>
+</section>
+<section id="walkthrough" aria-labelledby="h-walkthrough">
+<h2 id="h-walkthrough">Walkthrough</h2>
+<p class="task-head">Task 1: Malware scans (Win10)</p>
+<div class="step">
+<h3><span class="n">1</span>Open the security dashboard</h3>
+<p>Log in to <strong>Win10</strong>. Search for <code class="inl">Windows Defender</code> and open <strong>Windows Defender Security Center</strong>. The Home page shows the status of each area: a green check is good, a yellow <strong>!</strong> needs attention.</p>
+</div>
+<div class="step">
+<h3><span class="n">2</span>Look at the scan types</h3>
+<p>Click <strong>Virus & threat protection</strong>. <strong>Quick scan</strong> checks the places malware usually hides. Click <strong>Run a new advanced scan</strong> to see <strong>Full scan</strong>, <strong>Custom scan</strong>, and <strong>Windows Defender Offline scan</strong>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The advanced scan options page.</p>
+</div>
+<div class="step">
+<h3><span class="n">3</span>Start an offline scan</h3>
+<p>Select <strong>Windows Defender Offline scan > Scan now > Scan</strong> and accept UAC. Windows signs you out and restarts into the Defender environment. With no internet it skips the definition update and starts scanning. After a few minutes, click <strong>Cancel scan</strong>; Windows then boots normally.</p>
+<div class="call tip"><span class="k">When to use the offline scan</span><p>Rootkits and some other malware hide from scanners while Windows is running. Booting into a separate environment means the malware isn't loaded, so the scanner can see and remove it.</p></div>
+</div>
+<p class="task-head">Task 2: Health report (Win10)</p>
+<div class="step">
+<h3><span class="n">4</span>Read device health</h3>
+<p>Sign back in. Open the Windows Defender icon from the hidden tray icons, then <strong>Device performance & health</strong>. Check the <strong>Health report</strong>: storage capacity, device drivers, and apps and software. Green is good, yellow is a recommendation, red is a warning.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Device performance & health report.</p>
+</div>
+<p class="task-head">Task 3: Firewall profiles (Win10)</p>
+<div class="step">
+<h3><span class="n">5</span>Look at the Private profile</h3>
+<p>Click <strong>Firewall & network protection > Private network</strong>. Note the switch that turns the firewall on or off for this profile. Click back and close the window.</p>
+</div>
+<p class="task-head">Task 4: Allowed apps (Win10)</p>
+<div class="step">
+<h3><span class="n">6</span>Open the firewall in Control Panel</h3>
+<p>Right-click <strong>Start > Run</strong>, enter <code class="inl">Control Panel</code>, and open <strong>System and Security > Windows Defender Firewall</strong>. Click <strong>Turn Windows Defender Firewall on or off</strong> to see the per-profile settings, then go back.</p>
+</div>
+<div class="step">
+<h3><span class="n">7</span>Allow Windows Media Player on Private networks</h3>
+<p>Click <strong>Allow an app or feature through Windows Defender Firewall</strong> (click <strong>Change settings</strong> if the list is greyed out). Select <strong>Windows Media Player > Details</strong>, read it, and click <strong>OK</strong>. Check the box beside Windows Media Player: <strong>Private</strong> is checked automatically.</p>
+</div>
+<div class="step">
+<h3><span class="n">8</span>Add an app that isn't listed</h3>
+<p>Click <strong>Allow another app > Browse</strong>, go to <code class="inl">C:\Program Files\Windows Photo Viewer</code>, select <code class="inl">ImagingDevices.exe</code>, and click <strong>Open > Add</strong>. <strong>Imaging Devices Console</strong> appears, allowed on Private.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The allowed apps list with Windows Media Player and Imaging Devices Console allowed.</p>
+</div>
+<div class="step">
+<h3><span class="n">9</span>Remove it again</h3>
+<p>Select <strong>Imaging Devices Console > Remove > Yes</strong>, then <strong>OK</strong>.</p>
+</div>
+<p class="task-head">Task 5: Firewall rules (Win10 and Win7)</p>
+<div class="step">
+<h3><span class="n">10</span>Confirm ping works both ways</h3>
+<p>In Windows Defender Firewall, click <strong>Advanced settings</strong> to open <strong>Windows Defender Firewall with Advanced Security</strong>. Open <strong>cmd</strong> on Win10 and on Win7 and test:</p>
+<pre class="cmd"><code><span class="c">On Win10</span>
+ping 192.168.1.7
+<span class="c">On Win7</span>
+ping 192.168.1.10</code></pre>
+<p>Both succeed.</p>
+</div>
+<div class="step">
+<h3><span class="n">11</span>Find the built-in ping rule</h3>
+<p>On Win10, click <strong>Inbound Rules</strong> and find <strong>File and Printer Sharing (Echo Request - ICMPv4-In)</strong> for the <strong>Private</strong> profile. Right-click it: it's enabled, which is why Win7 can ping Win10. Leave it enabled.</p>
+</div>
+<div class="step">
+<h3><span class="n">12</span>Create a rule that blocks ping</h3>
+<p>Right-click <strong>Inbound Rules > New Rule</strong> and set:</p>
+<div class="tbl"><table><thead><tr><th scope="col">Wizard step</th><th scope="col">Choose</th></tr></thead><tbody><tr><td>Rule type</td><td>Custom</td></tr><tr><td>Program</td><td>All programs</td></tr><tr><td>Protocol and Ports</td><td>ICMPv4 > <strong>Customize</strong> > Specific ICMP types > <strong>Echo Request</strong></td></tr><tr><td>Scope</td><td>Defaults</td></tr><tr><td>Action</td><td>Block the connection</td></tr><tr><td>Profile</td><td>Defaults (Domain, Private, Public)</td></tr><tr><td>Name</td><td><code class="inl">Block Incoming ICMPv4 Echo Requests</code></td></tr></tbody></table></div>
+<p class="shotline"><span class="shot">Screenshot</span>The new Block Incoming ICMPv4 Echo Requests rule in the Inbound Rules list.</p>
+</div>
+<div class="step">
+<h3><span class="n">13</span>Test the block</h3>
+<p>On <strong>Win7</strong>, run <code class="inl">ping 192.168.1.10</code> again. It now times out, because a <strong>block</strong> rule beats the built-in allow rule.</p>
+<p class="shotline"><span class="shot">Screenshot</span>Win7's ping to Win10 timing out.</p>
+</div>
+<div class="step">
+<h3><span class="n">14</span>Disable the block and test again</h3>
+<p>On Win10, right-click <strong>Block Incoming ICMPv4 Echo Requests > Disable Rule</strong>. On Win7, <code class="inl">ping 192.168.1.10</code> succeeds again.</p>
+<div class="call stuck"><span class="k">The PDF has this backwards</span><p>It says ping fails <em>after</em> you disable the block rule. It's the reverse: ping fails while the block rule is enabled and works again once you disable it.</p></div>
+</div>
+<p class="task-head">Task 6: Encrypting File System (Win7)</p>
+<div class="step">
+<h3><span class="n">15</span>Encrypt a file</h3>
+<p>On <strong>Win7</strong>, create a text file on the desktop named <code class="inl">encrypted</code>. Right-click it > <strong>Properties > Advanced</strong>, check <strong>Encrypt contents to secure data</strong>, and click <strong>OK</strong> twice. Choose <strong>Encrypt the file only</strong> and click <strong>OK</strong>. The file name turns green.</p>
+</div>
+<div class="step">
+<h3><span class="n">16</span>Back up the encryption key</h3>
+<p>Click the <strong>Back up your encryption key</strong> notification > <strong>Back up now (recommended)</strong>. In the Certificate Export Wizard, keep the default format (a <code class="inl">.pfx</code> file), set the password to <code class="inl">mypassword</code>, name the file <code class="inl">EFS-key</code>, and click <strong>Finish</strong>. Note where it saved.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Certificate Export Wizard's final page showing the EFS-key file location.</p>
+</div>
+<div class="step">
+<h3><span class="n">17</span>Test access as another user</h3>
+<p>Double-click <strong>encrypted</strong>: it opens for sysadmin with no extra prompt. Now <strong>Switch user</strong> to <strong>user1</strong> (<code class="inl">SuperSecret</code>), browse to <code class="inl">C:\Users\sysadmin\Desktop</code> (enter <code class="inl">Train1ng$</code> if asked), and open <strong>encrypted</strong>. Access is denied.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The access denied message when user1 opens the encrypted file.</p>
+<p>Log off user1.</p>
+</div>
+<p class="task-head">Task 7: BitLocker without a TPM (Win10)</p>
+<div class="step">
+<h3><span class="n">18</span>Allow BitLocker with a password</h3>
+<p>On <strong>Win10</strong>, open <code class="inl">gpedit.msc</code> and go to <strong>Computer Configuration > Administrative Templates > Windows Components > BitLocker Drive Encryption > Operating System Drives</strong>. Double-click <strong>Require additional authentication at startup</strong>, select <strong>Enabled</strong>, and click <strong>OK</strong>. Make sure <strong>Allow BitLocker without a compatible TPM</strong> is checked in that setting's options.</p>
+</div>
+<div class="step">
+<h3><span class="n">19</span>Turn on BitLocker</h3>
+<p>Open <strong>Control Panel > BitLocker Drive Encryption > Turn on BitLocker</strong>. Choose <strong>Enter a password</strong> and enter <code class="inl">Train1ng$</code> twice.</p>
+</div>
+<div class="step">
+<h3><span class="n">20</span>Save the recovery key</h3>
+<p>Choose <strong>Print the recovery key</strong>, select <strong>Microsoft XPS Document Writer</strong>, and save it as <code class="inl">EFS-Recover</code> in Documents.</p>
+<div class="call tip"><span class="k">Recovery key handling</span><p>On real devices, save the recovery key to the Microsoft account, Active Directory or Entra ID, or a secure file stored <em>off</em> the encrypted drive. The 48-digit key is the only way in if the password is forgotten or the hardware changes.</p></div>
+</div>
+<div class="step">
+<h3><span class="n">21</span>Encrypt</h3>
+<p>Choose <strong>Encrypt used disk space only</strong>, then <strong>New encryption mode</strong>. Uncheck <strong>Run BitLocker system check</strong> and click <strong>Start encrypting</strong>. Click the notification to watch progress and <strong>Close</strong> when it finishes.</p>
+<p class="shotline"><span class="shot">Screenshot</span>BitLocker Drive Encryption showing C: with BitLocker on.</p>
+</div>
+<p class="task-head">Task 8: Check and turn off BitLocker with PowerShell (Win10)</p>
+<div class="step">
+<h3><span class="n">22</span>Check status</h3>
+<p>Search for <strong>PowerShell ISE</strong>, right-click it > <strong>Run as administrator</strong>, and run:</p>
+<pre class="cmd"><code>manage-bde -status</code></pre>
+<p>C: shows as fully encrypted with <strong>XTS-AES 128</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">23</span>Decrypt</h3>
+<pre class="cmd"><code>Disable-BitLocker -MountPoint "C:"
+manage-bde -off C:
+manage-bde -status</code></pre>
+<p>Decryption continues in the background; run <code class="inl">manage-bde -status</code> again to watch the percentage drop. Type <code class="inl">exit</code> when it's done.</p>
+<div class="call stuck"><span class="k">Typed straight from the PDF?</span><p>The PDF shows <code class="inl">manage-bde –status</code> with an en dash. Use a normal hyphen.</p></div>
+<p class="shotline"><span class="shot">Screenshot</span>manage-bde -status showing decryption in progress or complete.</p>
+<p>The lab is complete.</p>
+</div>
+
+<div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+<section id="reference" aria-labelledby="h-reference">
+<h2 id="h-reference">Reference: Windows security tools</h2>
+<h3>Windows Security areas</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Area</th><th scope="col">Covers</th></tr></thead><tbody><tr><td>Virus & threat protection</td><td>Scans, real-time protection, ransomware protection (Controlled folder access), exclusions</td></tr><tr><td>Account protection</td><td>Windows Hello, dynamic lock</td></tr><tr><td>Firewall & network protection</td><td>Firewall per profile, allowed apps, advanced settings</td></tr><tr><td>App & browser control</td><td>SmartScreen, Smart App Control, exploit protection</td></tr><tr><td>Device security</td><td>Core isolation, Secure Boot, TPM (security processor) status</td></tr><tr><td>Device performance & health</td><td>Storage, drivers, apps, battery</td></tr></tbody></table></div>
+<h3>Scan types</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Scan</th><th scope="col">Use</th></tr></thead><tbody><tr><td>Quick</td><td>Daily check of common malware locations</td></tr><tr><td>Full</td><td>Every file; slow</td></tr><tr><td>Custom</td><td>A specific drive, folder, or file</td></tr><tr><td>Offline</td><td>Reboots to a clean environment for rootkits and stubborn malware</td></tr></tbody></table></div>
+<h3>Firewall concepts</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Term</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td>Inbound rule</td><td>Controls traffic arriving at this PC</td></tr><tr><td>Outbound rule</td><td>Controls traffic leaving this PC (allowed by default)</td></tr><tr><td>Connection security rule</td><td>Requires IPsec authentication between computers</td></tr><tr><td>Profiles</td><td>Domain, Private, Public; each has its own settings and rules</td></tr><tr><td>Rule order</td><td>Block rules beat allow rules</td></tr></tbody></table></div>
+<pre class="cmd"><code><span class="c">Firewall from the command line</span>
+wf.msc
+netsh advfirewall show allprofiles
+netsh advfirewall firewall add rule name="Block ping" protocol=icmpv4:8,any dir=in action=block
+<span class="c">PowerShell</span>
+Get-NetFirewallProfile
+New-NetFirewallRule -DisplayName "Allow App" -Direction Inbound -Program "C:\App\app.exe" -Action Allow</code></pre>
+<h3>EFS compared with BitLocker</h3>
+<div class="tbl"><table><thead><tr><th scope="col"></th><th scope="col">EFS</th><th scope="col">BitLocker</th></tr></thead><tbody><tr><td>Encrypts</td><td>Individual files and folders</td><td>An entire volume</td></tr><tr><td>Tied to</td><td>One user's certificate</td><td>The PC (TPM, password, PIN, or USB key)</td></tr><tr><td>Protects against</td><td>Other users on the same PC</td><td>A lost or stolen drive or device</td></tr><tr><td>Editions</td><td>Pro, Enterprise, Education</td><td>Pro, Enterprise, Education (Home has Device encryption)</td></tr><tr><td>Key backup</td><td>Export the certificate (<code class="inl">.pfx</code>)</td><td>Save the 48-digit recovery key</td></tr><tr><td>Removable drives</td><td>No</td><td><strong>BitLocker To Go</strong></td></tr></tbody></table></div>
+<h3>BitLocker commands</h3>
+<pre class="cmd"><code>manage-bde -status
+manage-bde -on C:
+manage-bde -off C:
+manage-bde -protectors -get C:
+<span class="c">PowerShell</span>
+Get-BitLockerVolume
+Enable-BitLocker -MountPoint "C:" -RecoveryPasswordProtector
+Disable-BitLocker -MountPoint "C:"</code></pre>
+<h3>Malware removal steps (CompTIA order)</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Step</th><th scope="col">Action</th></tr></thead><tbody><tr><td>1</td><td>Investigate and verify malware symptoms</td></tr><tr><td>2</td><td>Quarantine the infected system</td></tr><tr><td>3</td><td>Disable System Restore (Windows)</td></tr><tr><td>4</td><td>Remediate: update the antimalware software, then scan and remove (Safe Mode or offline scan)</td></tr><tr><td>5</td><td>Schedule scans and run updates</td></tr><tr><td>6</td><td>Enable System Restore and create a restore point</td></tr><tr><td>7</td><td>Educate the end user</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-reference" data-done="reference"><label for="done-reference">Mark this section reviewed</label></div>
+</section>
+<section id="stuck" aria-labelledby="h-stuck">
+<h2 id="h-stuck">Where people get stuck</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Problem</th><th scope="col">Why it happens</th><th scope="col">Fix</th></tr></thead><tbody><tr><td>Win10 won't come back after the offline scan</td><td>It's still scanning</td><td>Click Cancel scan when the option appears; wait for the reboot</td></tr><tr><td>Allowed apps list is greyed out</td><td>Needs admin rights</td><td>Click <strong>Change settings</strong></td></tr><tr><td><code class="inl">ImagingDevices.exe</code> not found</td><td>Looking in the wrong folder</td><td><code class="inl">C:\Program Files\Windows Photo Viewer</code></td></tr><tr><td>Ping still works after the block rule</td><td>The rule's ICMP type or profile is wrong, or you pinged the wrong IP</td><td>Check Echo Request is selected and the rule is enabled; ping <code class="inl">192.168.1.10</code></td></tr><tr><td>No green file name after EFS</td><td>Folder Options hides it, or it's not NTFS</td><td>Check the file's Advanced attributes</td></tr><tr><td>"This device can't use a Trusted Platform Module"</td><td>The Group Policy change didn't apply</td><td>Enable the policy with <strong>Allow BitLocker without a compatible TPM</strong> checked</td></tr><tr><td><code class="inl">manage-bde –status</code> errors</td><td>En dash from the PDF</td><td>Type <code class="inl">-status</code> with a hyphen</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-stuck" data-done="stuck"><label for="done-stuck">Mark this section reviewed</label></div>
+</section>
+<section id="on-the-job" aria-labelledby="h-on-the-job">
+<h2 id="h-on-the-job">On the job</h2>
+<div class="tbl"><table><thead><tr><th scope="col">The ticket says</th><th scope="col">Where you look</th><th scope="col">Likely fix</th></tr></thead><tbody><tr><td>"Pop-ups everywhere and the PC is slow."</td><td>Windows Security scans</td><td>Follow the malware removal steps; offline scan if needed</td></tr><tr><td>"Our new app can't talk to the server."</td><td>Firewall allowed apps / inbound rules</td><td>Allow the program or its port on the right profile only</td></tr><tr><td>"We need to know laptops are encrypted."</td><td><code class="inl">manage-bde -status</code>, Intune/MDM reports</td><td>Turn on BitLocker and escrow recovery keys centrally</td></tr><tr><td>"BitLocker is asking for a recovery key."</td><td>The recovery key location</td><td>Look it up in the Microsoft account or AD/Entra ID; find out what changed (firmware update, hardware)</td></tr><tr><td>"I can't open my files after a reinstall."</td><td>EFS</td><td>Import the backed-up <code class="inl">.pfx</code> certificate; without it the files can't be recovered</td></tr></tbody></table></div>
+<div class="call tip"><span class="k">Professional habit</span><p>Before you suspend or remove BitLocker for a firmware update, make sure you have the recovery key. Resume protection afterward.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-on-the-job" data-done="on-the-job"><label for="done-on-the-job">Mark this section reviewed</label></div>
+</section>
+<section id="exam" aria-labelledby="h-exam">
+<h2 id="h-exam">On the A+ exams</h2>
+<div class="badges"><span class="badge">Core 2: Security</span></div>
+<p><strong>Core 2 (220-1202)</strong> covers Windows Security and Defender Antivirus, Windows Defender Firewall (profiles, rules, allowed apps, ports), EFS and BitLocker (including BitLocker To Go and recovery keys), edition differences, malware types and the malware removal procedure, and data-at-rest encryption as a best practice.</p>
+<h3>High-yield facts</h3>
+<ul><li>EFS encrypts files per user; BitLocker encrypts whole volumes; BitLocker To Go encrypts removable drives.</li><li>BitLocker needs Pro or higher; it prefers a TPM; back up the 48-digit recovery key.</li><li>Offline scans catch malware that hides while Windows is running.</li><li>Firewall block rules override allow rules; outbound traffic is allowed by default.</li><li>Malware removal: investigate, quarantine, disable System Restore, remediate, schedule, re-enable restore, educate.</li><li><code class="inl">manage-bde -status</code> checks BitLocker; <code class="inl">wf.msc</code> opens the advanced firewall.</li></ul>
+
+<div class="done-row"><input type="checkbox" id="done-exam" data-done="exam"><label for="done-exam">Mark this section reviewed</label></div>
+</section>
+<section id="check" aria-labelledby="h-check">
+<h2 id="h-check">Check yourself</h2>
+<div class="q"><p class="ask">1. A laptop with sensitive data might be stolen. EFS or BitLocker?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">BitLocker. It encrypts the whole drive, so nothing is readable without unlocking the device. EFS only protects specific files from other users.</div></div>
+<div class="q"><p class="ask">2. A user reinstalled Windows and now can't open EFS-encrypted files from their old drive. What would have prevented this?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Exporting the EFS certificate and private key (<code class="inl">.pfx</code>) before the reinstall, then importing it afterward.</div></div>
+<div class="q"><p class="ask">3. You create an inbound rule blocking ICMPv4 Echo Request, but the built-in Echo Request allow rule is also enabled. Can the PC be pinged?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">No. Block rules take precedence over allow rules.</div></div>
+<div class="q"><p class="ask">4. Why disable System Restore during malware removal?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Restore points can contain the malware, so restoring one later could reinfect the PC. Re-enable it and create a clean restore point after cleanup.</div></div>
+<div class="q"><p class="ask">5. Which command shows whether a drive is encrypted with BitLocker?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans"><code class="inl">manage-bde -status</code> (or <code class="inl">Get-BitLockerVolume</code> in PowerShell).</div></div>
+</section>
+<section id="evidence" aria-labelledby="h-evidence">
+<h2 id="h-evidence">Evidence to capture</h2>
+<p>Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.</p>
+<div class="evidence"><ul><li><input type="checkbox" id="ev1" data-evidence="ev1"><label for="ev1"><span class="shot">Scan options</span>The advanced scan options page with Offline scan available.</label></li><li><input type="checkbox" id="ev2" data-evidence="ev2"><label for="ev2"><span class="shot">Health</span>The Device performance & health report.</label></li><li><input type="checkbox" id="ev3" data-evidence="ev3"><label for="ev3"><span class="shot">Allowed apps</span>The allowed apps list with Windows Media Player and Imaging Devices Console.</label></li><li><input type="checkbox" id="ev4" data-evidence="ev4"><label for="ev4"><span class="shot">Rule</span>The Block Incoming ICMPv4 Echo Requests rule in Inbound Rules.</label></li><li><input type="checkbox" id="ev5" data-evidence="ev5"><label for="ev5"><span class="shot">Blocked ping</span>Win7's ping to Win10 timing out while the rule is enabled.</label></li><li><input type="checkbox" id="ev6" data-evidence="ev6"><label for="ev6"><span class="shot">EFS key</span>The Certificate Export Wizard showing the EFS-key file location.</label></li><li><input type="checkbox" id="ev7" data-evidence="ev7"><label for="ev7"><span class="shot">EFS denied</span>Access denied when user1 opens the encrypted file.</label></li><li><input type="checkbox" id="ev8" data-evidence="ev8"><label for="ev8"><span class="shot">BitLocker</span>BitLocker showing C: encrypted, and <code class="inl">manage-bde -status</code> output.</label></li></ul></div>
+</section>
+<section id="cheat" aria-labelledby="h-cheat">
+<h2 id="h-cheat">Cheat sheet</h2>
+<div class="cheat"><div class="grid">
+<div><h3>Defend</h3>
+<ul><li>Windows Security: quick, full, custom, offline scans</li><li><code class="inl">wf.msc</code> advanced firewall</li><li>Block beats allow; profiles: Domain, Private, Public</li><li><code class="inl">netsh advfirewall show allprofiles</code></li><li>Malware: investigate, quarantine, disable restore, remediate, schedule, re-enable, educate</li></ul>
+</div>
+<div><h3>Encrypt</h3>
+<ul><li>EFS: per file, per user; export the <code class="inl">.pfx</code></li><li>BitLocker: whole volume, Pro+, TPM preferred</li><li>BitLocker To Go: USB drives</li><li>Save the 48-digit recovery key off the drive</li><li><code class="inl">manage-bde -status</code>, <code class="inl">-on</code>, <code class="inl">-off</code></li></ul>
+</div>
+</div></div>
+</section>
+</main></div>
+<footer><div class="in">
+  <p>Built for CompTIA A+ hands-on practice at Brookdale Community College, 2026. Open educational resource.</p>
+  <p>Companion to the NDG CompTIA A+ Lab Series v4 labs. This guide is independent and is not affiliated with or endorsed by CompTIA or Network Development Group. CompTIA A+ is a registered trademark of CompTIA, Inc.</p>
+</div></footer>
+<p id="live" class="sr" aria-live="polite"></p>
+<script>
+(function(){
+  var S={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
+         set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+         del:function(k){try{localStorage.removeItem(k)}catch(e){}}};
+  window.__S=S;
+  var root=document.documentElement, tb=document.getElementById('theme');
+  function isDark(){var t=root.getAttribute('data-theme'); if(t) return t==='dark';
+    return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;}
+  function paintTheme(){var d=isDark(); tb.setAttribute('aria-pressed',d?'true':'false'); tb.textContent=d?'Light mode':'Dark mode';}
+  var saved=S.get('aplus-theme'); if(saved) root.setAttribute('data-theme',saved);
+  paintTheme();
+  tb.addEventListener('click',function(){var n=isDark()?'light':'dark'; root.setAttribute('data-theme',n); S.set('aplus-theme',n); paintTheme();});
+  var sc=parseFloat(S.get('aplus-scale'))||1;
+  function setScale(v){sc=Math.min(1.4,Math.max(.85,Math.round(v*100)/100)); root.style.setProperty('--scale',sc); S.set('aplus-scale',sc);}
+  setScale(sc);
+  document.getElementById('fs-up').addEventListener('click',function(){setScale(sc+.1)});
+  document.getElementById('fs-down').addEventListener('click',function(){setScale(sc-.1)});
+  document.getElementById('print').addEventListener('click',function(){window.print()});
+})();
+
+(function(){
+  var S=window.__S, P=document.body.getAttribute('data-prefix');
+  var live=document.getElementById('live');
+  function say(t){live.textContent=t;}
+  function load(k){try{return JSON.parse(S.get(P+k))||{}}catch(e){return {}}}
+  var done=load('done'), ev=load('evidence');
+  var tracks=[].slice.call(document.querySelectorAll('[data-done]'));
+  var bar=document.getElementById('meter-bar'), txt=document.getElementById('meter-txt'), meter=document.getElementById('meter');
+  function refresh(){
+    var n=0; tracks.forEach(function(c){ if(c.checked) n++;
+      var a=document.querySelector('.toc a[href="#'+c.getAttribute('data-done')+'"] .tick'); if(a) a.textContent=c.checked?'\u2713':'';});
+    var pct=tracks.length?Math.round(n/tracks.length*100):0;
+    bar.style.width=pct+'%'; meter.setAttribute('aria-valuenow',pct);
+    txt.textContent=n+' of '+tracks.length+' sections reviewed';
+    S.set(P+'meta',JSON.stringify({done:n,total:tracks.length}));
+  }
+  tracks.forEach(function(c){ c.checked=!!done[c.getAttribute('data-done')];
+    c.addEventListener('change',function(){done[c.getAttribute('data-done')]=c.checked; S.set(P+'done',JSON.stringify(done)); refresh();});});
+  refresh();
+  [].forEach.call(document.querySelectorAll('[data-evidence]'),function(c){ c.checked=!!ev[c.getAttribute('data-evidence')];
+    c.addEventListener('change',function(){ev[c.getAttribute('data-evidence')]=c.checked; S.set(P+'evidence',JSON.stringify(ev));});});
+  document.getElementById('clear').addEventListener('click',function(){
+    if(!window.confirm('Clear your checkmarks on this lab page?')) return;
+    S.del(P+'done'); S.del(P+'evidence'); done={}; ev={};
+    [].forEach.call(document.querySelectorAll('[data-done],[data-evidence]'),function(c){c.checked=false;});
+    refresh(); say('Progress cleared for this lab.');});
+  [].forEach.call(document.querySelectorAll('.reveal'),function(b){
+    b.addEventListener('click',function(){var a=b.nextElementSibling, o=a.classList.toggle('open');
+      b.setAttribute('aria-expanded',o?'true':'false'); b.textContent=o?'Hide answer':'Show answer';});});
+  [].forEach.call(document.querySelectorAll('pre.cmd'),function(pre){
+    var b=document.createElement('button'); b.type='button'; b.className='copy'; b.textContent='Copy';
+    b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code'), clone=code.cloneNode(true);
+      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
+      function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
+      function fallback(){var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+        try{document.execCommand('copy'); ok();}catch(e){say('Copy failed; select the text instead.');} ta.remove();}
+    });});
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(l){l.setAttribute('aria-current', l.getAttribute('href')==='#'+e.target.id?'true':'false');});}});},
+      {rootMargin:'-20% 0px -70% 0px'});
+    [].forEach.call(document.querySelectorAll('main section[id]'),function(s){io.observe(s);});
+  }
+  var det=document.querySelector('.toc details');
+  if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
+})();
+</script>
+</body>
+</html>

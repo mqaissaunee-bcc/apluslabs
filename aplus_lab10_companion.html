@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 10 Companion: Windows Customizations | A+ Lab Companion</title>
+<meta name="description" content="Configure desktop and taskbar settings the way users ask for them.">
+<style>
+:root{
+  --bg:#E8ECF0; --surface:#FFFFFF; --surface-2:#F3F5F8; --ink:#14233A; --ink-2:#47576C;
+  --rule:#C7D0DA; --accent:#1C5689; --accent-ink:#FFFFFF; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
+  --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
+  --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
+  --fs:1rem; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
+a{color:var(--accent)} a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--tag);color:var(--tag-ink);padding:.7rem 1rem;z-index:20}
+.skip-link:focus{left:1rem;top:1rem}
+code,pre,kbd{font-family:var(--f-mono)}
+code.inl{background:var(--surface-2);border:1px solid var(--rule);border-radius:3px;padding:0 .3em;font-size:.92em}
+kbd{display:inline-block;border:1px solid var(--rule);border-bottom-width:3px;border-radius:4px;padding:0 .4em;background:var(--surface);font-size:.85em;line-height:1.5}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:76rem;margin:0 auto;padding:.4rem 1rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.1rem;color:var(--ink);text-decoration:none;margin-right:auto;display:flex;gap:.5rem;align-items:center}
+.brand .plug{display:inline-grid;place-items:center;width:2rem;height:2rem;background:var(--tag);color:var(--tag-ink);border-radius:4px;font-size:1rem}
+.ctl{display:flex;gap:.35rem;flex-wrap:wrap}
+.ctl button,.btn{min-height:44px;min-width:44px;padding:.3rem .75rem;border:1px solid var(--rule);background:var(--surface-2);color:var(--ink);border-radius:6px;font:inherit;font-size:.9rem;cursor:pointer}
+.ctl button:hover,.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* hero ticket — the one bold element */
+.ticket{max-width:76rem;margin:1.5rem auto 0;padding:0 1rem}
+.ticket-in{display:grid;grid-template-columns:1fr;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.stub{background:var(--tag);color:var(--tag-ink);padding:1rem 1.25rem;display:flex;flex-direction:column;justify-content:space-between;gap:.5rem;position:relative}
+.stub .lbl{font-size:.85rem;font-weight:600}
+.stub .no{font-family:var(--f-display);font-weight:700;white-space:nowrap;font-size:clamp(2.4rem,6vw,3.5rem);line-height:1;letter-spacing:-.01em}
+.stub .series{font-size:.8rem}
+.tk-body{padding:1.25rem 1.5rem 1.5rem}
+.tk-body h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.15;margin:0 0 .6rem;max-width:30ch}
+.lede{font-size:1.08rem;color:var(--ink-2);max-width:62ch;margin:0 0 1rem}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));gap:0;border-top:1px dashed var(--rule);margin:0}
+.fields div{padding:.6rem .75rem .5rem 0;border-bottom:1px dashed var(--rule)}
+.fields dt{font-size:.78rem;color:var(--ink-2)}
+.fields dd{margin:0;font-weight:600;font-size:.95rem}
+@media (min-width:720px){
+  .ticket-in{grid-template-columns:12rem 1fr}
+  .stub{border-right:2px dashed var(--tag-ink)}
+  .stub::before,.stub::after{content:"";position:absolute;right:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:1px solid var(--rule)}
+  .stub::before{top:-11px} .stub::after{bottom:-11px}
+}
+
+/* layout */
+.wrap{max-width:76rem;margin:0 auto;padding:1.5rem 1rem 3rem;display:grid;gap:2rem;grid-template-columns:1fr}
+@media (min-width:1000px){.wrap{grid-template-columns:15rem minmax(0,1fr)}}
+.toc{align-self:start}
+@media (min-width:1000px){.toc{position:sticky;top:4.5rem}}
+.toc details{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:.5rem .9rem}
+.toc summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+.toc ol{list-style:none;margin:.25rem 0 .5rem;padding:0}
+.toc li a{display:flex;justify-content:space-between;gap:.5rem;padding:.3rem .4rem;border-radius:4px;text-decoration:none;color:var(--ink);font-size:.92rem}
+.toc li a:hover{background:var(--surface-2)}
+.toc li a[aria-current="true"]{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--accent)}
+.toc .tick{color:var(--tip);font-weight:700}
+.meter{margin:.5rem 0 .25rem;height:10px;background:var(--surface-2);border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+.meter span{display:block;height:100%;width:0;background:var(--tip);transition:width .3s}
+.meter-txt{font-size:.85rem;color:var(--ink-2);margin:0}
+main{min-width:0}
+main section{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.25rem 1.5rem;margin:0 0 1.25rem;max-width:56rem}
+@media (max-width:600px){main section{padding:1rem}.ctl button{padding:.3rem .55rem}}
+main h2{font-family:var(--f-display);font-weight:700;font-size:1.55rem;line-height:1.2;margin:0 0 .75rem}
+main h3{font-size:1.1rem;margin:1.25rem 0 .4rem}
+main p,main li{max-width:68ch}
+.task-head{font-family:var(--f-display);font-weight:700;font-size:1.15rem;margin:1.75rem 0 .5rem;padding-top:1rem;border-top:2px solid var(--ink)}
+.task-head:first-of-type{border-top:0;padding-top:0}
+.step{border-left:3px solid var(--rule);padding:.1rem 0 .1rem 1rem;margin:1rem 0}
+.step h3{margin-top:0;display:flex;gap:.6rem;align-items:baseline}
+.step h3 .n{flex:none;display:inline-grid;place-items:center;min-width:1.8rem;height:1.8rem;border-radius:50%;background:var(--ink);color:var(--surface);font-size:.9rem}
+.call{border-radius:8px;padding:.75rem 1rem;margin:1rem 0;border:1px solid}
+.call .k{display:block;font-weight:700;margin-bottom:.2rem}
+.call p{margin:.25rem 0}
+.call.stuck{background:var(--stuck-bg);border-color:var(--stuck)} .call.stuck .k{color:var(--stuck)}
+.call.tip{background:var(--tip-bg);border-color:var(--tip)} .call.tip .k{color:var(--tip)}
+.call.now{background:var(--now-bg);border-color:var(--now)} .call.now .k{color:var(--now)}
+.shot{display:inline-block;background:var(--tag);color:var(--tag-ink);font-weight:700;font-size:.85rem;padding:.05rem .5rem;border-radius:3px;margin-right:.35rem}
+.shot::before{content:"\1F4F7\FE0E  "}
+p.shotline{margin:.5rem 0}
+pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
+pre.cmd .c{color:var(--code-dim)}
+.copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
+.tbl{overflow-x:auto;margin:.75rem 0}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;vertical-align:top;padding:.5rem .6rem;border-bottom:1px solid var(--rule)}
+th{background:var(--surface-2);font-weight:600}
+td code{white-space:nowrap}
+.done-row{display:flex;gap:.6rem;align-items:center;margin-top:1.25rem;padding-top:.75rem;border-top:1px dashed var(--rule)}
+input[type=checkbox]{width:1.3rem;height:1.3rem;accent-color:var(--tip);flex:none}
+.done-row label{min-height:44px;display:flex;align-items:center;cursor:pointer}
+.q{border-top:1px solid var(--rule);padding:.75rem 0}
+.q .ask{font-weight:600;margin:0 0 .4rem}
+.ans{display:none;margin-top:.5rem;padding:.6rem .8rem;background:var(--surface-2);border-radius:6px}
+.ans.open{display:block}
+.evidence ul{list-style:none;padding:0;margin:0}
+.evidence li{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px dashed var(--rule)}
+.evidence li label{cursor:pointer}
+.cheat{border:2px solid var(--ink);border-radius:8px;padding:1rem 1.25rem}
+.cheat .grid{display:grid;gap:1rem 1.5rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.cheat h3{margin:0 0 .3rem;font-family:var(--f-display)}
+.cheat ul{margin:0;padding-left:1.1rem;font-size:.93rem}
+.badges{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+.badge{border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:.05rem .65rem;font-size:.82rem;font-weight:600}
+footer{border-top:1px solid var(--rule);background:var(--surface);color:var(--ink-2);font-size:.88rem}
+footer .in{max-width:76rem;margin:0 auto;padding:1.25rem 1rem}
+footer p{margin:.25rem 0;max-width:80ch}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
+  body{background:#fff;color:#000} .wrap{display:block;padding:0}
+  main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
+  .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
+  .stub{background:#fff;border:2px solid #000}
+}
+</style>
+</head>
+<body data-prefix="aplus-lab10-v1:">
+<a href="#main" class="skip-link">Skip to main content</a>
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="index.html"><span class="plug" aria-hidden="true">A+</span>A+ Lab Companion</a>
+  <div class="ctl" role="group" aria-label="Page controls">
+    <button type="button" id="fs-down" aria-label="Decrease text size">A&minus;</button>
+    <button type="button" id="fs-up" aria-label="Increase text size">A+</button>
+    <button type="button" id="theme" aria-pressed="false">Dark mode</button>
+    <button type="button" id="print">Print</button>
+    <button type="button" id="clear">Clear progress</button>
+  </div>
+</div></header>
+<div class="ticket"><div class="ticket-in">
+  <div class="stub"><span class="lbl">Lab</span><span class="no">10</span><span class="series">CompTIA A+ Lab Series v4</span></div>
+  <div class="tk-body"><h1>Windows Customizations</h1><p class="lede">Users notice their desktop more than any other part of Windows, and they'll ask you to change it. You will set desktop icons, appearance, screen saver lock, and text size, then customize the Start menu, taskbar, and notification area on Windows 7 and Windows 10.</p><dl class="fields"><div><dt>Time</dt><dd>25–35 min</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Machines</dt><dd>Win7, Win10</dd></div><div><dt>Exam domains</dt><dd>Core 2: Operating Systems</dd></div></dl></div>
+</div></div>
+<div class="wrap">
+<nav class="toc" aria-label="On this page"><details><summary>On this page</summary>
+<div id="meter" class="meter" role="progressbar" aria-label="Sections reviewed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="meter-bar"></span></div>
+<p id="meter-txt" class="meter-txt"></p>
+<ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#reference"><span>Reference: customization and accessibility</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#exam"><span>On the A+ exams</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#check"><span>Check yourself</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#evidence"><span>Evidence to capture</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#cheat"><span>Cheat sheet</span><span class="tick" aria-hidden="true"></span></a></li></ol></details></nav>
+<main id="main" tabindex="-1">
+<section id="overview" aria-labelledby="h-overview">
+<h2 id="h-overview">Why this lab matters</h2>
+<p>Customization tickets look small, but they're frequent, and doing them quickly builds trust with users. More importantly, a few of these "preferences" have real security or accessibility weight. A <strong>screen saver that requires sign-in on resume</strong> locks an unattended PC. <strong>Text size and scaling</strong>, larger scroll bars, and <strong>contrast</strong> themes make a PC usable for someone with low vision.</p>
+<p>You'll also see how the same settings moved from Control Panel's Personalization window in Windows 7 to the Settings app in Windows 10, which helps you find anything on Windows 11.</p>
+
+<div class="done-row"><input type="checkbox" id="done-overview" data-done="overview"><label for="done-overview">Mark this section reviewed</label></div>
+</section>
+<section id="environment" aria-labelledby="h-environment">
+<h2 id="h-environment">The environment you're working in</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code class="inl">192.168.1.7/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<p>The VMs have no sound hardware, so the Sounds dialog shows options but plays nothing.</p>
+
+<div class="done-row"><input type="checkbox" id="done-environment" data-done="environment"><label for="done-environment">Mark this section reviewed</label></div>
+</section>
+<section id="then-now" aria-labelledby="h-then-now">
+<h2 id="h-then-now">Then vs. now: Windows 11</h2>
+<div class="tbl"><table><thead><tr><th scope="col">In the lab</th><th scope="col">On Windows 11</th></tr></thead><tbody><tr><td>Personalize > Change desktop icons</td><td>Settings > Personalization > <strong>Themes > Desktop icon settings</strong></td></tr><tr><td>Change your account picture</td><td>Settings > Accounts > <strong>Your info</strong></td></tr><tr><td>Window Color and Appearance (scroll bar size)</td><td>Not available; use Settings > Accessibility > <strong>Text size</strong> and <strong>Visual effects > Always show scrollbars</strong></td></tr><tr><td>Screen Saver settings</td><td>Settings > Personalization > <strong>Lock screen > Screen saver</strong>. <strong>Dynamic lock</strong> and Settings > Accounts > Sign-in options > "If you've been away" also lock the PC.</td></tr><tr><td>Display > Set custom text size (DPI)</td><td>Settings > System > <strong>Display > Scale</strong> (custom scaling under Scale > Custom)</td></tr><tr><td>Taskbar and Start Menu Properties</td><td>Settings > Personalization > <strong>Taskbar</strong> and <strong>Start</strong>. The taskbar can't move to the sides; it can be centered or left-aligned.</td></tr><tr><td>Notification Area Icons / system icons</td><td>Settings > Personalization > Taskbar > <strong>Other system tray icons</strong></td></tr><tr><td>Pin Calendar to the taskbar</td><td>Right-click any app in Start > <strong>Pin to taskbar</strong></td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-then-now" data-done="then-now"><label for="done-then-now">Mark this section reviewed</label></div>
+</section>
+<section id="walkthrough" aria-labelledby="h-walkthrough">
+<h2 id="h-walkthrough">Walkthrough</h2>
+<p class="task-head">Task 1: Desktop settings (Win7)</p>
+<div class="step">
+<h3><span class="n">1</span>Put Control Panel on the desktop</h3>
+<p>Log in to <strong>Win7</strong>. Right-click the desktop > <strong>Personalize > Change desktop icons</strong>. Check <strong>Control Panel</strong> and click <strong>OK</strong>. A Control Panel icon appears on the desktop.</p>
+</div>
+<div class="step">
+<h3><span class="n">2</span>Change the account picture</h3>
+<p>In Personalization, click <strong>Change your account picture</strong>, choose a picture, and click <strong>Change Picture</strong>. <strong>Browse for more pictures</strong> lets you use your own.</p>
+</div>
+<div class="step">
+<h3><span class="n">3</span>Make the scroll bars bigger</h3>
+<p>Click <strong>Window Color > Advanced appearance settings</strong> if needed. In <strong>Window Color and Appearance</strong>, choose <strong>Scrollbar</strong> from <strong>Item</strong>, set <strong>Size</strong> to <code class="inl">30</code>, and click <strong>OK</strong>. Scroll bars are now wider, which helps users with limited mouse control.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Window Color and Appearance dialog with Scrollbar size 30.</p>
+</div>
+<div class="step">
+<h3><span class="n">4</span>Look at Sounds</h3>
+<p>Click <strong>Sounds</strong>. You can assign any <code class="inl">.wav</code> file to a Windows event. Review the list and click <strong>Cancel</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">5</span>Set a screen saver that locks the PC</h3>
+<p>Click <strong>Screen Saver</strong>. Choose <strong>Blank</strong>, set <strong>Wait</strong> to <code class="inl">15</code> minutes, check <strong>On resume, display logon screen</strong>, and click <strong>OK</strong>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Screen Saver Settings with Blank, 15 minutes, and On resume, display logon screen checked.</p>
+<div class="call tip"><span class="k">Why this matters</span><p>"On resume, display logon screen" means an unattended PC locks itself after 15 minutes. Many security policies require it.</p></div>
+</div>
+<div class="step">
+<h3><span class="n">6</span>Look at text size</h3>
+<p>Click <strong>Display</strong> in the left pane. Note the text size options, click <strong>Set custom text size (DPI)</strong> to see the percentages, then <strong>Cancel</strong> and close the window.</p>
+</div>
+<p class="task-head">Task 2: Personalization (Win10)</p>
+<div class="step">
+<h3><span class="n">7</span>Set the background</h3>
+<p>Log in to <strong>Win10</strong>. Open <strong>Start > Settings > Personalization > Background</strong>. Choose <strong>Picture</strong>, pick an image, and choose a fit (Fill, Fit, Stretch, Tile, Center, or Span).</p>
+</div>
+<div class="step">
+<h3><span class="n">8</span>Set colors and dark mode</h3>
+<p>Click <strong>Colors</strong>. Pick an accent color and check <strong>Start, taskbar, and action center</strong> under <strong>Show accent color on the following surfaces</strong>. Choose <strong>Dark</strong>. Open Start to see the color applied.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Win10 Colors page with Dark mode and the accent color applied.</p>
+</div>
+<div class="step">
+<h3><span class="n">9</span>Explore Start settings</h3>
+<p>Click <strong>Start</strong> in the left pane and try options such as <strong>Use Start full screen</strong>. Change them back if you prefer.</p>
+</div>
+<p class="task-head">Task 3: Taskbar and Start menu (Win7)</p>
+<div class="step">
+<h3><span class="n">10</span>Open Taskbar properties</h3>
+<p>On <strong>Win7</strong>, right-click the taskbar > <strong>Properties</strong>. Typical taskbar settings:</p>
+<div class="tbl"><table><thead><tr><th scope="col">Setting</th><th scope="col">Typical</th></tr></thead><tbody><tr><td>Lock the taskbar</td><td>Unchecked (while you customize)</td></tr><tr><td>Auto-hide the taskbar</td><td>Unchecked</td></tr><tr><td>Use small icons</td><td>Checked</td></tr><tr><td>Taskbar location</td><td>Bottom</td></tr><tr><td>Taskbar buttons</td><td>Never combine</td></tr></tbody></table></div>
+</div>
+<div class="step">
+<h3><span class="n">11</span>Show all notification icons</h3>
+<p>Click <strong>Customize</strong> next to the notification area. Check <strong>Always show all icons and notifications on the taskbar</strong> and click <strong>OK</strong>. All the tray icons now show.</p>
+</div>
+<div class="step">
+<h3><span class="n">12</span>Turn off the clock</h3>
+<p>Click <strong>Customize</strong> again > <strong>Turn system icons on or off</strong>. Set <strong>Clock</strong> to <strong>Off</strong> and click <strong>OK</strong> twice. The clock disappears.</p>
+</div>
+<div class="step">
+<h3><span class="n">13</span>Customize the Start menu</h3>
+<p>On the <strong>Start Menu</strong> tab, click <strong>Customize</strong>. Under <strong>Computer</strong>, choose <strong>Don't display this item</strong>; under <strong>Control Panel</strong>, choose <strong>Display as a menu</strong>. Click <strong>OK</strong>, then <strong>Apply</strong>, and open Start: Computer is gone and Control Panel opens as a submenu.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Win7 Start menu with Control Panel shown as a menu and Computer removed.</p>
+</div>
+<div class="step">
+<h3><span class="n">14</span>Add the Desktop toolbar</h3>
+<p>On the <strong>Toolbars</strong> tab, check <strong>Desktop</strong> and click <strong>OK</strong>. A <strong>Desktop</strong> toolbar appears near the notification area; click its double arrows to browse.</p>
+</div>
+<p class="task-head">Task 4: Taskbar (Win10)</p>
+<div class="step">
+<h3><span class="n">15</span>Pin an app</h3>
+<p>On <strong>Win10</strong>, open <strong>Start</strong>, right-click <strong>Calendar</strong>, and choose <strong>More > Pin to taskbar</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">16</span>Choose system icons</h3>
+<p>Right-click the taskbar > <strong>Taskbar settings</strong>. Under <strong>Notification area</strong>, click <strong>Turn system icons on or off</strong> and toggle a few.</p>
+<p class="shotline"><span class="shot">Screenshot</span>Win10 Turn system icons on or off, with Calendar pinned to the taskbar.</p>
+<p>The lab is complete.</p>
+</div>
+
+<div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+<section id="reference" aria-labelledby="h-reference">
+<h2 id="h-reference">Reference: customization and accessibility</h2>
+<h3>Where the common requests live (Windows 10 and 11)</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Request</th><th scope="col">Location</th></tr></thead><tbody><tr><td>Wallpaper, colors, dark mode</td><td>Settings > Personalization</td></tr><tr><td>Desktop icons (This PC, Recycle Bin, Control Panel)</td><td>Personalization > Themes > Desktop icon settings</td></tr><tr><td>Lock after inactivity</td><td>Lock screen > Screen saver ("On resume, display logon screen"); Sign-in options</td></tr><tr><td>Bigger text everywhere</td><td>System > Display > Scale</td></tr><tr><td>Bigger text only</td><td>Accessibility > Text size</td></tr><tr><td>High contrast</td><td>Accessibility > Contrast themes</td></tr><tr><td>Mouse pointer size and color</td><td>Accessibility > Mouse pointer and touch</td></tr><tr><td>Magnifier, Narrator, captions</td><td>Accessibility</td></tr><tr><td>Taskbar alignment, items, tray icons</td><td>Personalization > Taskbar</td></tr><tr><td>Default apps</td><td>Apps > Default apps</td></tr></tbody></table></div>
+<h3>Accessibility shortcuts worth knowing</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Shortcut</th><th scope="col">Does</th></tr></thead><tbody><tr><td><kbd>Win</kbd>+<kbd>+</kbd></td><td>Starts Magnifier and zooms in; <kbd>Win</kbd>+<kbd>Esc</kbd> stops it</td></tr><tr><td><kbd>Win</kbd>+<kbd>Ctrl</kbd>+<kbd>Enter</kbd></td><td>Starts or stops Narrator</td></tr><tr><td>Left <kbd>Alt</kbd>+Left <kbd>Shift</kbd>+<kbd>PrtScn</kbd></td><td>Turns a contrast theme on or off</td></tr><tr><td><kbd>Shift</kbd> five times</td><td>Sticky Keys prompt</td></tr><tr><td><kbd>Win</kbd>+<kbd>U</kbd></td><td>Opens Accessibility settings</td></tr></tbody></table></div>
+<h3>Useful taskbar and desktop shortcuts</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Shortcut</th><th scope="col">Does</th></tr></thead><tbody><tr><td><kbd>Win</kbd>+<kbd>D</kbd></td><td>Show or hide the desktop</td></tr><tr><td><kbd>Win</kbd>+<kbd>L</kbd></td><td>Lock the PC</td></tr><tr><td><kbd>Win</kbd>+<kbd>1</kbd> through <kbd>Win</kbd>+<kbd>9</kbd></td><td>Open the pinned taskbar app in that position</td></tr><tr><td><kbd>Win</kbd>+<kbd>Tab</kbd></td><td>Task view and virtual desktops</td></tr><tr><td><kbd>Win</kbd>+<kbd>V</kbd></td><td>Clipboard history</td></tr><tr><td><kbd>Win</kbd>+<kbd>.</kbd></td><td>Emoji and symbols</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-reference" data-done="reference"><label for="done-reference">Mark this section reviewed</label></div>
+</section>
+<section id="stuck" aria-labelledby="h-stuck">
+<h2 id="h-stuck">Where people get stuck</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Problem</th><th scope="col">Why it happens</th><th scope="col">Fix</th></tr></thead><tbody><tr><td>Can't move or resize the taskbar</td><td>It's locked</td><td>Right-click the taskbar and uncheck Lock the taskbar</td></tr><tr><td>Window Color and Appearance won't open</td><td>Windows 7 Basic or an Aero theme is active</td><td>Click Window Color, then Advanced appearance settings</td></tr><tr><td>Calendar isn't in the Win10 Start menu</td><td>It's listed alphabetically, not pinned</td><td>Scroll to C in the app list, or search "Calendar"</td></tr><tr><td>Clock is gone and the user wants it back</td><td>You turned it off</td><td>Turn system icons on or off > Clock: On</td></tr><tr><td>Theme changes don't stick on a work PC</td><td>Group Policy controls them</td><td>Expected in a domain; ask the administrator</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-stuck" data-done="stuck"><label for="done-stuck">Mark this section reviewed</label></div>
+</section>
+<section id="on-the-job" aria-labelledby="h-on-the-job">
+<h2 id="h-on-the-job">On the job</h2>
+<div class="tbl"><table><thead><tr><th scope="col">The ticket says</th><th scope="col">Where you look</th><th scope="col">Likely fix</th></tr></thead><tbody><tr><td>"I need everything bigger; I can't read the screen."</td><td>Display > Scale, Accessibility > Text size, Magnifier</td><td>Raise scaling; show Magnifier shortcuts</td></tr><tr><td>"Policy says screens must lock when we walk away."</td><td>Screen saver or sign-in options</td><td>Set a timeout with sign-in on resume; teach <kbd>Win</kbd>+<kbd>L</kbd></td></tr><tr><td>"My taskbar disappeared."</td><td>Taskbar settings</td><td>Turn off auto-hide</td></tr><tr><td>"I lost the Recycle Bin from my desktop."</td><td>Desktop icon settings</td><td>Check Recycle Bin</td></tr><tr><td>"The colors are inverted and everything is black."</td><td>Contrast themes</td><td>The user hit the shortcut; turn contrast off</td></tr></tbody></table></div>
+<div class="call tip"><span class="k">Professional habit</span><p>Teach the shortcut while you fix the problem. "Press Win+L when you leave your desk" prevents the next ticket.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-on-the-job" data-done="on-the-job"><label for="done-on-the-job">Mark this section reviewed</label></div>
+</section>
+<section id="exam" aria-labelledby="h-exam">
+<h2 id="h-exam">On the A+ exams</h2>
+<div class="badges"><span class="badge">Core 2: Operating Systems</span></div>
+<p><strong>Core 2 (220-1202)</strong> covers Windows Settings categories (Personalization, Accessibility, System, Apps, Accounts), Control Panel equivalents, and screen-lock settings as part of workstation security best practices.</p>
+<h3>High-yield facts</h3>
+<ul><li>Screen saver with "On resume, display logon screen" (or an inactivity timeout) is a workstation security best practice.</li><li><kbd>Win</kbd>+<kbd>L</kbd> locks the PC immediately.</li><li>Scale changes size without lowering resolution.</li><li>Desktop icon settings brings back This PC, Recycle Bin, and Control Panel icons.</li><li>Accessibility includes Magnifier, Narrator, contrast themes, and text size.</li></ul>
+
+<div class="done-row"><input type="checkbox" id="done-exam" data-done="exam"><label for="done-exam">Mark this section reviewed</label></div>
+</section>
+<section id="check" aria-labelledby="h-check">
+<h2 id="h-check">Check yourself</h2>
+<div class="q"><p class="ask">1. Company policy requires PCs to lock after 10 minutes of inactivity. How do you set that on one PC?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Set a screen saver (or screen timeout) of 10 minutes with <strong>On resume, display logon screen</strong> checked, or the equivalent sign-in option. In a domain, enforce it with Group Policy.</div></div>
+<div class="q"><p class="ask">2. A user's Recycle Bin icon vanished from the desktop. Where do you restore it?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Settings > Personalization > Themes > Desktop icon settings (Personalize > Change desktop icons on Windows 7).</div></div>
+<div class="q"><p class="ask">3. A user with low vision says text is too small. What's the first setting to change?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Display scaling (Settings > System > Display > Scale), and Accessibility > Text size for text only.</div></div>
+<div class="q"><p class="ask">4. What shortcut locks Windows instantly?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans"><kbd>Win</kbd>+<kbd>L</kbd></div></div>
+<div class="q"><p class="ask">5. Why couldn't you drag the taskbar to the left side of the screen on Windows 11?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Windows 11 only supports the taskbar at the bottom; you can change its alignment but not its edge.</div></div>
+</section>
+<section id="evidence" aria-labelledby="h-evidence">
+<h2 id="h-evidence">Evidence to capture</h2>
+<p>Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.</p>
+<div class="evidence"><ul><li><input type="checkbox" id="ev1" data-evidence="ev1"><label for="ev1"><span class="shot">Scroll bars</span>Win7 Window Color and Appearance with Scrollbar size 30.</label></li><li><input type="checkbox" id="ev2" data-evidence="ev2"><label for="ev2"><span class="shot">Screen saver</span>Win7 Screen Saver Settings with Blank, 15 minutes, and logon screen on resume.</label></li><li><input type="checkbox" id="ev3" data-evidence="ev3"><label for="ev3"><span class="shot">Colors</span>Win10 Colors page with Dark mode and the accent color applied.</label></li><li><input type="checkbox" id="ev4" data-evidence="ev4"><label for="ev4"><span class="shot">Start menu</span>Win7 Start menu with Control Panel as a menu and Computer removed.</label></li><li><input type="checkbox" id="ev5" data-evidence="ev5"><label for="ev5"><span class="shot">Taskbar</span>Win10 system icons settings with Calendar pinned.</label></li></ul></div>
+</section>
+<section id="cheat" aria-labelledby="h-cheat">
+<h2 id="h-cheat">Cheat sheet</h2>
+<div class="cheat"><div class="grid">
+<div><h3>Where it is</h3>
+<ul><li>Settings > Personalization (look and taskbar)</li><li>Themes > Desktop icon settings</li><li>Lock screen > Screen saver</li><li>System > Display > Scale</li><li>Accessibility (text, contrast, Magnifier)</li></ul>
+</div>
+<div><h3>Shortcuts</h3>
+<ul><li><kbd>Win</kbd>+<kbd>L</kbd> lock</li><li><kbd>Win</kbd>+<kbd>D</kbd> desktop</li><li><kbd>Win</kbd>+<kbd>+</kbd> Magnifier</li><li><kbd>Win</kbd>+<kbd>U</kbd> Accessibility</li><li>Taskbar: right-click > Taskbar settings</li></ul>
+</div>
+</div></div>
+</section>
+</main></div>
+<footer><div class="in">
+  <p>Built for CompTIA A+ hands-on practice at Brookdale Community College, 2026. Open educational resource.</p>
+  <p>Companion to the NDG CompTIA A+ Lab Series v4 labs. This guide is independent and is not affiliated with or endorsed by CompTIA or Network Development Group. CompTIA A+ is a registered trademark of CompTIA, Inc.</p>
+</div></footer>
+<p id="live" class="sr" aria-live="polite"></p>
+<script>
+(function(){
+  var S={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
+         set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+         del:function(k){try{localStorage.removeItem(k)}catch(e){}}};
+  window.__S=S;
+  var root=document.documentElement, tb=document.getElementById('theme');
+  function isDark(){var t=root.getAttribute('data-theme'); if(t) return t==='dark';
+    return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;}
+  function paintTheme(){var d=isDark(); tb.setAttribute('aria-pressed',d?'true':'false'); tb.textContent=d?'Light mode':'Dark mode';}
+  var saved=S.get('aplus-theme'); if(saved) root.setAttribute('data-theme',saved);
+  paintTheme();
+  tb.addEventListener('click',function(){var n=isDark()?'light':'dark'; root.setAttribute('data-theme',n); S.set('aplus-theme',n); paintTheme();});
+  var sc=parseFloat(S.get('aplus-scale'))||1;
+  function setScale(v){sc=Math.min(1.4,Math.max(.85,Math.round(v*100)/100)); root.style.setProperty('--scale',sc); S.set('aplus-scale',sc);}
+  setScale(sc);
+  document.getElementById('fs-up').addEventListener('click',function(){setScale(sc+.1)});
+  document.getElementById('fs-down').addEventListener('click',function(){setScale(sc-.1)});
+  document.getElementById('print').addEventListener('click',function(){window.print()});
+})();
+
+(function(){
+  var S=window.__S, P=document.body.getAttribute('data-prefix');
+  var live=document.getElementById('live');
+  function say(t){live.textContent=t;}
+  function load(k){try{return JSON.parse(S.get(P+k))||{}}catch(e){return {}}}
+  var done=load('done'), ev=load('evidence');
+  var tracks=[].slice.call(document.querySelectorAll('[data-done]'));
+  var bar=document.getElementById('meter-bar'), txt=document.getElementById('meter-txt'), meter=document.getElementById('meter');
+  function refresh(){
+    var n=0; tracks.forEach(function(c){ if(c.checked) n++;
+      var a=document.querySelector('.toc a[href="#'+c.getAttribute('data-done')+'"] .tick'); if(a) a.textContent=c.checked?'\u2713':'';});
+    var pct=tracks.length?Math.round(n/tracks.length*100):0;
+    bar.style.width=pct+'%'; meter.setAttribute('aria-valuenow',pct);
+    txt.textContent=n+' of '+tracks.length+' sections reviewed';
+    S.set(P+'meta',JSON.stringify({done:n,total:tracks.length}));
+  }
+  tracks.forEach(function(c){ c.checked=!!done[c.getAttribute('data-done')];
+    c.addEventListener('change',function(){done[c.getAttribute('data-done')]=c.checked; S.set(P+'done',JSON.stringify(done)); refresh();});});
+  refresh();
+  [].forEach.call(document.querySelectorAll('[data-evidence]'),function(c){ c.checked=!!ev[c.getAttribute('data-evidence')];
+    c.addEventListener('change',function(){ev[c.getAttribute('data-evidence')]=c.checked; S.set(P+'evidence',JSON.stringify(ev));});});
+  document.getElementById('clear').addEventListener('click',function(){
+    if(!window.confirm('Clear your checkmarks on this lab page?')) return;
+    S.del(P+'done'); S.del(P+'evidence'); done={}; ev={};
+    [].forEach.call(document.querySelectorAll('[data-done],[data-evidence]'),function(c){c.checked=false;});
+    refresh(); say('Progress cleared for this lab.');});
+  [].forEach.call(document.querySelectorAll('.reveal'),function(b){
+    b.addEventListener('click',function(){var a=b.nextElementSibling, o=a.classList.toggle('open');
+      b.setAttribute('aria-expanded',o?'true':'false'); b.textContent=o?'Hide answer':'Show answer';});});
+  [].forEach.call(document.querySelectorAll('pre.cmd'),function(pre){
+    var b=document.createElement('button'); b.type='button'; b.className='copy'; b.textContent='Copy';
+    b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code'), clone=code.cloneNode(true);
+      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
+      function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
+      function fallback(){var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+        try{document.execCommand('copy'); ok();}catch(e){say('Copy failed; select the text instead.');} ta.remove();}
+    });});
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(l){l.setAttribute('aria-current', l.getAttribute('href')==='#'+e.target.id?'true':'false');});}});},
+      {rootMargin:'-20% 0px -70% 0px'});
+    [].forEach.call(document.querySelectorAll('main section[id]'),function(s){io.observe(s);});
+  }
+  var det=document.querySelector('.toc details');
+  if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
+})();
+</script>
+</body>
+</html>

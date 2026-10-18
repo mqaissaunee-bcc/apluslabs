@@ -1,0 +1,205 @@
+@lede Every person on a PC should have their own account with only the rights they need. You will create standard and administrator accounts three ways, add a user to the Administrators group, enforce a password policy with Group Policy, and open the tools used to manage domain accounts.
+
+== overview | Why this lab matters
+Accounts are the first security control on any PC. A **standard user** can run programs and change their own settings. An **administrator** can install software, change system settings, and read other users' files. Giving everyone admin rights is the most common way a small malware problem becomes a big one.
+You'll see the two ways Windows creates accounts: the friendly **Settings/User Accounts** path, and **Local Users and Groups** (`lusrmgr.msc`), which gives you every field and group membership. Then you'll use the **Local Group Policy Editor** to make Windows enforce password rules instead of just hoping people follow them. Finally you'll install **RSAT** and open **Active Directory Users and Computers**, the tool most help desks use all day in a domain.
+
+== environment | The environment you're working in
+| Machine | IP address | Account | Password |
+| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
+| Win8.1 | `192.168.1.8/24` | `sysadmin` | `Train1ng$` |
+| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+Accounts you'll create:
+| User | Where | Password | Type |
+| Logan | Win7 | `Password1` | Standard |
+| Logan | Win8.1 and Win10 | `Password1` | Changed to Administrator |
+| Sal (Sal A.) | Win7 | `SuperSecret` | Added to Administrators |
+!stuck Typo in the PDF | In a few places the PDF spells the sysadmin password as `Train1ing$`. The real password is still `Train1ng$`.
+The machines are in a **workgroup**, not a domain, so the Active Directory tools in Task 4 open but can't connect to anything. The point is to learn where they are and what they do.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Control Panel > User Accounts > Manage another account | Settings > Accounts > **Other users** > Add account. Control Panel's User Accounts now sends you there. |
+| PC Settings / Family & other people > Add someone else | Settings > Accounts > Other users. Choose **I don't have this person's sign-in information > Add a user without a Microsoft account** for a local account. |
+| Security questions for local accounts | Still asked when you create a local account in Settings. `lusrmgr.msc` and `net user` skip them. |
+| `lusrmgr.msc` / Computer Management | Same, in **Pro, Enterprise, and Education** only. Home edition has no Local Users and Groups or `gpedit.msc`. |
+| RSAT downloaded as an .msu file | RSAT is a **Feature on Demand**: Settings > System > Optional features > View features, search "RSAT". |
+| Control Panel > Administrative Tools | Start > All apps > **Windows Tools** |
+
+== walkthrough | Walkthrough
+## Task 1: Create accounts the easy way
+### Create a standard user on Win7
+Log in to **Win7**. Open **Control Panel > User Accounts and Family Safety > User Accounts > Manage another account > Create a new account**. Name it `Logan`, leave **Standard user** selected, and click **Create Account**.
+### Give Logan a password
+Click **Logan > Create a password**. Enter `Password1` twice and click **Create password**.
+### Test what a standard user can't do
+Log off and sign in as **Logan**. Open **Computer** and try to open `C:\Users\sysadmin`. You're refused because the folder belongs to another user. Click **Cancel**.
+Now open **Control Panel > User Accounts > Manage another account**. UAC asks for an **administrator's password**. Click **No**.
+!shot The UAC prompt asking for administrator credentials while signed in as Logan.
+!tip This is how admins should work | Day-to-day work in a standard account, typing admin credentials only when UAC asks, limits what malware can do if you open something bad.
+Log off Logan.
+### Create an account on Win8.1 and make it an administrator
+Log in to **Win8.1** as sysadmin. Open **Start > PC Settings > Accounts > Other accounts > Add an account**. Create a local account: user name `Logan`, password `Password1`, hint `A password with 1`. Click **Next**, then **Finish**.
+Click **Logan > Edit**, set **Account type** to **Administrator**, and click **OK**. Sign out (move the pointer to the top-right corner for the charms bar, then Start > sysadmin > Sign out) and sign in as Logan. Windows sets up the new profile.
+### Do the same on Win10
+Log in to **Win10** as sysadmin. Open **Start > Settings > Accounts > Family & other people > Add someone else to this PC**. Create `Logan` with password `Password1` and these security answers:
+| Question | Answer |
+| First pet's name | `Logan Jr` |
+| City where you were born | `BigCity` |
+| Childhood nickname | `Kidd` |
+Click **Logan > Change account type**, choose **Administrator**, and click **OK**. Sign in as Logan to confirm.
+!shot Win10 Settings showing Logan listed as an Administrator, local account.
+## Task 2: Local Users and Groups (Win7)
+### Open Computer Management
+On **Win7**, sign in as sysadmin. Right-click **Computer** on the desktop and choose **Manage**. Expand **Local Users and Groups** and open **Users**.
+### Create Sal
+Right-click empty space and choose **New User**:
+| Field | Value |
+| User name | `Sal` |
+| Full name | `Sal A.` |
+| Description | `Analyst` |
+| Password | `SuperSecret` |
+Uncheck **User must change password at next logon**, check **Password never expires**, then click **Create** and **Close**.
+### Add Sal to Administrators
+Open **Groups**, double-click **Administrators**, and click **Add**. Type `Sal`, click **Check Names** (it becomes `WIN7\Sal`, underlined), and click **OK** twice.
+!shot The Administrators Properties window listing Sal as a member.
+Close Computer Management, log off, and sign in as **Sal A.** Sal can now open other users' folders.
+## Task 3: Enforce a password policy (Win8.1)
+### Open the Local Group Policy Editor
+On **Win8.1**, sign out of Logan and sign in as sysadmin. Right-click **Start > Search**, type `gpedit.msc`, and open it.
+### Set the password policy
+Expand **Computer Configuration > Windows Settings > Security Settings > Account Policies > Password Policy** and double-click each setting:
+| Policy | Set to |
+| Maximum password age | 90 days |
+| Minimum password length | 8 characters |
+| Password must meet complexity requirements | Enabled |
+!shot The Password Policy pane showing all three settings.
+### Restart and test the policy
+Right-click **Start > Shut down or sign out > Restart**. Sign in as **Logan** (`Password1`). In the NETLAB+ toolbar, open the Win8.1 tab's menu and choose **Send CTRL+ALT+DEL**, then click **Change a password**.
+Try the new password `Pass2`. It's refused because it's too short. Click **OK**, try again with `Password2`, and it's accepted. Sign out and back in as Logan with `Password2`.
+!shot The error saying the password doesn't meet policy requirements.
+!stuck Where people get stuck | [[Ctrl]]+[[Alt]]+[[Del]] on your own keyboard goes to *your* computer, not the VM. Use the NETLAB+ **Send CTRL+ALT+DEL** menu item.
+## Task 4: Active Directory tools (Win10)
+### Install RSAT
+On **Win10**, sign out of Logan and sign in as sysadmin. Open the **Toolbox** folder on the desktop and double-click `WindowsTH-RSAT_WS_1709-x64.msu`. Click **Yes**, then **I Accept**. It takes a few minutes. Click **Close** when it finishes.
+### Open Active Directory Users and Computers
+Open **Control Panel**, set **Small icons**, and open **Administrative Tools**. Note the AD tools RSAT added, then double-click **Active Directory Users and Computers**. Read the warning that this tool manages domain accounts, not local ones, and click **OK**.
+!shot Administrative Tools listing the Active Directory snap-ins.
+The console opens but can't reach a domain controller. Right-click **Active Directory Users and Computers** in the left pane to see **Change Domain** and **Change Domain Controller**. The lab is complete.
+
+== reference | Reference: accounts, groups, and policy
+### Built-in local groups
+| Group | Members can |
+| Administrators | Do anything on this PC |
+| Users | Run programs and change their own settings (standard user) |
+| Guests | Very limited, temporary access; the Guest account is disabled by default |
+| Power Users | Kept for old programs; has no extra rights on current Windows |
+| Remote Desktop Users | Sign in through RDP (Lab 11) |
+| Backup Operators | Back up and restore files regardless of permissions |
+### Local accounts and Microsoft accounts
+| | Local account | Microsoft account |
+| Signs in with | User name and password stored on this PC | An email address checked by Microsoft |
+| Syncs settings and OneDrive | No | Yes |
+| Works offline | Yes | Yes, after first sign-in |
+| Typical use | Shared or lab PCs, service accounts | Home PCs |
+### Manage accounts from the command line
+```
+%% List local users
+net user
+%% Create a user, then add them to Administrators
+net user Sal SuperSecret /add /fullname:"Sal A." /comment:Analyst
+net localgroup Administrators Sal /add
+%% Disable or delete an account
+net user Sal /active:no
+net user Sal /delete
+%% Show or set password policy without Group Policy
+net accounts
+net accounts /minpwlen:8 /maxpwage:90
+```
+### Password and lockout policies
+| Policy | Controls |
+| Enforce password history | How many old passwords can't be reused |
+| Maximum password age | Days before a password must change |
+| Minimum password age | Days before a user can change it again (stops cycling back to the old one) |
+| Minimum password length | Shortest allowed password |
+| Complexity requirements | Three of four: upper case, lower case, digit, symbol; can't contain the user name |
+| Account lockout threshold | Failed attempts before the account locks |
+| Account lockout duration | How long it stays locked |
+!tip Current password advice | NIST guidance (SP 800-63B) now favors **long passphrases** and checking against breached-password lists over forced periodic changes and complexity rules. Many organizations still set both, and the exam may ask about either. Add MFA wherever you can.
+### Active Directory tools from RSAT
+| Tool | Used for |
+| Active Directory Users and Computers (`dsa.msc`) | Reset passwords, unlock accounts, manage group membership and OUs |
+| Active Directory Administrative Center | The same tasks plus PowerShell history and the AD Recycle Bin |
+| Group Policy Management (`gpmc.msc`) | Create and link domain Group Policy Objects |
+| Active Directory Sites and Services | Sites, subnets, and replication |
+| Active Directory Domains and Trusts | Trusts and functional levels |
+### Workgroup compared with domain
+| Workgroup | Domain |
+| Each PC keeps its own accounts | Accounts live on a domain controller |
+| Best for a handful of PCs | Scales to thousands |
+| Policy set on each PC (`gpedit.msc`) | Policy pushed centrally with Group Policy |
+| Any Windows edition | Joining requires Pro, Enterprise, or Education |
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| sysadmin password rejected | The PDF typo `Train1ing$` | Use `Train1ng$` |
+| Check Names can't find Sal | Spelling, or Sal wasn't created | Check Users; type `Sal`, not `Sal A.` (that's the full name) |
+| Password policy doesn't take effect | The PC wasn't restarted, or you tested as sysadmin who already had a password | Restart, then change Logan's password |
+| `Password2` rejected too | Complexity counts three of four categories; it has upper, lower, and a digit, so it should pass. Check for a typo in the confirm box | Retype both boxes carefully |
+| Ctrl+Alt+Del opens your own security screen | Your keyboard shortcut goes to your PC | Use NETLAB+ Send CTRL+ALT+DEL |
+| ADUC shows "domain could not be found" | The lab is a workgroup | Expected; explore the menus instead |
+| `gpedit.msc` or `lusrmgr.msc` missing on a home PC | Windows Home doesn't include them | Use Settings or `net user`, or upgrade to Pro |
+
+== on-the-job | On the job
+| The ticket says | Where you look | Likely fix |
+| "I'm locked out." | ADUC (domain) or `lusrmgr.msc` (local) | Unlock the account; reset the password if needed |
+| "The new hire can't install the software they need." | Group membership | Install it for them, or grant rights through a managed process; avoid making them a full admin |
+| "I keep getting asked for an admin password." | UAC prompts on a standard account | Expected; an admin enters credentials or deploys the app |
+| "Passwords must be stronger company-wide." | Group Policy (domain) or Local Security Policy (`secpol.msc`) | Set length, history, and lockout policy |
+| "An employee left today." | ADUC or local users | Disable the account first; delete later after data is handed off |
+!tip Professional habit | Disable an account before you delete it. Deleting removes its unique security ID (SID), and recreating an account with the same name doesn't restore its permissions or files.
+
+== exam | On the A+ exams
+**Core 2 (220-1202)** covers local users and groups, Microsoft and local accounts, `lusrmgr.msc`, `gpedit.msc`, `net user`, the principle of least privilege, password best practices, and Active Directory basics (domain, OU, security group, Group Policy, login scripts, home folders, folder redirection). It also asks which Windows editions include these tools.
+### High-yield facts
+- Least privilege: users work as standard users; admins elevate through UAC only when needed.
+- `lusrmgr.msc` and `gpedit.msc` are not in Windows Home.
+- Account Policies live under Computer Configuration > Windows Settings > Security Settings.
+- Lockout threshold, history, length, and complexity are the four policies most asked about.
+- ADUC (`dsa.msc`) manages domain users; it's installed with RSAT.
+- Disable departed users' accounts; don't delete them right away.
+
+== check | Check yourself
+?? A user needs to install one approved application but shouldn't be a permanent admin. What's the least-privilege approach?
+=> Keep them a standard user. An admin enters credentials at the UAC prompt to install it, or the app is deployed centrally.
+?? You created a password policy with gpedit.msc but users can still set short passwords. Name two things to check.
+=> Whether the PC was restarted (or `gpupdate /force` was run), and whether the setting is under Computer Configuration > Account Policies > Password Policy. Policy only applies when a password is next changed.
+?? What's the command to add the local user Sal to the Administrators group?
+=> `net localgroup Administrators Sal /add`
+?? A small office has 6 PCs and no server. Workgroup or domain?
+=> A workgroup. Domains need a domain controller and are worth it at larger scale or when central policy is required.
+?? Why did Logan's first attempt with Pass2 fail?
+=> It's only 5 characters, below the 8-character minimum you set in Password Policy.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] Standard user | The UAC prompt asking for admin credentials while signed in as Logan on Win7.
+[] Admin account | Win10 Settings showing Logan as an Administrator local account.
+[] Group | The Administrators Properties window listing Sal.
+[] Policy | The Password Policy settings in gpedit.msc on Win8.1.
+[] Policy enforced | The error refusing Pass2 as Logan's new password.
+[] RSAT | Administrative Tools listing the Active Directory snap-ins on Win10.
+
+== cheat | Cheat sheet
+## Accounts
+- `lusrmgr.msc` local users and groups (not Home)
+- `net user <name> <pass> /add`
+- `net localgroup Administrators <name> /add`
+- Settings > Accounts > Other users
+- Disable before delete
+## Policy
+- `gpedit.msc` > Computer Config > Windows Settings > Security Settings > Account Policies
+- `secpol.msc` Local Security Policy
+- `gpupdate /force` applies changes now
+- `net accounts` to view policy
+- Domain: ADUC `dsa.msc`, GPMC `gpmc.msc` (RSAT)

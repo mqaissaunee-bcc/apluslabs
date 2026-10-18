@@ -1,0 +1,187 @@
+@lede Settings and Control Panel together hold almost every option a user will ask you to change. You will check the installed Windows version, adjust resolution and power plans, tighten browser privacy and security zones, show hidden files and extensions, and raise User Account Control.
+@vms Win8.1, Win10
+
+== overview | Why this lab matters
+A lot of help desk work is configuration: "my screen is too small," "my laptop goes to sleep during presentations," "I can't see the file extension," "is this PC up to date?" Each answer lives in a specific Settings page or Control Panel applet, and knowing where is what makes you fast.
+The lab also touches two settings with security weight. **Show file extensions** helps users spot a file named `invoice.pdf.exe` for what it is. **User Account Control** decides how loudly Windows warns before a program makes system changes. Both appear on the exam as security best practices, not just preferences.
+
+== environment | The environment you're working in
+| Machine | IP address | Account | Password |
+| Win8.1 | `192.168.1.8/24` | `sysadmin` | `Train1ng$` |
+| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+The lab has no internet, so the Internet Explorer home page won't load. That doesn't affect any of the settings.
+!tip Internet Explorer is retired | Microsoft retired Internet Explorer in 2022. The **Internet Options** applet you'll use still matters: Windows uses it for proxy settings, security zones, and some app connections, and Edge reads several of these settings.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Settings > System > About > Version and OS Build | Same page: Settings > System > **About** > Windows specifications. `winver` shows it too. Settings > **Windows Update > Update history** lists installed updates. |
+| PC settings > PC and devices > Display | Settings > System > **Display** > Display resolution |
+| Control Panel > Power Options > advanced settings | Settings > System > **Power & battery** for the basics; Control Panel > Power Options (or `powercfg.cpl`) still has the advanced settings |
+| Internet Options (Internet Explorer) | `inetcpl.cpl` still opens it. Browser privacy now lives in **Edge > Settings > Privacy, search, and services** and **Cookies and site permissions**. |
+| Personalization > High Contrast theme | Settings > Accessibility > **Contrast themes** |
+| File Explorer View > Hidden items; Folder Options | File Explorer > **View > Show > Hidden items** and **File name extensions**. Folder Options is under the **...** menu > Options. |
+| Action Center > Change User Account Control settings | Control Panel > User Accounts > **Change User Account Control settings**, or search "UAC" |
+
+== walkthrough | Walkthrough
+## Task 1: Settings
+### Check the Windows version and build (Win10)
+Log in to **Win10**. Right-click **Start > Settings > System**, scroll down the left pane, and click **About**. Under **Windows specifications**, note the **Version** and **OS Build**. They tell you which feature update is installed.
+!shot The About page showing Version and OS Build.
+```
+%% The same information from the Run box or a prompt
+winver
+systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
+```
+### Change the display resolution (Win8.1)
+Log in to **Win8.1**. Open **Start > PC settings > PC and devices > Display**. The resolution is `1024 x 768`. Move the slider to `1280 x 768`, click **Apply**, then **Keep changes**. The screen gets wider. Change it back to `1024 x 768`.
+!tip Why Windows asks you to keep changes | If a resolution doesn't display, you can't see the button. Windows reverts automatically after about 15 seconds unless you confirm.
+## Task 2: Power Options (Win8.1)
+### Choose a plan
+Go back to **PC settings** and click **Control Panel** at the bottom of the left pane. Set **View by** to **Small icons** and open **Power Options**. Select **Balanced (recommended)**, then click **Change plan settings > Change advanced power settings**.
+### Change the advanced settings
+Click **Change settings that are currently unavailable**, then set:
+| Setting | Value |
+| Hard disk > Turn off hard disk after | 45 minutes |
+| Sleep > Sleep after | Never (type `0`) |
+| USB settings > USB selective suspend setting | Disabled |
+| Display > Turn off display after | 30 minutes |
+Click **OK** and close the plan window.
+!shot The Power Options advanced settings window with your changes.
+## Task 3: Internet Options (Win8.1)
+### Clear browsing data
+Right-click **Start > Control Panel > Internet Options**. Under **Browsing history**, click **Delete**. Make sure **Tracking Protection, ActiveX Filtering and Do Not Track** is unchecked, leave the other defaults, and click **Delete**.
+### Change history settings
+Click **Settings** under Browsing history. Select **Every time I visit the webpage**. On the **History** tab, set **Days to keep pages in history** to `10`. Click **OK**.
+### Review security zones
+Open the **Security** tab. Select **Internet** and click **Custom level** to see the many settings you can restrict, then **Cancel**.
+Select **Trusted sites > Sites**, uncheck **Require server verification (https:) for all sites in this zone**, enter the site address the lab gives you, click **Add**, then **Close**. Click **Custom level** for Trusted sites: most options are enabled, because you trust these sites. Click **Cancel**.
+!shot The Trusted sites window with a site added.
+### Block pop-ups and third-party cookies
+On the **Privacy** tab, make sure **Turn on Pop-up Blocker** is checked, then click **Advanced**. Check **Override automatic cookie handling** and choose **Block** for **Third-party Cookies**. Click **OK** twice.
+!shot The Advanced Privacy Settings window blocking third-party cookies.
+## Task 4: Personalization (Win8.1)
+### Apply a high contrast theme
+In Control Panel, open **Personalization** and click **High Contrast #1**. Then click **Desktop Background**, pick a color, and click **Save changes**. Close the window.
+## Task 5: Hidden files and extensions (Win8.1)
+### Show hidden items
+Open **File Explorer > Local Disk (C:)**. On the **View** tab, check **Hidden items**. The hidden **ProgramData** folder appears. Open **Program Files > TightVNC** and look at the file names.
+### Show file extensions
+Open **Control Panel > Folder Options > View** and uncheck **Hide extensions for known file types**. Click **OK**. Back in the TightVNC folder, names now end in `.exe`, `.txt`, and so on.
+!shot The TightVNC folder showing file extensions.
+## Task 6: User Account Control (Win8.1)
+### Raise UAC to Always notify
+Open **Control Panel > Action Center > Change User Account Control settings**. Drag the slider to the top, **Always notify**, and click **OK**. Accept the UAC prompt.
+!shot The UAC settings slider at Always notify.
+The lab is complete.
+
+== reference | Reference: Settings, Control Panel, and shortcuts
+### Control Panel applets you can open directly
+| Applet | Command |
+| Programs and Features | `appwiz.cpl` |
+| Network Connections | `ncpa.cpl` |
+| System Properties | `sysdm.cpl` |
+| Internet Options | `inetcpl.cpl` |
+| Power Options | `powercfg.cpl` |
+| Display | `desk.cpl` |
+| Sound | `mmsys.cpl` |
+| Mouse | `main.cpl` |
+| Windows Defender Firewall | `firewall.cpl` |
+| Date and Time | `timedate.cpl` |
+| Region | `intl.cpl` |
+### Power plans and states
+| Term | Meaning |
+| Balanced / Power saver / High performance | Built-in plans trading performance against battery life |
+| Sleep (S3) | RAM stays powered; fast to resume |
+| Hibernate (S4) | RAM saved to `hiberfil.sys`, PC powers off; slower to resume, no battery used |
+| Hybrid sleep | Sleep plus a hibernate file, for desktops |
+| Fast startup | Shutdown saves the kernel to disk for faster boot. Can hide hardware changes and block firmware key presses. |
+| USB selective suspend | Powers down idle USB devices; disable it if devices disconnect randomly |
+```
+%% List plans, show the active one, and report battery or energy problems
+powercfg /list
+powercfg /getactivescheme
+powercfg /batteryreport
+powercfg /energy
+```
+### UAC levels
+| Level | Behavior |
+| Always notify | Prompts for any system change, including Windows settings, on the secure desktop |
+| Notify only when apps try to make changes (default) | Prompts for apps, not for your own Windows setting changes |
+| Same, without dimming the desktop | Prompt appears on the normal desktop (less protected) |
+| Never notify | No prompts. Not recommended. |
+### Internet Options security zones
+| Zone | Default level | Holds |
+| Internet | Medium-high | Everything not in another zone |
+| Local intranet | Medium-low | Internal sites |
+| Trusted sites | Medium | Sites you add and trust |
+| Restricted sites | High | Sites you add and distrust |
+### Folder Options worth knowing
+| Option | Why change it |
+| Hide extensions for known file types (uncheck) | See the real file type; spot `file.pdf.exe` |
+| Show hidden files, folders, and drives | Reach `ProgramData`, `AppData` |
+| Hide protected operating system files | Leave checked except when troubleshooting |
+| Open File Explorer to | This PC or Home |
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| Can't find About in Settings | It's at the bottom of System's left pane | Scroll down, or run `winver` |
+| Advanced power settings are greyed out | They need admin rights | Click **Change settings that are currently unavailable** |
+| Sleep after won't take "Never" | It's a number box | Type `0` |
+| Trusted sites won't add the address | Require server verification needs `https:` | Uncheck that box, or use an https address |
+| Can't find Folder Options | It's called File Explorer Options on Windows 10 and 11 | Search for it, or use File Explorer's View options |
+| UAC change prompts again | Changing UAC itself needs approval | Click Yes |
+
+== on-the-job | On the job
+| The ticket says | Where you look | Likely fix |
+| "My laptop sleeps in the middle of presentations." | Power plan | Raise sleep and display timeouts, or use presentation settings |
+| "My USB headset keeps disconnecting." | Power Options > USB selective suspend | Disable it |
+| "Everything on the screen is tiny." | Display > Scale | Raise scaling to 125–150%, not the resolution |
+| "I got an email attachment called report.pdf and it won't open." | Folder Options | Show extensions; it may be `report.pdf.exe` |
+| "Which version of Windows do I have?" | Settings > System > About or `winver` | Read the version and build |
+| "I can't find AppData." | Hidden items | Show hidden items, or type `%appdata%` in File Explorer |
+!tip Professional habit | Change scaling before resolution. Lowering resolution blurs an LCD; scaling makes text bigger at the panel's native resolution.
+
+== exam | On the A+ exams
+**Core 2 (220-1202)** covers Windows Settings and Control Panel utilities by name and `.cpl` shortcut, power options (sleep, hibernate, fast startup, USB selective suspend, power plans), display settings, File Explorer options, Internet Options, and UAC as a security setting.
+### High-yield facts
+- `appwiz.cpl`, `ncpa.cpl`, `sysdm.cpl`, `inetcpl.cpl`, `powercfg.cpl`, `desk.cpl`, `firewall.cpl`, `mmsys.cpl`.
+- Hibernate saves RAM to disk and powers off; sleep keeps RAM powered.
+- Disable USB selective suspend when USB devices drop out.
+- Showing file extensions is a security best practice.
+- UAC's default is "Notify only when apps try to make changes"; Always notify is the most secure.
+- `winver` shows the version and build.
+
+== check | Check yourself
+?? A user's laptop battery is dead every morning even though they closed the lid. Which power setting helps?
+=> Set the lid action or sleep to Hibernate (or hybrid sleep), which saves to disk and uses no battery overnight.
+?? A USB barcode scanner keeps disconnecting after a few minutes of inactivity. What do you change?
+=> Disable USB selective suspend in the power plan's advanced settings.
+?? Why turn off "Hide extensions for known file types" on a user's PC?
+=> So the real file type shows. A file named `invoice.pdf.exe` would otherwise look like `invoice.pdf`.
+?? What's the most secure UAC setting, and what does it add over the default?
+=> Always notify. It also prompts when you change Windows settings yourself, not just when apps make changes.
+?? Which command opens Internet Options directly?
+=> `inetcpl.cpl`
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] Version | Win10 About page showing Version and OS Build.
+[] Power | The Power Options advanced settings with your changes.
+[] Trusted sites | The Trusted sites window with a site added.
+[] Cookies | Advanced Privacy Settings blocking third-party cookies.
+[] Extensions | The TightVNC folder showing file extensions.
+[] UAC | The UAC slider at Always notify.
+
+== cheat | Cheat sheet
+## Find it fast
+- `winver`; Settings > System > About
+- `powercfg.cpl`, `powercfg /batteryreport`
+- `inetcpl.cpl` Internet Options
+- `appwiz.cpl` `ncpa.cpl` `sysdm.cpl` `desk.cpl`
+- File Explorer > View > Show
+## Remember
+- Sleep = RAM; hibernate = disk, power off
+- USB drops: disable selective suspend
+- Tiny text: change scaling, not resolution
+- Show extensions (security)
+- UAC: Always notify is most secure

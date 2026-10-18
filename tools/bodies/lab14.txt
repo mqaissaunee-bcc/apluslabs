@@ -1,0 +1,150 @@
+@lede A single drive is a single point of failure. You will mirror two disks into a RAID 1 volume in Disk Management, then pool three more into a parity Storage Space that survives a drive failure and can grow later.
+@vms Win8.1
+
+== overview | Why this lab matters
+Drives fail; the only question is whether the failure costs anything. **RAID** combines drives so that data survives one failing (or, in RAID 0's case, so they're faster, with no protection at all). Windows can do this in software two ways.
+**Disk Management** builds classic RAID 1 mirrors on **dynamic disks**. **Storage Spaces** is the newer approach: pool drives of any size together, then carve out spaces with the protection level you choose, such as a mirror or parity. You'll build one of each.
+Remember the rule the exam and real life both test: **RAID is not a backup.** A mirror copies a deleted file or a ransomware-encrypted file to both drives instantly.
+
+== environment | The environment you're working in
+| Machine | IP address | Account | Password |
+| Win8.1 | `192.168.1.8/24` | `sysadmin` | `Train1ng$` |
+
+| Disk | Used for |
+| Disk 1 and Disk 2 | RAID 1 mirror, drive **F: Mirrored** |
+| Disk 3, Disk 4, Disk 5 | Storage pool with a parity space, drive **E: Local Data** |
+!tip Good to know before you start | Creating the mirror converts Disks 1 and 2 from **basic** to **dynamic**. That's expected for software RAID in Disk Management, and Windows will ask you to confirm.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Disk Management > New Mirrored Volume | Still available, but Microsoft considers **dynamic disks deprecated** and recommends Storage Spaces instead |
+| Control Panel > Storage Spaces | Settings > System > Storage > **Advanced storage settings > Storage Spaces** (the Control Panel version still works) |
+| Resiliency types | Same: Simple, Two-way mirror, Three-way mirror, Parity |
+| PowerShell | `Get-PhysicalDisk`, `New-StoragePool`, `New-VirtualDisk` manage Storage Spaces from the command line |
+
+== walkthrough | Walkthrough
+## Task 1: Build a RAID 1 mirror
+### Open Disk Management
+Log in to **Win8.1**. Right-click **This PC > Manage**, then click **Disk Management**.
+### Start the mirrored volume wizard
+Click **Disk 1**, then choose **Action > All Tasks > New Mirrored Volume** and click **Next**.
+!stuck Where people get stuck | New Mirrored Volume is greyed out unless you select the disk's **unallocated** space, and there must be a second disk with as much free space.
+### Add the second disk
+Disk 1 is already under **Selected**. Click **Disk 2 > Add >** so both are selected, then **Next**.
+### Assign a letter and format
+Choose drive letter **F**, set the volume label to `Mirrored`, check **Perform a quick format**, and click **Next > Finish**. Click **Yes** to convert the disks to dynamic.
+!shot Disk Management showing Disk 1 and Disk 2 as a Mirrored volume, Healthy.
+### Check it in This PC
+Open **This PC**. **Mirrored (F:)** appears with the capacity of *one* disk, because the other holds the copy.
+## Task 2: Build a parity Storage Space
+### Open Storage Spaces
+On the Start screen, search for `Storage Spaces` and open it. Click **Create a new pool and storage space** and accept UAC.
+### Create the pool
+Select **Disk 3, Disk 4, and Disk 5**, and click **Create pool**.
+!stuck Before you create the pool | Any data on the disks you select is erased. In the lab they're empty; on a real PC, check first.
+### Create the space
+Set the name to `Local Data`, drive letter **E:**, file system **NTFS**, and **Resiliency type** to **Parity**. Set the size to `15 GB` and click **Create storage space**.
+!tip Thin provisioning | You can set a size larger than the drives actually hold. Windows allocates space as it's used and warns you when the pool runs low, so you can add drives later without rebuilding.
+!shot Storage Spaces showing the pool and the Local Data parity space.
+### Check it in This PC
+Open **This PC**. **Local Data (E:)** is listed and ready.
+The lab is complete.
+
+== reference | Reference: RAID and Storage Spaces
+### RAID levels
+| Level | Minimum drives | Survives | Usable capacity | Good for |
+| RAID 0 (striping) | 2 | No failures | All drives | Speed only; one failure loses everything |
+| RAID 1 (mirroring) | 2 | 1 drive | One drive's worth | Simple protection for OS or data |
+| RAID 5 (striping with parity) | 3 | 1 drive | All but one drive | Capacity plus protection |
+| RAID 6 (double parity) | 4 | 2 drives | All but two drives | Larger arrays |
+| RAID 10 (mirror + stripe) | 4 | 1 per mirror pair | Half | Speed and protection |
+### Storage Spaces resiliency
+| Type | Like | Minimum drives | Survives | Usable capacity |
+| Simple | RAID 0 | 1 | Nothing | 100% |
+| Two-way mirror | RAID 1 | 2 | 1 drive | 50% |
+| Three-way mirror | Three copies of everything | 5 | 2 drives | 33% |
+| Parity | RAID 5 | 3 | 1 drive | About 67% with three drives |
+!tip A correction to the PDF | The lab's table describes a three-way mirror as using parity. It doesn't: it keeps **three full copies** of the data, which is why only a third of the space is usable.
+### Disk Management volume types
+| Volume | Disks | Disk type |
+| Simple | 1 | Basic or dynamic |
+| Spanned | 2 or more, filled one after another; no protection | Dynamic |
+| Striped (RAID 0) | 2 or more | Dynamic |
+| Mirrored (RAID 1) | 2 | Dynamic |
+| RAID 5 | 3 or more | Dynamic, Windows Server only |
+### Hardware RAID compared with software RAID
+| | Hardware RAID | Software RAID / Storage Spaces |
+| Runs on | A RAID controller or motherboard firmware | Windows |
+| Configured in | Firmware/controller utility at boot | Disk Management or Storage Spaces |
+| Boot volume | Yes | Mirror only (Disk Management); not Storage Spaces |
+| Cost | Controller needed for better levels | Free |
+### From the command line
+```
+%% Disk and partition work
+diskpart
+%% Storage Spaces (PowerShell)
+Get-PhysicalDisk -CanPool $true
+Get-StoragePool
+Get-VirtualDisk
+```
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| New Mirrored Volume is greyed out | No unallocated space selected, or only one free disk | Right-click the unallocated area; check Disk 2 has free space |
+| Warning about converting to dynamic | Software RAID in Disk Management needs dynamic disks | Click Yes in the lab |
+| Mirrored drive is half the size you expected | A mirror stores two copies | Expected: capacity equals one drive |
+| A disk doesn't appear in Storage Spaces | It already has partitions or is the system disk | Use only the empty Disks 3–5 |
+| Parity option missing | Fewer than three disks selected | Select all three |
+
+== on-the-job | On the job
+| Situation | What to do |
+| "One of the drives in the mirror died." | The volume shows **Failed Redundancy** but data is still there. Replace the drive, then Repair Volume (Disk Management) or add the new drive to the pool and remove the failed one (Storage Spaces). |
+| "We need more space on the pool." | Add a drive to the pool; thin-provisioned spaces grow into it. |
+| "We have RAID, so we don't need backups." | Explain that RAID protects against hardware failure only, not deletion, ransomware, or theft. Keep backups (Lab 07). |
+| "The server should keep running if a drive fails." | RAID 1, 5, 6, or 10 on a hardware controller, ideally with hot-swappable drives. |
+| "The PC is slow; can RAID 0 help?" | It's faster, but one drive failure loses everything. An SSD is usually the better answer. |
+!tip Professional habit | Check RAID health regularly. A mirror that lost one drive months ago looks fine to users right up until the second drive fails.
+
+== exam | On the A+ exams
+**Core 1 (220-1201)** covers RAID 0, 1, 5, 6, and 10 (minimum drives, fault tolerance, capacity) and storage devices. **Core 2 (220-1202)** covers Disk Management and Storage Spaces as Windows tools.
+### High-yield facts
+- RAID 0: striping, fastest, no fault tolerance, 2+ drives.
+- RAID 1: mirror, 2 drives, survives 1, half the capacity.
+- RAID 5: 3+ drives, survives 1, loses one drive's capacity to parity.
+- RAID 6: 4+ drives, survives 2. RAID 10: 4+ drives, mirror pairs striped.
+- Software RAID in Disk Management requires dynamic disks.
+- **RAID is not a backup.**
+
+== check | Check yourself
+?? You mirror two 2 TB drives. How much usable space do you get?
+=> 2 TB. A mirror stores the same data on both drives.
+?? Which RAID level needs at least three drives and survives one drive failure?
+=> RAID 5 (Storage Spaces Parity is the equivalent).
+?? A user's RAID 1 volume shows "Failed Redundancy." Is their data lost?
+=> No. One drive failed, but the other still has a full copy. Replace the failed drive and repair the mirror soon, before the second one fails.
+?? Why isn't RAID 1 a substitute for backups?
+=> Deletions, corruption, and ransomware are copied to both drives immediately. Backups keep older copies elsewhere.
+?? Which Storage Spaces type gives no protection, and when would you use it?
+=> Simple. Use it only for data you can lose or recreate, when you want all the capacity.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] Mirror | Disk Management showing Disk 1 and Disk 2 as a Mirrored volume, Healthy.
+[] Drive F | This PC showing Mirrored (F:).
+[] Pool | Storage Spaces showing the pool and the Local Data parity space.
+[] Drive E | This PC showing Local Data (E:).
+
+== cheat | Cheat sheet
+## RAID
+- 0: stripe, 2+, no protection
+- 1: mirror, 2, survives 1, 50%
+- 5: parity, 3+, survives 1
+- 6: double parity, 4+, survives 2
+- 10: mirror + stripe, 4+
+- RAID is not a backup
+## Windows
+- Disk Management: dynamic disks, New Mirrored Volume
+- Storage Spaces: pool, then space
+- Simple / Two-way / Three-way / Parity
+- Thin provisioning: add drives later
+- Failed Redundancy: replace and repair

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 08 Companion: Command Line: Windows & Linux | A+ Lab Companion</title>
+<meta name="description" content="Navigate, create, and manage files and directories from cmd and the Linux shell, and run an elevated prompt.">
+<style>
+:root{
+  --bg:#E8ECF0; --surface:#FFFFFF; --surface-2:#F3F5F8; --ink:#14233A; --ink-2:#47576C;
+  --rule:#C7D0DA; --accent:#1C5689; --accent-ink:#FFFFFF; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
+  --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
+  --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
+  --fs:1rem; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
+a{color:var(--accent)} a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--tag);color:var(--tag-ink);padding:.7rem 1rem;z-index:20}
+.skip-link:focus{left:1rem;top:1rem}
+code,pre,kbd{font-family:var(--f-mono)}
+code.inl{background:var(--surface-2);border:1px solid var(--rule);border-radius:3px;padding:0 .3em;font-size:.92em}
+kbd{display:inline-block;border:1px solid var(--rule);border-bottom-width:3px;border-radius:4px;padding:0 .4em;background:var(--surface);font-size:.85em;line-height:1.5}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:76rem;margin:0 auto;padding:.4rem 1rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.1rem;color:var(--ink);text-decoration:none;margin-right:auto;display:flex;gap:.5rem;align-items:center}
+.brand .plug{display:inline-grid;place-items:center;width:2rem;height:2rem;background:var(--tag);color:var(--tag-ink);border-radius:4px;font-size:1rem}
+.ctl{display:flex;gap:.35rem;flex-wrap:wrap}
+.ctl button,.btn{min-height:44px;min-width:44px;padding:.3rem .75rem;border:1px solid var(--rule);background:var(--surface-2);color:var(--ink);border-radius:6px;font:inherit;font-size:.9rem;cursor:pointer}
+.ctl button:hover,.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* hero ticket — the one bold element */
+.ticket{max-width:76rem;margin:1.5rem auto 0;padding:0 1rem}
+.ticket-in{display:grid;grid-template-columns:1fr;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.stub{background:var(--tag);color:var(--tag-ink);padding:1rem 1.25rem;display:flex;flex-direction:column;justify-content:space-between;gap:.5rem;position:relative}
+.stub .lbl{font-size:.85rem;font-weight:600}
+.stub .no{font-family:var(--f-display);font-weight:700;white-space:nowrap;font-size:clamp(2.4rem,6vw,3.5rem);line-height:1;letter-spacing:-.01em}
+.stub .series{font-size:.8rem}
+.tk-body{padding:1.25rem 1.5rem 1.5rem}
+.tk-body h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.15;margin:0 0 .6rem;max-width:30ch}
+.lede{font-size:1.08rem;color:var(--ink-2);max-width:62ch;margin:0 0 1rem}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));gap:0;border-top:1px dashed var(--rule);margin:0}
+.fields div{padding:.6rem .75rem .5rem 0;border-bottom:1px dashed var(--rule)}
+.fields dt{font-size:.78rem;color:var(--ink-2)}
+.fields dd{margin:0;font-weight:600;font-size:.95rem}
+@media (min-width:720px){
+  .ticket-in{grid-template-columns:12rem 1fr}
+  .stub{border-right:2px dashed var(--tag-ink)}
+  .stub::before,.stub::after{content:"";position:absolute;right:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:1px solid var(--rule)}
+  .stub::before{top:-11px} .stub::after{bottom:-11px}
+}
+
+/* layout */
+.wrap{max-width:76rem;margin:0 auto;padding:1.5rem 1rem 3rem;display:grid;gap:2rem;grid-template-columns:1fr}
+@media (min-width:1000px){.wrap{grid-template-columns:15rem minmax(0,1fr)}}
+.toc{align-self:start}
+@media (min-width:1000px){.toc{position:sticky;top:4.5rem}}
+.toc details{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:.5rem .9rem}
+.toc summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+.toc ol{list-style:none;margin:.25rem 0 .5rem;padding:0}
+.toc li a{display:flex;justify-content:space-between;gap:.5rem;padding:.3rem .4rem;border-radius:4px;text-decoration:none;color:var(--ink);font-size:.92rem}
+.toc li a:hover{background:var(--surface-2)}
+.toc li a[aria-current="true"]{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--accent)}
+.toc .tick{color:var(--tip);font-weight:700}
+.meter{margin:.5rem 0 .25rem;height:10px;background:var(--surface-2);border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+.meter span{display:block;height:100%;width:0;background:var(--tip);transition:width .3s}
+.meter-txt{font-size:.85rem;color:var(--ink-2);margin:0}
+main{min-width:0}
+main section{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.25rem 1.5rem;margin:0 0 1.25rem;max-width:56rem}
+@media (max-width:600px){main section{padding:1rem}.ctl button{padding:.3rem .55rem}}
+main h2{font-family:var(--f-display);font-weight:700;font-size:1.55rem;line-height:1.2;margin:0 0 .75rem}
+main h3{font-size:1.1rem;margin:1.25rem 0 .4rem}
+main p,main li{max-width:68ch}
+.task-head{font-family:var(--f-display);font-weight:700;font-size:1.15rem;margin:1.75rem 0 .5rem;padding-top:1rem;border-top:2px solid var(--ink)}
+.task-head:first-of-type{border-top:0;padding-top:0}
+.step{border-left:3px solid var(--rule);padding:.1rem 0 .1rem 1rem;margin:1rem 0}
+.step h3{margin-top:0;display:flex;gap:.6rem;align-items:baseline}
+.step h3 .n{flex:none;display:inline-grid;place-items:center;min-width:1.8rem;height:1.8rem;border-radius:50%;background:var(--ink);color:var(--surface);font-size:.9rem}
+.call{border-radius:8px;padding:.75rem 1rem;margin:1rem 0;border:1px solid}
+.call .k{display:block;font-weight:700;margin-bottom:.2rem}
+.call p{margin:.25rem 0}
+.call.stuck{background:var(--stuck-bg);border-color:var(--stuck)} .call.stuck .k{color:var(--stuck)}
+.call.tip{background:var(--tip-bg);border-color:var(--tip)} .call.tip .k{color:var(--tip)}
+.call.now{background:var(--now-bg);border-color:var(--now)} .call.now .k{color:var(--now)}
+.shot{display:inline-block;background:var(--tag);color:var(--tag-ink);font-weight:700;font-size:.85rem;padding:.05rem .5rem;border-radius:3px;margin-right:.35rem}
+.shot::before{content:"\1F4F7\FE0E  "}
+p.shotline{margin:.5rem 0}
+pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
+pre.cmd .c{color:var(--code-dim)}
+.copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
+.tbl{overflow-x:auto;margin:.75rem 0}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;vertical-align:top;padding:.5rem .6rem;border-bottom:1px solid var(--rule)}
+th{background:var(--surface-2);font-weight:600}
+td code{white-space:nowrap}
+.done-row{display:flex;gap:.6rem;align-items:center;margin-top:1.25rem;padding-top:.75rem;border-top:1px dashed var(--rule)}
+input[type=checkbox]{width:1.3rem;height:1.3rem;accent-color:var(--tip);flex:none}
+.done-row label{min-height:44px;display:flex;align-items:center;cursor:pointer}
+.q{border-top:1px solid var(--rule);padding:.75rem 0}
+.q .ask{font-weight:600;margin:0 0 .4rem}
+.ans{display:none;margin-top:.5rem;padding:.6rem .8rem;background:var(--surface-2);border-radius:6px}
+.ans.open{display:block}
+.evidence ul{list-style:none;padding:0;margin:0}
+.evidence li{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px dashed var(--rule)}
+.evidence li label{cursor:pointer}
+.cheat{border:2px solid var(--ink);border-radius:8px;padding:1rem 1.25rem}
+.cheat .grid{display:grid;gap:1rem 1.5rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.cheat h3{margin:0 0 .3rem;font-family:var(--f-display)}
+.cheat ul{margin:0;padding-left:1.1rem;font-size:.93rem}
+.badges{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+.badge{border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:.05rem .65rem;font-size:.82rem;font-weight:600}
+footer{border-top:1px solid var(--rule);background:var(--surface);color:var(--ink-2);font-size:.88rem}
+footer .in{max-width:76rem;margin:0 auto;padding:1.25rem 1rem}
+footer p{margin:.25rem 0;max-width:80ch}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
+  body{background:#fff;color:#000} .wrap{display:block;padding:0}
+  main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
+  .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
+  .stub{background:#fff;border:2px solid #000}
+}
+</style>
+</head>
+<body data-prefix="aplus-lab08-v1:">
+<a href="#main" class="skip-link">Skip to main content</a>
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="index.html"><span class="plug" aria-hidden="true">A+</span>A+ Lab Companion</a>
+  <div class="ctl" role="group" aria-label="Page controls">
+    <button type="button" id="fs-down" aria-label="Decrease text size">A&minus;</button>
+    <button type="button" id="fs-up" aria-label="Increase text size">A+</button>
+    <button type="button" id="theme" aria-pressed="false">Dark mode</button>
+    <button type="button" id="print">Print</button>
+    <button type="button" id="clear">Clear progress</button>
+  </div>
+</div></header>
+<div class="ticket"><div class="ticket-in">
+  <div class="stub"><span class="lbl">Lab</span><span class="no">08</span><span class="series">CompTIA A+ Lab Series v4</span></div>
+  <div class="tk-body"><h1>Command Line: Windows & Linux</h1><p class="lede">When the desktop won't load or you're working remotely, the command line is how you get things done. You will navigate, create, copy, rename, and delete files and folders in the Windows Command Prompt and the Linux terminal, and manage processes from an elevated prompt.</p><dl class="fields"><div><dt>Time</dt><dd>45–60 min</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Machines</dt><dd>Win8.1, Lubuntu</dd></div><div><dt>Exam domains</dt><dd>Core 2: Operating Systems</dd></div></dl></div>
+</div></div>
+<div class="wrap">
+<nav class="toc" aria-label="On this page"><details><summary>On this page</summary>
+<div id="meter" class="meter" role="progressbar" aria-label="Sections reviewed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="meter-bar"></span></div>
+<p id="meter-txt" class="meter-txt"></p>
+<ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#reference"><span>Reference: Windows and Linux commands</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#exam"><span>On the A+ exams</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#check"><span>Check yourself</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#evidence"><span>Evidence to capture</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#cheat"><span>Cheat sheet</span><span class="tick" aria-hidden="true"></span></a></li></ol></details></nav>
+<main id="main" tabindex="-1">
+<section id="overview" aria-labelledby="h-overview">
+<h2 id="h-overview">Why this lab matters</h2>
+<p>Every technician needs the command line. It works in Windows Recovery when the desktop won't start, over a remote shell, in scripts (Lab 17), and on the Linux servers and appliances you'll meet sooner than you expect.</p>
+<p>This lab does the same set of jobs twice, once in <strong>Windows cmd</strong> and once in the <strong>Linux shell</strong>: find out where you are, list what's there, move around, make folders and files, copy, rename, and delete. Doing them side by side is the fastest way to learn both, because the ideas are identical and only the command names change.</p>
+<p>You'll also see why some commands need an <strong>elevated</strong> (administrator) prompt, and use <code class="inl">tasklist</code> and <code class="inl">taskkill</code> to end a process without Task Manager.</p>
+
+<div class="done-row"><input type="checkbox" id="done-overview" data-done="overview"><label for="done-overview">Mark this section reviewed</label></div>
+</section>
+<section id="environment" aria-labelledby="h-environment">
+<h2 id="h-environment">The environment you're working in</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win8.1</td><td><code class="inl">192.168.1.8/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Lubuntu</td><td><code class="inl">192.168.1.11/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<p>On Lubuntu, open the terminal from <strong>Menu > System Tools > LXTerminal</strong>.</p>
+<div class="call tip"><span class="k">Good habits from the first command</span><p>Press <kbd>Up</kbd> to recall the last command, <kbd>Tab</kbd> to complete a file or folder name, and <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop a command that's waiting or running. All three work in both cmd and the Linux shell.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-environment" data-done="environment"><label for="done-environment">Mark this section reviewed</label></div>
+</section>
+<section id="then-now" aria-labelledby="h-then-now">
+<h2 id="h-then-now">Then vs. now: Windows 11</h2>
+<div class="tbl"><table><thead><tr><th scope="col">In the lab</th><th scope="col">On Windows 11</th></tr></thead><tbody><tr><td>Right-click Start > Command Prompt</td><td>Right-click Start > <strong>Terminal</strong>. Windows Terminal opens PowerShell by default; choose <strong>Command Prompt</strong> from the tab drop-down.</td></tr><tr><td>Command Prompt (Admin)</td><td>Right-click Start > <strong>Terminal (Admin)</strong></td></tr><tr><td>cmd commands (<code class="inl">dir</code>, <code class="inl">cd</code>, <code class="inl">md</code>, <code class="inl">copy</code>, <code class="inl">del</code>, <code class="inl">rd</code>)</td><td>All work in cmd. In PowerShell most work too, as aliases for PowerShell cmdlets.</td></tr><tr><td><code class="inl">shutdown /l</code> to sign out</td><td>Same</td></tr><tr><td>Lubuntu LXTerminal</td><td>On Windows 11 you can also run a Linux shell locally with <strong>WSL</strong> (<code class="inl">wsl --install</code>)</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-then-now" data-done="then-now"><label for="done-then-now">Mark this section reviewed</label></div>
+</section>
+<section id="walkthrough" aria-labelledby="h-walkthrough">
+<h2 id="h-walkthrough">Walkthrough</h2>
+<p class="task-head">Task 1: Windows Command Prompt</p>
+<div class="step">
+<h3><span class="n">1</span>Open cmd and get help</h3>
+<p>Log in to <strong>Win8.1</strong>, right-click <strong>Start > Command Prompt</strong>, and try both ways of getting help:</p>
+<pre class="cmd"><code>dir /?
+help dir</code></pre>
+</div>
+<div class="step">
+<h3><span class="n">2</span>List your home folder</h3>
+<pre class="cmd"><code>dir</code></pre>
+<p>You're in <code class="inl">C:\Users\sysadmin</code>. Open <strong>File Explorer</strong>, go to <code class="inl">C:\Users\sysadmin</code>, and compare. It's the same set of folders, shown two ways.</p>
+</div>
+<div class="step">
+<h3><span class="n">3</span>Move around</h3>
+<pre class="cmd"><code>cd
+cd Documents
+cd
+dir
+cls
+cd ..</code></pre>
+<p><code class="inl">cd</code> alone prints where you are. In the <code class="inl">dir</code> listing, <code class="inl">.</code> is the current folder and <code class="inl">..</code> is the parent. <code class="inl">cls</code> clears the screen.</p>
+</div>
+<div class="step">
+<h3><span class="n">4</span>Make folders</h3>
+<pre class="cmd"><code>md CLI
+cd CLI
+md Meeting
+dir</code></pre>
+</div>
+<div class="step">
+<h3><span class="n">5</span>Create a file by redirection</h3>
+<pre class="cmd"><code>date</code></pre>
+<p><code class="inl">date</code> shows the date and waits for a new one. Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to cancel. Now send its output to a file:</p>
+<pre class="cmd"><code>date&gt;calendar</code></pre>
+<p>Press <kbd>Enter</kbd> once more to get the prompt back. Then:</p>
+<pre class="cmd"><code>dir
+type calendar</code></pre>
+<div class="call stuck"><span class="k">Where people get stuck</span><p><code class="inl">date&gt;calendar</code> looks frozen because <code class="inl">date</code> is still waiting for input. It isn't; press <kbd>Enter</kbd>.</p></div>
+</div>
+<div class="step">
+<h3><span class="n">6</span>Copy, rename, and delete</h3>
+<pre class="cmd"><code>copy calendar calendar.bk
+move calendar.bk trash
+del trash
+rd Meeting
+dir
+exit</code></pre>
+<p><code class="inl">move</code> also renames a file when the destination is a new name in the same folder.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The cmd window showing the CLI folder listing after the copy, move, and delete commands.</p>
+</div>
+<p class="task-head">Task 2: Elevated prompt and processes (Win8.1)</p>
+<div class="step">
+<h3><span class="n">7</span>Open Command Prompt (Admin)</h3>
+<p>Right-click <strong>Start > Command Prompt (Admin)</strong> and accept UAC. The title bar says <strong>Administrator</strong>, and you start in <code class="inl">C:\WINDOWS\system32</code>.</p>
+</div>
+<div class="step">
+<h3><span class="n">8</span>Use a wildcard and launch a program</h3>
+<pre class="cmd"><code>dir notepad*
+notepad.exe</code></pre>
+<p>The <code class="inl">*</code> matches anything, so <code class="inl">notepad*</code> finds every file starting with "notepad".</p>
+</div>
+<div class="step">
+<h3><span class="n">9</span>List and end a process</h3>
+<pre class="cmd"><code>tasklist
+taskkill /IM notepad.exe
+taskkill /?
+tasklist</code></pre>
+<p>Find <strong>notepad.exe</strong> in the first list and note its <strong>PID</strong> and <strong>Mem Usage</strong>. After <code class="inl">taskkill</code>, it's gone from the second list. <code class="inl">/IM</code> means "image name".</p>
+<p class="shotline"><span class="shot">Screenshot</span>The tasklist and taskkill output showing notepad.exe ended.</p>
+</div>
+<div class="step">
+<h3><span class="n">10</span>Sign out from the command line</h3>
+<pre class="cmd"><code>shutdown /?
+shutdown /l</code></pre>
+</div>
+<p class="task-head">Task 3: Linux shell (Lubuntu)</p>
+<div class="step">
+<h3><span class="n">11</span>Open the terminal and look around</h3>
+<p>Sign in to <strong>Lubuntu</strong>, open <strong>Menu > System Tools > LXTerminal</strong>, and run:</p>
+<pre class="cmd"><code>pwd
+ls
+ls -l</code></pre>
+<p><code class="inl">pwd</code> prints the working directory (<code class="inl">/home/sysadmin</code>, shown as <code class="inl">~</code>). <code class="inl">ls -l</code> adds permissions, owner, size, and date.</p>
+</div>
+<div class="step">
+<h3><span class="n">12</span>Move into Documents</h3>
+<pre class="cmd"><code>cd Documents
+pwd
+ls</code></pre>
+</div>
+<div class="step">
+<h3><span class="n">13</span>Make folders and a file</h3>
+<pre class="cmd"><code>mkdir Test
+ls
+cd Test
+pwd
+mkdir Redirect
+ls -l &gt; example
+ls
+cat example</code></pre>
+<p><code class="inl">&gt;</code> sends the output of <code class="inl">ls -l</code> into a file named <code class="inl">example</code>; <code class="inl">cat</code> displays it.</p>
+<div class="call tip"><span class="k">The shell doesn't confirm</span><p>Most Linux commands print nothing when they succeed. No message means it worked. Check with <code class="inl">ls</code>.</p></div>
+</div>
+<div class="step">
+<h3><span class="n">14</span>Copy, rename, and delete files</h3>
+<pre class="cmd"><code>cp example example.bk
+cat example.bk
+mv example.bk sample
+ls
+rm sample
+rm example
+ls</code></pre>
+</div>
+<div class="step">
+<h3><span class="n">15</span>Remove a folder that isn't empty</h3>
+<pre class="cmd"><code>cd ..
+rmdir Test
+ls Test
+rm -r Test
+ls
+exit</code></pre>
+<p><code class="inl">rmdir</code> refuses because <code class="inl">Test</code> still contains <code class="inl">Redirect</code>. <code class="inl">rm -r</code> removes a folder and everything in it.</p>
+<div class="call stuck"><span class="k">Be careful with rm -r</span><p>Linux has no Recycle Bin from the shell. <code class="inl">rm -r</code> deletes immediately and permanently, and with <code class="inl">sudo</code> it can delete system files.</p></div>
+<p class="shotline"><span class="shot">Screenshot</span>The terminal showing rmdir failing, then rm -r succeeding.</p>
+<p>The lab is complete.</p>
+</div>
+
+<div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+<section id="reference" aria-labelledby="h-reference">
+<h2 id="h-reference">Reference: Windows and Linux commands</h2>
+<h3>The same job in both shells</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Job</th><th scope="col">Windows cmd</th><th scope="col">Linux</th></tr></thead><tbody><tr><td>Where am I?</td><td><code class="inl">cd</code></td><td><code class="inl">pwd</code></td></tr><tr><td>List files</td><td><code class="inl">dir</code></td><td><code class="inl">ls</code>, <code class="inl">ls -l</code>, <code class="inl">ls -a</code></td></tr><tr><td>Change folder</td><td><code class="inl">cd folder</code>, <code class="inl">cd ..</code>, <code class="inl">cd \</code></td><td><code class="inl">cd folder</code>, <code class="inl">cd ..</code>, <code class="inl">cd ~</code></td></tr><tr><td>Make a folder</td><td><code class="inl">md</code> or <code class="inl">mkdir</code></td><td><code class="inl">mkdir</code> (<code class="inl">mkdir -p a/b/c</code> for nested)</td></tr><tr><td>Remove an empty folder</td><td><code class="inl">rd</code> or <code class="inl">rmdir</code></td><td><code class="inl">rmdir</code></td></tr><tr><td>Remove a folder and contents</td><td><code class="inl">rd /s</code></td><td><code class="inl">rm -r</code></td></tr><tr><td>Copy</td><td><code class="inl">copy</code> (files), <code class="inl">xcopy</code>, <code class="inl">robocopy</code> (folders)</td><td><code class="inl">cp</code>, <code class="inl">cp -r</code></td></tr><tr><td>Move or rename</td><td><code class="inl">move</code>, <code class="inl">ren</code></td><td><code class="inl">mv</code></td></tr><tr><td>Delete a file</td><td><code class="inl">del</code></td><td><code class="inl">rm</code></td></tr><tr><td>Show a file</td><td><code class="inl">type</code></td><td><code class="inl">cat</code>, <code class="inl">less</code></td></tr><tr><td>Clear the screen</td><td><code class="inl">cls</code></td><td><code class="inl">clear</code></td></tr><tr><td>Help</td><td><code class="inl">command /?</code>, <code class="inl">help command</code></td><td><code class="inl">man command</code>, <code class="inl">command --help</code></td></tr><tr><td>Running processes</td><td><code class="inl">tasklist</code></td><td><code class="inl">ps aux</code>, <code class="inl">top</code></td></tr><tr><td>End a process</td><td><code class="inl">taskkill /IM name</code> or <code class="inl">/PID n</code></td><td><code class="inl">kill PID</code>, <code class="inl">pkill name</code></td></tr><tr><td>Find text</td><td><code class="inl">findstr</code></td><td><code class="inl">grep</code></td></tr><tr><td>Network config</td><td><code class="inl">ipconfig</code></td><td><code class="inl">ip addr</code> (<code class="inl">ifconfig</code> on older systems)</td></tr><tr><td>Run as admin</td><td>Elevated prompt</td><td><code class="inl">sudo command</code></td></tr></tbody></table></div>
+<h3>Redirection and pipes (both shells)</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Symbol</th><th scope="col">Does</th><th scope="col">Example</th></tr></thead><tbody><tr><td><code class="inl">&gt;</code></td><td>Send output to a file, replacing it</td><td><code class="inl">dir &gt; list.txt</code></td></tr><tr><td><code class="inl">&gt;&gt;</code></td><td>Append output to a file</td><td><code class="inl">echo done &gt;&gt; log.txt</code></td></tr><tr><td><code class="inl">|</code></td><td>Feed one command's output to the next</td><td><code class="inl">tasklist | findstr notepad</code></td></tr><tr><td><code class="inl">*</code></td><td>Wildcard, any characters</td><td><code class="inl">dir *.txt</code>, <code class="inl">ls *.txt</code></td></tr></tbody></table></div>
+<h3>More Windows commands on the exam</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Command</th><th scope="col">Does</th></tr></thead><tbody><tr><td><code class="inl">robocopy src dst /e</code></td><td>Robust folder copy with retries; <code class="inl">/mir</code> mirrors</td></tr><tr><td><code class="inl">xcopy src dst /s /e</code></td><td>Copies folders and subfolders</td></tr><tr><td><code class="inl">chkdsk C: /f</code></td><td>Checks and fixes file system errors (<code class="inl">/r</code> also finds bad sectors)</td></tr><tr><td><code class="inl">format D: /fs:ntfs</code></td><td>Formats a volume</td></tr><tr><td><code class="inl">diskpart</code></td><td>Interactive disk and partition tool</td></tr><tr><td><code class="inl">sfc /scannow</code></td><td>Repairs Windows system files (Lab 12)</td></tr><tr><td><code class="inl">gpupdate /force</code>, <code class="inl">gpresult /r</code></td><td>Apply and show Group Policy</td></tr><tr><td><code class="inl">winver</code></td><td>Shows the Windows version</td></tr><tr><td><code class="inl">shutdown /r /t 0</code>, <code class="inl">/s</code>, <code class="inl">/l</code>, <code class="inl">/a</code></td><td>Restart, shut down, sign out, abort a pending shutdown</td></tr></tbody></table></div>
+<h3>More Linux commands on the exam</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Command</th><th scope="col">Does</th></tr></thead><tbody><tr><td><code class="inl">sudo</code>, <code class="inl">su</code></td><td>Run as root; switch user</td></tr><tr><td><code class="inl">chmod</code>, <code class="inl">chown</code></td><td>Change permissions and ownership</td></tr><tr><td><code class="inl">apt</code>, <code class="inl">dnf</code></td><td>Install software (Lab 13)</td></tr><tr><td><code class="inl">nano</code>, <code class="inl">vi</code></td><td>Edit text files</td></tr><tr><td><code class="inl">df -h</code>, <code class="inl">du -sh</code></td><td>Disk free space; folder size</td></tr><tr><td><code class="inl">find / -name file</code></td><td>Find files by name</td></tr><tr><td><code class="inl">grep text file</code></td><td>Search inside files</td></tr><tr><td><code class="inl">ip addr</code>, <code class="inl">ping</code>, <code class="inl">dig</code></td><td>Network info and tests</td></tr><tr><td><code class="inl">passwd</code></td><td>Change a password</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-reference" data-done="reference"><label for="done-reference">Mark this section reviewed</label></div>
+</section>
+<section id="stuck" aria-labelledby="h-stuck">
+<h2 id="h-stuck">Where people get stuck</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Problem</th><th scope="col">Why it happens</th><th scope="col">Fix</th></tr></thead><tbody><tr><td>"is not recognized as an internal or external command"</td><td>Typo, or the program isn't in the PATH or current folder</td><td>Check spelling; <code class="inl">cd</code> to its folder or use the full path</td></tr><tr><td><code class="inl">cd Documents</code> fails in Linux</td><td>Linux names are case-sensitive</td><td>Type <code class="inl">Documents</code> with a capital D, or press <kbd>Tab</kbd></td></tr><tr><td><code class="inl">cd</code> in cmd doesn't change drives</td><td><code class="inl">cd</code> changes folders, not drives</td><td>Type the drive letter alone, like <code class="inl">D:</code>, or use <code class="inl">cd /d D:\folder</code></td></tr><tr><td>A path with spaces fails</td><td>The space splits it into two arguments</td><td>Wrap it in quotes: <code class="inl">cd "Program Files"</code></td></tr><tr><td><code class="inl">rmdir</code> won't delete a folder</td><td>It isn't empty</td><td>Linux: <code class="inl">rm -r</code>. Windows: <code class="inl">rd /s</code></td></tr><tr><td>Access denied in cmd</td><td>The command needs elevation</td><td>Open Command Prompt (Admin)</td></tr><tr><td>The prompt seems frozen</td><td>A command is waiting for input</td><td>Press <kbd>Enter</kbd> or <kbd>Ctrl</kbd>+<kbd>C</kbd></td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-stuck" data-done="stuck"><label for="done-stuck">Mark this section reviewed</label></div>
+</section>
+<section id="on-the-job" aria-labelledby="h-on-the-job">
+<h2 id="h-on-the-job">On the job</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Situation</th><th scope="col">Command line approach</th></tr></thead><tbody><tr><td>Windows won't boot to the desktop</td><td>Windows Recovery > Command Prompt: <code class="inl">chkdsk</code>, <code class="inl">sfc /scannow /offbootdir=C:\ /offwindir=C:\Windows</code>, copy files off</td></tr><tr><td>A program hangs and Task Manager won't open</td><td><code class="inl">tasklist</code>, then <code class="inl">taskkill /IM name.exe /F</code></td></tr><tr><td>Copy a user's profile to a new PC</td><td><code class="inl">robocopy C:\Users\old D:\Backup\old /e</code></td></tr><tr><td>Check disk space on a Linux server</td><td><code class="inl">df -h</code></td></tr><tr><td>Find which log mentions an error</td><td><code class="inl">findstr /i error *.log</code> or <code class="inl">grep -i error *.log</code></td></tr></tbody></table></div>
+<div class="call tip"><span class="k">Professional habit</span><p>Before a command that deletes or overwrites, run <code class="inl">dir</code> or <code class="inl">ls</code> first so you know exactly what it will act on.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-on-the-job" data-done="on-the-job"><label for="done-on-the-job">Mark this section reviewed</label></div>
+</section>
+<section id="exam" aria-labelledby="h-exam">
+<h2 id="h-exam">On the A+ exams</h2>
+<div class="badges"><span class="badge">Core 2: Operating Systems</span></div>
+<p><strong>Core 2 (220-1202)</strong> expects you to know Windows commands (<code class="inl">cd</code>, <code class="inl">dir</code>, <code class="inl">md</code>, <code class="inl">rmdir</code>, <code class="inl">copy</code>, <code class="inl">xcopy</code>, <code class="inl">robocopy</code>, <code class="inl">del</code>, <code class="inl">tasklist</code>, <code class="inl">taskkill</code>, <code class="inl">shutdown</code>, <code class="inl">chkdsk</code>, <code class="inl">format</code>, <code class="inl">diskpart</code>, <code class="inl">sfc</code>, <code class="inl">gpupdate</code>, <code class="inl">gpresult</code>, <code class="inl">winver</code>, <code class="inl">net</code>) and Linux commands (<code class="inl">ls</code>, <code class="inl">pwd</code>, <code class="inl">cd</code>, <code class="inl">mv</code>, <code class="inl">cp</code>, <code class="inl">rm</code>, <code class="inl">mkdir</code>, <code class="inl">chmod</code>, <code class="inl">chown</code>, <code class="inl">sudo</code>, <code class="inl">su</code>, <code class="inl">apt</code>, <code class="inl">dnf</code>, <code class="inl">grep</code>, <code class="inl">find</code>, <code class="inl">ps</code>, <code class="inl">top</code>, <code class="inl">ip</code>, <code class="inl">df</code>, <code class="inl">man</code>, <code class="inl">nano</code>, <code class="inl">cat</code>), and when an elevated prompt is required.</p>
+<h3>High-yield facts</h3>
+<ul><li><code class="inl">command /?</code> is help in cmd; <code class="inl">man command</code> in Linux.</li><li><code class="inl">taskkill /IM name /F</code> force-ends a process by name; <code class="inl">/PID</code> by number.</li><li><code class="inl">robocopy</code> is the most robust Windows copy tool; <code class="inl">/mir</code> mirrors.</li><li>Linux is case-sensitive; Windows isn't.</li><li><code class="inl">rm -r</code> deletes directories recursively and permanently.</li><li><code class="inl">sudo</code> runs one command as root; an elevated prompt does the same job in Windows.</li></ul>
+
+<div class="done-row"><input type="checkbox" id="done-exam" data-done="exam"><label for="done-exam">Mark this section reviewed</label></div>
+</section>
+<section id="check" aria-labelledby="h-check">
+<h2 id="h-check">Check yourself</h2>
+<div class="q"><p class="ask">1. Which cmd command shows your current folder, and what's the Linux equivalent?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans"><code class="inl">cd</code> with nothing after it in cmd; <code class="inl">pwd</code> in Linux.</div></div>
+<div class="q"><p class="ask">2. Write the command that ends every running copy of chrome.exe immediately.</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans"><code class="inl">taskkill /IM chrome.exe /F</code></div></div>
+<div class="q"><p class="ask">3. You run <code class="inl">rmdir Projects</code> in Linux and get "Directory not empty." What do you run instead?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans"><code class="inl">rm -r Projects</code> (after checking its contents with <code class="inl">ls Projects</code>).</div></div>
+<div class="q"><p class="ask">4. What's the difference between <code class="inl">&gt;</code> and <code class="inl">&gt;&gt;</code>?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans"><code class="inl">&gt;</code> replaces the file's contents with the output; <code class="inl">&gt;&gt;</code> adds the output to the end of the file.</div></div>
+<div class="q"><p class="ask">5. Why did you open Command Prompt (Admin) for some tasks?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Some commands change system settings or other users' processes, which Windows allows only from an elevated prompt, even when you're signed in as an administrator.</div></div>
+</section>
+<section id="evidence" aria-labelledby="h-evidence">
+<h2 id="h-evidence">Evidence to capture</h2>
+<p>Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.</p>
+<div class="evidence"><ul><li><input type="checkbox" id="ev1" data-evidence="ev1"><label for="ev1"><span class="shot">Windows files</span>The cmd window showing the CLI folder after the copy, move, and delete commands.</label></li><li><input type="checkbox" id="ev2" data-evidence="ev2"><label for="ev2"><span class="shot">Processes</span>tasklist and taskkill output showing notepad.exe ended.</label></li><li><input type="checkbox" id="ev3" data-evidence="ev3"><label for="ev3"><span class="shot">Linux files</span>The terminal showing <code class="inl">cat example</code> output in ~/Documents/Test.</label></li><li><input type="checkbox" id="ev4" data-evidence="ev4"><label for="ev4"><span class="shot">Linux delete</span>The terminal showing rmdir failing and rm -r succeeding.</label></li></ul></div>
+</section>
+<section id="cheat" aria-labelledby="h-cheat">
+<h2 id="h-cheat">Cheat sheet</h2>
+<div class="cheat"><div class="grid">
+<div><h3>Windows cmd</h3>
+<ul><li><code class="inl">cd</code> <code class="inl">dir</code> <code class="inl">md</code> <code class="inl">rd /s</code> <code class="inl">cls</code></li><li><code class="inl">copy</code> <code class="inl">move</code> <code class="inl">ren</code> <code class="inl">del</code> <code class="inl">type</code></li><li><code class="inl">robocopy src dst /e</code></li><li><code class="inl">tasklist</code>, <code class="inl">taskkill /IM x /F</code></li><li><code class="inl">shutdown /r /t 0</code>, <code class="inl">/l</code></li><li><code class="inl">command /?</code></li></ul>
+</div>
+<div><h3>Linux</h3>
+<ul><li><code class="inl">pwd</code> <code class="inl">ls -l</code> <code class="inl">cd ~</code> <code class="inl">mkdir</code> <code class="inl">clear</code></li><li><code class="inl">cp</code> <code class="inl">mv</code> <code class="inl">rm</code> <code class="inl">rm -r</code> <code class="inl">cat</code></li><li><code class="inl">ps aux</code>, <code class="inl">kill PID</code></li><li><code class="inl">sudo command</code></li><li><code class="inl">man command</code></li><li>Case matters; no confirmation</li></ul>
+</div>
+</div></div>
+</section>
+</main></div>
+<footer><div class="in">
+  <p>Built for CompTIA A+ hands-on practice at Brookdale Community College, 2026. Open educational resource.</p>
+  <p>Companion to the NDG CompTIA A+ Lab Series v4 labs. This guide is independent and is not affiliated with or endorsed by CompTIA or Network Development Group. CompTIA A+ is a registered trademark of CompTIA, Inc.</p>
+</div></footer>
+<p id="live" class="sr" aria-live="polite"></p>
+<script>
+(function(){
+  var S={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
+         set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+         del:function(k){try{localStorage.removeItem(k)}catch(e){}}};
+  window.__S=S;
+  var root=document.documentElement, tb=document.getElementById('theme');
+  function isDark(){var t=root.getAttribute('data-theme'); if(t) return t==='dark';
+    return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;}
+  function paintTheme(){var d=isDark(); tb.setAttribute('aria-pressed',d?'true':'false'); tb.textContent=d?'Light mode':'Dark mode';}
+  var saved=S.get('aplus-theme'); if(saved) root.setAttribute('data-theme',saved);
+  paintTheme();
+  tb.addEventListener('click',function(){var n=isDark()?'light':'dark'; root.setAttribute('data-theme',n); S.set('aplus-theme',n); paintTheme();});
+  var sc=parseFloat(S.get('aplus-scale'))||1;
+  function setScale(v){sc=Math.min(1.4,Math.max(.85,Math.round(v*100)/100)); root.style.setProperty('--scale',sc); S.set('aplus-scale',sc);}
+  setScale(sc);
+  document.getElementById('fs-up').addEventListener('click',function(){setScale(sc+.1)});
+  document.getElementById('fs-down').addEventListener('click',function(){setScale(sc-.1)});
+  document.getElementById('print').addEventListener('click',function(){window.print()});
+})();
+
+(function(){
+  var S=window.__S, P=document.body.getAttribute('data-prefix');
+  var live=document.getElementById('live');
+  function say(t){live.textContent=t;}
+  function load(k){try{return JSON.parse(S.get(P+k))||{}}catch(e){return {}}}
+  var done=load('done'), ev=load('evidence');
+  var tracks=[].slice.call(document.querySelectorAll('[data-done]'));
+  var bar=document.getElementById('meter-bar'), txt=document.getElementById('meter-txt'), meter=document.getElementById('meter');
+  function refresh(){
+    var n=0; tracks.forEach(function(c){ if(c.checked) n++;
+      var a=document.querySelector('.toc a[href="#'+c.getAttribute('data-done')+'"] .tick'); if(a) a.textContent=c.checked?'\u2713':'';});
+    var pct=tracks.length?Math.round(n/tracks.length*100):0;
+    bar.style.width=pct+'%'; meter.setAttribute('aria-valuenow',pct);
+    txt.textContent=n+' of '+tracks.length+' sections reviewed';
+    S.set(P+'meta',JSON.stringify({done:n,total:tracks.length}));
+  }
+  tracks.forEach(function(c){ c.checked=!!done[c.getAttribute('data-done')];
+    c.addEventListener('change',function(){done[c.getAttribute('data-done')]=c.checked; S.set(P+'done',JSON.stringify(done)); refresh();});});
+  refresh();
+  [].forEach.call(document.querySelectorAll('[data-evidence]'),function(c){ c.checked=!!ev[c.getAttribute('data-evidence')];
+    c.addEventListener('change',function(){ev[c.getAttribute('data-evidence')]=c.checked; S.set(P+'evidence',JSON.stringify(ev));});});
+  document.getElementById('clear').addEventListener('click',function(){
+    if(!window.confirm('Clear your checkmarks on this lab page?')) return;
+    S.del(P+'done'); S.del(P+'evidence'); done={}; ev={};
+    [].forEach.call(document.querySelectorAll('[data-done],[data-evidence]'),function(c){c.checked=false;});
+    refresh(); say('Progress cleared for this lab.');});
+  [].forEach.call(document.querySelectorAll('.reveal'),function(b){
+    b.addEventListener('click',function(){var a=b.nextElementSibling, o=a.classList.toggle('open');
+      b.setAttribute('aria-expanded',o?'true':'false'); b.textContent=o?'Hide answer':'Show answer';});});
+  [].forEach.call(document.querySelectorAll('pre.cmd'),function(pre){
+    var b=document.createElement('button'); b.type='button'; b.className='copy'; b.textContent='Copy';
+    b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code'), clone=code.cloneNode(true);
+      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
+      function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
+      function fallback(){var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+        try{document.execCommand('copy'); ok();}catch(e){say('Copy failed; select the text instead.');} ta.remove();}
+    });});
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(l){l.setAttribute('aria-current', l.getAttribute('href')==='#'+e.target.id?'true':'false');});}});},
+      {rootMargin:'-20% 0px -70% 0px'});
+    [].forEach.call(document.querySelectorAll('main section[id]'),function(s){io.observe(s);});
+  }
+  var det=document.querySelector('.toc details');
+  if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
+})();
+</script>
+</body>
+</html>

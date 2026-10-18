@@ -1,0 +1,218 @@
+@lede When Windows misbehaves, you need evidence before you need a fix. You will run a troubleshooter, capture a memory dump, read reliability history and event logs, boot into Safe Mode with a boot log, repair system files with SFC and DISM, and record a user's steps to reproduce a problem.
+@vms Win7, Win10
+
+== overview | Why this lab matters
+Good troubleshooting follows a method: identify the problem, form a theory, test it, fix it, verify, and document. The tools in this lab are how you do the first and last of those steps well.
+**Reliability Monitor** and **Event Viewer** tell you what failed and when. A **dump file** captures a hung program for someone with a debugger. **System Configuration** (`msconfig`) boots into **Safe Mode** and writes a **boot log**, so you can see which drivers load. **SFC** and **DISM** repair corrupted Windows files. **Steps Recorder** lets a user show you exactly what they did.
+Each produces something you can save and attach to a ticket, which is what escalation to a senior tech or vendor requires.
+
+== environment | The environment you're working in
+| Machine | IP address | Account | Password |
+| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
+| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+Almost everything happens on Win7; DISM runs on Win10. Win7 has Firefox and a **Files** folder on the desktop for the Steps Recorder task.
+!tip Timing | `sfc /scannow` takes 5–7 minutes and DISM `/ScanHealth` 4–6 minutes. The Safe Mode task needs two restarts. Read ahead while they run.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Action Center > Troubleshooting | Settings > System > **Troubleshoot > Other troubleshooters**. Many now open the **Get Help** app. Action Center's role moved to **Security and Maintenance** in Control Panel. |
+| Task Manager > Create Dump File | Same: Task Manager > **Details** (or Processes) > right-click > **Create memory dump file** |
+| View reliability history | Same: `perfmon /rel` |
+| Event Viewer | Same: `eventvwr.msc` |
+| msconfig > Boot > Safe boot | Same. You can also use **Settings > System > Recovery > Advanced startup > Troubleshoot > Startup Settings**, or hold [[Shift]] while clicking Restart. |
+| `sfc /scannow`, `DISM` | Same commands |
+| Problem Steps Recorder (`psr`) | **Steps Recorder is deprecated** and being removed. Use **Snipping Tool** screen recording or Quick Assist instead. |
+
+== walkthrough | Walkthrough
+## Task 1: Troubleshooters (Win7)
+### Open the list
+Log in to **Win7**. Open **Start**, type `action center`, open it, and click **Troubleshooting**. Click **View all** in the left pane.
+### Run the Aero troubleshooter as administrator
+Right-click **Aero** and choose **Run as administrator**, then **Next**. It reports that the video driver isn't WDDM-compatible and suggests updating it. Click **Next** to let it try; it can't fix this one. Click **View detailed information**, read it, then **Next** and **Close**.
+!shot The Aero troubleshooter's detailed results.
+!tip What a troubleshooter gives you | Even when it can't fix the problem, it names it. Here, "update the video driver" is your next step.
+## Task 2: Dump file (Win7)
+### Create a dump of explorer.exe
+Right-click the taskbar > **Start Task Manager > Processes**. Right-click **explorer.exe** and choose **Create Dump File**. Wait 1–2 minutes, note the path in the message, and click **OK**.
+!shot The message showing where the dump file was saved.
+## Task 3: Reliability Monitor (Win7)
+### Read the reliability history
+Open **Start**, type `reliability`, and click **View reliability history**. Click a day in the chart to see its events. Red **X** = critical event (an app or Windows failure), yellow **!** = warning, blue **i** = information. Note the links at the bottom: save history, view all problem reports, check for solutions.
+!shot The Reliability Monitor chart with a day selected.
+## Task 4: Event Viewer (Win7)
+### Read the summary
+Open **Start**, type `Event Viewer`, and press [[Enter]]. On **Overview and Summary**, collapse everything except **Summary of Administrative Events**. Expand each type (Critical, Error, Warning, Information, Audit Success) and double-click an event for details, such as **Event ID 1002**, an application hang.
+### Look at the Security log
+Expand **Windows Logs > Security** and double-click an event. Read its details and **Close**.
+### Save an event
+Right-click the same event > **Save Selected Events**. Save as `C:\Users\sysadmin\event.evtx` and click **OK** at the display information prompt. In File Explorer, double-click `event.evtx`: it opens in Event Viewer.
+!shot Event Viewer showing a Security event's details, or the saved event.evtx open.
+## Task 5: Safe Mode and boot logging (Win7)
+### Set Safe boot with a boot log
+Open **Start**, type `msconfig`, and press [[Enter]]. On the **Boot** tab, check **Safe boot** with **Minimal**, and check **Boot log**. Click **OK** and restart.
+!shot The msconfig Boot tab with Safe boot (Minimal) and Boot log checked.
+### Save the safe-mode boot log
+Sign in. Close the Safe Mode help window and notice the plain, low-resolution desktop. Open **Start**, type `C:\Windows\ntbtlog.txt`, and press [[Enter]]. Save a copy as `C:\Users\sysadmin\safeboot.txt`.
+### Go back to a normal boot
+Open `msconfig` again, uncheck **Safe boot** on the Boot tab, click **OK**, and restart.
+!stuck Where people get stuck | msconfig's Safe boot setting sticks until you clear it. If you forget, the PC boots into Safe Mode every time.
+### Compare the two logs
+After signing in, open `C:\Windows\ntbtlog.txt` (now the normal-boot log, because Boot log is still checked) and `C:\Users\sysadmin\safeboot.txt`. Put them side by side. The normal boot loads many more drivers; a driver that loads normally but not in Safe Mode is a suspect when Safe Mode works and normal mode doesn't.
+!shot The two boot logs side by side.
+## Task 6: System File Checker (Win7)
+### Run SFC
+Open **cmd** as administrator and run:
+```
+sfc /scannow
+```
+It takes 5–7 minutes and should report no integrity violations.
+!shot The sfc /scannow result.
+## Task 7: DISM (Win10)
+### Check, scan, and repair the Windows image
+Log in to **Win10**, open **Command Prompt** as administrator, and run these in order:
+```
+DISM /Online /Cleanup-Image /CheckHealth
+DISM /Online /Cleanup-Image /ScanHealth
+DISM /Online /Cleanup-Image /RestoreHealth
+```
+`/CheckHealth` is a quick check. `/ScanHealth` does a full scan (4–6 minutes). `/RestoreHealth` repairs the component store that SFC copies good files from.
+!shot The DISM /RestoreHealth result.
+## Task 8: Steps Recorder (Win7)
+### Record a problem
+On **Win7**, open **Start**, type `Problem Steps Recorder`, and open **Record steps to reproduce a problem**. Click **Start Record**, open **Firefox**, and wait for the connection error.
+### Highlight the error
+Click **Add Comment**, drag a box around the error, type `Unable to connect to website.`, and click **OK**. Click **Stop Record** and save it to the desktop **Files** folder as `PSR-test`.
+### Review the recording
+Open **Files > PSR-test.zip** and double-click the **Problem_** file inside. Click **Ask me later** if Internet Explorer setup appears. Scroll through the steps, screenshots, and your comment.
+!shot The Steps Recorder report showing your highlighted comment.
+The lab is complete.
+
+== reference | Reference: troubleshooting tools
+### The CompTIA troubleshooting method
+| Step | What you do |
+| 1. Identify the problem | Ask the user, find out what changed, reproduce it, back up data first |
+| 2. Establish a theory of probable cause | Question the obvious; research if needed |
+| 3. Test the theory | If it's wrong, form a new theory or escalate |
+| 4. Establish a plan and implement the solution | Follow change procedures; consider side effects |
+| 5. Verify full system functionality | Confirm it works; add preventive measures |
+| 6. Document findings, actions, and outcomes | Update the ticket and knowledge base |
+### Which tool for which question
+| Question | Tool | Open with |
+| What failed, and when? | Reliability Monitor | `perfmon /rel` |
+| What exactly was logged? | Event Viewer | `eventvwr.msc` |
+| Which program is hung, and why? | Task Manager dump, Resource Monitor wait chain | `taskmgr`, `resmon` |
+| Is a startup item or driver the cause? | System Configuration, Safe Mode, boot log | `msconfig` |
+| Are Windows files corrupt? | System File Checker | `sfc /scannow` |
+| Is the repair source corrupt too? | DISM | `DISM /Online /Cleanup-Image /RestoreHealth` |
+| What did the user do? | Steps Recorder, Snipping Tool recording | `psr` |
+| How is performance over time? | Performance Monitor | `perfmon` |
+| Is the disk failing? | chkdsk, SMART | `chkdsk C: /r` |
+### Event Viewer logs and levels
+| Log | Holds |
+| Application | Program errors, such as crashes and hangs |
+| System | Drivers, services, startup, shutdown |
+| Security | Sign-ins, failed sign-ins, policy and permission changes (audit events) |
+| Setup | Updates and feature installs |
+
+| Level | Meaning |
+| Critical | Serious failure, such as an unexpected shutdown |
+| Error | Something failed |
+| Warning | Something may cause a problem later |
+| Information | Normal operation |
+| Audit Success / Failure | Security events allowed or denied |
+### Event IDs worth recognizing
+| ID | Log | Means |
+| 41 (Kernel-Power) | System | The PC rebooted without a clean shutdown |
+| 6008 | System | The previous shutdown was unexpected |
+| 1001 (BugCheck) | System | Windows recovered from a stop error (BSOD) |
+| 1000 / 1002 | Application | An application crashed / hung |
+| 4624 / 4625 | Security | Successful / failed sign-in |
+### msconfig tabs
+| Tab | Use |
+| General | Normal, diagnostic, or selective startup |
+| Boot | Safe boot options (Minimal, Alternate shell, Network), boot log, timeout |
+| Services | Disable non-Microsoft services (check **Hide all Microsoft services**) for a clean boot |
+| Startup | On Windows 8 and later, points you to Task Manager |
+| Tools | Launch other diagnostic tools |
+### Safe Mode options
+| Option | Loads |
+| Minimal | Basic drivers, GUI, no networking (Safe Mode) |
+| Network | Safe Mode plus networking |
+| Alternate shell | Command prompt instead of Explorer |
+### SFC and DISM
+```
+sfc /scannow
+sfc /verifyonly
+%% If SFC can't repair, fix its source, then run SFC again
+DISM /Online /Cleanup-Image /RestoreHealth
+sfc /scannow
+%% The SFC log
+findstr /c:"[SR]" %windir%\Logs\CBS\CBS.log
+```
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| PC keeps booting into Safe Mode | Safe boot is still checked in msconfig | Uncheck it on the Boot tab and restart |
+| `ntbtlog.txt` not found | Boot log wasn't checked, or the search box didn't open it | Check Boot log in msconfig; open it from Run |
+| SFC says it can't perform the operation | Not run as administrator, or a pending restart | Use an elevated prompt; restart first |
+| SFC found corrupt files but couldn't fix them | The component store is damaged | Run DISM `/RestoreHealth`, then SFC again |
+| DISM sits at 20% or 62% | Normal; it pauses at those points | Wait |
+| Reliability Monitor shows the example's Notepad crash missing | Your history is different | Expected; look at whatever events your VM shows |
+| No Steps Recorder on Windows 11 | It's deprecated | Use Snipping Tool's recording |
+
+== on-the-job | On the job
+| The ticket says | Start with | Then |
+| "It started crashing last week." | Reliability Monitor | Event Viewer for the event details; check what was installed that day |
+| "Random restarts." | Event Viewer System log: 41, 6008, 1001 | Check heat, power supply, drivers, and the dump file |
+| "Windows features act strangely." | `sfc /scannow` | DISM `/RestoreHealth` if SFC can't repair |
+| "Slow and full of pop-ups after a download." | Safe Mode with Networking, `msconfig` clean boot | Malware removal (Lab 15) |
+| "It only happens when I do this one thing." | Steps Recorder or a screen recording | Attach it to the ticket |
+| "Works in Safe Mode, not normally." | Boot logs and clean boot | Disable startup items and services in halves until it's isolated |
+!tip Professional habit | Ask "what changed?" first. A new update, driver, program, or device explains most new problems, and Reliability Monitor often shows it on the same day.
+
+== exam | On the A+ exams
+**Core 2 (220-1202)** covers the Windows tools here (Event Viewer, Reliability Monitor, Task Manager, System Configuration, Performance Monitor, `sfc`, `DISM`, `chkdsk`), Safe Mode and recovery options, and software troubleshooting scenarios. **Core 1 (220-1201)** covers the six-step troubleshooting methodology, and Core 2 covers documentation as an operational procedure.
+### High-yield facts
+- Troubleshooting order: identify, theory, test, plan and implement, verify, document.
+- Reliability Monitor (`perfmon /rel`) shows problems over time; Event Viewer has the details.
+- `sfc /scannow` repairs system files; DISM `/RestoreHealth` repairs the image SFC depends on.
+- Safe Mode loads minimal drivers; if a problem disappears there, suspect a driver or startup item.
+- msconfig Safe boot persists until you clear it.
+- Event ID 41 = unclean reboot; 4625 = failed sign-in.
+
+== check | Check yourself
+?? A user says their PC "started acting up last Tuesday." Which tool shows you, day by day, what failed?
+=> Reliability Monitor (`perfmon /rel`). Then use Event Viewer for details on specific events.
+?? SFC reports it found corrupt files but couldn't repair some of them. What next?
+=> Run `DISM /Online /Cleanup-Image /RestoreHealth` to repair the component store, then run `sfc /scannow` again.
+?? A problem disappears in Safe Mode. What does that tell you?
+=> A non-essential driver, service, or startup program is likely the cause. Use a clean boot to narrow it down.
+?? After the Safe Mode task, a PC keeps starting in Safe Mode. Why, and how do you fix it?
+=> Safe boot is still checked in msconfig. Uncheck it on the Boot tab and restart.
+?? What's the last step of the troubleshooting methodology, and why does it matter?
+=> Document findings, actions, and outcomes, so the next tech (or you) can solve the same problem faster and spot recurring issues.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] Troubleshooter | The Aero troubleshooter's detailed results.
+[] Dump | The message showing where the explorer.exe dump file was saved.
+[] Reliability | Reliability Monitor with a day selected.
+[] Event | A Security event's details or the saved event.evtx.
+[] Safe boot | The msconfig Boot tab with Safe boot (Minimal) and Boot log checked.
+[] Boot logs | The two boot logs side by side.
+[] SFC and DISM | The `sfc /scannow` result and the DISM `/RestoreHealth` result.
+[] Steps | The Steps Recorder report with your highlighted comment.
+
+== cheat | Cheat sheet
+## Find out what happened
+- `perfmon /rel` reliability history
+- `eventvwr.msc`: Application, System, Security
+- IDs: 41, 6008, 1001, 1000/1002, 4624/4625
+- Task Manager > Create dump file
+- `psr` or Snipping Tool recording
+## Fix and isolate
+- `msconfig`: Safe boot, Boot log, clean boot
+- Clear Safe boot when done
+- `sfc /scannow`
+- `DISM /Online /Cleanup-Image /RestoreHealth`
+- Identify, theory, test, plan, verify, document

@@ -1,0 +1,166 @@
+@lede A shared folder has two locks on it: share permissions and NTFS permissions. You will put three PCs in one workgroup, share a folder, watch access fail for exactly the reasons a user would hit, and fix each one until a user on another PC can create files in it.
+
+== overview | Why this lab matters
+"I can't get to the shared folder" is one of the most common small-office tickets, and it almost always comes down to one of three things: the PCs can't see each other, the remote user has no account the sharing PC recognizes, or the permissions don't allow what they're trying to do.
+This lab walks straight through all three. You'll set computer names and a common **workgroup**, turn on **network discovery** and **file and printer sharing**, share a folder with **share permissions**, then discover that the remote user still can't get in until they have an account on the sharing PC, and still can't write until the **NTFS permissions** allow it.
+The rule to take away: **when share and NTFS permissions differ, the more restrictive one wins.**
+
+== environment | The environment you're working in
+| Machine | New name | Workgroup | IP address |
+| Win7 | `Enterprise` | `MYGROUP` | `192.168.1.7/24` |
+| Win8.1 | `Reliant` | `MYGROUP` | `192.168.1.8/24` |
+| Win10 | `Client` | `MYGROUP` | `192.168.1.10/24` |
+
+| Account | On | Password |
+| sysadmin | All three | `Train1ng$` |
+| user1 | Win7 (already exists) | `SuperSecret` |
+| user2 | Win8.1 (already exists); you create a matching one on Win7 | `SuperSecret` |
+!stuck Typo in the PDF | After the Win8.1 restart, the PDF says to log in with `Train1ing$`. The password is still `Train1ng$`.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Control Panel > System > Change settings > Change | Settings > System > About > **Domain or workgroup** (opens the same System Properties dialog). `sysdm.cpl` goes straight there. Settings > System > About > **Rename this PC** changes only the name. |
+| Advanced sharing settings: network discovery, file and printer sharing | Settings > Network & internet > Advanced network settings > **Advanced sharing settings** |
+| Folder Properties > Sharing > Advanced Sharing | Same dialog. Right-click the folder > **Properties** > Sharing (the Windows 11 context menu hides "Give access to" under **Show more options**). |
+| Security tab > Edit | Same |
+| Network in Windows Explorer | Network in File Explorer, or type `\\ComputerName` in the address bar |
+!tip SMB1 is off | Windows 10 and 11 disable the old SMB1 protocol and its "Computer Browser" service, so PCs don't always appear under Network. Typing `\\Enterprise` or `\\192.168.1.7` still connects.
+
+== walkthrough | Walkthrough
+## Task 1: Join all three PCs to a workgroup
+### Rename Win7 and join MYGROUP
+Log in to **Win7** as sysadmin. Open **Control Panel > System > Change settings > Change**. Set the computer name to `Enterprise` and the workgroup to `MYGROUP`. Click **OK** through the welcome and restart messages, **Close**, then **Restart Now**.
+!shot The Computer Name/Domain Changes dialog showing Enterprise and MYGROUP.
+### Turn on sharing on Win7
+After the restart, sign in as sysadmin. Right-click the network icon > **Open Network and Sharing Center > Change adapter settings**. In **Local Area Connection > Properties**, confirm **File and Printer Sharing for Microsoft Networks** is checked.
+Back in Network and Sharing Center, open **Change advanced sharing settings** and make sure **Turn on network discovery** and **Turn on file and printer sharing** are selected. Save or cancel.
+### Repeat on Win8.1 and Win10
+Do the same on **Win8.1** (name `Reliant`) and **Win10** (name `Client`), both in `MYGROUP`, then restart each. On Win10, right-click the network icon > **Open Network and Internet settings > Change adapter options** for the adapter, and **Sharing options** for discovery and sharing.
+!stuck Where people get stuck | Workgroup names must match exactly. `MYGROUP` and `MY GROUP` are different workgroups.
+## Task 2: Share a folder from Win7
+### Create the folder as user1
+On **Win7**, log out of sysadmin and log in as **user1** (`SuperSecret`). Create a folder on the desktop named `Data`, and inside it a text document named `Test`.
+### Share it with share permissions
+Right-click **Data > Properties > Sharing > Advanced Sharing**. Enter the sysadmin password if asked. Check **Share this folder**, set the share name to `SharedData`, and click **Permissions**.
+Select **Everyone** and check **Full Control** under Allow. Click **Add**, type `Enterprise\Users`, click **OK**, select it, and check **Full Control**. Click **OK** three times.
+!shot The Permissions for SharedData window showing Everyone and Users with Full Control.
+## Task 3: Try it from Win8.1, and fix what fails
+### Browse to the share as user2
+On **Win8.1**, switch to **user2** (`SuperSecret`). Open **File Explorer > Network** and double-click **Enterprise**. A **Windows Security** sign-in box appears.
+That's the first failure: Win7 has no account named user2, so it can't authenticate the connection. Click **Cancel**.
+!shot The Windows Security prompt when user2 opens Enterprise.
+### Create a matching user2 on Win7
+On **Win7**, use **Switch user** to sign in as sysadmin. Open **Computer > Manage > Local Users and Groups > Users > New User**. Create `user2` with password `SuperSecret`, uncheck **User must change password at next logon**, and check **Password never expires**.
+!tip Why this works | In a workgroup, each PC checks its own accounts. When the user name and password on Win8.1 match an account on Win7, Windows signs in automatically. This is called pass-through authentication.
+### Add user2 to the folder's NTFS permissions
+Log off sysadmin and log in as **user1**. Right-click **Data > Properties > Security > Edit > Add**, type `user2`, click **Check Names**, and click **OK** twice.
+### Open the share, then try to write
+On **Win8.1** as user2, open **Network > Enterprise**. **SharedData** now appears. Open it and you'll see `Test`. Try **New > Text Document**: access is denied.
+That's the second failure. Share permissions allow Full Control, but the NTFS entry you added defaults to **Read & execute**, and the more restrictive permission wins.
+!shot The access denied message when creating a file in SharedData.
+### Grant Modify and try again
+On **Win7** as user1, open **Data > Properties > Security > Edit**, select **user2**, and check **Modify** under Allow. Click **OK** twice.
+On **Win8.1**, in SharedData, create a new text document named `Test2`. It works.
+!shot SharedData on Win8.1 showing Test2 created by user2.
+The lab is complete.
+
+== reference | Reference: sharing and permissions
+### Share permissions compared with NTFS permissions
+| | Share permissions | NTFS permissions |
+| Set on | The Sharing tab > Advanced Sharing > Permissions | The Security tab |
+| Applies to | Only connections over the network | Everyone, local and network |
+| Levels | Read, Change, Full Control | Full control, Modify, Read & execute, List folder contents, Read, Write |
+| File systems | Any shared folder | NTFS volumes only |
+!tip How they combine | Over the network, Windows works out the share permission and the NTFS permission separately and applies the **more restrictive** of the two. Locally, only NTFS applies. A common setup is Share: Everyone Full Control, then control access with NTFS.
+### NTFS permission levels
+| Permission | Lets the user |
+| Full control | Everything, including change permissions and take ownership |
+| Modify | Read, write, create, and delete |
+| Read & execute | Open files and run programs |
+| List folder contents | See what's in the folder |
+| Read | Open files and view attributes |
+| Write | Create files and write data |
+### Permission rules
+- **Explicit Deny beats Allow.** A Deny on any group the user belongs to wins.
+- **Permissions add up** across a user's groups: Read from one group plus Write from another gives both.
+- **Inheritance:** files and subfolders take their parent folder's permissions unless inheritance is turned off.
+- **Moving and copying:** moving within the same NTFS volume keeps permissions; copying, or moving to another volume, takes on the destination's permissions.
+### Shares from the command line
+```
+%% List shares on this PC
+net share
+%% Share a folder with change rights for Everyone
+net share SharedData=C:\Users\user1\Desktop\Data /grant:Everyone,CHANGE
+%% See shares on another PC, then map one
+net view \\Enterprise
+net use S: \\Enterprise\SharedData
+%% Show and grant NTFS permissions
+icacls C:\Users\user1\Desktop\Data
+icacls C:\Users\user1\Desktop\Data /grant user2:(OI)(CI)M
+```
+In `icacls`, `M` is Modify, `RX` is Read & execute, and `(OI)(CI)` makes the permission inherit to files and subfolders.
+### Administrative shares
+Windows creates hidden shares ending in `$` for administrators: `C$` (the root of C:), `ADMIN$` (the Windows folder), and `IPC$`. Any share name ending in `$` is hidden from browsing but reachable by name, such as `\\Enterprise\C$`.
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| Enterprise doesn't appear under Network | Discovery is off, or SMB1 browsing isn't available | Turn on network discovery; type `\\Enterprise` in the address bar |
+| Windows Security prompt on every connect | No matching account on the sharing PC | Create the same user name and password on Win7, or enter Win7 credentials |
+| Can see files but can't create one | NTFS gives Read & execute only | Grant Modify on the Security tab |
+| `Enterprise\Users` not found | Typed before the rename finished, or a typo | Check Names, or pick it from Advanced > Find Now |
+| Security tab is missing | The folder is on a FAT32 volume | NTFS permissions need an NTFS volume |
+| Changes don't apply to an open window | Explorer cached the old view | Press [[F5]], or close and reopen the share |
+
+== on-the-job | On the job
+Work through the same order the lab did:
+| Check | How | Fix |
+| 1. Can the PCs reach each other? | `ping Enterprise` and `ping 192.168.1.7` | Same subnet, firewall profile set to Private |
+| 2. Is sharing on? | Advanced sharing settings | Network discovery and file and printer sharing on |
+| 3. Can the user authenticate? | Does a prompt appear? | Matching local account, or enter credentials and save them |
+| 4. What do share permissions allow? | Sharing > Advanced Sharing > Permissions | Usually Everyone: Full Control (or Change) |
+| 5. What do NTFS permissions allow? | Security > Advanced > Effective Access | Grant the least that does the job, usually Modify |
+!tip Professional habit | Assign permissions to **groups**, not individual users. When someone joins or leaves, you change group membership instead of editing every folder.
+
+== exam | On the A+ exams
+**Core 2 (220-1202)** covers workgroups and domains, file and printer sharing, share and NTFS permissions and how they combine, inheritance, administrative shares, and the `net share`, `net use`, and `icacls`-style tools. Expect scenarios where a user can see a share but not write to it.
+### High-yield facts
+- Share and NTFS permissions combine to the **most restrictive**.
+- Explicit **Deny** overrides Allow.
+- Moving within the same volume keeps permissions; copying takes the destination's.
+- Hidden shares end in `$`; `C$` and `ADMIN$` are administrative shares.
+- Workgroups need matching accounts on each PC; domains use one central account.
+- Use the **Private** network profile for sharing; Public turns discovery off.
+
+== check | Check yourself
+?? Share permission is Full Control and NTFS permission is Read. What can the remote user do?
+=> Read only. The more restrictive of the two applies over the network.
+?? A user is in Sales (Modify) and Interns (Deny Write) on the same folder. Can they create files?
+=> No. Explicit Deny overrides Allow.
+?? You move a file from D:\Projects to D:\Archive on the same NTFS volume. Which permissions does it keep?
+=> Its original permissions. Moving within one volume keeps them; copying would inherit the destination's.
+?? Why did user2 get a Windows Security prompt the first time?
+=> Win7 had no account named user2, so it couldn't authenticate the workgroup connection.
+?? Name one way to reach a shared folder when the PC doesn't show under Network.
+=> Type `\\Enterprise\SharedData` (or `\\192.168.1.7\SharedData`) in File Explorer's address bar, or map it with `net use`.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] Workgroup | Win7's Computer Name/Domain Changes dialog with Enterprise and MYGROUP.
+[] Share permissions | Permissions for SharedData showing Everyone and Users with Full Control.
+[] Prompt | The Windows Security prompt when user2 first opens Enterprise.
+[] Denied | The access denied message when user2 tries to create a file.
+[] Success | SharedData on Win8.1 showing Test2 created by user2.
+
+== cheat | Cheat sheet
+## Set up sharing
+- `sysdm.cpl` > Change: name and workgroup
+- Same workgroup name on every PC
+- Private profile; discovery and sharing on
+- Matching accounts in a workgroup
+- `\\Name\Share` in the address bar
+## Permissions
+- Share + NTFS = most restrictive wins
+- Deny beats Allow; groups add up
+- Move same volume = keep; copy = inherit
+- `net share`, `net use`, `icacls`
+- `C$`, `ADMIN$` hidden admin shares

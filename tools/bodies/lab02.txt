@@ -1,0 +1,211 @@
+@lede Windows hides its real administration tools a click or two away from the desktop. You will build your own MMC console, schedule a task, carve a disk into volumes, end a hung program, trace a stalled process, and change and restore a Registry setting safely.
+
+== overview | Why this lab matters
+A technician's toolkit lives in a handful of Microsoft Management Console **snap-ins** plus Task Manager, Resource Monitor, and the Registry Editor. Knowing them by name and by shortcut is half the job: when a user calls, you need to open the right tool in seconds.
+This lab covers the full range. **MMC** lets you build a custom console with only the snap-ins you need. **Task Scheduler** runs things automatically. **Disk Management** creates and formats volumes. **Task Manager** and **Resource Monitor** show what's using the machine and let you end what's stuck. **Regedit** edits the database behind almost every Windows setting.
+The Registry task also teaches the rule that matters most: **back up before you change anything**, and know how to put it back.
+
+== environment | The environment you're working in
+| Machine | IP address | Account | Password |
+| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
+| Win8.1 | `192.168.1.8/24` | `sysadmin` | `Train1ng$` |
+| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+Win7 does the MMC console, Disk Management, Task Manager, and Registry tasks. Win8.1 does Task Scheduler, the newer Task Manager, and Resource Monitor. Win7 has a second disk (**Disk 2**) with unallocated space for the volume task.
+!tip Good to know before you start | Every tool here needs administrator rights, so expect a UAC prompt each time. Click **Yes**.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Start search > Run > `mmc` | Same. [[Win]]+[[R]] > `mmc` |
+| Right-click the taskbar > Task Manager | Right-click **Start** > Task Manager, or [[Ctrl]]+[[Shift]]+[[Esc]]. The taskbar right-click option returned in later Windows 11 updates. |
+| Task Manager tabs across the top | The tabs moved to a **left-side menu**: Processes, Performance, App history, Startup apps, Users, Details, Services. |
+| Disk Management | Same snap-in (`diskmgmt.msc`). Settings > System > Storage > Disks & volumes does the basics too. |
+| Performance tab > Open Resource Monitor | Same, or run `resmon` directly |
+| Registry Editor | Same, plus an address bar: paste a key path and press [[Enter]] |
+
+== walkthrough | Walkthrough
+## Task 1: Build an MMC console (Win7)
+### Open an empty console
+On **Win7**, open **Start**, type `run`, open **Run**, and enter:
+```
+mmc
+```
+Accept UAC. You get an empty **Console1** window.
+### Add three snap-ins
+Choose **File > Add/Remove Snap-in**. Add **Disk Management** (choose **This computer**, then **Finish**), **Event Viewer** (Local computer), and **Task Scheduler** (Local computer). Click **OK** when all three are in **Selected snap-ins**.
+!shot The Add or Remove Snap-ins window with all three snap-ins selected.
+### Save the console
+Choose **File > Save As** and save it as `C:\Users\sysadmin\console`. Windows adds the `.msc` extension. Close the console.
+## Task 2: Schedule a task (Win8.1)
+### Add Task Scheduler to a console
+On **Win8.1**, right-click **Start > Run**, enter `mmc`, and add the **Task Scheduler** snap-in for the local computer.
+### Create the task
+Select **Task Scheduler** in the left pane and choose **Action > Create Task**. Fill in:
+| Tab | Setting |
+| General | Name and Description: `Notepad` |
+| Triggers | **New** > Begin the task: **At log on** |
+| Actions | **New** > Start a program > Browse to `C:\windows\system32\notepad.exe` |
+Click **OK** to close each window.
+!shot The Create Task window, or the new Notepad task listed in Task Scheduler Library.
+!tip Create Task or Create Basic Task? | **Create Basic Task** is a wizard with fewer options. **Create Task** shows every tab (General, Triggers, Actions, Conditions, Settings), which is what you'll use for real work.
+### Save, sign out, and test
+Close the console and save it as `C:\Users\sysadmin\console`. Sign out from the Start screen and sign back in. Notepad should open on its own. Close it.
+## Task 3: Create volumes in Disk Management (Win7)
+### Open your saved console
+On **Win7**, open **Start**, type `console.msc`, and open it. Double-click **Disk Management** under Console Root.
+### Create an NTFS volume
+Right-click the **Unallocated** space on **Disk 2** and choose **New Simple Volume**. Use these settings:
+| Wizard page | Value |
+| Volume size | `2048` MB |
+| Drive letter | `S` |
+| File system | NTFS, Volume label `NTFS` |
+!stuck Where people get stuck | Disk 2 is below the bottom of the window. Maximize the console or scroll the lower pane to find it. Right-click the black **Unallocated** bar, not the disk label on the left.
+### Create a FAT32 volume
+Right-click the remaining unallocated space (about 3 GB) and create a second simple volume: `2048` MB, drive letter `L`, file system **FAT32**, label `FAT32`.
+!shot Disk Management showing the new S: (NTFS) and L: (FAT32) volumes on Disk 2.
+### Check in Computer
+Close the console, saving it when asked, and double-click **Computer** on the desktop. You should see drives **S:** and **L:**.
+## Task 4: Task Manager
+### End an application on Win7
+Open **Notepad**. Right-click the taskbar and choose **Start Task Manager**. On the **Applications** tab, select Notepad and click **End Task**.
+### Tour the Win7 tabs
+Look at **Processes** (running programs and their memory), **Services**, **Performance**, **Networking**, and **Users**. Then on **Processes**, select `taskmgr.exe` and click **End Process** to close Task Manager itself.
+!stuck Before you end a process | Ending a process discards unsaved work, and ending a system process can crash Windows. End only what you recognize, and prefer ending the app from the Applications or Processes view.
+### Compare the newer Task Manager on Win8.1
+On **Win8.1**, right-click the taskbar and choose **Task Manager**. Click **More details**. The **Processes** tab now combines apps and background processes with live CPU, memory, disk, and network columns. Note the newer **App history** and **Startup** tabs. Right-click **Task Manager** in the list and choose **End task**.
+!shot The Win8.1 Task Manager in More details view.
+## Task 5: Resource Monitor (Win8.1)
+### Open Resource Monitor
+Open Task Manager again, click **More details**, go to **Performance**, and click **Open Resource Monitor** at the bottom. Look at each tab: Overview, CPU, Memory, Disk, and Network.
+### Analyze a wait chain
+On the **CPU** tab, find `explorer.exe` under **Image**, right-click it, and choose **Analyze Wait Chain**. A hung process shows in red; the wait chain names the process it's waiting on, which is often the real culprit.
+!shot The Analyze Wait Chain window for explorer.exe.
+Close all windows on Win8.1.
+## Task 6: Change and restore a Registry setting (Win7)
+### Back up the Registry first
+On **Win7**, open **Start**, type `regedit`, and open it. Accept UAC. Right-click **Computer** at the top of the tree, choose **Export**, and save as `C:\Users\sysadmin\Documents\Reg-Backup.reg`.
+### Rename the Recycle Bin
+Go to this key (on Windows 10 and 11 you can paste it into the address bar):
+```
+HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}
+```
+**(Default)** reads *(value not set)*. Double-click it, type `Trash Bin` as the Value data, and click **OK**. Right-click the desktop and choose **Refresh**. The Recycle Bin is now **Trash Bin**.
+!shot The desktop showing Trash Bin, with Registry Editor open on the key.
+### Export just that key
+Right-click the `{645FF040-...}` key and choose **Export**. Save it to the **Desktop** as `Trash Bin`.
+### Undo the change, then re-import it
+Double-click **(Default)**, delete the text, and click **OK**. Refresh the desktop: it says **Recycle Bin** again. Close Regedit, then double-click **Trash Bin.reg** on the desktop and click **Yes** through the warnings. Refresh again: the name is back to **Trash Bin**, restored from your export.
+The lab is complete.
+
+== reference | Reference: admin tools and shortcuts
+### Snap-ins and their shortcuts
+| Tool | Shortcut | Use it to |
+| Computer Management | `compmgmt.msc` | Get most snap-ins in one window |
+| Disk Management | `diskmgmt.msc` | Initialize, partition, format, extend, shrink, assign letters |
+| Event Viewer | `eventvwr.msc` | Read System, Application, and Security logs |
+| Task Scheduler | `taskschd.msc` | Run programs on a schedule or event |
+| Device Manager | `devmgmt.msc` | Drivers and hardware (Lab 01-A) |
+| Services | `services.msc` | Start, stop, and set startup type |
+| Local Users and Groups | `lusrmgr.msc` | Local accounts (Lab 04) |
+| Performance Monitor | `perfmon.msc` | Counters, data collector sets, reports |
+| Group Policy Editor | `gpedit.msc` | Local policy (Lab 04; not in Home editions) |
+| Certificate Manager | `certmgr.msc` | User certificates |
+### Task Scheduler triggers
+| Trigger | Runs when |
+| On a schedule | One time, daily, weekly, or monthly |
+| At log on | A user (or any user) signs in |
+| At startup | The PC boots, before anyone signs in |
+| On idle | The PC has been idle for a set time |
+| On an event | A specific Event Viewer entry appears |
+### Disk Management terms
+| Term | Meaning |
+| Basic disk | Partitions (primary, extended, logical); the normal setup |
+| Dynamic disk | Volumes that can span disks or form software RAID (legacy; Lab 14) |
+| Simple volume | One area on one disk |
+| Initialize | Choose MBR or GPT before first use |
+| Extend / Shrink | Grow into adjacent free space or give space back |
+### File systems
+| File system | Max file size | Typical use |
+| NTFS | Very large (16 TB+) | Windows system and data drives; permissions, encryption, compression |
+| FAT32 | 4 GB | Small USB drives, compatibility with almost anything |
+| exFAT | Very large | Large USB drives and SD cards shared between Windows and macOS |
+| ReFS | Very large | Servers and Storage Spaces |
+### Task Manager tabs (Windows 10 and 11)
+| Tab | What you do there |
+| Processes | See apps and background processes; End task |
+| Performance | CPU, memory, disk, network, GPU graphs; open Resource Monitor |
+| App history | Resource use per Store app over time |
+| Startup apps | Enable or disable programs that start at sign-in, with startup impact |
+| Users | See and sign out sessions |
+| Details | Every process by name, PID, and status; set priority |
+| Services | Start and stop services |
+### Registry root keys
+| Key | Holds |
+| HKEY_LOCAL_MACHINE (HKLM) | Settings for the whole computer |
+| HKEY_CURRENT_USER (HKCU) | Settings for the signed-in user |
+| HKEY_CLASSES_ROOT (HKCR) | File associations and COM objects |
+| HKEY_USERS (HKU) | Every user profile loaded on the PC |
+| HKEY_CURRENT_CONFIG (HKCC) | The current hardware profile |
+!tip Restore points back up the Registry too | Before a big Registry change on a real PC, create a System Restore point (Lab 07). It's easier to roll back than a full .reg import.
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| `console.msc` doesn't show in search | It was saved somewhere other than `C:\Users\sysadmin` | Save it again with the full path, or open it with File > Open in MMC |
+| Notepad doesn't open at sign-in | The trigger is At startup, or the task wasn't saved | Check Triggers says **At log on**, then sign out and back in |
+| Can't find Disk 2 | It's below the visible area | Maximize the window or scroll the lower pane |
+| FAT32 option is missing | The volume is larger than 32 GB (the Windows format limit) | Keep it at 2048 MB as the lab says |
+| Task Manager only shows a few apps | Win8.1/10 open in the compact view | Click **More details** |
+| Can't find the CLSID key | The path is long and easy to mistype | Expand one level at a time or copy the path from this page |
+| Trash Bin name doesn't appear | The desktop didn't refresh | Right-click the desktop > Refresh |
+
+== on-the-job | On the job
+| The ticket says | Where you look | Likely fix |
+| "My program is frozen and won't close." | Task Manager > Processes | End task; if it keeps hanging, Resource Monitor > Analyze Wait Chain |
+| "The PC takes forever to start." | Task Manager > Startup | Disable high-impact startup apps |
+| "I plugged in a new drive and it's not in File Explorer." | Disk Management | Initialize, create a volume, assign a letter |
+| "Run our backup script every night." | Task Scheduler | Create Task with a daily trigger and "Run whether user is logged on or not" |
+| "A setting keeps reverting." | Regedit, or Group Policy | Check whether a policy is overriding it (Lab 04) |
+!tip Professional habit | Never edit the Registry without an export of the key you're changing, and note the original value in your ticket.
+
+== exam | On the A+ exams
+**Core 2 (220-1202)** lists these as tools you should recognize by name and by command: `mmc`, `compmgmt.msc`, `diskmgmt.msc`, `taskschd.msc`, `eventvwr.msc`, `services.msc`, `perfmon.msc`, Task Manager, `resmon`, and `regedit`. Expect scenario questions that ask which tool solves a problem.
+### High-yield facts
+- A snap-in is one tool loaded into MMC; a saved console is an `.msc` file.
+- Task Manager's **Startup** tab is the first place to fix slow sign-ins.
+- Resource Monitor's **Analyze Wait Chain** finds what a hung process is waiting on.
+- FAT32 can't store a file larger than 4 GB; use NTFS or exFAT.
+- Initialize a new disk as GPT for drives over 2 TB and for UEFI boot.
+- Export a Registry key before editing it; a `.reg` file re-imports with a double-click.
+
+== check | Check yourself
+?? You want one window with only Event Viewer, Services, and Disk Management for a junior tech. How?
+=> Open `mmc`, add those three snap-ins, and save it as an `.msc` console file.
+?? A user's PC is slow right after sign-in. Where's the quickest fix?
+=> Task Manager > Startup (Startup apps on Windows 11). Disable high-impact programs that don't need to start automatically.
+?? Why couldn't you copy a 6 GB video to the L: drive you created?
+=> L: is FAT32, which has a 4 GB maximum file size.
+?? An app is "Not responding" and ending it doesn't help for long. Which tool helps find the cause?
+=> Resource Monitor > CPU > right-click the process > Analyze Wait Chain, to see which process it's waiting on.
+?? You changed a Registry value and something broke. You exported the key first. How do you undo it?
+=> Double-click the exported `.reg` file (or use File > Import in Regedit) to merge the original values back.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] MMC | The Add or Remove Snap-ins window with Disk Management, Event Viewer, and Task Scheduler selected.
+[] Task | The Notepad task in Task Scheduler (or Notepad opening after sign-in).
+[] Volumes | Disk Management showing S: (NTFS) and L: (FAT32) on Disk 2.
+[] Task Manager | The Win8.1 Task Manager in More details view.
+[] Wait chain | Resource Monitor's Analyze Wait Chain window for explorer.exe.
+[] Registry | The desktop showing Trash Bin with Registry Editor open on the CLSID key.
+
+== cheat | Cheat sheet
+## Open it fast
+- `mmc` custom console; `compmgmt.msc` all-in-one
+- `diskmgmt.msc` `eventvwr.msc` `taskschd.msc` `services.msc`
+- [[Ctrl]]+[[Shift]]+[[Esc]] Task Manager
+- `resmon` Resource Monitor; `regedit` Registry
+## Remember
+- Slow sign-in: Task Manager > Startup
+- Hung app: End task, then Analyze Wait Chain
+- FAT32 = 4 GB file limit; NTFS for Windows
+- GPT over 2 TB and for UEFI
+- Export the key before editing the Registry

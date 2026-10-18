@@ -1,0 +1,275 @@
+@lede Anything you type more than twice is worth scripting. You will write the same system-information report three ways (a Windows batch file, a PowerShell script, and a Bash script), run each one, and deal with the safety settings that stop scripts from running.
+@vms Win10, Lubuntu
+
+== overview | Why this lab matters
+Scripts turn a checklist into one command. A technician uses them to gather information from many PCs the same way, map drives at sign-in, install software, clean up temp files, or restart a stuck service on a schedule (Lab 02's Task Scheduler can run any of these).
+This lab writes one job, "report this PC's OS, hardware, and network," in the three scripting languages you're most likely to meet: **batch** (`.bat`) for classic Windows, **PowerShell** (`.ps1`) for modern Windows administration, and **Bash** (`.sh`) for Linux. Comparing them line by line shows that the logic is the same and only the syntax changes.
+You'll also meet each platform's guardrail: PowerShell's **execution policy** and Linux's **execute permission**.
+
+== environment | The environment you're working in
+| Machine | IP address | Account | Password |
+| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+| Lubuntu | `192.168.1.11/24` | `sysadmin` | `Train1ng$` |
+
+| Script | Saved as |
+| Batch | `C:\Users\sysadmin\Sysinfo.bat` |
+| PowerShell | `C:\Users\sysadmin\win10info.ps1` |
+| Bash | `/home/sysadmin/lhostinfo.sh` |
+!stuck Copying from the PDF | The PDF's scripts contain curly quotes (`“ ”`) and en dashes (`–a`, `–h`, `–i`) that the shells don't understand, and two long lines are wrapped. Use the versions on this page; they're corrected and have Copy buttons.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Notepad to write scripts | Notepad still works; **Visual Studio Code** is what most admins use (syntax highlighting, PowerShell extension) |
+| PowerShell ISE | Still included but no longer developed. Use **Windows Terminal** with PowerShell, or VS Code. |
+| Windows PowerShell 5.1 | Still built in. **PowerShell 7** (`pwsh`) is the current cross-platform version, installed separately. |
+| `wmic` in the batch file | **Deprecated**; newer Windows 11 builds don't include it by default. Use PowerShell's `Get-CimInstance` instead. |
+| `Get-WmiObject` in the PowerShell script | Works in 5.1 but not in PowerShell 7. Use `Get-CimInstance` (same classes). |
+| Bash only on Linux | **WSL** runs Bash on Windows: `wsl --install` |
+
+== walkthrough | Walkthrough
+## Task 1: A Windows batch file (Win10)
+### Look at the available commands
+Log in to **Win10**, open **Command Prompt**, and run:
+```
+help | more
+```
+Press [[Space]] for the next page and [[Q]] to quit. Find `echo`, `findstr`, `rem`, and `systeminfo`.
+### Write the script in Notepad
+Open **Notepad** and type (or copy) the script:
+```
+@ECHO OFF
+:: This batch file reveals OS, hardware, and networking configuration.
+TITLE My System Info
+ECHO Please wait... Checking system information.
+:: Section 1: OS information.
+ECHO ============================
+ECHO OS INFO
+ECHO ============================
+rem findstr searches for a text string. Enter findstr /? for details.
+systeminfo | findstr /c:"OS Name"
+systeminfo | findstr /c:"OS Version"
+systeminfo | findstr /c:"System Type"
+:: Section 2: Hardware information.
+ECHO ============================
+ECHO HARDWARE INFO
+ECHO ============================
+systeminfo | findstr /c:"Total Physical Memory"
+wmic cpu get name
+:: Section 3: Networking information.
+ECHO ============================
+ECHO NETWORK INFO
+ECHO ============================
+ipconfig | findstr IPv4 >> info.txt
+ipconfig | findstr IPv6 >> info.txt
+PAUSE
+```
+### Save it as a .bat file
+Choose **File > Save As**, go to `C:\Users\sysadmin`, set **Save as type** to **All Files**, and name it `Sysinfo.bat`.
+!stuck Where people get stuck | If Save as type stays on **Text Documents**, Notepad saves `Sysinfo.bat.txt`, which won't run. Choose All Files, or put the name in quotes: `"Sysinfo.bat"`. Run `dir` to check.
+### Run it
+```
+dir
+Sysinfo.bat
+```
+Watch the OS and hardware sections print on screen. Press any key at `PAUSE`. The network lines don't appear because `>>` sent them to a file:
+```
+dir
+more info.txt
+```
+!shot The batch file's output in Command Prompt.
+!shot The contents of info.txt.
+Close Command Prompt and Notepad.
+## Task 2: A PowerShell script (Win10)
+### Open PowerShell ISE as administrator
+Search for `PowerShell ISE`, right-click it > **Run as administrator**, and accept UAC. Move to your home folder:
+```
+cd C:\Users\sysadmin
+```
+### Write the script
+Choose **File > New** and enter:
+```
+Write-Output "Computer name is:"
+Get-Content env:computername
+Write-Output "Windows version is:"
+(Get-WmiObject -Class Win32_OperatingSystem).Caption
+Write-Output "CPU is:"
+Get-WmiObject Win32_Processor | findstr "Name"
+Write-Output "Total Memory is:"
+[Math]::Round((Get-WmiObject -Class Win32_ComputerSystem -ComputerName localhost).TotalPhysicalMemory/1Gb)
+Write-Output "The Disks that are installed and their freespace:"
+Get-WmiObject -Class Win32_LogicalDisk -Filter "DriveType = '3'"
+Write-Output "IPv4 addresses:"
+Get-NetIPAddress -AddressFamily IPv4 | Sort-Object -Property InterfaceIndex | Format-Table
+```
+Save it as `C:\Users\sysadmin\win10info.ps1`.
+### Try to run it
+```
+.\win10info.ps1
+```
+It fails with **running scripts is disabled on this system**. That's the execution policy doing its job.
+!shot The execution policy error.
+### Allow local scripts, then run it again
+```
+Set-ExecutionPolicy RemoteSigned
+.\win10info.ps1
+```
+Click **Yes to All** at the prompt. The script now runs.
+!shot The win10info.ps1 output.
+!tip What RemoteSigned means | Scripts you write on this PC run; scripts downloaded from the internet must be signed by a trusted publisher. It's the usual choice for admins. On a real PC, `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser` changes it only for you.
+### Compare the two scripts
+| Batch | PowerShell |
+| `ECHO text` | `Write-Output "text"` |
+| `%COMPUTERNAME%` | `$env:computername` (or `Get-Content env:computername`) |
+| `systeminfo` piped to `findstr` | `Get-WmiObject` / `Get-CimInstance` returning objects with named properties |
+| `>> info.txt` | `Out-File info.txt -Append` (or `>>`) |
+## Task 3: A Bash script (Lubuntu)
+### Open nano
+Sign in to **Lubuntu**, open **Menu > System Tools > LXTerminal**, and run:
+```
+nano
+```
+### Write the script
+```
+#!/bin/bash
+echo "Computer name is: " $HOSTNAME
+echo "Operating System and distribution:"
+lsb_release -a
+echo "CPU cores"
+cat /proc/cpuinfo | grep processor
+echo "All available memory"
+cat /proc/meminfo | grep "MemTotal"
+echo "All disk space available."
+df -h
+echo "All IP addresses"
+ip addr show
+echo "Show the hostname IP address."
+hostname -i
+```
+!tip The first line matters | `#!/bin/bash` (the **shebang**) tells Linux which interpreter runs the file.
+### Save it
+Press [[Ctrl]]+[[O]], type `lhostinfo.sh`, and press [[Enter]]. Press [[Ctrl]]+[[X]] to leave nano (or keep it open and use a second terminal).
+### Make it executable and run it
+Open a second terminal (or use the same one) and run:
+```
+chmod 755 lhostinfo.sh
+ls -l lhostinfo.sh
+./lhostinfo.sh
+```
+`ls -l` now shows `-rwxr-xr-x`: the `x` is execute permission. `./` tells Bash the script is in the current folder, which isn't in the search path.
+!shot The `ls -l` line showing execute permission, and the script's output.
+The lab is complete.
+
+== reference | Reference: scripting
+### Script types on the exam
+| Extension | Language | Runs on |
+| `.bat`, `.cmd` | Windows batch | Windows Command Prompt |
+| `.ps1` | PowerShell | Windows (and PowerShell 7 on macOS and Linux) |
+| `.vbs` | VBScript | Windows Script Host (deprecated) |
+| `.sh` | Bash / shell script | Linux, macOS, WSL |
+| `.js` | JavaScript | Browsers, Node.js, Windows Script Host |
+| `.py` | Python | Any OS with Python installed |
+### The building blocks (all languages)
+| Concept | Batch | PowerShell | Bash |
+| Variable | `set NAME=value`, `%NAME%` | `$name = "value"` | `name=value`, `$name` |
+| Comment | `rem` or `::` | `#` | `#` |
+| Print | `echo` | `Write-Output` | `echo` |
+| Condition | `if exist file (...)` | `if ($x -gt 5) { }` | `if [ -f file ]; then ... fi` |
+| Loop | `for %%f in (*.txt) do ...` | `foreach ($f in $list) { }` | `for f in *.txt; do ...; done` |
+| Pause | `pause` | `Read-Host` | `read` |
+### PowerShell execution policies
+| Policy | Allows |
+| Restricted | No scripts (default on Windows client editions) |
+| AllSigned | Only scripts signed by a trusted publisher |
+| RemoteSigned | Local scripts; downloaded scripts must be signed |
+| Unrestricted | All scripts, with a warning for downloaded ones |
+| Bypass | Everything, no warnings (for automation tools) |
+```
+Get-ExecutionPolicy -List
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+%% Run one script without changing the policy
+powershell -ExecutionPolicy Bypass -File .\script.ps1
+```
+### Linux permissions
+| `chmod` value | Means |
+| `755` | Owner: read, write, execute; group and others: read, execute |
+| `700` | Owner only, full access |
+| `644` | Owner read/write; others read (normal for data files) |
+| `+x` | Add execute (`chmod +x script.sh`) |
+### Common uses for scripts
+| Task | Example |
+| Basic automation | Restart a service, clear temp files, gather inventory |
+| Map drives at sign-in | `net use S: \\server\share` in a login script |
+| Install applications | `winget install` or `msiexec /i app.msi /qn` in a loop |
+| Automated backups | `robocopy` on a schedule |
+| Gather information | This lab's reports, run on every PC |
+| Initiate updates | `winget upgrade --all`, `sudo apt upgrade -y` |
+### Scripting risks
+- A script runs with your rights; a mistake as admin can delete or misconfigure a lot, fast.
+- Downloaded scripts can be malicious; read before you run, and keep execution policy on.
+- Avoid storing passwords in plain text inside scripts.
+- Scripts can exhaust resources (an infinite loop) or crash a system if untested; test in a VM first (Lab 16).
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| `Sysinfo.bat` isn't recognized | Saved as `Sysinfo.bat.txt` | Save as type: All Files; rename with `ren` |
+| `wmic` is not recognized | WMIC is removed from newer Windows | Use `powershell -c "Get-CimInstance Win32_Processor \| Select Name"` |
+| "running scripts is disabled" | Execution policy is Restricted | `Set-ExecutionPolicy RemoteSigned` from an elevated prompt |
+| `.\win10info.ps1` not found | You're still in `C:\WINDOWS\system32` | `cd C:\Users\sysadmin` first |
+| The Total Memory line errors | It was split across two lines | Keep it on one line |
+| `lsb_release: invalid option` | En dash from the PDF | Type `-a` with a hyphen |
+| `Permission denied` running the Bash script | No execute permission | `chmod 755 lhostinfo.sh` |
+| `lhostinfo.sh: command not found` | Bash doesn't search the current folder | Run it as `./lhostinfo.sh` |
+
+== on-the-job | On the job
+| Request | Script approach |
+| "Collect the specs of all 40 PCs." | A PowerShell inventory script that writes CSV, run remotely or at sign-in |
+| "Everyone needs the S: drive mapped." | A login script or Group Policy drive mapping |
+| "Clean temp files on lab PCs nightly." | A batch or PowerShell script in Task Scheduler |
+| "Install the same apps on every new laptop." | A winget script |
+| "Check disk space on the Linux servers." | A Bash script with `df -h`, run by `cron` |
+!tip Professional habit | Put a comment at the top of every script saying what it does, who wrote it, and when. Six months later, that person will be you.
+
+== exam | On the A+ exams
+**Core 2 (220-1202)** covers script file types (`.bat`, `.ps1`, `.vbs`, `.sh`, `.js`, `.py`), use cases (basic automation, restarting machines, remapping drives, installing applications, automated backups, gathering information, initiating updates), and risks (introducing malware, inadvertent system changes, browser or system crashes from mishandled resources).
+### High-yield facts
+- `.bat` = batch, `.ps1` = PowerShell, `.vbs` = VBScript, `.sh` = shell, `.js` = JavaScript, `.py` = Python.
+- PowerShell's default execution policy on Windows clients blocks scripts; RemoteSigned is the usual admin setting.
+- Linux scripts need execute permission (`chmod +x` or `755`) and a shebang line.
+- `>` overwrites a file; `>>` appends.
+- Test scripts in a VM or on one PC before running them everywhere.
+- Never run a downloaded script you haven't read.
+
+== check | Check yourself
+?? Which file extension identifies a PowerShell script, and which a Linux shell script?
+=> `.ps1` for PowerShell; `.sh` for a shell script.
+?? A PowerShell script won't run and says scripts are disabled. What's the safe fix?
+=> Set the execution policy to RemoteSigned (ideally `-Scope CurrentUser`), which allows local scripts while still requiring downloaded ones to be signed.
+?? Why didn't the network information appear on screen when Sysinfo.bat ran?
+=> The `ipconfig` lines used `>> info.txt`, which redirected the output into a file instead of the screen.
+?? Your Bash script gives "Permission denied." What do you run?
+=> `chmod 755 script.sh` (or `chmod +x script.sh`), then run it with `./script.sh`.
+?? Name two risks of running scripts as an administrator.
+=> A mistake can make widespread, hard-to-undo system changes; and a malicious or tampered script gets full control of the system.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] Batch output | Sysinfo.bat running in Command Prompt.
+[] info.txt | `more info.txt` showing the IPv4 and IPv6 lines.
+[] Policy error | The PowerShell execution policy error.
+[] PowerShell output | win10info.ps1 running after setting RemoteSigned.
+[] Bash | `ls -l` showing execute permission and the lhostinfo.sh output.
+
+== cheat | Cheat sheet
+## Windows
+- `.bat`: `@ECHO OFF`, `rem`/`::`, `PAUSE`
+- Save as type: All Files
+- `.ps1`: `Write-Output`, `Get-CimInstance`
+- `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser`
+- `.\script.ps1` from its folder
+- `>` overwrite, `>>` append
+## Linux
+- `#!/bin/bash` first line
+- `nano file.sh`; [[Ctrl]]+[[O]] save, [[Ctrl]]+[[X]] exit
+- `chmod 755 file.sh`
+- `./file.sh`
+- `$HOSTNAME`, `df -h`, `ip addr`

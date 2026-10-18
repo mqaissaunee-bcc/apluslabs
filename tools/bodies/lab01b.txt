@@ -1,0 +1,158 @@
+@lede Before you troubleshoot a PC you need to know exactly what's in it. You will inventory the same machines four ways (the System applet, systeminfo, msinfo32, and dxdiag), save reports you can hand to another tech, and compare them with a third-party audit tool.
+
+== overview | Why this lab matters
+Most help desk calls start with the same questions: what Windows edition is this, how much RAM, which CPU, what's the BIOS version, which driver is the display using? Windows answers all of them without installing anything, but each tool answers at a different depth.
+The **System** page gives a one-glance summary. **systeminfo** dumps text you can copy into a ticket. **msinfo32** (System Information) is the deep inventory, and it can export a report. **dxdiag** focuses on display, sound, and input, and its saved report is what game and video vendors ask for.
+The habit this lab builds is saving a **baseline** report while a system is healthy, so you can compare after something changes.
+
+== environment | The environment you're working in
+| Machine | IP address | Account | Password |
+| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
+| Win8.1 | `192.168.1.8/24` | `sysadmin` | `Train1ng$` |
+| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+You'll move between all three. Task 3 (msinfo32) works on any of them; the lab continues on Win10. **Free PC Audit** is already on the Win7 desktop.
+!tip Good to know before you start | Run systeminfo from an **elevated** prompt (Run as administrator) on Win7, as the lab asks. Some fields come back incomplete from a standard prompt.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Control Panel > System | **Settings > System > About**. The old Control Panel System page now redirects there. |
+| Right-click Start > System (8.1) | Same: [[Win]]+[[X]] > System, or [[Win]]+[[Pause]] |
+| `systeminfo.exe` in cmd | Same command, also in PowerShell and Windows Terminal. PowerShell adds `Get-ComputerInfo`. |
+| `msinfo32` > File > Export | Same tool and menus. System Summary also shows **BIOS Mode** (UEFI or Legacy) and **Secure Boot State**. |
+| `dxdiag` > Save All Information | Same. Windows 11 also shows display details under Settings > System > Display > Advanced display. |
+| Free PC Audit (third-party) | Still a free download; many shops use CPU-Z (Lab 13) or their RMM agent's inventory instead. |
+
+== walkthrough | Walkthrough
+## Task 1: The System page
+### Read the summary on Win7
+Log in to **Win7**. Open **Start > Control Panel**, set **View by** to **Small icons**, and click **System**. Note the Windows edition, processor, installed memory, system type (32- or 64-bit), computer name, and product ID.
+### Use the Power User menu on Win8.1
+Log in to **Win8.1**, right-click **Start**, and choose **System**. It's the same page, reached faster. Close it when you've compared.
+## Task 2: systeminfo
+### Run systeminfo elevated on Win7
+On **Win7**, click **Start**, type `command prompt`, right-click the result, and choose **Run as administrator**. Accept the UAC prompt, then run:
+```
+systeminfo.exe
+```
+Scroll up through the output: OS version and build, install date, last boot time, BIOS version, processor, total memory, hotfixes, and network adapters.
+!shot The systeminfo output on Win7, showing the OS and BIOS lines.
+### Run it on Win10
+Log in to **Win10**, right-click **Start > Run**, enter `cmd`, and run `systeminfo.exe` again. Compare the output with Win7. Type `exit` when you're done.
+```
+%% Useful variations on a real PC
+systeminfo | more
+systeminfo > C:\Users\sysadmin\Desktop\sysinfo.txt
+systeminfo /fo csv > sysinfo.csv
+systeminfo | findstr /i "OS Memory BIOS"
+```
+## Task 3: System Information (msinfo32)
+### Open msinfo32 and explore the categories
+On Win10, right-click **Start > Run** and enter:
+```
+msinfo32
+```
+Expand each category in the left pane: **Hardware Resources**, **Components**, and **Software Environment**. Then click **System Summary** and read the system model, processor, memory, and BIOS details.
+### Find the display adapter
+Type `Display` in **Find what** at the bottom of the window and click **Find**. Use **Find Next** if needed. It jumps to **Components > Display**.
+!stuck Where people get stuck | Find matches category names and values exactly, and it isn't forgiving. Search for "Display", not "graphics card". If you get nothing, check that **Search selected category only** is unchecked.
+### Export a report
+With **Components > Display** selected, choose **File > Export**. Go to **Documents**, create a folder named `System Info`, open it, and save the file as `<date>-display_info` (for example `20261017-display_info`).
+!shot The Export As dialog showing the System Info folder and your file name.
+### Open the report
+Open **File Explorer > Documents > System Info** and double-click your file. It's plain text you can attach to a ticket or keep as a baseline. On a real system, copy it somewhere off the PC so it's available if the machine won't boot.
+## Task 4: DirectX Diagnostic Tool
+### Launch dxdiag on Win7
+On **Win7**, click **Start**, type `dxdiag`, and open it. When asked whether to check that drivers are digitally signed, click **No** for this lab. On a real PC, saying **Yes** is the better habit.
+### Read the tabs
+Step through **System**, **Display**, **Sound**, and **Input** with **Next Page**. Check the **Notes** box at the bottom of each tab. That's where dxdiag reports any problem it finds.
+### Save the report
+Click **Save All Information**, choose **Desktop**, keep the name `DxDiag`, and click **Save**. Open the file from the desktop and look through it.
+!shot The DxDiag.txt file open in Notepad.
+## Task 5: Free PC Audit
+### Run the audit
+On Win7, right-click the **Free PC Audit** desktop shortcut, choose **Run as administrator**, and accept UAC. When the scan finishes, scroll through the **System** tab. It also lists shares and installed hotfixes.
+!shot Free PC Audit results on the System tab.
+The lab is complete.
+
+== reference | Reference: system information tools
+| Tool | Open with | Best for |
+| System / About | [[Win]]+[[Pause]], or Settings > System > About | Edition, CPU, RAM, 32/64-bit, computer name at a glance |
+| systeminfo | `systeminfo` | Text you can paste or redirect; hotfixes, boot time, BIOS version |
+| System Information | `msinfo32` | Full hardware, component, driver, and software inventory; export to .txt or save as .nfo |
+| DirectX Diagnostic | `dxdiag` | Display, sound, and input details; driver versions; problems in Notes |
+| Device Manager | `devmgmt.msc` | Driver status and actions (Lab 01-A) |
+| PowerShell | `Get-ComputerInfo` | Scriptable inventory with named properties |
+### systeminfo options
+| Option | Does |
+| `/s <computer>` | Query a remote computer (with `/u` and `/p` for credentials) |
+| `/fo table\|list\|csv` | Output format |
+| `/nh` | Leave out column headers (table and csv only) |
+| `\| findstr /i "text"` | Show only matching lines |
+| `> file.txt` | Save output to a file |
+### msinfo32 categories
+| Category | Holds |
+| System Summary | Model, OS, processor, BIOS version and mode, memory, Secure Boot state |
+| Hardware Resources | IRQs, DMA, I/O, memory addresses, and conflicts |
+| Components | Display, sound, storage, network, ports, USB, problem devices |
+| Software Environment | Drivers, services, startup programs, environment variables, Windows Error Reporting |
+!tip Export or save? | **File > Export** writes plain text for the selected category. **File > Save** writes an `.nfo` file of everything, which another tech can open in msinfo32 on their own PC.
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| systeminfo shows little or errors out | Not run as administrator, or the WMI service is slow on first run | Use an elevated prompt and wait a few seconds |
+| Output scrolls off the screen | systeminfo prints a lot | Pipe to `more`, redirect to a file, or scroll back up |
+| msinfo32 Find returns nothing | Search text doesn't match exactly | Search a category name like `Display`; uncheck **Search selected category only** |
+| Exported report is huge | System Summary was selected, not one component | Select the single category first, then Export |
+| dxdiag asks about signed drivers | It's a normal first-run prompt | Click No for this lab; Yes on real systems |
+| Free PC Audit won't run | Not started as administrator | Right-click > Run as administrator |
+
+== on-the-job | On the job
+| The ticket says | Tool you reach for | Why |
+| "How much RAM does my PC have? Can it take more?" | System / About, then msinfo32 | Installed memory and the board model to look up the max |
+| "Vendor support asked for my system specs." | msinfo32 export or dxdiag report | Plain text files they can read |
+| "The game crashes on launch." | dxdiag | Display driver version and any Notes warnings |
+| "Is this PC patched?" | systeminfo hotfix list | Lists installed updates by KB number |
+| "Can this PC run Windows 11?" | msinfo32 System Summary | Shows BIOS mode, Secure Boot state, CPU, and RAM |
+!tip Professional habit | Keep a baseline report for every PC you set up. When it misbehaves later, you can see exactly what changed.
+
+== exam | On the A+ exams
+**Core 2 (220-1202)** expects you to know which Windows tool to use for a task, by name and by its shortcut: `msinfo32`, `dxdiag`, `systeminfo`, and the System settings page. **Core 1 (220-1201)** builds on this when you identify RAM, CPU, and storage in a system.
+### High-yield facts
+- `msinfo32` is System Information: the most detailed built-in inventory, with export.
+- `dxdiag` is for display, sound, and input; check the Notes box for problems.
+- `systeminfo` is the command-line summary, including installed hotfixes.
+- System Summary in msinfo32 shows **BIOS Mode** and **Secure Boot State**, useful for Windows 11 readiness.
+- 32-bit Windows can't use more than 4 GB of RAM; check System type.
+- Baseline documentation is part of good operational procedure.
+
+== check | Check yourself
+?? A vendor asks for a full list of your PC's components and drivers in one file. Which tool do you use?
+=> System Information (`msinfo32`). Use File > Export for text, or File > Save for an .nfo file.
+?? Which command lists installed hotfixes from the command line?
+=> `systeminfo`. The Hotfix(s) section lists installed updates by KB number.
+?? A user's video player stutters. Which built-in tool shows the display driver version and flags DirectX problems?
+=> The DirectX Diagnostic Tool (`dxdiag`). Problems appear in the Notes box on the Display tab.
+?? Where can you check whether a PC is booting in UEFI mode without restarting?
+=> msinfo32 > System Summary > BIOS Mode.
+?? Why save a system report while the PC is working fine?
+=> It's a baseline. When something breaks, you compare against it to see what changed, even if the PC won't boot.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] systeminfo | The systeminfo output from an elevated prompt on Win7.
+[] Export | The msinfo32 Export As dialog showing the System Info folder and your file name.
+[] Report | Your exported display report open in Notepad.
+[] DxDiag | The saved DxDiag.txt file open on the Win7 desktop.
+[] Audit | Free PC Audit results on the System tab.
+
+== cheat | Cheat sheet
+## Quick specs
+- [[Win]]+[[Pause]] or Settings > System > About
+- `systeminfo` for text and hotfixes
+- `systeminfo > file.txt` to save it
+- `Get-ComputerInfo` in PowerShell
+## Deep inventory
+- `msinfo32`: System Summary, Hardware Resources, Components, Software Environment
+- Export = .txt of one category; Save = full .nfo
+- BIOS Mode and Secure Boot State in System Summary
+- `dxdiag`: Display, Sound, Input; read Notes; Save All Information

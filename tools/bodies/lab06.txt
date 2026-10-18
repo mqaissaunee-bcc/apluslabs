@@ -1,0 +1,147 @@
+@lede A printer can be plugged into one PC and shared, or connected straight to the network. You will install a printer driver and a port on Win8.1, share the printer, and connect to it from Win7 the way an office user would.
+
+== overview | Why this lab matters
+Printers generate a steady stream of help desk tickets, and most of them come down to three parts of the setup: the **driver** (software that turns a print job into commands the printer understands), the **port** (where the job goes: USB, a network IP address, or a file), and **sharing** (whether other PCs can reach it).
+In this lab you install a printer on Win8.1 with the Add Printer wizard, choosing each of those parts by hand, then share it as **Generic Office** and add it on Win7 as a network printer. The lab environment has no physical printer, so the port is **FILE:**, which writes the job to a file instead of paper. Every other choice is the same as for a real device.
+
+== environment | The environment you're working in
+| Machine | New name | Workgroup | Role |
+| Win8.1 | `Reliant` | `MYGROUP` | Hosts and shares the printer |
+| Win7 | `Enterprise` | `MYGROUP` | Connects to the shared printer |
+Both use `sysadmin` / `Train1ng$`. If you just finished Lab 05 on the same reservation, the names and workgroup may already be set; check System Properties before changing them.
+!stuck Typo in the PDF | After the Win8.1 restart the PDF says `Train1ing$`. The password is `Train1ng$`.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Control Panel > Devices and Printers > Add a printer | Settings > Bluetooth & devices > **Printers & scanners > Add device**. Click **Add manually** for the classic wizard. |
+| "The printer that I want isn't listed" | Same link, shown as **Add manually** |
+| Printer properties > Sharing tab | Printers & scanners > select the printer > **Printer properties** > Sharing |
+| Generic / Text Only driver | Still available. Windows 11 also includes the **Microsoft IPP Class Driver**, which works with most modern network printers without a vendor driver. |
+| Add a network, wireless or Bluetooth printer | Add device searches the network; Add manually lets you enter `\\Reliant\Generic Office` or an IP address |
+!tip Mopria and IPP | Microsoft is moving printing to standard protocols (IPP and Mopria) and phasing out new third-party drivers through Windows Update. On new printers, the built-in class driver is often all you need.
+
+== walkthrough | Walkthrough
+## Task 1: Put Win8.1 in the workgroup
+### Rename and join MYGROUP
+Log in to **Win8.1**. Right-click **This PC** on the desktop > **Properties > Change settings > Change**. Set the computer name to `Reliant` and the workgroup to `MYGROUP`. Click **OK** through the messages, **Close**, then **Restart Now**.
+### Turn on file and printer sharing
+After signing back in, right-click the network icon > **Open Network and Sharing Center > Change adapter settings**. In **Ethernet > Properties**, confirm **File and Printer Sharing for Microsoft Networks** is checked.
+Open **Change advanced sharing settings** and select **Turn on network discovery** and **Turn on file and printer sharing**. Save or cancel.
+!shot Advanced sharing settings on Win8.1 with discovery and file and printer sharing on.
+## Task 2: Install a local printer (Win8.1)
+### Start the wizard
+Open **Control Panel > View devices and printers > Add a printer**. Let the search finish (nothing is found), then click **The printer that I want isn't listed**. Choose **Add a local printer or network printer with manual settings** and click **Next**.
+### Choose the port
+Select **Use an existing port** and pick **FILE: (Print to File)**.
+!tip Choosing a port for real | A USB or old parallel (LPT) printer uses an existing port. A printer with its own network card uses **Create a new port > Standard TCP/IP Port**, where you enter its IP address.
+### Choose the driver
+Under **Manufacturer** choose **Generic**, under **Printers** choose **Generic / Text Only**, and click **Next**. Keep **Use the driver that is currently installed**. Leave the printer name as **Generic / Text Only**.
+### Share it
+Select **Share this printer**, set the share name to `Generic Office`, and click **Next**, then **Finish**. Skip the test page; there's no physical printer.
+### Confirm the share
+In Devices and Printers, right-click **Generic / Text Only > Printer properties > Sharing**. Confirm **Share this printer** is checked with share name **Generic Office**.
+!shot The printer's Sharing tab showing the share name Generic Office.
+## Task 3: Connect from Win7
+### Put Win7 in the workgroup
+On **Win7**, open **Control Panel > System > Change settings > Change**. Name it `Enterprise`, workgroup `MYGROUP`, and restart.
+### Add the network printer
+Sign in, open **Start > Devices and Printers > Add a printer**, and click **Add a network, wireless or Bluetooth printer**. Select **Generic Office** on Reliant when it appears and click **Next**. Windows connects and copies the driver from Reliant. Click **Next**, then **Finish**.
+!shot Devices and Printers on Win7 showing Generic Office on Reliant.
+!stuck If Generic Office doesn't appear | Click **The printer that I want isn't listed > Select a shared printer by name** and type `\\Reliant\Generic Office`.
+The lab is complete.
+
+== reference | Reference: printers
+### Ways to connect a printer
+| Connection | How it's set up | Notes |
+| USB (local) | Plug in; Windows installs a driver | Shared only if this PC shares it |
+| Network (Ethernet or Wi-Fi) | Standard TCP/IP port with the printer's IP address, or found by discovery | Give it a static IP or DHCP reservation |
+| Shared from a PC | `\\PCname\ShareName` | Works only while the host PC is on |
+| Print server | Shared from a server; PCs connect to the server queue | Central drivers, queues, and permissions |
+| Wireless direct / Bluetooth | Pair or connect directly | Phones and laptops without a network |
+| Cloud printing | Universal Print or vendor cloud services | Prints from anywhere through the cloud |
+### Printer properties tabs
+| Tab | Use it to |
+| General | Rename, print a test page, set preferences |
+| Sharing | Share the printer and add drivers for other Windows versions |
+| Ports | Change or add a port, configure a TCP/IP port |
+| Advanced | Change the driver, set available hours, spool settings, separator page |
+| Security | Permissions: Print, Manage this printer, Manage documents |
+| Device Settings | Installed options like trays and duplex units |
+### Printer permissions
+| Permission | Allows |
+| Print | Send jobs and manage your own |
+| Manage documents | Pause, restart, and delete anyone's jobs |
+| Manage this printer | Change settings, share, and set permissions |
+### The print spooler
+Jobs wait in the **Print Spooler** service's queue before going to the printer. When jobs get stuck, restart the spooler:
+```
+net stop spooler
+%% Optional: delete stuck job files
+del /q %systemroot%\System32\spool\PRINTERS\*
+net start spooler
+```
+### Tools worth knowing
+| Tool | Does |
+| `printmanagement.msc` | Manage all printers, drivers, and ports on a PC or print server (Pro and above) |
+| `control printers` | Opens Devices and Printers |
+| `services.msc` > Print Spooler | Restart or check the spooler service |
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| Win7 can't find Generic Office | Reliant isn't in MYGROUP, sharing is off, or Win8.1 is off | Check both workgroups and Win8.1's sharing settings; add by name |
+| Windows asks for a driver on Win7 | Reliant doesn't have a driver for Win7's architecture | Add the other driver on the host's Sharing tab > Additional Drivers |
+| A Save Print Output As box appears when you print | The FILE: port asks where to save the job | Expected in this lab; type a file name |
+| Can't find Generic / Text Only | Wrong manufacturer selected | Choose **Generic** in the left list first |
+| Share name doesn't match | A typo or space difference | Use `Generic Office` exactly, or check the Sharing tab |
+
+== on-the-job | On the job
+| The ticket says | Where you look | Likely fix |
+| "My jobs are stuck in the queue." | Print queue, Print Spooler service | Cancel jobs, restart the spooler |
+| "Printouts are full of garbage characters." | Driver | Install the correct driver for that model |
+| "The printer worked yesterday and now it's offline." | Printer's IP address | The DHCP address changed; set a reservation or static IP and update the port |
+| "Nobody can print when Sam's PC is off." | Shared from a desktop | Connect the printer to the network directly or use a print server |
+| "Printing is faded or streaky." | Physical printer | Toner, drum, or cleaning cycle (Core 1 printer troubleshooting) |
+!tip Professional habit | Network printers should always have a fixed address. Note it on a label on the printer so the next tech doesn't have to hunt for it.
+
+== exam | On the A+ exams
+**Core 1 (220-1201)** covers connecting and configuring printers (drivers, ports, sharing, network and cloud printing) and troubleshooting print problems. **Core 2 (220-1202)** covers printer settings in Windows and the Print Spooler service.
+### High-yield facts
+- Garbled output usually means the wrong driver.
+- Stuck queue: restart the Print Spooler service.
+- Network printers need a static IP or DHCP reservation.
+- A shared desktop printer is unavailable whenever the host PC is off.
+- Standard TCP/IP port connects to a printer by IP address.
+- Printer permissions: Print, Manage documents, Manage this printer.
+
+== check | Check yourself
+?? Jobs sit in the queue and nothing prints, even after canceling them. What's the fix?
+=> Restart the Print Spooler service (`net stop spooler` then `net start spooler`, or from `services.msc`), clearing stuck spool files if needed.
+?? A network printer shows offline every Monday. What's likely happening?
+=> Its DHCP address changes over the weekend, so the port points at the old address. Give it a reservation or static IP.
+?? Which port type do you choose for a printer with its own Ethernet connection?
+=> Create a new port > Standard TCP/IP Port, using the printer's IP address.
+?? A user's printout is pages of random symbols. What's the first thing to check?
+=> The driver. Garbled output almost always means the wrong or a corrupt driver.
+?? Why might a print server be better than sharing a printer from a desktop?
+=> It's always on, keeps drivers and permissions in one place, and manages queues centrally.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] Sharing on | Win8.1 Advanced sharing settings with discovery and file and printer sharing on.
+[] Shared printer | The Generic / Text Only Sharing tab with share name Generic Office.
+[] Connected | Win7 Devices and Printers showing Generic Office on Reliant.
+
+== cheat | Cheat sheet
+## Install
+- Driver + port + sharing
+- USB/LPT: existing port
+- Network: Standard TCP/IP port, fixed IP
+- Share on the Sharing tab
+- Connect: `\\Host\ShareName`
+- Windows 11: Printers & scanners > Add device > Add manually
+## Troubleshoot
+- Stuck queue: restart Print Spooler
+- Garbled: wrong driver
+- Offline: IP changed
+- Driver prompt: Additional Drivers
+- `printmanagement.msc`

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 12 Companion: Troubleshooting Tools in Windows | A+ Lab Companion</title>
+<meta name="description" content="Use troubleshooters, Task Manager, Reliability Monitor, Event Viewer, msconfig, sfc, DISM, and documentation tools.">
+<style>
+:root{
+  --bg:#E8ECF0; --surface:#FFFFFF; --surface-2:#F3F5F8; --ink:#14233A; --ink-2:#47576C;
+  --rule:#C7D0DA; --accent:#1C5689; --accent-ink:#FFFFFF; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
+  --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
+  --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
+  --fs:1rem; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
+a{color:var(--accent)} a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--tag);color:var(--tag-ink);padding:.7rem 1rem;z-index:20}
+.skip-link:focus{left:1rem;top:1rem}
+code,pre,kbd{font-family:var(--f-mono)}
+code.inl{background:var(--surface-2);border:1px solid var(--rule);border-radius:3px;padding:0 .3em;font-size:.92em}
+kbd{display:inline-block;border:1px solid var(--rule);border-bottom-width:3px;border-radius:4px;padding:0 .4em;background:var(--surface);font-size:.85em;line-height:1.5}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:76rem;margin:0 auto;padding:.4rem 1rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.1rem;color:var(--ink);text-decoration:none;margin-right:auto;display:flex;gap:.5rem;align-items:center}
+.brand .plug{display:inline-grid;place-items:center;width:2rem;height:2rem;background:var(--tag);color:var(--tag-ink);border-radius:4px;font-size:1rem}
+.ctl{display:flex;gap:.35rem;flex-wrap:wrap}
+.ctl button,.btn{min-height:44px;min-width:44px;padding:.3rem .75rem;border:1px solid var(--rule);background:var(--surface-2);color:var(--ink);border-radius:6px;font:inherit;font-size:.9rem;cursor:pointer}
+.ctl button:hover,.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* hero ticket — the one bold element */
+.ticket{max-width:76rem;margin:1.5rem auto 0;padding:0 1rem}
+.ticket-in{display:grid;grid-template-columns:1fr;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.stub{background:var(--tag);color:var(--tag-ink);padding:1rem 1.25rem;display:flex;flex-direction:column;justify-content:space-between;gap:.5rem;position:relative}
+.stub .lbl{font-size:.85rem;font-weight:600}
+.stub .no{font-family:var(--f-display);font-weight:700;white-space:nowrap;font-size:clamp(2.4rem,6vw,3.5rem);line-height:1;letter-spacing:-.01em}
+.stub .series{font-size:.8rem}
+.tk-body{padding:1.25rem 1.5rem 1.5rem}
+.tk-body h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.15;margin:0 0 .6rem;max-width:30ch}
+.lede{font-size:1.08rem;color:var(--ink-2);max-width:62ch;margin:0 0 1rem}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));gap:0;border-top:1px dashed var(--rule);margin:0}
+.fields div{padding:.6rem .75rem .5rem 0;border-bottom:1px dashed var(--rule)}
+.fields dt{font-size:.78rem;color:var(--ink-2)}
+.fields dd{margin:0;font-weight:600;font-size:.95rem}
+@media (min-width:720px){
+  .ticket-in{grid-template-columns:12rem 1fr}
+  .stub{border-right:2px dashed var(--tag-ink)}
+  .stub::before,.stub::after{content:"";position:absolute;right:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:1px solid var(--rule)}
+  .stub::before{top:-11px} .stub::after{bottom:-11px}
+}
+
+/* layout */
+.wrap{max-width:76rem;margin:0 auto;padding:1.5rem 1rem 3rem;display:grid;gap:2rem;grid-template-columns:1fr}
+@media (min-width:1000px){.wrap{grid-template-columns:15rem minmax(0,1fr)}}
+.toc{align-self:start}
+@media (min-width:1000px){.toc{position:sticky;top:4.5rem}}
+.toc details{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:.5rem .9rem}
+.toc summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+.toc ol{list-style:none;margin:.25rem 0 .5rem;padding:0}
+.toc li a{display:flex;justify-content:space-between;gap:.5rem;padding:.3rem .4rem;border-radius:4px;text-decoration:none;color:var(--ink);font-size:.92rem}
+.toc li a:hover{background:var(--surface-2)}
+.toc li a[aria-current="true"]{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--accent)}
+.toc .tick{color:var(--tip);font-weight:700}
+.meter{margin:.5rem 0 .25rem;height:10px;background:var(--surface-2);border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+.meter span{display:block;height:100%;width:0;background:var(--tip);transition:width .3s}
+.meter-txt{font-size:.85rem;color:var(--ink-2);margin:0}
+main{min-width:0}
+main section{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.25rem 1.5rem;margin:0 0 1.25rem;max-width:56rem}
+@media (max-width:600px){main section{padding:1rem}.ctl button{padding:.3rem .55rem}}
+main h2{font-family:var(--f-display);font-weight:700;font-size:1.55rem;line-height:1.2;margin:0 0 .75rem}
+main h3{font-size:1.1rem;margin:1.25rem 0 .4rem}
+main p,main li{max-width:68ch}
+.task-head{font-family:var(--f-display);font-weight:700;font-size:1.15rem;margin:1.75rem 0 .5rem;padding-top:1rem;border-top:2px solid var(--ink)}
+.task-head:first-of-type{border-top:0;padding-top:0}
+.step{border-left:3px solid var(--rule);padding:.1rem 0 .1rem 1rem;margin:1rem 0}
+.step h3{margin-top:0;display:flex;gap:.6rem;align-items:baseline}
+.step h3 .n{flex:none;display:inline-grid;place-items:center;min-width:1.8rem;height:1.8rem;border-radius:50%;background:var(--ink);color:var(--surface);font-size:.9rem}
+.call{border-radius:8px;padding:.75rem 1rem;margin:1rem 0;border:1px solid}
+.call .k{display:block;font-weight:700;margin-bottom:.2rem}
+.call p{margin:.25rem 0}
+.call.stuck{background:var(--stuck-bg);border-color:var(--stuck)} .call.stuck .k{color:var(--stuck)}
+.call.tip{background:var(--tip-bg);border-color:var(--tip)} .call.tip .k{color:var(--tip)}
+.call.now{background:var(--now-bg);border-color:var(--now)} .call.now .k{color:var(--now)}
+.shot{display:inline-block;background:var(--tag);color:var(--tag-ink);font-weight:700;font-size:.85rem;padding:.05rem .5rem;border-radius:3px;margin-right:.35rem}
+.shot::before{content:"\1F4F7\FE0E  "}
+p.shotline{margin:.5rem 0}
+pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
+pre.cmd .c{color:var(--code-dim)}
+.copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
+.tbl{overflow-x:auto;margin:.75rem 0}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;vertical-align:top;padding:.5rem .6rem;border-bottom:1px solid var(--rule)}
+th{background:var(--surface-2);font-weight:600}
+td code{white-space:nowrap}
+.done-row{display:flex;gap:.6rem;align-items:center;margin-top:1.25rem;padding-top:.75rem;border-top:1px dashed var(--rule)}
+input[type=checkbox]{width:1.3rem;height:1.3rem;accent-color:var(--tip);flex:none}
+.done-row label{min-height:44px;display:flex;align-items:center;cursor:pointer}
+.q{border-top:1px solid var(--rule);padding:.75rem 0}
+.q .ask{font-weight:600;margin:0 0 .4rem}
+.ans{display:none;margin-top:.5rem;padding:.6rem .8rem;background:var(--surface-2);border-radius:6px}
+.ans.open{display:block}
+.evidence ul{list-style:none;padding:0;margin:0}
+.evidence li{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px dashed var(--rule)}
+.evidence li label{cursor:pointer}
+.cheat{border:2px solid var(--ink);border-radius:8px;padding:1rem 1.25rem}
+.cheat .grid{display:grid;gap:1rem 1.5rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.cheat h3{margin:0 0 .3rem;font-family:var(--f-display)}
+.cheat ul{margin:0;padding-left:1.1rem;font-size:.93rem}
+.badges{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+.badge{border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:.05rem .65rem;font-size:.82rem;font-weight:600}
+footer{border-top:1px solid var(--rule);background:var(--surface);color:var(--ink-2);font-size:.88rem}
+footer .in{max-width:76rem;margin:0 auto;padding:1.25rem 1rem}
+footer p{margin:.25rem 0;max-width:80ch}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
+  body{background:#fff;color:#000} .wrap{display:block;padding:0}
+  main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
+  .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
+  .stub{background:#fff;border:2px solid #000}
+}
+</style>
+</head>
+<body data-prefix="aplus-lab12-v1:">
+<a href="#main" class="skip-link">Skip to main content</a>
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="index.html"><span class="plug" aria-hidden="true">A+</span>A+ Lab Companion</a>
+  <div class="ctl" role="group" aria-label="Page controls">
+    <button type="button" id="fs-down" aria-label="Decrease text size">A&minus;</button>
+    <button type="button" id="fs-up" aria-label="Increase text size">A+</button>
+    <button type="button" id="theme" aria-pressed="false">Dark mode</button>
+    <button type="button" id="print">Print</button>
+    <button type="button" id="clear">Clear progress</button>
+  </div>
+</div></header>
+<div class="ticket"><div class="ticket-in">
+  <div class="stub"><span class="lbl">Lab</span><span class="no">12</span><span class="series">CompTIA A+ Lab Series v4</span></div>
+  <div class="tk-body"><h1>Troubleshooting Tools in Windows</h1><p class="lede">When Windows misbehaves, you need evidence before you need a fix. You will run a troubleshooter, capture a memory dump, read reliability history and event logs, boot into Safe Mode with a boot log, repair system files with SFC and DISM, and record a user's steps to reproduce a problem.</p><dl class="fields"><div><dt>Time</dt><dd>60–75 min</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Machines</dt><dd>Win7, Win10</dd></div><div><dt>Exam domains</dt><dd>Core 2: Software Troubleshooting</dd></div></dl></div>
+</div></div>
+<div class="wrap">
+<nav class="toc" aria-label="On this page"><details><summary>On this page</summary>
+<div id="meter" class="meter" role="progressbar" aria-label="Sections reviewed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="meter-bar"></span></div>
+<p id="meter-txt" class="meter-txt"></p>
+<ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#reference"><span>Reference: troubleshooting tools</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#exam"><span>On the A+ exams</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#check"><span>Check yourself</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#evidence"><span>Evidence to capture</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#cheat"><span>Cheat sheet</span><span class="tick" aria-hidden="true"></span></a></li></ol></details></nav>
+<main id="main" tabindex="-1">
+<section id="overview" aria-labelledby="h-overview">
+<h2 id="h-overview">Why this lab matters</h2>
+<p>Good troubleshooting follows a method: identify the problem, form a theory, test it, fix it, verify, and document. The tools in this lab are how you do the first and last of those steps well.</p>
+<p><strong>Reliability Monitor</strong> and <strong>Event Viewer</strong> tell you what failed and when. A <strong>dump file</strong> captures a hung program for someone with a debugger. <strong>System Configuration</strong> (<code class="inl">msconfig</code>) boots into <strong>Safe Mode</strong> and writes a <strong>boot log</strong>, so you can see which drivers load. <strong>SFC</strong> and <strong>DISM</strong> repair corrupted Windows files. <strong>Steps Recorder</strong> lets a user show you exactly what they did.</p>
+<p>Each produces something you can save and attach to a ticket, which is what escalation to a senior tech or vendor requires.</p>
+
+<div class="done-row"><input type="checkbox" id="done-overview" data-done="overview"><label for="done-overview">Mark this section reviewed</label></div>
+</section>
+<section id="environment" aria-labelledby="h-environment">
+<h2 id="h-environment">The environment you're working in</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code class="inl">192.168.1.7/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<p>Almost everything happens on Win7; DISM runs on Win10. Win7 has Firefox and a <strong>Files</strong> folder on the desktop for the Steps Recorder task.</p>
+<div class="call tip"><span class="k">Timing</span><p><code class="inl">sfc /scannow</code> takes 5–7 minutes and DISM <code class="inl">/ScanHealth</code> 4–6 minutes. The Safe Mode task needs two restarts. Read ahead while they run.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-environment" data-done="environment"><label for="done-environment">Mark this section reviewed</label></div>
+</section>
+<section id="then-now" aria-labelledby="h-then-now">
+<h2 id="h-then-now">Then vs. now: Windows 11</h2>
+<div class="tbl"><table><thead><tr><th scope="col">In the lab</th><th scope="col">On Windows 11</th></tr></thead><tbody><tr><td>Action Center > Troubleshooting</td><td>Settings > System > <strong>Troubleshoot > Other troubleshooters</strong>. Many now open the <strong>Get Help</strong> app. Action Center's role moved to <strong>Security and Maintenance</strong> in Control Panel.</td></tr><tr><td>Task Manager > Create Dump File</td><td>Same: Task Manager > <strong>Details</strong> (or Processes) > right-click > <strong>Create memory dump file</strong></td></tr><tr><td>View reliability history</td><td>Same: <code class="inl">perfmon /rel</code></td></tr><tr><td>Event Viewer</td><td>Same: <code class="inl">eventvwr.msc</code></td></tr><tr><td>msconfig > Boot > Safe boot</td><td>Same. You can also use <strong>Settings > System > Recovery > Advanced startup > Troubleshoot > Startup Settings</strong>, or hold <kbd>Shift</kbd> while clicking Restart.</td></tr><tr><td><code class="inl">sfc /scannow</code>, <code class="inl">DISM</code></td><td>Same commands</td></tr><tr><td>Problem Steps Recorder (<code class="inl">psr</code>)</td><td><strong>Steps Recorder is deprecated</strong> and being removed. Use <strong>Snipping Tool</strong> screen recording or Quick Assist instead.</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-then-now" data-done="then-now"><label for="done-then-now">Mark this section reviewed</label></div>
+</section>
+<section id="walkthrough" aria-labelledby="h-walkthrough">
+<h2 id="h-walkthrough">Walkthrough</h2>
+<p class="task-head">Task 1: Troubleshooters (Win7)</p>
+<div class="step">
+<h3><span class="n">1</span>Open the list</h3>
+<p>Log in to <strong>Win7</strong>. Open <strong>Start</strong>, type <code class="inl">action center</code>, open it, and click <strong>Troubleshooting</strong>. Click <strong>View all</strong> in the left pane.</p>
+</div>
+<div class="step">
+<h3><span class="n">2</span>Run the Aero troubleshooter as administrator</h3>
+<p>Right-click <strong>Aero</strong> and choose <strong>Run as administrator</strong>, then <strong>Next</strong>. It reports that the video driver isn't WDDM-compatible and suggests updating it. Click <strong>Next</strong> to let it try; it can't fix this one. Click <strong>View detailed information</strong>, read it, then <strong>Next</strong> and <strong>Close</strong>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Aero troubleshooter's detailed results.</p>
+<div class="call tip"><span class="k">What a troubleshooter gives you</span><p>Even when it can't fix the problem, it names it. Here, "update the video driver" is your next step.</p></div>
+</div>
+<p class="task-head">Task 2: Dump file (Win7)</p>
+<div class="step">
+<h3><span class="n">3</span>Create a dump of explorer.exe</h3>
+<p>Right-click the taskbar > <strong>Start Task Manager > Processes</strong>. Right-click <strong>explorer.exe</strong> and choose <strong>Create Dump File</strong>. Wait 1–2 minutes, note the path in the message, and click <strong>OK</strong>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The message showing where the dump file was saved.</p>
+</div>
+<p class="task-head">Task 3: Reliability Monitor (Win7)</p>
+<div class="step">
+<h3><span class="n">4</span>Read the reliability history</h3>
+<p>Open <strong>Start</strong>, type <code class="inl">reliability</code>, and click <strong>View reliability history</strong>. Click a day in the chart to see its events. Red <strong>X</strong> = critical event (an app or Windows failure), yellow <strong>!</strong> = warning, blue <strong>i</strong> = information. Note the links at the bottom: save history, view all problem reports, check for solutions.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Reliability Monitor chart with a day selected.</p>
+</div>
+<p class="task-head">Task 4: Event Viewer (Win7)</p>
+<div class="step">
+<h3><span class="n">5</span>Read the summary</h3>
+<p>Open <strong>Start</strong>, type <code class="inl">Event Viewer</code>, and press <kbd>Enter</kbd>. On <strong>Overview and Summary</strong>, collapse everything except <strong>Summary of Administrative Events</strong>. Expand each type (Critical, Error, Warning, Information, Audit Success) and double-click an event for details, such as <strong>Event ID 1002</strong>, an application hang.</p>
+</div>
+<div class="step">
+<h3><span class="n">6</span>Look at the Security log</h3>
+<p>Expand <strong>Windows Logs > Security</strong> and double-click an event. Read its details and <strong>Close</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">7</span>Save an event</h3>
+<p>Right-click the same event > <strong>Save Selected Events</strong>. Save as <code class="inl">C:\Users\sysadmin\event.evtx</code> and click <strong>OK</strong> at the display information prompt. In File Explorer, double-click <code class="inl">event.evtx</code>: it opens in Event Viewer.</p>
+<p class="shotline"><span class="shot">Screenshot</span>Event Viewer showing a Security event's details, or the saved event.evtx open.</p>
+</div>
+<p class="task-head">Task 5: Safe Mode and boot logging (Win7)</p>
+<div class="step">
+<h3><span class="n">8</span>Set Safe boot with a boot log</h3>
+<p>Open <strong>Start</strong>, type <code class="inl">msconfig</code>, and press <kbd>Enter</kbd>. On the <strong>Boot</strong> tab, check <strong>Safe boot</strong> with <strong>Minimal</strong>, and check <strong>Boot log</strong>. Click <strong>OK</strong> and restart.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The msconfig Boot tab with Safe boot (Minimal) and Boot log checked.</p>
+</div>
+<div class="step">
+<h3><span class="n">9</span>Save the safe-mode boot log</h3>
+<p>Sign in. Close the Safe Mode help window and notice the plain, low-resolution desktop. Open <strong>Start</strong>, type <code class="inl">C:\Windows\ntbtlog.txt</code>, and press <kbd>Enter</kbd>. Save a copy as <code class="inl">C:\Users\sysadmin\safeboot.txt</code>.</p>
+</div>
+<div class="step">
+<h3><span class="n">10</span>Go back to a normal boot</h3>
+<p>Open <code class="inl">msconfig</code> again, uncheck <strong>Safe boot</strong> on the Boot tab, click <strong>OK</strong>, and restart.</p>
+<div class="call stuck"><span class="k">Where people get stuck</span><p>msconfig's Safe boot setting sticks until you clear it. If you forget, the PC boots into Safe Mode every time.</p></div>
+</div>
+<div class="step">
+<h3><span class="n">11</span>Compare the two logs</h3>
+<p>After signing in, open <code class="inl">C:\Windows\ntbtlog.txt</code> (now the normal-boot log, because Boot log is still checked) and <code class="inl">C:\Users\sysadmin\safeboot.txt</code>. Put them side by side. The normal boot loads many more drivers; a driver that loads normally but not in Safe Mode is a suspect when Safe Mode works and normal mode doesn't.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The two boot logs side by side.</p>
+</div>
+<p class="task-head">Task 6: System File Checker (Win7)</p>
+<div class="step">
+<h3><span class="n">12</span>Run SFC</h3>
+<p>Open <strong>cmd</strong> as administrator and run:</p>
+<pre class="cmd"><code>sfc /scannow</code></pre>
+<p>It takes 5–7 minutes and should report no integrity violations.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The sfc /scannow result.</p>
+</div>
+<p class="task-head">Task 7: DISM (Win10)</p>
+<div class="step">
+<h3><span class="n">13</span>Check, scan, and repair the Windows image</h3>
+<p>Log in to <strong>Win10</strong>, open <strong>Command Prompt</strong> as administrator, and run these in order:</p>
+<pre class="cmd"><code>DISM /Online /Cleanup-Image /CheckHealth
+DISM /Online /Cleanup-Image /ScanHealth
+DISM /Online /Cleanup-Image /RestoreHealth</code></pre>
+<p><code class="inl">/CheckHealth</code> is a quick check. <code class="inl">/ScanHealth</code> does a full scan (4–6 minutes). <code class="inl">/RestoreHealth</code> repairs the component store that SFC copies good files from.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The DISM /RestoreHealth result.</p>
+</div>
+<p class="task-head">Task 8: Steps Recorder (Win7)</p>
+<div class="step">
+<h3><span class="n">14</span>Record a problem</h3>
+<p>On <strong>Win7</strong>, open <strong>Start</strong>, type <code class="inl">Problem Steps Recorder</code>, and open <strong>Record steps to reproduce a problem</strong>. Click <strong>Start Record</strong>, open <strong>Firefox</strong>, and wait for the connection error.</p>
+</div>
+<div class="step">
+<h3><span class="n">15</span>Highlight the error</h3>
+<p>Click <strong>Add Comment</strong>, drag a box around the error, type <code class="inl">Unable to connect to website.</code>, and click <strong>OK</strong>. Click <strong>Stop Record</strong> and save it to the desktop <strong>Files</strong> folder as <code class="inl">PSR-test</code>.</p>
+</div>
+<div class="step">
+<h3><span class="n">16</span>Review the recording</h3>
+<p>Open <strong>Files > PSR-test.zip</strong> and double-click the <strong>Problem_</strong> file inside. Click <strong>Ask me later</strong> if Internet Explorer setup appears. Scroll through the steps, screenshots, and your comment.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Steps Recorder report showing your highlighted comment.</p>
+<p>The lab is complete.</p>
+</div>
+
+<div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+<section id="reference" aria-labelledby="h-reference">
+<h2 id="h-reference">Reference: troubleshooting tools</h2>
+<h3>The CompTIA troubleshooting method</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Step</th><th scope="col">What you do</th></tr></thead><tbody><tr><td>1. Identify the problem</td><td>Ask the user, find out what changed, reproduce it, back up data first</td></tr><tr><td>2. Establish a theory of probable cause</td><td>Question the obvious; research if needed</td></tr><tr><td>3. Test the theory</td><td>If it's wrong, form a new theory or escalate</td></tr><tr><td>4. Establish a plan and implement the solution</td><td>Follow change procedures; consider side effects</td></tr><tr><td>5. Verify full system functionality</td><td>Confirm it works; add preventive measures</td></tr><tr><td>6. Document findings, actions, and outcomes</td><td>Update the ticket and knowledge base</td></tr></tbody></table></div>
+<h3>Which tool for which question</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Question</th><th scope="col">Tool</th><th scope="col">Open with</th></tr></thead><tbody><tr><td>What failed, and when?</td><td>Reliability Monitor</td><td><code class="inl">perfmon /rel</code></td></tr><tr><td>What exactly was logged?</td><td>Event Viewer</td><td><code class="inl">eventvwr.msc</code></td></tr><tr><td>Which program is hung, and why?</td><td>Task Manager dump, Resource Monitor wait chain</td><td><code class="inl">taskmgr</code>, <code class="inl">resmon</code></td></tr><tr><td>Is a startup item or driver the cause?</td><td>System Configuration, Safe Mode, boot log</td><td><code class="inl">msconfig</code></td></tr><tr><td>Are Windows files corrupt?</td><td>System File Checker</td><td><code class="inl">sfc /scannow</code></td></tr><tr><td>Is the repair source corrupt too?</td><td>DISM</td><td><code class="inl">DISM /Online /Cleanup-Image /RestoreHealth</code></td></tr><tr><td>What did the user do?</td><td>Steps Recorder, Snipping Tool recording</td><td><code class="inl">psr</code></td></tr><tr><td>How is performance over time?</td><td>Performance Monitor</td><td><code class="inl">perfmon</code></td></tr><tr><td>Is the disk failing?</td><td>chkdsk, SMART</td><td><code class="inl">chkdsk C: /r</code></td></tr></tbody></table></div>
+<h3>Event Viewer logs and levels</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Log</th><th scope="col">Holds</th></tr></thead><tbody><tr><td>Application</td><td>Program errors, such as crashes and hangs</td></tr><tr><td>System</td><td>Drivers, services, startup, shutdown</td></tr><tr><td>Security</td><td>Sign-ins, failed sign-ins, policy and permission changes (audit events)</td></tr><tr><td>Setup</td><td>Updates and feature installs</td></tr></tbody></table></div>
+<div class="tbl"><table><thead><tr><th scope="col">Level</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td>Critical</td><td>Serious failure, such as an unexpected shutdown</td></tr><tr><td>Error</td><td>Something failed</td></tr><tr><td>Warning</td><td>Something may cause a problem later</td></tr><tr><td>Information</td><td>Normal operation</td></tr><tr><td>Audit Success / Failure</td><td>Security events allowed or denied</td></tr></tbody></table></div>
+<h3>Event IDs worth recognizing</h3>
+<div class="tbl"><table><thead><tr><th scope="col">ID</th><th scope="col">Log</th><th scope="col">Means</th></tr></thead><tbody><tr><td>41 (Kernel-Power)</td><td>System</td><td>The PC rebooted without a clean shutdown</td></tr><tr><td>6008</td><td>System</td><td>The previous shutdown was unexpected</td></tr><tr><td>1001 (BugCheck)</td><td>System</td><td>Windows recovered from a stop error (BSOD)</td></tr><tr><td>1000 / 1002</td><td>Application</td><td>An application crashed / hung</td></tr><tr><td>4624 / 4625</td><td>Security</td><td>Successful / failed sign-in</td></tr></tbody></table></div>
+<h3>msconfig tabs</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Tab</th><th scope="col">Use</th></tr></thead><tbody><tr><td>General</td><td>Normal, diagnostic, or selective startup</td></tr><tr><td>Boot</td><td>Safe boot options (Minimal, Alternate shell, Network), boot log, timeout</td></tr><tr><td>Services</td><td>Disable non-Microsoft services (check <strong>Hide all Microsoft services</strong>) for a clean boot</td></tr><tr><td>Startup</td><td>On Windows 8 and later, points you to Task Manager</td></tr><tr><td>Tools</td><td>Launch other diagnostic tools</td></tr></tbody></table></div>
+<h3>Safe Mode options</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Option</th><th scope="col">Loads</th></tr></thead><tbody><tr><td>Minimal</td><td>Basic drivers, GUI, no networking (Safe Mode)</td></tr><tr><td>Network</td><td>Safe Mode plus networking</td></tr><tr><td>Alternate shell</td><td>Command prompt instead of Explorer</td></tr></tbody></table></div>
+<h3>SFC and DISM</h3>
+<pre class="cmd"><code>sfc /scannow
+sfc /verifyonly
+<span class="c">If SFC can't repair, fix its source, then run SFC again</span>
+DISM /Online /Cleanup-Image /RestoreHealth
+sfc /scannow
+<span class="c">The SFC log</span>
+findstr /c:"[SR]" %windir%\Logs\CBS\CBS.log</code></pre>
+
+<div class="done-row"><input type="checkbox" id="done-reference" data-done="reference"><label for="done-reference">Mark this section reviewed</label></div>
+</section>
+<section id="stuck" aria-labelledby="h-stuck">
+<h2 id="h-stuck">Where people get stuck</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Problem</th><th scope="col">Why it happens</th><th scope="col">Fix</th></tr></thead><tbody><tr><td>PC keeps booting into Safe Mode</td><td>Safe boot is still checked in msconfig</td><td>Uncheck it on the Boot tab and restart</td></tr><tr><td><code class="inl">ntbtlog.txt</code> not found</td><td>Boot log wasn't checked, or the search box didn't open it</td><td>Check Boot log in msconfig; open it from Run</td></tr><tr><td>SFC says it can't perform the operation</td><td>Not run as administrator, or a pending restart</td><td>Use an elevated prompt; restart first</td></tr><tr><td>SFC found corrupt files but couldn't fix them</td><td>The component store is damaged</td><td>Run DISM <code class="inl">/RestoreHealth</code>, then SFC again</td></tr><tr><td>DISM sits at 20% or 62%</td><td>Normal; it pauses at those points</td><td>Wait</td></tr><tr><td>Reliability Monitor shows the example's Notepad crash missing</td><td>Your history is different</td><td>Expected; look at whatever events your VM shows</td></tr><tr><td>No Steps Recorder on Windows 11</td><td>It's deprecated</td><td>Use Snipping Tool's recording</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-stuck" data-done="stuck"><label for="done-stuck">Mark this section reviewed</label></div>
+</section>
+<section id="on-the-job" aria-labelledby="h-on-the-job">
+<h2 id="h-on-the-job">On the job</h2>
+<div class="tbl"><table><thead><tr><th scope="col">The ticket says</th><th scope="col">Start with</th><th scope="col">Then</th></tr></thead><tbody><tr><td>"It started crashing last week."</td><td>Reliability Monitor</td><td>Event Viewer for the event details; check what was installed that day</td></tr><tr><td>"Random restarts."</td><td>Event Viewer System log: 41, 6008, 1001</td><td>Check heat, power supply, drivers, and the dump file</td></tr><tr><td>"Windows features act strangely."</td><td><code class="inl">sfc /scannow</code></td><td>DISM <code class="inl">/RestoreHealth</code> if SFC can't repair</td></tr><tr><td>"Slow and full of pop-ups after a download."</td><td>Safe Mode with Networking, <code class="inl">msconfig</code> clean boot</td><td>Malware removal (Lab 15)</td></tr><tr><td>"It only happens when I do this one thing."</td><td>Steps Recorder or a screen recording</td><td>Attach it to the ticket</td></tr><tr><td>"Works in Safe Mode, not normally."</td><td>Boot logs and clean boot</td><td>Disable startup items and services in halves until it's isolated</td></tr></tbody></table></div>
+<div class="call tip"><span class="k">Professional habit</span><p>Ask "what changed?" first. A new update, driver, program, or device explains most new problems, and Reliability Monitor often shows it on the same day.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-on-the-job" data-done="on-the-job"><label for="done-on-the-job">Mark this section reviewed</label></div>
+</section>
+<section id="exam" aria-labelledby="h-exam">
+<h2 id="h-exam">On the A+ exams</h2>
+<div class="badges"><span class="badge">Core 2: Software Troubleshooting</span></div>
+<p><strong>Core 2 (220-1202)</strong> covers the Windows tools here (Event Viewer, Reliability Monitor, Task Manager, System Configuration, Performance Monitor, <code class="inl">sfc</code>, <code class="inl">DISM</code>, <code class="inl">chkdsk</code>), Safe Mode and recovery options, and software troubleshooting scenarios. <strong>Core 1 (220-1201)</strong> covers the six-step troubleshooting methodology, and Core 2 covers documentation as an operational procedure.</p>
+<h3>High-yield facts</h3>
+<ul><li>Troubleshooting order: identify, theory, test, plan and implement, verify, document.</li><li>Reliability Monitor (<code class="inl">perfmon /rel</code>) shows problems over time; Event Viewer has the details.</li><li><code class="inl">sfc /scannow</code> repairs system files; DISM <code class="inl">/RestoreHealth</code> repairs the image SFC depends on.</li><li>Safe Mode loads minimal drivers; if a problem disappears there, suspect a driver or startup item.</li><li>msconfig Safe boot persists until you clear it.</li><li>Event ID 41 = unclean reboot; 4625 = failed sign-in.</li></ul>
+
+<div class="done-row"><input type="checkbox" id="done-exam" data-done="exam"><label for="done-exam">Mark this section reviewed</label></div>
+</section>
+<section id="check" aria-labelledby="h-check">
+<h2 id="h-check">Check yourself</h2>
+<div class="q"><p class="ask">1. A user says their PC "started acting up last Tuesday." Which tool shows you, day by day, what failed?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Reliability Monitor (<code class="inl">perfmon /rel</code>). Then use Event Viewer for details on specific events.</div></div>
+<div class="q"><p class="ask">2. SFC reports it found corrupt files but couldn't repair some of them. What next?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Run <code class="inl">DISM /Online /Cleanup-Image /RestoreHealth</code> to repair the component store, then run <code class="inl">sfc /scannow</code> again.</div></div>
+<div class="q"><p class="ask">3. A problem disappears in Safe Mode. What does that tell you?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">A non-essential driver, service, or startup program is likely the cause. Use a clean boot to narrow it down.</div></div>
+<div class="q"><p class="ask">4. After the Safe Mode task, a PC keeps starting in Safe Mode. Why, and how do you fix it?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Safe boot is still checked in msconfig. Uncheck it on the Boot tab and restart.</div></div>
+<div class="q"><p class="ask">5. What's the last step of the troubleshooting methodology, and why does it matter?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Document findings, actions, and outcomes, so the next tech (or you) can solve the same problem faster and spot recurring issues.</div></div>
+</section>
+<section id="evidence" aria-labelledby="h-evidence">
+<h2 id="h-evidence">Evidence to capture</h2>
+<p>Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.</p>
+<div class="evidence"><ul><li><input type="checkbox" id="ev1" data-evidence="ev1"><label for="ev1"><span class="shot">Troubleshooter</span>The Aero troubleshooter's detailed results.</label></li><li><input type="checkbox" id="ev2" data-evidence="ev2"><label for="ev2"><span class="shot">Dump</span>The message showing where the explorer.exe dump file was saved.</label></li><li><input type="checkbox" id="ev3" data-evidence="ev3"><label for="ev3"><span class="shot">Reliability</span>Reliability Monitor with a day selected.</label></li><li><input type="checkbox" id="ev4" data-evidence="ev4"><label for="ev4"><span class="shot">Event</span>A Security event's details or the saved event.evtx.</label></li><li><input type="checkbox" id="ev5" data-evidence="ev5"><label for="ev5"><span class="shot">Safe boot</span>The msconfig Boot tab with Safe boot (Minimal) and Boot log checked.</label></li><li><input type="checkbox" id="ev6" data-evidence="ev6"><label for="ev6"><span class="shot">Boot logs</span>The two boot logs side by side.</label></li><li><input type="checkbox" id="ev7" data-evidence="ev7"><label for="ev7"><span class="shot">SFC and DISM</span>The <code class="inl">sfc /scannow</code> result and the DISM <code class="inl">/RestoreHealth</code> result.</label></li><li><input type="checkbox" id="ev8" data-evidence="ev8"><label for="ev8"><span class="shot">Steps</span>The Steps Recorder report with your highlighted comment.</label></li></ul></div>
+</section>
+<section id="cheat" aria-labelledby="h-cheat">
+<h2 id="h-cheat">Cheat sheet</h2>
+<div class="cheat"><div class="grid">
+<div><h3>Find out what happened</h3>
+<ul><li><code class="inl">perfmon /rel</code> reliability history</li><li><code class="inl">eventvwr.msc</code>: Application, System, Security</li><li>IDs: 41, 6008, 1001, 1000/1002, 4624/4625</li><li>Task Manager > Create dump file</li><li><code class="inl">psr</code> or Snipping Tool recording</li></ul>
+</div>
+<div><h3>Fix and isolate</h3>
+<ul><li><code class="inl">msconfig</code>: Safe boot, Boot log, clean boot</li><li>Clear Safe boot when done</li><li><code class="inl">sfc /scannow</code></li><li><code class="inl">DISM /Online /Cleanup-Image /RestoreHealth</code></li><li>Identify, theory, test, plan, verify, document</li></ul>
+</div>
+</div></div>
+</section>
+</main></div>
+<footer><div class="in">
+  <p>Built for CompTIA A+ hands-on practice at Brookdale Community College, 2026. Open educational resource.</p>
+  <p>Companion to the NDG CompTIA A+ Lab Series v4 labs. This guide is independent and is not affiliated with or endorsed by CompTIA or Network Development Group. CompTIA A+ is a registered trademark of CompTIA, Inc.</p>
+</div></footer>
+<p id="live" class="sr" aria-live="polite"></p>
+<script>
+(function(){
+  var S={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
+         set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+         del:function(k){try{localStorage.removeItem(k)}catch(e){}}};
+  window.__S=S;
+  var root=document.documentElement, tb=document.getElementById('theme');
+  function isDark(){var t=root.getAttribute('data-theme'); if(t) return t==='dark';
+    return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;}
+  function paintTheme(){var d=isDark(); tb.setAttribute('aria-pressed',d?'true':'false'); tb.textContent=d?'Light mode':'Dark mode';}
+  var saved=S.get('aplus-theme'); if(saved) root.setAttribute('data-theme',saved);
+  paintTheme();
+  tb.addEventListener('click',function(){var n=isDark()?'light':'dark'; root.setAttribute('data-theme',n); S.set('aplus-theme',n); paintTheme();});
+  var sc=parseFloat(S.get('aplus-scale'))||1;
+  function setScale(v){sc=Math.min(1.4,Math.max(.85,Math.round(v*100)/100)); root.style.setProperty('--scale',sc); S.set('aplus-scale',sc);}
+  setScale(sc);
+  document.getElementById('fs-up').addEventListener('click',function(){setScale(sc+.1)});
+  document.getElementById('fs-down').addEventListener('click',function(){setScale(sc-.1)});
+  document.getElementById('print').addEventListener('click',function(){window.print()});
+})();
+
+(function(){
+  var S=window.__S, P=document.body.getAttribute('data-prefix');
+  var live=document.getElementById('live');
+  function say(t){live.textContent=t;}
+  function load(k){try{return JSON.parse(S.get(P+k))||{}}catch(e){return {}}}
+  var done=load('done'), ev=load('evidence');
+  var tracks=[].slice.call(document.querySelectorAll('[data-done]'));
+  var bar=document.getElementById('meter-bar'), txt=document.getElementById('meter-txt'), meter=document.getElementById('meter');
+  function refresh(){
+    var n=0; tracks.forEach(function(c){ if(c.checked) n++;
+      var a=document.querySelector('.toc a[href="#'+c.getAttribute('data-done')+'"] .tick'); if(a) a.textContent=c.checked?'\u2713':'';});
+    var pct=tracks.length?Math.round(n/tracks.length*100):0;
+    bar.style.width=pct+'%'; meter.setAttribute('aria-valuenow',pct);
+    txt.textContent=n+' of '+tracks.length+' sections reviewed';
+    S.set(P+'meta',JSON.stringify({done:n,total:tracks.length}));
+  }
+  tracks.forEach(function(c){ c.checked=!!done[c.getAttribute('data-done')];
+    c.addEventListener('change',function(){done[c.getAttribute('data-done')]=c.checked; S.set(P+'done',JSON.stringify(done)); refresh();});});
+  refresh();
+  [].forEach.call(document.querySelectorAll('[data-evidence]'),function(c){ c.checked=!!ev[c.getAttribute('data-evidence')];
+    c.addEventListener('change',function(){ev[c.getAttribute('data-evidence')]=c.checked; S.set(P+'evidence',JSON.stringify(ev));});});
+  document.getElementById('clear').addEventListener('click',function(){
+    if(!window.confirm('Clear your checkmarks on this lab page?')) return;
+    S.del(P+'done'); S.del(P+'evidence'); done={}; ev={};
+    [].forEach.call(document.querySelectorAll('[data-done],[data-evidence]'),function(c){c.checked=false;});
+    refresh(); say('Progress cleared for this lab.');});
+  [].forEach.call(document.querySelectorAll('.reveal'),function(b){
+    b.addEventListener('click',function(){var a=b.nextElementSibling, o=a.classList.toggle('open');
+      b.setAttribute('aria-expanded',o?'true':'false'); b.textContent=o?'Hide answer':'Show answer';});});
+  [].forEach.call(document.querySelectorAll('pre.cmd'),function(pre){
+    var b=document.createElement('button'); b.type='button'; b.className='copy'; b.textContent='Copy';
+    b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code'), clone=code.cloneNode(true);
+      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
+      function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
+      function fallback(){var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+        try{document.execCommand('copy'); ok();}catch(e){say('Copy failed; select the text instead.');} ta.remove();}
+    });});
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(l){l.setAttribute('aria-current', l.getAttribute('href')==='#'+e.target.id?'true':'false');});}});},
+      {rootMargin:'-20% 0px -70% 0px'});
+    [].forEach.call(document.querySelectorAll('main section[id]'),function(s){io.observe(s);});
+  }
+  var det=document.querySelector('.toc details');
+  if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
+})();
+</script>
+</body>
+</html>

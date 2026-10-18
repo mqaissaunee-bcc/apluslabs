@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 13 Companion: Installing Software | A+ Lab Companion</title>
+<meta name="description" content="Install and verify Windows applications, then install software on Linux.">
+<style>
+:root{
+  --bg:#E8ECF0; --surface:#FFFFFF; --surface-2:#F3F5F8; --ink:#14233A; --ink-2:#47576C;
+  --rule:#C7D0DA; --accent:#1C5689; --accent-ink:#FFFFFF; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
+  --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
+  --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
+  --fs:1rem; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
+a{color:var(--accent)} a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--tag);color:var(--tag-ink);padding:.7rem 1rem;z-index:20}
+.skip-link:focus{left:1rem;top:1rem}
+code,pre,kbd{font-family:var(--f-mono)}
+code.inl{background:var(--surface-2);border:1px solid var(--rule);border-radius:3px;padding:0 .3em;font-size:.92em}
+kbd{display:inline-block;border:1px solid var(--rule);border-bottom-width:3px;border-radius:4px;padding:0 .4em;background:var(--surface);font-size:.85em;line-height:1.5}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:76rem;margin:0 auto;padding:.4rem 1rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.1rem;color:var(--ink);text-decoration:none;margin-right:auto;display:flex;gap:.5rem;align-items:center}
+.brand .plug{display:inline-grid;place-items:center;width:2rem;height:2rem;background:var(--tag);color:var(--tag-ink);border-radius:4px;font-size:1rem}
+.ctl{display:flex;gap:.35rem;flex-wrap:wrap}
+.ctl button,.btn{min-height:44px;min-width:44px;padding:.3rem .75rem;border:1px solid var(--rule);background:var(--surface-2);color:var(--ink);border-radius:6px;font:inherit;font-size:.9rem;cursor:pointer}
+.ctl button:hover,.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* hero ticket — the one bold element */
+.ticket{max-width:76rem;margin:1.5rem auto 0;padding:0 1rem}
+.ticket-in{display:grid;grid-template-columns:1fr;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.stub{background:var(--tag);color:var(--tag-ink);padding:1rem 1.25rem;display:flex;flex-direction:column;justify-content:space-between;gap:.5rem;position:relative}
+.stub .lbl{font-size:.85rem;font-weight:600}
+.stub .no{font-family:var(--f-display);font-weight:700;white-space:nowrap;font-size:clamp(2.4rem,6vw,3.5rem);line-height:1;letter-spacing:-.01em}
+.stub .series{font-size:.8rem}
+.tk-body{padding:1.25rem 1.5rem 1.5rem}
+.tk-body h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.15;margin:0 0 .6rem;max-width:30ch}
+.lede{font-size:1.08rem;color:var(--ink-2);max-width:62ch;margin:0 0 1rem}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));gap:0;border-top:1px dashed var(--rule);margin:0}
+.fields div{padding:.6rem .75rem .5rem 0;border-bottom:1px dashed var(--rule)}
+.fields dt{font-size:.78rem;color:var(--ink-2)}
+.fields dd{margin:0;font-weight:600;font-size:.95rem}
+@media (min-width:720px){
+  .ticket-in{grid-template-columns:12rem 1fr}
+  .stub{border-right:2px dashed var(--tag-ink)}
+  .stub::before,.stub::after{content:"";position:absolute;right:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:1px solid var(--rule)}
+  .stub::before{top:-11px} .stub::after{bottom:-11px}
+}
+
+/* layout */
+.wrap{max-width:76rem;margin:0 auto;padding:1.5rem 1rem 3rem;display:grid;gap:2rem;grid-template-columns:1fr}
+@media (min-width:1000px){.wrap{grid-template-columns:15rem minmax(0,1fr)}}
+.toc{align-self:start}
+@media (min-width:1000px){.toc{position:sticky;top:4.5rem}}
+.toc details{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:.5rem .9rem}
+.toc summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+.toc ol{list-style:none;margin:.25rem 0 .5rem;padding:0}
+.toc li a{display:flex;justify-content:space-between;gap:.5rem;padding:.3rem .4rem;border-radius:4px;text-decoration:none;color:var(--ink);font-size:.92rem}
+.toc li a:hover{background:var(--surface-2)}
+.toc li a[aria-current="true"]{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--accent)}
+.toc .tick{color:var(--tip);font-weight:700}
+.meter{margin:.5rem 0 .25rem;height:10px;background:var(--surface-2);border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+.meter span{display:block;height:100%;width:0;background:var(--tip);transition:width .3s}
+.meter-txt{font-size:.85rem;color:var(--ink-2);margin:0}
+main{min-width:0}
+main section{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.25rem 1.5rem;margin:0 0 1.25rem;max-width:56rem}
+@media (max-width:600px){main section{padding:1rem}.ctl button{padding:.3rem .55rem}}
+main h2{font-family:var(--f-display);font-weight:700;font-size:1.55rem;line-height:1.2;margin:0 0 .75rem}
+main h3{font-size:1.1rem;margin:1.25rem 0 .4rem}
+main p,main li{max-width:68ch}
+.task-head{font-family:var(--f-display);font-weight:700;font-size:1.15rem;margin:1.75rem 0 .5rem;padding-top:1rem;border-top:2px solid var(--ink)}
+.task-head:first-of-type{border-top:0;padding-top:0}
+.step{border-left:3px solid var(--rule);padding:.1rem 0 .1rem 1rem;margin:1rem 0}
+.step h3{margin-top:0;display:flex;gap:.6rem;align-items:baseline}
+.step h3 .n{flex:none;display:inline-grid;place-items:center;min-width:1.8rem;height:1.8rem;border-radius:50%;background:var(--ink);color:var(--surface);font-size:.9rem}
+.call{border-radius:8px;padding:.75rem 1rem;margin:1rem 0;border:1px solid}
+.call .k{display:block;font-weight:700;margin-bottom:.2rem}
+.call p{margin:.25rem 0}
+.call.stuck{background:var(--stuck-bg);border-color:var(--stuck)} .call.stuck .k{color:var(--stuck)}
+.call.tip{background:var(--tip-bg);border-color:var(--tip)} .call.tip .k{color:var(--tip)}
+.call.now{background:var(--now-bg);border-color:var(--now)} .call.now .k{color:var(--now)}
+.shot{display:inline-block;background:var(--tag);color:var(--tag-ink);font-weight:700;font-size:.85rem;padding:.05rem .5rem;border-radius:3px;margin-right:.35rem}
+.shot::before{content:"\1F4F7\FE0E  "}
+p.shotline{margin:.5rem 0}
+pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
+pre.cmd .c{color:var(--code-dim)}
+.copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
+.tbl{overflow-x:auto;margin:.75rem 0}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;vertical-align:top;padding:.5rem .6rem;border-bottom:1px solid var(--rule)}
+th{background:var(--surface-2);font-weight:600}
+td code{white-space:nowrap}
+.done-row{display:flex;gap:.6rem;align-items:center;margin-top:1.25rem;padding-top:.75rem;border-top:1px dashed var(--rule)}
+input[type=checkbox]{width:1.3rem;height:1.3rem;accent-color:var(--tip);flex:none}
+.done-row label{min-height:44px;display:flex;align-items:center;cursor:pointer}
+.q{border-top:1px solid var(--rule);padding:.75rem 0}
+.q .ask{font-weight:600;margin:0 0 .4rem}
+.ans{display:none;margin-top:.5rem;padding:.6rem .8rem;background:var(--surface-2);border-radius:6px}
+.ans.open{display:block}
+.evidence ul{list-style:none;padding:0;margin:0}
+.evidence li{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px dashed var(--rule)}
+.evidence li label{cursor:pointer}
+.cheat{border:2px solid var(--ink);border-radius:8px;padding:1rem 1.25rem}
+.cheat .grid{display:grid;gap:1rem 1.5rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.cheat h3{margin:0 0 .3rem;font-family:var(--f-display)}
+.cheat ul{margin:0;padding-left:1.1rem;font-size:.93rem}
+.badges{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+.badge{border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:.05rem .65rem;font-size:.82rem;font-weight:600}
+footer{border-top:1px solid var(--rule);background:var(--surface);color:var(--ink-2);font-size:.88rem}
+footer .in{max-width:76rem;margin:0 auto;padding:1.25rem 1rem}
+footer p{margin:.25rem 0;max-width:80ch}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
+  body{background:#fff;color:#000} .wrap{display:block;padding:0}
+  main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
+  .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
+  .stub{background:#fff;border:2px solid #000}
+}
+</style>
+</head>
+<body data-prefix="aplus-lab13-v1:">
+<a href="#main" class="skip-link">Skip to main content</a>
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="index.html"><span class="plug" aria-hidden="true">A+</span>A+ Lab Companion</a>
+  <div class="ctl" role="group" aria-label="Page controls">
+    <button type="button" id="fs-down" aria-label="Decrease text size">A&minus;</button>
+    <button type="button" id="fs-up" aria-label="Increase text size">A+</button>
+    <button type="button" id="theme" aria-pressed="false">Dark mode</button>
+    <button type="button" id="print">Print</button>
+    <button type="button" id="clear">Clear progress</button>
+  </div>
+</div></header>
+<div class="ticket"><div class="ticket-in">
+  <div class="stub"><span class="lbl">Lab</span><span class="no">13</span><span class="series">CompTIA A+ Lab Series v4</span></div>
+  <div class="tk-body"><h1>Installing Software</h1><p class="lede">Installing software looks simple until it isn't: the wrong architecture, a missing permission, a download you shouldn't trust. You will install and verify two Windows utilities, then install an office suite on Linux from packages at the command line.</p><dl class="fields"><div><dt>Time</dt><dd>30–40 min</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Machines</dt><dd>Win7, Lubuntu</dd></div><div><dt>Exam domains</dt><dd>Core 2: Operating Systems</dd></div></dl></div>
+</div></div>
+<div class="wrap">
+<nav class="toc" aria-label="On this page"><details><summary>On this page</summary>
+<div id="meter" class="meter" role="progressbar" aria-label="Sections reviewed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="meter-bar"></span></div>
+<p id="meter-txt" class="meter-txt"></p>
+<ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#reference"><span>Reference: installing software</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#exam"><span>On the A+ exams</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#check"><span>Check yourself</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#evidence"><span>Evidence to capture</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#cheat"><span>Cheat sheet</span><span class="tick" aria-hidden="true"></span></a></li></ol></details></nav>
+<main id="main" tabindex="-1">
+<section id="overview" aria-labelledby="h-overview">
+<h2 id="h-overview">Why this lab matters</h2>
+<p>Every software install is a decision. Does the PC meet the requirements? Is it the 32-bit or 64-bit version? Does the user have rights to install it, and should they? Is the license OK for work use? Did the installer come from a source you trust?</p>
+<p>In this lab you install <strong>7-Zip</strong> (a compression tool) and <strong>CPU-Z</strong> (a hardware information tool) on Windows, watching where each one goes and what it adds. Then you install <strong>LibreOffice</strong> on Linux using <code class="inl">dpkg</code> and <code class="inl">sudo</code>, which shows how Linux handles the same job with packages instead of setup wizards.</p>
+
+<div class="done-row"><input type="checkbox" id="done-overview" data-done="overview"><label for="done-overview">Mark this section reviewed</label></div>
+</section>
+<section id="environment" aria-labelledby="h-environment">
+<h2 id="h-environment">The environment you're working in</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code class="inl">192.168.1.7/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Lubuntu</td><td><code class="inl">192.168.1.11/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<div class="tbl"><table><thead><tr><th scope="col">Installer</th><th scope="col">Location</th></tr></thead><tbody><tr><td><code class="inl">7z1801</code> (7-Zip)</td><td>Win7: <strong>Installs</strong> folder on the desktop</td></tr><tr><td><code class="inl">cpu-z_1.83-en.exe</code></td><td>Win7: <strong>Installs</strong> folder</td></tr><tr><td><code class="inl">LibreOffice_6.0.1_Linux_x86-64_deb.tar.gz</code></td><td>Lubuntu: <code class="inl">~/Downloads</code></td></tr></tbody></table></div>
+<div class="call stuck"><span class="k">Typos in the PDF</span><p>The CPU-Z install path is shown as <code class="inl">C:\Programs Files\CPU-Z</code>; it should be <code class="inl">C:\Program Files\CPU-Z</code>. The <code class="inl">dpkg</code> command shows an en dash (<code class="inl">–i</code>); type a normal hyphen: <code class="inl">-i</code>.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-environment" data-done="environment"><label for="done-environment">Mark this section reviewed</label></div>
+</section>
+<section id="then-now" aria-labelledby="h-then-now">
+<h2 id="h-then-now">Then vs. now: Windows 11</h2>
+<div class="tbl"><table><thead><tr><th scope="col">In the lab</th><th scope="col">On Windows 11</th></tr></thead><tbody><tr><td>Run a downloaded <code class="inl">.exe</code> or <code class="inl">.msi</code></td><td>Still common. <strong>SmartScreen</strong> may warn about less-common downloads; check the publisher before clicking Run anyway.</td></tr><tr><td>Start > All Programs > 7-Zip</td><td>Start > <strong>All apps</strong> > 7-Zip</td></tr><tr><td>Programs and Features to uninstall</td><td>Settings > Apps > <strong>Installed apps</strong> (<code class="inl">appwiz.cpl</code> still works)</td></tr><tr><td>7-Zip for archives</td><td>Windows 11 opens and creates <strong>7z, RAR, and TAR</strong> archives natively in File Explorer; 7-Zip still offers more options</td></tr><tr><td>No package manager</td><td><strong>winget</strong>: <code class="inl">winget install 7zip.7zip</code> installs from the Windows Package Manager; the <strong>Microsoft Store</strong> is another trusted source</td></tr><tr><td><code class="inl">dpkg -i *.deb</code> on Lubuntu</td><td>Same on Debian/Ubuntu; <code class="inl">sudo apt install ./file.deb</code> also resolves dependencies</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-then-now" data-done="then-now"><label for="done-then-now">Mark this section reviewed</label></div>
+</section>
+<section id="walkthrough" aria-labelledby="h-walkthrough">
+<h2 id="h-walkthrough">Walkthrough</h2>
+<p class="task-head">Task 1: Install 7-Zip (Win7)</p>
+<div class="step">
+<h3><span class="n">1</span>Run the installer</h3>
+<p>Log in to <strong>Win7</strong>, open the <strong>Installs</strong> folder, and double-click <strong>7z1801</strong>. Accept the UAC prompt.</p>
+<div class="call tip"><span class="k">Why UAC appears</span><p>Only administrators can install software for all users. A standard user would be asked for an admin's credentials here; an admin is asked to confirm.</p></div>
+</div>
+<div class="step">
+<h3><span class="n">2</span>Keep the default location</h3>
+<p>Leave the folder as <code class="inl">C:\Program Files\7-Zip</code> and click <strong>Install</strong>, then <strong>Close</strong>.</p>
+<div class="call tip"><span class="k">Program Files or Program Files (x86)?</span><p>On 64-bit Windows, 64-bit programs go in <code class="inl">C:\Program Files</code> and 32-bit programs in <code class="inl">C:\Program Files (x86)</code>. A 32-bit Windows has only <code class="inl">Program Files</code> and can't run 64-bit programs.</p></div>
+</div>
+<div class="step">
+<h3><span class="n">3</span>Find what it added</h3>
+<p>Open <strong>Start > All Programs > 7-Zip > 7-Zip File Manager</strong>. Then in the Installs folder, right-click <strong>7z1801</strong>: the <strong>7-Zip</strong> submenu is new. Installers often add shortcuts, context-menu entries, and file associations as well as the program itself.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The right-click menu showing the 7-Zip submenu.</p>
+</div>
+<p class="task-head">Task 2: Install CPU-Z (Win7)</p>
+<div class="step">
+<h3><span class="n">4</span>Run the installer</h3>
+<p>In <strong>Installs</strong>, double-click <code class="inl">cpu-z_1.83-en.exe</code>, click <strong>Run</strong> at the security warning, and accept UAC. Accept the agreement.</p>
+</div>
+<div class="step">
+<h3><span class="n">5</span>Choose the location and options</h3>
+<p>Set the location to <code class="inl">C:\Program Files\CPU-Z</code> and click <strong>Next</strong>. Keep the Start Menu folder (<strong>CPUID\CPU-Z</strong>) and the desktop icon option, click <strong>Install</strong>, then <strong>Finish</strong>. Read the readme that opens and close it.</p>
+</div>
+<div class="step">
+<h3><span class="n">6</span>Explore CPU-Z</h3>
+<p>Double-click the <strong>CPUID CPU-Z</strong> desktop icon and accept UAC. Look through the tabs:</p>
+<div class="tbl"><table><thead><tr><th scope="col">Tab</th><th scope="col">Shows</th></tr></thead><tbody><tr><td>CPU</td><td>Processor model, cores, threads, clock speed, socket</td></tr><tr><td>Caches</td><td>L1, L2, and L3 cache</td></tr><tr><td>Mainboard</td><td>Motherboard model, chipset, BIOS version</td></tr><tr><td>Memory</td><td>Total RAM, type, channels, timing</td></tr><tr><td>SPD</td><td>Each RAM module by slot: size, speed, maker</td></tr><tr><td>Graphics</td><td>GPU details</td></tr><tr><td>Bench</td><td>A CPU benchmark</td></tr></tbody></table></div>
+<p class="shotline"><span class="shot">Screenshot</span>CPU-Z on the CPU or SPD tab.</p>
+<p>CPU-Z only reads information and changes nothing. Close it.</p>
+</div>
+<p class="task-head">Task 3: Install LibreOffice (Lubuntu)</p>
+<div class="step">
+<h3><span class="n">7</span>Extract the archive</h3>
+<p>Sign in to <strong>Lubuntu</strong> and open the <strong>File Manager</strong> from the taskbar. Go to <strong>Downloads</strong> and double-click <code class="inl">LibreOffice_6.0.1_Linux_x86-64_deb.tar.gz</code>. Click <strong>Extract</strong>, choose <strong>Desktop</strong>, click <strong>Extract</strong>, then <strong>Quit</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">8</span>Go to the packages in a terminal</h3>
+<p>Open <strong>LXTerminal</strong> from the taskbar and run:</p>
+<pre class="cmd"><code>cd Desktop
+ls
+cd LibreOffice_6.0.1.1_Linux_x86-64_deb
+cd DEBS
+ls</code></pre>
+<div class="call stuck"><span class="k">Where people get stuck</span><p>The extracted folder is named <code class="inl">...6.0.1.1...</code>, not <code class="inl">6.0.1</code> like the archive. Type <code class="inl">cd Li</code> and press <kbd>Tab</kbd> to complete it exactly.</p></div>
+</div>
+<div class="step">
+<h3><span class="n">9</span>Install every package with dpkg</h3>
+<pre class="cmd"><code>sudo dpkg -i *.deb</code></pre>
+<p>Enter <code class="inl">Train1ng$</code> if <code class="inl">sudo</code> asks. <code class="inl">*.deb</code> installs every Debian package in the folder at once. Wait for the prompt to return, then type <code class="inl">exit</code>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The terminal after <code class="inl">sudo dpkg -i *.deb</code> finishes.</p>
+</div>
+<div class="step">
+<h3><span class="n">10</span>Launch it</h3>
+<p>Open <strong>Start > Office > LibreOffice 6.0 Writer</strong>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>LibreOffice Writer open on Lubuntu.</p>
+<p>The lab is complete.</p>
+</div>
+
+<div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+<section id="reference" aria-labelledby="h-reference">
+<h2 id="h-reference">Reference: installing software</h2>
+<h3>Before you install</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Check</th><th scope="col">Why</th></tr></thead><tbody><tr><td>System requirements</td><td>CPU, RAM, storage, OS version, and graphics must meet the minimum</td></tr><tr><td>32-bit or 64-bit</td><td>A 64-bit OS runs both; a 32-bit OS runs only 32-bit</td></tr><tr><td>Source</td><td>Vendor site, Microsoft Store, <code class="inl">winget</code>, or your organization's software portal. Avoid download mirrors and "free" cracked copies.</td></tr><tr><td>Integrity</td><td>Compare the file's hash with the vendor's published one</td></tr><tr><td>License</td><td>Personal, commercial, per-seat, subscription, open source</td></tr><tr><td>Rights</td><td>Standard users can't install for all users; deploy centrally or elevate</td></tr><tr><td>Impact</td><td>Will it change startup, firewall, file associations, or other apps? Test first on business PCs.</td></tr></tbody></table></div>
+<h3>Verify a download's hash</h3>
+<pre class="cmd"><code><span class="c">Windows (cmd)</span>
+certutil -hashfile 7z1801.exe SHA256
+<span class="c">Windows (PowerShell)</span>
+Get-FileHash .\7z1801.exe -Algorithm SHA256
+<span class="c">Linux</span>
+sha256sum LibreOffice_6.0.1_Linux_x86-64_deb.tar.gz</code></pre>
+<h3>Windows install methods</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Method</th><th scope="col">Example</th></tr></thead><tbody><tr><td>Setup program</td><td><code class="inl">setup.exe</code>, double-click and follow the wizard</td></tr><tr><td>Windows Installer package</td><td><code class="inl">msiexec /i app.msi /qn</code> installs silently</td></tr><tr><td>Package manager</td><td><code class="inl">winget search 7zip</code>, <code class="inl">winget install 7zip.7zip</code>, <code class="inl">winget upgrade --all</code></td></tr><tr><td>Microsoft Store</td><td>Sandboxed apps with automatic updates</td></tr><tr><td>Disc image</td><td>Right-click an <code class="inl">.iso</code> > Mount, then run setup</td></tr><tr><td>Central deployment</td><td>Intune, Group Policy, or Configuration Manager in organizations</td></tr></tbody></table></div>
+<h3>Linux package tools</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Distribution family</th><th scope="col">Low-level tool</th><th scope="col">Package manager</th></tr></thead><tbody><tr><td>Debian, Ubuntu, Lubuntu (<code class="inl">.deb</code>)</td><td><code class="inl">dpkg</code></td><td><code class="inl">apt</code> (<code class="inl">apt-get</code>)</td></tr><tr><td>Red Hat, Fedora, Rocky (<code class="inl">.rpm</code>)</td><td><code class="inl">rpm</code></td><td><code class="inl">dnf</code> (formerly <code class="inl">yum</code>)</td></tr></tbody></table></div>
+<pre class="cmd"><code><span class="c">Debian / Ubuntu</span>
+sudo apt update
+sudo apt install libreoffice
+sudo apt upgrade
+sudo apt remove libreoffice
+dpkg -l | grep libreoffice
+<span class="c">Red Hat family</span>
+sudo dnf install libreoffice</code></pre>
+<p><code class="inl">dpkg</code> installs a package file but doesn't download missing dependencies; <code class="inl">apt</code> and <code class="inl">dnf</code> download and resolve them for you.</p>
+<h3>Uninstall cleanly</h3>
+<div class="tbl"><table><thead><tr><th scope="col">OS</th><th scope="col">How</th></tr></thead><tbody><tr><td>Windows</td><td>Settings > Apps > Installed apps, or <code class="inl">appwiz.cpl</code>; <code class="inl">winget uninstall &lt;id&gt;</code></td></tr><tr><td>Debian/Ubuntu</td><td><code class="inl">sudo apt remove &lt;pkg&gt;</code> (<code class="inl">purge</code> also removes settings)</td></tr><tr><td>Red Hat family</td><td><code class="inl">sudo dnf remove &lt;pkg&gt;</code></td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-reference" data-done="reference"><label for="done-reference">Mark this section reviewed</label></div>
+</section>
+<section id="stuck" aria-labelledby="h-stuck">
+<h2 id="h-stuck">Where people get stuck</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Problem</th><th scope="col">Why it happens</th><th scope="col">Fix</th></tr></thead><tbody><tr><td>"This app can't run on your PC"</td><td>A 64-bit program on 32-bit Windows, or the wrong platform</td><td>Download the right version; check System type</td></tr><tr><td>Installer asks for admin credentials</td><td>You're a standard user</td><td>Have an admin install it or deploy it</td></tr><tr><td><code class="inl">cd LibreOffice_6.0.1_...</code> says no such directory</td><td>The folder name has <code class="inl">6.0.1.1</code></td><td>Use <kbd>Tab</kbd> completion</td></tr><tr><td><code class="inl">dpkg: error: need an action option</code></td><td>An en dash instead of a hyphen</td><td>Type <code class="inl">-i</code> with a normal hyphen</td></tr><tr><td><code class="inl">dpkg</code> reports dependency problems</td><td>dpkg doesn't fetch dependencies</td><td>Run <code class="inl">sudo apt -f install</code> (needs internet) or use <code class="inl">apt install ./*.deb</code></td></tr><tr><td>CPU-Z path error</td><td>The PDF's <code class="inl">Programs Files</code> typo</td><td>Use <code class="inl">C:\Program Files\CPU-Z</code></td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-stuck" data-done="stuck"><label for="done-stuck">Mark this section reviewed</label></div>
+</section>
+<section id="on-the-job" aria-labelledby="h-on-the-job">
+<h2 id="h-on-the-job">On the job</h2>
+<div class="tbl"><table><thead><tr><th scope="col">The ticket says</th><th scope="col">Consider</th><th scope="col">Action</th></tr></thead><tbody><tr><td>"Can you install this program I found online?"</td><td>Source, license, security</td><td>Check it's from the vendor and allowed; verify the hash; install or decline per policy</td></tr><tr><td>"The program installed but won't start."</td><td>Requirements, architecture, dependencies</td><td>Check event logs and requirements; install missing runtimes (.NET, Visual C++)</td></tr><tr><td>"Everyone in Accounting needs this app."</td><td>Deployment</td><td>Use central deployment or winget scripting, not 15 manual installs</td></tr><tr><td>"The new tool slowed everything down."</td><td>Impact</td><td>Check startup items and services it added; uninstall if needed</td></tr><tr><td>"I need Office on the Linux lab PCs."</td><td>Package manager</td><td><code class="inl">sudo apt install libreoffice</code></td></tr></tbody></table></div>
+<div class="call tip"><span class="k">Professional habit</span><p>Record what you installed, the version, and where it came from in the ticket. It makes updates and audits much easier.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-on-the-job" data-done="on-the-job"><label for="done-on-the-job">Mark this section reviewed</label></div>
+</section>
+<section id="exam" aria-labelledby="h-exam">
+<h2 id="h-exam">On the A+ exams</h2>
+<div class="badges"><span class="badge">Core 2: Operating Systems</span></div>
+<p><strong>Core 2 (220-1202)</strong> covers application installation: system requirements (CPU, 32/64-bit, RAM, storage, graphics), distribution methods (download, ISO/mountable image, Store, package manager), licensing, impact on the device, network, and organization, and Linux package management with <code class="inl">apt</code> and <code class="inl">dnf</code>.</p>
+<h3>High-yield facts</h3>
+<ul><li>64-bit Windows: <code class="inl">Program Files</code> for 64-bit apps, <code class="inl">Program Files (x86)</code> for 32-bit.</li><li>A 32-bit OS can't run 64-bit apps or use more than 4 GB of RAM.</li><li>Verify installers with a hash (<code class="inl">certutil -hashfile</code>, <code class="inl">Get-FileHash</code>, <code class="inl">sha256sum</code>).</li><li><code class="inl">apt</code> (Debian/Ubuntu) and <code class="inl">dnf</code> (Red Hat family) resolve dependencies; <code class="inl">dpkg</code> and <code class="inl">rpm</code> don't.</li><li><code class="inl">sudo</code> runs a command as root.</li><li>Mount an ISO to install from a disc image.</li></ul>
+
+<div class="done-row"><input type="checkbox" id="done-exam" data-done="exam"><label for="done-exam">Mark this section reviewed</label></div>
+</section>
+<section id="check" aria-labelledby="h-check">
+<h2 id="h-check">Check yourself</h2>
+<div class="q"><p class="ask">1. A user tries to install a 64-bit program on a PC with 32-bit Windows. What happens and what's the fix?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">It won't run. Install the 32-bit version of the program, or upgrade to 64-bit Windows if the hardware supports it.</div></div>
+<div class="q"><p class="ask">2. What's the difference between <code class="inl">dpkg -i package.deb</code> and <code class="inl">apt install package</code>?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans"><code class="inl">dpkg</code> installs a local package file without fetching dependencies. <code class="inl">apt</code> downloads the package and all its dependencies from the repositories.</div></div>
+<div class="q"><p class="ask">3. How do you confirm a downloaded installer hasn't been tampered with?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Compute its hash (for example <code class="inl">certutil -hashfile file SHA256</code>) and compare it with the hash the vendor publishes.</div></div>
+<div class="q"><p class="ask">4. Where would Windows install a 32-bit application on a 64-bit PC?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans"><code class="inl">C:\Program Files (x86)</code></div></div>
+<div class="q"><p class="ask">5. Why did UAC prompt you even though sysadmin is an administrator?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">UAC asks administrators to confirm before changes that affect the whole system, such as installing software, so malware can't install silently.</div></div>
+</section>
+<section id="evidence" aria-labelledby="h-evidence">
+<h2 id="h-evidence">Evidence to capture</h2>
+<p>Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.</p>
+<div class="evidence"><ul><li><input type="checkbox" id="ev1" data-evidence="ev1"><label for="ev1"><span class="shot">7-Zip</span>The right-click menu showing the 7-Zip submenu.</label></li><li><input type="checkbox" id="ev2" data-evidence="ev2"><label for="ev2"><span class="shot">CPU-Z</span>CPU-Z on the CPU or SPD tab.</label></li><li><input type="checkbox" id="ev3" data-evidence="ev3"><label for="ev3"><span class="shot">dpkg</span>The terminal after <code class="inl">sudo dpkg -i *.deb</code> finishes.</label></li><li><input type="checkbox" id="ev4" data-evidence="ev4"><label for="ev4"><span class="shot">LibreOffice</span>LibreOffice Writer open on Lubuntu.</label></li></ul></div>
+</section>
+<section id="cheat" aria-labelledby="h-cheat">
+<h2 id="h-cheat">Cheat sheet</h2>
+<div class="cheat"><div class="grid">
+<div><h3>Windows</h3>
+<ul><li>Check requirements and 32/64-bit first</li><li><code class="inl">Program Files</code> (64-bit), <code class="inl">(x86)</code> (32-bit)</li><li><code class="inl">winget install &lt;id&gt;</code>; <code class="inl">msiexec /i x.msi /qn</code></li><li>Uninstall: Settings > Apps, <code class="inl">appwiz.cpl</code></li><li>Verify: <code class="inl">certutil -hashfile file SHA256</code></li></ul>
+</div>
+<div><h3>Linux</h3>
+<ul><li><code class="inl">sudo apt update &amp;&amp; sudo apt install pkg</code></li><li><code class="inl">sudo dpkg -i *.deb</code> (no dependencies)</li><li><code class="inl">sudo dnf install pkg</code> (Red Hat family)</li><li><code class="inl">sha256sum file</code></li><li><kbd>Tab</kbd> completes long names</li></ul>
+</div>
+</div></div>
+</section>
+</main></div>
+<footer><div class="in">
+  <p>Built for CompTIA A+ hands-on practice at Brookdale Community College, 2026. Open educational resource.</p>
+  <p>Companion to the NDG CompTIA A+ Lab Series v4 labs. This guide is independent and is not affiliated with or endorsed by CompTIA or Network Development Group. CompTIA A+ is a registered trademark of CompTIA, Inc.</p>
+</div></footer>
+<p id="live" class="sr" aria-live="polite"></p>
+<script>
+(function(){
+  var S={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
+         set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+         del:function(k){try{localStorage.removeItem(k)}catch(e){}}};
+  window.__S=S;
+  var root=document.documentElement, tb=document.getElementById('theme');
+  function isDark(){var t=root.getAttribute('data-theme'); if(t) return t==='dark';
+    return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;}
+  function paintTheme(){var d=isDark(); tb.setAttribute('aria-pressed',d?'true':'false'); tb.textContent=d?'Light mode':'Dark mode';}
+  var saved=S.get('aplus-theme'); if(saved) root.setAttribute('data-theme',saved);
+  paintTheme();
+  tb.addEventListener('click',function(){var n=isDark()?'light':'dark'; root.setAttribute('data-theme',n); S.set('aplus-theme',n); paintTheme();});
+  var sc=parseFloat(S.get('aplus-scale'))||1;
+  function setScale(v){sc=Math.min(1.4,Math.max(.85,Math.round(v*100)/100)); root.style.setProperty('--scale',sc); S.set('aplus-scale',sc);}
+  setScale(sc);
+  document.getElementById('fs-up').addEventListener('click',function(){setScale(sc+.1)});
+  document.getElementById('fs-down').addEventListener('click',function(){setScale(sc-.1)});
+  document.getElementById('print').addEventListener('click',function(){window.print()});
+})();
+
+(function(){
+  var S=window.__S, P=document.body.getAttribute('data-prefix');
+  var live=document.getElementById('live');
+  function say(t){live.textContent=t;}
+  function load(k){try{return JSON.parse(S.get(P+k))||{}}catch(e){return {}}}
+  var done=load('done'), ev=load('evidence');
+  var tracks=[].slice.call(document.querySelectorAll('[data-done]'));
+  var bar=document.getElementById('meter-bar'), txt=document.getElementById('meter-txt'), meter=document.getElementById('meter');
+  function refresh(){
+    var n=0; tracks.forEach(function(c){ if(c.checked) n++;
+      var a=document.querySelector('.toc a[href="#'+c.getAttribute('data-done')+'"] .tick'); if(a) a.textContent=c.checked?'\u2713':'';});
+    var pct=tracks.length?Math.round(n/tracks.length*100):0;
+    bar.style.width=pct+'%'; meter.setAttribute('aria-valuenow',pct);
+    txt.textContent=n+' of '+tracks.length+' sections reviewed';
+    S.set(P+'meta',JSON.stringify({done:n,total:tracks.length}));
+  }
+  tracks.forEach(function(c){ c.checked=!!done[c.getAttribute('data-done')];
+    c.addEventListener('change',function(){done[c.getAttribute('data-done')]=c.checked; S.set(P+'done',JSON.stringify(done)); refresh();});});
+  refresh();
+  [].forEach.call(document.querySelectorAll('[data-evidence]'),function(c){ c.checked=!!ev[c.getAttribute('data-evidence')];
+    c.addEventListener('change',function(){ev[c.getAttribute('data-evidence')]=c.checked; S.set(P+'evidence',JSON.stringify(ev));});});
+  document.getElementById('clear').addEventListener('click',function(){
+    if(!window.confirm('Clear your checkmarks on this lab page?')) return;
+    S.del(P+'done'); S.del(P+'evidence'); done={}; ev={};
+    [].forEach.call(document.querySelectorAll('[data-done],[data-evidence]'),function(c){c.checked=false;});
+    refresh(); say('Progress cleared for this lab.');});
+  [].forEach.call(document.querySelectorAll('.reveal'),function(b){
+    b.addEventListener('click',function(){var a=b.nextElementSibling, o=a.classList.toggle('open');
+      b.setAttribute('aria-expanded',o?'true':'false'); b.textContent=o?'Hide answer':'Show answer';});});
+  [].forEach.call(document.querySelectorAll('pre.cmd'),function(pre){
+    var b=document.createElement('button'); b.type='button'; b.className='copy'; b.textContent='Copy';
+    b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code'), clone=code.cloneNode(true);
+      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
+      function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
+      function fallback(){var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+        try{document.execCommand('copy'); ok();}catch(e){say('Copy failed; select the text instead.');} ta.remove();}
+    });});
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(l){l.setAttribute('aria-current', l.getAttribute('href')==='#'+e.target.id?'true':'false');});}});},
+      {rootMargin:'-20% 0px -70% 0px'});
+    [].forEach.call(document.querySelectorAll('main section[id]'),function(s){io.observe(s);});
+  }
+  var det=document.querySelector('.toc details');
+  if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
+})();
+</script>
+</body>
+</html>

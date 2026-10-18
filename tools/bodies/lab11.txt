@@ -1,0 +1,176 @@
+@lede Most support today happens without walking to the user's desk. You will enable Remote Desktop on two machines, open the firewall for it, connect in both directions, troubleshoot over the session, and install and use TightVNC as a third-party alternative.
+@vms Win7, Win10
+
+== overview | Why this lab matters
+Remote access lets you see and control a PC from anywhere on the network: fix a setting, check Task Manager, gather information, or show a user how to do something. It also opens a door that attackers look for, so every remote tool has to be set up deliberately.
+**Remote Desktop (RDP)** is built into Windows. On the host it needs three things: the feature turned on, the user allowed to connect, and the firewall allowing it. **VNC** is a cross-platform alternative that shares the actual screen the user sees, which is useful when you want to watch what they're doing rather than start a separate session.
+You'll configure both, connect each way, and use Task Manager over the remote session to collect performance information the way you would for a "my PC is slow" call.
+
+== environment | The environment you're working in
+| Machine | IP address | Account | Password |
+| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
+| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+
+| TightVNC setting | Value |
+| VNC password and admin password | `VNCpwd` |
+| Win7 installer | `Installs\tightvnc-2.8.8-gpl-setup-32bit` (Server + Viewer) |
+| Win10 installer | `Toolbox\tightvnc-2.8.8-gpl-setup-64bit` (Viewer only) |
+!tip Good to know before you start | An RDP connection to Win7 signs out anyone using Win7's own console. When you later go back to Win7 directly, you'll sign in again and see what the remote session left behind.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Computer > Properties > Remote settings | Settings > System > **Remote Desktop** > On. `sysdm.cpl` > Remote tab still works. |
+| "Allow connections from any version (less secure)" | Default is **Require Network Level Authentication (NLA)**, which signs you in before the session starts. Keep it on. |
+| Windows Firewall > Allow a program | Windows Security > Firewall & network protection > **Allow an app through firewall**. Turning on Remote Desktop in Settings adds the rule for you. |
+| Remote Desktop Connection (`mstsc`) | Still there. The **Windows App** (replacing the Remote Desktop app) also connects. |
+| Hosting a session | Requires **Pro, Enterprise, or Education**. Home can connect *to* other PCs but can't be connected to. |
+| TightVNC | Still available. Built-in **Quick Assist** ([[Win]]+[[Ctrl]]+[[Q]]) shares the user's screen over the internet with a code. |
+
+== walkthrough | Walkthrough
+## Task 1: Enable Remote Desktop on Win7
+### Turn it on
+Log in to **Win7**. Click **Start**, right-click **Computer > Properties > Remote settings**. On the **Remote** tab, select **Allow connections from computers running any version of Remote Desktop (less secure)** and click **Apply**.
+!tip Why "less secure"? | The other option requires Network Level Authentication, which older clients don't support. The lab uses the broad setting for compatibility. On real PCs, choose NLA.
+### Check who may connect
+Click **Select Users**. sysadmin already has access because administrators are allowed by default. Click **OK** twice.
+!shot The Win7 Remote tab with Remote Desktop allowed.
+### Allow it through the firewall
+Open **Control Panel > Windows Firewall > Allow a program or feature through Windows Firewall > Change settings**. Check **Remote Desktop** and its **Home/Work (Private)** column. Click **OK**. Log off Win7.
+## Task 2: Enable Remote Desktop on Win10
+### Turn it on in Settings
+Log in to **Win10**. Right-click **Start > Settings > System > Remote Desktop**, switch **Enable Remote Desktop** on, and click **Confirm**. Click **Select users that can remotely access this PC** and confirm sysadmin has access.
+### Check the firewall rule
+In the Settings search box, type `firewall` and open **Allow an app through Windows Firewall**. Click **Change settings** and make sure **Remote Desktop** is checked for **Private**. Click **OK**.
+!shot The Win10 firewall allowed-apps list with Remote Desktop checked for Private.
+## Task 3: Connect from Win10 to Win7
+### Open Remote Desktop Connection
+On Win10, search for **Remote Desktop Connection** and open it (or run `mstsc`). Click **Show Options**, enter `192.168.1.7` as the computer and `sysadmin` as the user name, and click **Connect**. Enter `Train1ng$`, then click **Yes** at the certificate warning.
+!stuck Certificate warning | RDP uses a self-signed certificate on each PC, so the client can't verify it. In a lab that's expected. On a real network, a warning you don't expect can mean you're connecting to the wrong machine.
+### Work on the remote desktop
+The connection bar at the top shows you're on Win7. Create a text document on the desktop named `remote access`, open it, type `This file was created remotely from Win10.`, save, and close.
+!shot The RDP session to Win7 showing the connection bar and the remote access file.
+### Disconnect
+Click the **X** on the connection bar and click **OK**.
+## Task 4: Connect from Win7 to Win10
+### Confirm the file at the Win7 console
+Go to **Win7** directly and sign in. Open **remote access**, add a line `Confirmed by Win7 client.`, save, and close.
+### Open a session to Win10
+Search for **Remote Desktop Connection**, connect to `192.168.1.10` as `sysadmin` / `Train1ng$`, and click **Yes** at the certificate prompt. If it doesn't start right away, wait 2–3 minutes.
+## Task 5: Troubleshoot over RDP
+### Capture performance data
+In the Win10 session, right-click the taskbar > **Task Manager > More details > Performance**. Right-click the **CPU** graph and choose **Copy**.
+### Save it to a file
+Create `remote session.txt` on the remote desktop, open it, **Paste**, and save. You now have a snapshot of the remote PC's CPU details to compare later.
+!shot The remote session.txt file showing the pasted CPU summary.
+### Disconnect properly
+Close Task Manager, then **Start > Power > Disconnect**.
+!tip Disconnect or sign out? | **Disconnect** leaves your programs running on the remote PC so you can reconnect. **Sign out** closes them. Signing out is cleaner when you're done.
+## Task 6: TightVNC
+### Install the server on Win7
+On **Win7**, open **Installs** on the desktop and run `tightvnc-2.8.8-gpl-setup-32bit`. Accept the license, choose **Typical**, keep all boxes checked (file associations, service, firewall exception), and install. Accept UAC.
+### Set the passwords
+Select **Require password-based authentication** and enter `VNCpwd` twice. Select **Protect control interface with an administrative password** and enter `VNCpwd` twice. Click **OK**, then **Finish**.
+!shot The TightVNC Set Passwords window with both options selected.
+### Check the service settings
+Open **Start > All Programs > TightVNC > TightVNC Server (Service Mode) > TightVNC Service - Offline Configuration** and accept UAC. On the **Server** tab, under **Miscellaneous**, uncheck **Hide desktop wallpaper** and **Show icon in the notification area**. Click **OK**.
+### Install only the viewer on Win10
+On **Win10**, open **Toolbox** and run `tightvnc-2.8.8-gpl-setup-64bit`. Choose **Custom**, set **TightVNC Server** to **Entire feature will be unavailable**, and finish the install.
+### Connect with VNC
+Search for and open **TightVNC Viewer**. Enter `192.168.1.7` as the Remote Host, click **Connect**, and enter `VNCpwd`. You're now viewing and controlling Win7's actual console.
+!shot TightVNC Viewer on Win10 showing the Win7 desktop.
+The lab is complete.
+
+== reference | Reference: remote access tools
+### Compare the options
+| Tool | Port | What you see | Best for |
+| Remote Desktop (RDP) | TCP 3389 | A separate session; the local user is signed out | Admin work on Windows PCs and servers |
+| VNC | TCP 5900 | The real console screen | Watching or helping a user on any OS |
+| Quick Assist | Over the internet (HTTPS) | The user's screen, after they enter a code | Helping a home or remote user with no setup |
+| Remote Assistance (`msra`) | Varies | The user's screen, by invitation | Legacy Windows help |
+| SSH | TCP 22 | A command line | Linux, network devices, Windows OpenSSH |
+| RMM tools | Vendor cloud | Agent-based control and monitoring | Managed service providers |
+| VPN | Varies | Puts you on the remote network | Reaching internal resources securely before RDP |
+### mstsc options
+```
+mstsc /v:192.168.1.7
+mstsc /v:server01 /f
+mstsc /v:server01 /admin
+```
+`/v` sets the computer, `/f` opens full screen, and `/admin` connects to the server's administrative session.
+### Remote Desktop Connection tabs (Show Options)
+| Tab | Sets |
+| General | Computer, user name, save the connection as an `.rdp` file |
+| Display | Size and color depth, multiple monitors |
+| Local Resources | Clipboard, printers, drives, and audio passed to the remote PC |
+| Experience | Visual quality vs. speed |
+| Advanced | Server authentication behavior, RD Gateway |
+### Securing remote access
+- Require **NLA** and strong passwords; use MFA where the tool supports it.
+- Allow only the users who need it (the Remote Desktop Users group).
+- Don't expose port 3389 or 5900 to the internet. Use a VPN or a gateway.
+- Keep firewall rules to the **Private** or **Domain** profile, not Public.
+- Get the user's permission before taking control of their screen, and tell them when you're done.
+- Remove or disable tools like VNC when they're no longer needed.
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| "Remote Desktop can't connect to the remote computer" | Feature off, firewall blocking 3389, or the PC is asleep | Check the Remote tab, firewall rule, and that the host is on |
+| Credentials rejected | Wrong user format or the account isn't allowed | Use `sysadmin` (or `COMPUTER\sysadmin`); check Select Users |
+| Win10 session takes minutes to start | First connection builds the session | Wait 2–3 minutes |
+| No Remote Desktop option in Settings | Windows Home edition | Use Quick Assist or upgrade to Pro |
+| TightVNC Viewer can't connect | Server service isn't running or the firewall exception wasn't added | Restart the TightVNC service on Win7; rerun setup with the firewall box checked |
+| VNC password refused | Case-sensitive | `VNCpwd` with capital V, N, C |
+
+== on-the-job | On the job
+| The ticket says | Tool | Approach |
+| "My PC is slow." (remote user) | Quick Assist or RMM | Ask permission, watch Task Manager, gather data, fix or escalate |
+| "Restart the print server tonight." | RDP | Connect, check sessions, restart, confirm services came back |
+| "Show me how to do this." | VNC, Quick Assist | Share the user's screen so they can watch |
+| "Fix the firewall on the Linux box." | SSH | Command-line access over port 22 |
+| "Work from home and use the office file share." | VPN | Connect to the network first, then use resources |
+!tip Professional habit | Always tell the user before you connect to their screen and when you disconnect, and note the session in the ticket.
+
+== exam | On the A+ exams
+**Core 2 (220-1202)** covers remote access methods and their security considerations: RDP, VPN, VNC, SSH, remote monitoring and management (RMM), Microsoft Remote Assistance, Quick Assist, and third-party screen-sharing tools. **Core 1 (220-1201)** covers port numbers.
+### High-yield facts
+- RDP uses TCP 3389; SSH TCP 22; VNC TCP 5900.
+- Windows Home can't host Remote Desktop.
+- NLA authenticates before a session is created; leave it on.
+- RDP starts a separate session; VNC and Quick Assist share the user's screen.
+- Don't expose RDP directly to the internet; use a VPN or gateway.
+- `mstsc` launches Remote Desktop Connection; `msra` launches Remote Assistance.
+
+== check | Check yourself
+?? A user on Windows 11 Home asks you to Remote Desktop into their PC. Why won't it work, and what can you use instead?
+=> Home edition can't host RDP sessions. Use Quick Assist, a third-party tool, or upgrade to Pro.
+?? Which port must the host's firewall allow for Remote Desktop?
+=> TCP 3389.
+?? You want to watch exactly what a user is doing on screen. RDP or VNC?
+=> VNC (or Quick Assist). RDP starts a separate session and signs the local user out.
+?? What does Network Level Authentication protect against?
+=> It requires the user to authenticate before the remote session is created, so unauthenticated attackers can't reach the sign-in screen or use as many server resources.
+?? A manager wants RDP open to the internet so staff can work from home. What do you recommend instead?
+=> Have staff connect through a VPN (or RD Gateway) first, with MFA, and keep port 3389 closed to the internet.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] RDP host | Win7 Remote tab with Remote Desktop allowed.
+[] Firewall | Win10 allowed-apps list with Remote Desktop checked for Private.
+[] RDP session | The session to Win7 with the connection bar and the remote access file.
+[] Remote data | remote session.txt showing the pasted CPU summary.
+[] VNC passwords | TightVNC Set Passwords with both options selected.
+[] VNC session | TightVNC Viewer on Win10 showing the Win7 desktop.
+
+== cheat | Cheat sheet
+## RDP
+- Host: Settings > System > Remote Desktop (Pro+)
+- Firewall: allow Remote Desktop (Private)
+- Users: admins + Remote Desktop Users
+- `mstsc /v:host`; TCP 3389
+- Keep NLA on; VPN for outside access
+## Other tools
+- VNC: TCP 5900, shares the real screen
+- Quick Assist: [[Win]]+[[Ctrl]]+[[Q]]
+- `msra` Remote Assistance
+- SSH: TCP 22
+- RMM for managed fleets

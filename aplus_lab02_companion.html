@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lab 02 Companion: Windows Management & Administrative Tools | A+ Lab Companion</title>
+<meta name="description" content="Build an MMC console, schedule a task, create a volume, and work in Task Manager, Resource Monitor, and the Registry.">
+<style>
+:root{
+  --bg:#E8ECF0; --surface:#FFFFFF; --surface-2:#F3F5F8; --ink:#14233A; --ink-2:#47576C;
+  --rule:#C7D0DA; --accent:#1C5689; --accent-ink:#FFFFFF; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
+  --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
+  --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
+  --fs:1rem; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
+  --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
+  --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
+  --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
+a{color:var(--accent)} a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.skip-link{position:absolute;left:-999px;top:0;background:var(--tag);color:var(--tag-ink);padding:.7rem 1rem;z-index:20}
+.skip-link:focus{left:1rem;top:1rem}
+code,pre,kbd{font-family:var(--f-mono)}
+code.inl{background:var(--surface-2);border:1px solid var(--rule);border-radius:3px;padding:0 .3em;font-size:.92em}
+kbd{display:inline-block;border:1px solid var(--rule);border-bottom-width:3px;border-radius:4px;padding:0 .4em;background:var(--surface);font-size:.85em;line-height:1.5}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:10;background:var(--surface);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:76rem;margin:0 auto;padding:.4rem 1rem;display:flex;gap:.75rem;align-items:center;flex-wrap:wrap}
+.brand{font-family:var(--f-display);font-weight:700;font-size:1.1rem;color:var(--ink);text-decoration:none;margin-right:auto;display:flex;gap:.5rem;align-items:center}
+.brand .plug{display:inline-grid;place-items:center;width:2rem;height:2rem;background:var(--tag);color:var(--tag-ink);border-radius:4px;font-size:1rem}
+.ctl{display:flex;gap:.35rem;flex-wrap:wrap}
+.ctl button,.btn{min-height:44px;min-width:44px;padding:.3rem .75rem;border:1px solid var(--rule);background:var(--surface-2);color:var(--ink);border-radius:6px;font:inherit;font-size:.9rem;cursor:pointer}
+.ctl button:hover,.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+
+/* hero ticket — the one bold element */
+.ticket{max-width:76rem;margin:1.5rem auto 0;padding:0 1rem}
+.ticket-in{display:grid;grid-template-columns:1fr;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.stub{background:var(--tag);color:var(--tag-ink);padding:1rem 1.25rem;display:flex;flex-direction:column;justify-content:space-between;gap:.5rem;position:relative}
+.stub .lbl{font-size:.85rem;font-weight:600}
+.stub .no{font-family:var(--f-display);font-weight:700;white-space:nowrap;font-size:clamp(2.4rem,6vw,3.5rem);line-height:1;letter-spacing:-.01em}
+.stub .series{font-size:.8rem}
+.tk-body{padding:1.25rem 1.5rem 1.5rem}
+.tk-body h1{font-family:var(--f-display);font-weight:700;font-size:clamp(1.6rem,3.6vw,2.4rem);line-height:1.15;margin:0 0 .6rem;max-width:30ch}
+.lede{font-size:1.08rem;color:var(--ink-2);max-width:62ch;margin:0 0 1rem}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(10.5rem,1fr));gap:0;border-top:1px dashed var(--rule);margin:0}
+.fields div{padding:.6rem .75rem .5rem 0;border-bottom:1px dashed var(--rule)}
+.fields dt{font-size:.78rem;color:var(--ink-2)}
+.fields dd{margin:0;font-weight:600;font-size:.95rem}
+@media (min-width:720px){
+  .ticket-in{grid-template-columns:12rem 1fr}
+  .stub{border-right:2px dashed var(--tag-ink)}
+  .stub::before,.stub::after{content:"";position:absolute;right:-11px;width:20px;height:20px;border-radius:50%;background:var(--bg);border:1px solid var(--rule)}
+  .stub::before{top:-11px} .stub::after{bottom:-11px}
+}
+
+/* layout */
+.wrap{max-width:76rem;margin:0 auto;padding:1.5rem 1rem 3rem;display:grid;gap:2rem;grid-template-columns:1fr}
+@media (min-width:1000px){.wrap{grid-template-columns:15rem minmax(0,1fr)}}
+.toc{align-self:start}
+@media (min-width:1000px){.toc{position:sticky;top:4.5rem}}
+.toc details{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:.5rem .9rem}
+.toc summary{cursor:pointer;font-weight:600;min-height:44px;display:flex;align-items:center}
+.toc ol{list-style:none;margin:.25rem 0 .5rem;padding:0}
+.toc li a{display:flex;justify-content:space-between;gap:.5rem;padding:.3rem .4rem;border-radius:4px;text-decoration:none;color:var(--ink);font-size:.92rem}
+.toc li a:hover{background:var(--surface-2)}
+.toc li a[aria-current="true"]{background:var(--surface-2);box-shadow:inset 3px 0 0 var(--accent)}
+.toc .tick{color:var(--tip);font-weight:700}
+.meter{margin:.5rem 0 .25rem;height:10px;background:var(--surface-2);border:1px solid var(--rule);border-radius:5px;overflow:hidden}
+.meter span{display:block;height:100%;width:0;background:var(--tip);transition:width .3s}
+.meter-txt{font-size:.85rem;color:var(--ink-2);margin:0}
+main{min-width:0}
+main section{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:1.25rem 1.5rem;margin:0 0 1.25rem;max-width:56rem}
+@media (max-width:600px){main section{padding:1rem}.ctl button{padding:.3rem .55rem}}
+main h2{font-family:var(--f-display);font-weight:700;font-size:1.55rem;line-height:1.2;margin:0 0 .75rem}
+main h3{font-size:1.1rem;margin:1.25rem 0 .4rem}
+main p,main li{max-width:68ch}
+.task-head{font-family:var(--f-display);font-weight:700;font-size:1.15rem;margin:1.75rem 0 .5rem;padding-top:1rem;border-top:2px solid var(--ink)}
+.task-head:first-of-type{border-top:0;padding-top:0}
+.step{border-left:3px solid var(--rule);padding:.1rem 0 .1rem 1rem;margin:1rem 0}
+.step h3{margin-top:0;display:flex;gap:.6rem;align-items:baseline}
+.step h3 .n{flex:none;display:inline-grid;place-items:center;min-width:1.8rem;height:1.8rem;border-radius:50%;background:var(--ink);color:var(--surface);font-size:.9rem}
+.call{border-radius:8px;padding:.75rem 1rem;margin:1rem 0;border:1px solid}
+.call .k{display:block;font-weight:700;margin-bottom:.2rem}
+.call p{margin:.25rem 0}
+.call.stuck{background:var(--stuck-bg);border-color:var(--stuck)} .call.stuck .k{color:var(--stuck)}
+.call.tip{background:var(--tip-bg);border-color:var(--tip)} .call.tip .k{color:var(--tip)}
+.call.now{background:var(--now-bg);border-color:var(--now)} .call.now .k{color:var(--now)}
+.shot{display:inline-block;background:var(--tag);color:var(--tag-ink);font-weight:700;font-size:.85rem;padding:.05rem .5rem;border-radius:3px;margin-right:.35rem}
+.shot::before{content:"\1F4F7\FE0E  "}
+p.shotline{margin:.5rem 0}
+pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
+pre.cmd .c{color:var(--code-dim)}
+.copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
+.tbl{overflow-x:auto;margin:.75rem 0}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;vertical-align:top;padding:.5rem .6rem;border-bottom:1px solid var(--rule)}
+th{background:var(--surface-2);font-weight:600}
+td code{white-space:nowrap}
+.done-row{display:flex;gap:.6rem;align-items:center;margin-top:1.25rem;padding-top:.75rem;border-top:1px dashed var(--rule)}
+input[type=checkbox]{width:1.3rem;height:1.3rem;accent-color:var(--tip);flex:none}
+.done-row label{min-height:44px;display:flex;align-items:center;cursor:pointer}
+.q{border-top:1px solid var(--rule);padding:.75rem 0}
+.q .ask{font-weight:600;margin:0 0 .4rem}
+.ans{display:none;margin-top:.5rem;padding:.6rem .8rem;background:var(--surface-2);border-radius:6px}
+.ans.open{display:block}
+.evidence ul{list-style:none;padding:0;margin:0}
+.evidence li{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem 0;border-bottom:1px dashed var(--rule)}
+.evidence li label{cursor:pointer}
+.cheat{border:2px solid var(--ink);border-radius:8px;padding:1rem 1.25rem}
+.cheat .grid{display:grid;gap:1rem 1.5rem;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr))}
+.cheat h3{margin:0 0 .3rem;font-family:var(--f-display)}
+.cheat ul{margin:0;padding-left:1.1rem;font-size:.93rem}
+.badges{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+.badge{border:1px solid var(--accent);color:var(--accent);border-radius:999px;padding:.05rem .65rem;font-size:.82rem;font-weight:600}
+footer{border-top:1px solid var(--rule);background:var(--surface);color:var(--ink-2);font-size:.88rem}
+footer .in{max-width:76rem;margin:0 auto;padding:1.25rem 1rem}
+footer p{margin:.25rem 0;max-width:80ch}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
+  body{background:#fff;color:#000} .wrap{display:block;padding:0}
+  main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
+  .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
+  .stub{background:#fff;border:2px solid #000}
+}
+</style>
+</head>
+<body data-prefix="aplus-lab02-v1:">
+<a href="#main" class="skip-link">Skip to main content</a>
+<header class="bar"><div class="bar-in">
+  <a class="brand" href="index.html"><span class="plug" aria-hidden="true">A+</span>A+ Lab Companion</a>
+  <div class="ctl" role="group" aria-label="Page controls">
+    <button type="button" id="fs-down" aria-label="Decrease text size">A&minus;</button>
+    <button type="button" id="fs-up" aria-label="Increase text size">A+</button>
+    <button type="button" id="theme" aria-pressed="false">Dark mode</button>
+    <button type="button" id="print">Print</button>
+    <button type="button" id="clear">Clear progress</button>
+  </div>
+</div></header>
+<div class="ticket"><div class="ticket-in">
+  <div class="stub"><span class="lbl">Lab</span><span class="no">02</span><span class="series">CompTIA A+ Lab Series v4</span></div>
+  <div class="tk-body"><h1>Windows Management & Administrative Tools</h1><p class="lede">Windows hides its real administration tools a click or two away from the desktop. You will build your own MMC console, schedule a task, carve a disk into volumes, end a hung program, trace a stalled process, and change and restore a Registry setting safely.</p><dl class="fields"><div><dt>Time</dt><dd>60–75 min</dd></div><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Machines</dt><dd>Win7, Win8.1, Win10</dd></div><div><dt>Exam domains</dt><dd>Core 2: Operating Systems</dd></div></dl></div>
+</div></div>
+<div class="wrap">
+<nav class="toc" aria-label="On this page"><details><summary>On this page</summary>
+<div id="meter" class="meter" role="progressbar" aria-label="Sections reviewed" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="meter-bar"></span></div>
+<p id="meter-txt" class="meter-txt"></p>
+<ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#reference"><span>Reference: admin tools and shortcuts</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#exam"><span>On the A+ exams</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#check"><span>Check yourself</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#evidence"><span>Evidence to capture</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#cheat"><span>Cheat sheet</span><span class="tick" aria-hidden="true"></span></a></li></ol></details></nav>
+<main id="main" tabindex="-1">
+<section id="overview" aria-labelledby="h-overview">
+<h2 id="h-overview">Why this lab matters</h2>
+<p>A technician's toolkit lives in a handful of Microsoft Management Console <strong>snap-ins</strong> plus Task Manager, Resource Monitor, and the Registry Editor. Knowing them by name and by shortcut is half the job: when a user calls, you need to open the right tool in seconds.</p>
+<p>This lab covers the full range. <strong>MMC</strong> lets you build a custom console with only the snap-ins you need. <strong>Task Scheduler</strong> runs things automatically. <strong>Disk Management</strong> creates and formats volumes. <strong>Task Manager</strong> and <strong>Resource Monitor</strong> show what's using the machine and let you end what's stuck. <strong>Regedit</strong> edits the database behind almost every Windows setting.</p>
+<p>The Registry task also teaches the rule that matters most: <strong>back up before you change anything</strong>, and know how to put it back.</p>
+
+<div class="done-row"><input type="checkbox" id="done-overview" data-done="overview"><label for="done-overview">Mark this section reviewed</label></div>
+</section>
+<section id="environment" aria-labelledby="h-environment">
+<h2 id="h-environment">The environment you're working in</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code class="inl">192.168.1.7/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win8.1</td><td><code class="inl">192.168.1.8/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<p>Win7 does the MMC console, Disk Management, Task Manager, and Registry tasks. Win8.1 does Task Scheduler, the newer Task Manager, and Resource Monitor. Win7 has a second disk (<strong>Disk 2</strong>) with unallocated space for the volume task.</p>
+<div class="call tip"><span class="k">Good to know before you start</span><p>Every tool here needs administrator rights, so expect a UAC prompt each time. Click <strong>Yes</strong>.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-environment" data-done="environment"><label for="done-environment">Mark this section reviewed</label></div>
+</section>
+<section id="then-now" aria-labelledby="h-then-now">
+<h2 id="h-then-now">Then vs. now: Windows 11</h2>
+<div class="tbl"><table><thead><tr><th scope="col">In the lab</th><th scope="col">On Windows 11</th></tr></thead><tbody><tr><td>Start search > Run > <code class="inl">mmc</code></td><td>Same. <kbd>Win</kbd>+<kbd>R</kbd> > <code class="inl">mmc</code></td></tr><tr><td>Right-click the taskbar > Task Manager</td><td>Right-click <strong>Start</strong> > Task Manager, or <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Esc</kbd>. The taskbar right-click option returned in later Windows 11 updates.</td></tr><tr><td>Task Manager tabs across the top</td><td>The tabs moved to a <strong>left-side menu</strong>: Processes, Performance, App history, Startup apps, Users, Details, Services.</td></tr><tr><td>Disk Management</td><td>Same snap-in (<code class="inl">diskmgmt.msc</code>). Settings > System > Storage > Disks & volumes does the basics too.</td></tr><tr><td>Performance tab > Open Resource Monitor</td><td>Same, or run <code class="inl">resmon</code> directly</td></tr><tr><td>Registry Editor</td><td>Same, plus an address bar: paste a key path and press <kbd>Enter</kbd></td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-then-now" data-done="then-now"><label for="done-then-now">Mark this section reviewed</label></div>
+</section>
+<section id="walkthrough" aria-labelledby="h-walkthrough">
+<h2 id="h-walkthrough">Walkthrough</h2>
+<p class="task-head">Task 1: Build an MMC console (Win7)</p>
+<div class="step">
+<h3><span class="n">1</span>Open an empty console</h3>
+<p>On <strong>Win7</strong>, open <strong>Start</strong>, type <code class="inl">run</code>, open <strong>Run</strong>, and enter:</p>
+<pre class="cmd"><code>mmc</code></pre>
+<p>Accept UAC. You get an empty <strong>Console1</strong> window.</p>
+</div>
+<div class="step">
+<h3><span class="n">2</span>Add three snap-ins</h3>
+<p>Choose <strong>File > Add/Remove Snap-in</strong>. Add <strong>Disk Management</strong> (choose <strong>This computer</strong>, then <strong>Finish</strong>), <strong>Event Viewer</strong> (Local computer), and <strong>Task Scheduler</strong> (Local computer). Click <strong>OK</strong> when all three are in <strong>Selected snap-ins</strong>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Add or Remove Snap-ins window with all three snap-ins selected.</p>
+</div>
+<div class="step">
+<h3><span class="n">3</span>Save the console</h3>
+<p>Choose <strong>File > Save As</strong> and save it as <code class="inl">C:\Users\sysadmin\console</code>. Windows adds the <code class="inl">.msc</code> extension. Close the console.</p>
+</div>
+<p class="task-head">Task 2: Schedule a task (Win8.1)</p>
+<div class="step">
+<h3><span class="n">4</span>Add Task Scheduler to a console</h3>
+<p>On <strong>Win8.1</strong>, right-click <strong>Start > Run</strong>, enter <code class="inl">mmc</code>, and add the <strong>Task Scheduler</strong> snap-in for the local computer.</p>
+</div>
+<div class="step">
+<h3><span class="n">5</span>Create the task</h3>
+<p>Select <strong>Task Scheduler</strong> in the left pane and choose <strong>Action > Create Task</strong>. Fill in:</p>
+<div class="tbl"><table><thead><tr><th scope="col">Tab</th><th scope="col">Setting</th></tr></thead><tbody><tr><td>General</td><td>Name and Description: <code class="inl">Notepad</code></td></tr><tr><td>Triggers</td><td><strong>New</strong> > Begin the task: <strong>At log on</strong></td></tr><tr><td>Actions</td><td><strong>New</strong> > Start a program > Browse to <code class="inl">C:\windows\system32\notepad.exe</code></td></tr></tbody></table></div>
+<p>Click <strong>OK</strong> to close each window.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Create Task window, or the new Notepad task listed in Task Scheduler Library.</p>
+<div class="call tip"><span class="k">Create Task or Create Basic Task?</span><p><strong>Create Basic Task</strong> is a wizard with fewer options. <strong>Create Task</strong> shows every tab (General, Triggers, Actions, Conditions, Settings), which is what you'll use for real work.</p></div>
+</div>
+<div class="step">
+<h3><span class="n">6</span>Save, sign out, and test</h3>
+<p>Close the console and save it as <code class="inl">C:\Users\sysadmin\console</code>. Sign out from the Start screen and sign back in. Notepad should open on its own. Close it.</p>
+</div>
+<p class="task-head">Task 3: Create volumes in Disk Management (Win7)</p>
+<div class="step">
+<h3><span class="n">7</span>Open your saved console</h3>
+<p>On <strong>Win7</strong>, open <strong>Start</strong>, type <code class="inl">console.msc</code>, and open it. Double-click <strong>Disk Management</strong> under Console Root.</p>
+</div>
+<div class="step">
+<h3><span class="n">8</span>Create an NTFS volume</h3>
+<p>Right-click the <strong>Unallocated</strong> space on <strong>Disk 2</strong> and choose <strong>New Simple Volume</strong>. Use these settings:</p>
+<div class="tbl"><table><thead><tr><th scope="col">Wizard page</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Volume size</td><td><code class="inl">2048</code> MB</td></tr><tr><td>Drive letter</td><td><code class="inl">S</code></td></tr><tr><td>File system</td><td>NTFS, Volume label <code class="inl">NTFS</code></td></tr></tbody></table></div>
+<div class="call stuck"><span class="k">Where people get stuck</span><p>Disk 2 is below the bottom of the window. Maximize the console or scroll the lower pane to find it. Right-click the black <strong>Unallocated</strong> bar, not the disk label on the left.</p></div>
+</div>
+<div class="step">
+<h3><span class="n">9</span>Create a FAT32 volume</h3>
+<p>Right-click the remaining unallocated space (about 3 GB) and create a second simple volume: <code class="inl">2048</code> MB, drive letter <code class="inl">L</code>, file system <strong>FAT32</strong>, label <code class="inl">FAT32</code>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>Disk Management showing the new S: (NTFS) and L: (FAT32) volumes on Disk 2.</p>
+</div>
+<div class="step">
+<h3><span class="n">10</span>Check in Computer</h3>
+<p>Close the console, saving it when asked, and double-click <strong>Computer</strong> on the desktop. You should see drives <strong>S:</strong> and <strong>L:</strong>.</p>
+</div>
+<p class="task-head">Task 4: Task Manager</p>
+<div class="step">
+<h3><span class="n">11</span>End an application on Win7</h3>
+<p>Open <strong>Notepad</strong>. Right-click the taskbar and choose <strong>Start Task Manager</strong>. On the <strong>Applications</strong> tab, select Notepad and click <strong>End Task</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">12</span>Tour the Win7 tabs</h3>
+<p>Look at <strong>Processes</strong> (running programs and their memory), <strong>Services</strong>, <strong>Performance</strong>, <strong>Networking</strong>, and <strong>Users</strong>. Then on <strong>Processes</strong>, select <code class="inl">taskmgr.exe</code> and click <strong>End Process</strong> to close Task Manager itself.</p>
+<div class="call stuck"><span class="k">Before you end a process</span><p>Ending a process discards unsaved work, and ending a system process can crash Windows. End only what you recognize, and prefer ending the app from the Applications or Processes view.</p></div>
+</div>
+<div class="step">
+<h3><span class="n">13</span>Compare the newer Task Manager on Win8.1</h3>
+<p>On <strong>Win8.1</strong>, right-click the taskbar and choose <strong>Task Manager</strong>. Click <strong>More details</strong>. The <strong>Processes</strong> tab now combines apps and background processes with live CPU, memory, disk, and network columns. Note the newer <strong>App history</strong> and <strong>Startup</strong> tabs. Right-click <strong>Task Manager</strong> in the list and choose <strong>End task</strong>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Win8.1 Task Manager in More details view.</p>
+</div>
+<p class="task-head">Task 5: Resource Monitor (Win8.1)</p>
+<div class="step">
+<h3><span class="n">14</span>Open Resource Monitor</h3>
+<p>Open Task Manager again, click <strong>More details</strong>, go to <strong>Performance</strong>, and click <strong>Open Resource Monitor</strong> at the bottom. Look at each tab: Overview, CPU, Memory, Disk, and Network.</p>
+</div>
+<div class="step">
+<h3><span class="n">15</span>Analyze a wait chain</h3>
+<p>On the <strong>CPU</strong> tab, find <code class="inl">explorer.exe</code> under <strong>Image</strong>, right-click it, and choose <strong>Analyze Wait Chain</strong>. A hung process shows in red; the wait chain names the process it's waiting on, which is often the real culprit.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The Analyze Wait Chain window for explorer.exe.</p>
+<p>Close all windows on Win8.1.</p>
+</div>
+<p class="task-head">Task 6: Change and restore a Registry setting (Win7)</p>
+<div class="step">
+<h3><span class="n">16</span>Back up the Registry first</h3>
+<p>On <strong>Win7</strong>, open <strong>Start</strong>, type <code class="inl">regedit</code>, and open it. Accept UAC. Right-click <strong>Computer</strong> at the top of the tree, choose <strong>Export</strong>, and save as <code class="inl">C:\Users\sysadmin\Documents\Reg-Backup.reg</code>.</p>
+</div>
+<div class="step">
+<h3><span class="n">17</span>Rename the Recycle Bin</h3>
+<p>Go to this key (on Windows 10 and 11 you can paste it into the address bar):</p>
+<pre class="cmd"><code>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}</code></pre>
+<p><strong>(Default)</strong> reads <em>(value not set)</em>. Double-click it, type <code class="inl">Trash Bin</code> as the Value data, and click <strong>OK</strong>. Right-click the desktop and choose <strong>Refresh</strong>. The Recycle Bin is now <strong>Trash Bin</strong>.</p>
+<p class="shotline"><span class="shot">Screenshot</span>The desktop showing Trash Bin, with Registry Editor open on the key.</p>
+</div>
+<div class="step">
+<h3><span class="n">18</span>Export just that key</h3>
+<p>Right-click the <code class="inl">{645FF040-...}</code> key and choose <strong>Export</strong>. Save it to the <strong>Desktop</strong> as <code class="inl">Trash Bin</code>.</p>
+</div>
+<div class="step">
+<h3><span class="n">19</span>Undo the change, then re-import it</h3>
+<p>Double-click <strong>(Default)</strong>, delete the text, and click <strong>OK</strong>. Refresh the desktop: it says <strong>Recycle Bin</strong> again. Close Regedit, then double-click <strong>Trash Bin.reg</strong> on the desktop and click <strong>Yes</strong> through the warnings. Refresh again: the name is back to <strong>Trash Bin</strong>, restored from your export.</p>
+<p>The lab is complete.</p>
+</div>
+
+<div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+<section id="reference" aria-labelledby="h-reference">
+<h2 id="h-reference">Reference: admin tools and shortcuts</h2>
+<h3>Snap-ins and their shortcuts</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Tool</th><th scope="col">Shortcut</th><th scope="col">Use it to</th></tr></thead><tbody><tr><td>Computer Management</td><td><code class="inl">compmgmt.msc</code></td><td>Get most snap-ins in one window</td></tr><tr><td>Disk Management</td><td><code class="inl">diskmgmt.msc</code></td><td>Initialize, partition, format, extend, shrink, assign letters</td></tr><tr><td>Event Viewer</td><td><code class="inl">eventvwr.msc</code></td><td>Read System, Application, and Security logs</td></tr><tr><td>Task Scheduler</td><td><code class="inl">taskschd.msc</code></td><td>Run programs on a schedule or event</td></tr><tr><td>Device Manager</td><td><code class="inl">devmgmt.msc</code></td><td>Drivers and hardware (Lab 01-A)</td></tr><tr><td>Services</td><td><code class="inl">services.msc</code></td><td>Start, stop, and set startup type</td></tr><tr><td>Local Users and Groups</td><td><code class="inl">lusrmgr.msc</code></td><td>Local accounts (Lab 04)</td></tr><tr><td>Performance Monitor</td><td><code class="inl">perfmon.msc</code></td><td>Counters, data collector sets, reports</td></tr><tr><td>Group Policy Editor</td><td><code class="inl">gpedit.msc</code></td><td>Local policy (Lab 04; not in Home editions)</td></tr><tr><td>Certificate Manager</td><td><code class="inl">certmgr.msc</code></td><td>User certificates</td></tr></tbody></table></div>
+<h3>Task Scheduler triggers</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Trigger</th><th scope="col">Runs when</th></tr></thead><tbody><tr><td>On a schedule</td><td>One time, daily, weekly, or monthly</td></tr><tr><td>At log on</td><td>A user (or any user) signs in</td></tr><tr><td>At startup</td><td>The PC boots, before anyone signs in</td></tr><tr><td>On idle</td><td>The PC has been idle for a set time</td></tr><tr><td>On an event</td><td>A specific Event Viewer entry appears</td></tr></tbody></table></div>
+<h3>Disk Management terms</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Term</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td>Basic disk</td><td>Partitions (primary, extended, logical); the normal setup</td></tr><tr><td>Dynamic disk</td><td>Volumes that can span disks or form software RAID (legacy; Lab 14)</td></tr><tr><td>Simple volume</td><td>One area on one disk</td></tr><tr><td>Initialize</td><td>Choose MBR or GPT before first use</td></tr><tr><td>Extend / Shrink</td><td>Grow into adjacent free space or give space back</td></tr></tbody></table></div>
+<h3>File systems</h3>
+<div class="tbl"><table><thead><tr><th scope="col">File system</th><th scope="col">Max file size</th><th scope="col">Typical use</th></tr></thead><tbody><tr><td>NTFS</td><td>Very large (16 TB+)</td><td>Windows system and data drives; permissions, encryption, compression</td></tr><tr><td>FAT32</td><td>4 GB</td><td>Small USB drives, compatibility with almost anything</td></tr><tr><td>exFAT</td><td>Very large</td><td>Large USB drives and SD cards shared between Windows and macOS</td></tr><tr><td>ReFS</td><td>Very large</td><td>Servers and Storage Spaces</td></tr></tbody></table></div>
+<h3>Task Manager tabs (Windows 10 and 11)</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Tab</th><th scope="col">What you do there</th></tr></thead><tbody><tr><td>Processes</td><td>See apps and background processes; End task</td></tr><tr><td>Performance</td><td>CPU, memory, disk, network, GPU graphs; open Resource Monitor</td></tr><tr><td>App history</td><td>Resource use per Store app over time</td></tr><tr><td>Startup apps</td><td>Enable or disable programs that start at sign-in, with startup impact</td></tr><tr><td>Users</td><td>See and sign out sessions</td></tr><tr><td>Details</td><td>Every process by name, PID, and status; set priority</td></tr><tr><td>Services</td><td>Start and stop services</td></tr></tbody></table></div>
+<h3>Registry root keys</h3>
+<div class="tbl"><table><thead><tr><th scope="col">Key</th><th scope="col">Holds</th></tr></thead><tbody><tr><td>HKEY_LOCAL_MACHINE (HKLM)</td><td>Settings for the whole computer</td></tr><tr><td>HKEY_CURRENT_USER (HKCU)</td><td>Settings for the signed-in user</td></tr><tr><td>HKEY_CLASSES_ROOT (HKCR)</td><td>File associations and COM objects</td></tr><tr><td>HKEY_USERS (HKU)</td><td>Every user profile loaded on the PC</td></tr><tr><td>HKEY_CURRENT_CONFIG (HKCC)</td><td>The current hardware profile</td></tr></tbody></table></div>
+<div class="call tip"><span class="k">Restore points back up the Registry too</span><p>Before a big Registry change on a real PC, create a System Restore point (Lab 07). It's easier to roll back than a full .reg import.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-reference" data-done="reference"><label for="done-reference">Mark this section reviewed</label></div>
+</section>
+<section id="stuck" aria-labelledby="h-stuck">
+<h2 id="h-stuck">Where people get stuck</h2>
+<div class="tbl"><table><thead><tr><th scope="col">Problem</th><th scope="col">Why it happens</th><th scope="col">Fix</th></tr></thead><tbody><tr><td><code class="inl">console.msc</code> doesn't show in search</td><td>It was saved somewhere other than <code class="inl">C:\Users\sysadmin</code></td><td>Save it again with the full path, or open it with File > Open in MMC</td></tr><tr><td>Notepad doesn't open at sign-in</td><td>The trigger is At startup, or the task wasn't saved</td><td>Check Triggers says <strong>At log on</strong>, then sign out and back in</td></tr><tr><td>Can't find Disk 2</td><td>It's below the visible area</td><td>Maximize the window or scroll the lower pane</td></tr><tr><td>FAT32 option is missing</td><td>The volume is larger than 32 GB (the Windows format limit)</td><td>Keep it at 2048 MB as the lab says</td></tr><tr><td>Task Manager only shows a few apps</td><td>Win8.1/10 open in the compact view</td><td>Click <strong>More details</strong></td></tr><tr><td>Can't find the CLSID key</td><td>The path is long and easy to mistype</td><td>Expand one level at a time or copy the path from this page</td></tr><tr><td>Trash Bin name doesn't appear</td><td>The desktop didn't refresh</td><td>Right-click the desktop > Refresh</td></tr></tbody></table></div>
+
+<div class="done-row"><input type="checkbox" id="done-stuck" data-done="stuck"><label for="done-stuck">Mark this section reviewed</label></div>
+</section>
+<section id="on-the-job" aria-labelledby="h-on-the-job">
+<h2 id="h-on-the-job">On the job</h2>
+<div class="tbl"><table><thead><tr><th scope="col">The ticket says</th><th scope="col">Where you look</th><th scope="col">Likely fix</th></tr></thead><tbody><tr><td>"My program is frozen and won't close."</td><td>Task Manager > Processes</td><td>End task; if it keeps hanging, Resource Monitor > Analyze Wait Chain</td></tr><tr><td>"The PC takes forever to start."</td><td>Task Manager > Startup</td><td>Disable high-impact startup apps</td></tr><tr><td>"I plugged in a new drive and it's not in File Explorer."</td><td>Disk Management</td><td>Initialize, create a volume, assign a letter</td></tr><tr><td>"Run our backup script every night."</td><td>Task Scheduler</td><td>Create Task with a daily trigger and "Run whether user is logged on or not"</td></tr><tr><td>"A setting keeps reverting."</td><td>Regedit, or Group Policy</td><td>Check whether a policy is overriding it (Lab 04)</td></tr></tbody></table></div>
+<div class="call tip"><span class="k">Professional habit</span><p>Never edit the Registry without an export of the key you're changing, and note the original value in your ticket.</p></div>
+
+<div class="done-row"><input type="checkbox" id="done-on-the-job" data-done="on-the-job"><label for="done-on-the-job">Mark this section reviewed</label></div>
+</section>
+<section id="exam" aria-labelledby="h-exam">
+<h2 id="h-exam">On the A+ exams</h2>
+<div class="badges"><span class="badge">Core 2: Operating Systems</span></div>
+<p><strong>Core 2 (220-1202)</strong> lists these as tools you should recognize by name and by command: <code class="inl">mmc</code>, <code class="inl">compmgmt.msc</code>, <code class="inl">diskmgmt.msc</code>, <code class="inl">taskschd.msc</code>, <code class="inl">eventvwr.msc</code>, <code class="inl">services.msc</code>, <code class="inl">perfmon.msc</code>, Task Manager, <code class="inl">resmon</code>, and <code class="inl">regedit</code>. Expect scenario questions that ask which tool solves a problem.</p>
+<h3>High-yield facts</h3>
+<ul><li>A snap-in is one tool loaded into MMC; a saved console is an <code class="inl">.msc</code> file.</li><li>Task Manager's <strong>Startup</strong> tab is the first place to fix slow sign-ins.</li><li>Resource Monitor's <strong>Analyze Wait Chain</strong> finds what a hung process is waiting on.</li><li>FAT32 can't store a file larger than 4 GB; use NTFS or exFAT.</li><li>Initialize a new disk as GPT for drives over 2 TB and for UEFI boot.</li><li>Export a Registry key before editing it; a <code class="inl">.reg</code> file re-imports with a double-click.</li></ul>
+
+<div class="done-row"><input type="checkbox" id="done-exam" data-done="exam"><label for="done-exam">Mark this section reviewed</label></div>
+</section>
+<section id="check" aria-labelledby="h-check">
+<h2 id="h-check">Check yourself</h2>
+<div class="q"><p class="ask">1. You want one window with only Event Viewer, Services, and Disk Management for a junior tech. How?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Open <code class="inl">mmc</code>, add those three snap-ins, and save it as an <code class="inl">.msc</code> console file.</div></div>
+<div class="q"><p class="ask">2. A user's PC is slow right after sign-in. Where's the quickest fix?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Task Manager > Startup (Startup apps on Windows 11). Disable high-impact programs that don't need to start automatically.</div></div>
+<div class="q"><p class="ask">3. Why couldn't you copy a 6 GB video to the L: drive you created?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">L: is FAT32, which has a 4 GB maximum file size.</div></div>
+<div class="q"><p class="ask">4. An app is "Not responding" and ending it doesn't help for long. Which tool helps find the cause?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Resource Monitor > CPU > right-click the process > Analyze Wait Chain, to see which process it's waiting on.</div></div>
+<div class="q"><p class="ask">5. You changed a Registry value and something broke. You exported the key first. How do you undo it?</p><button type="button" class="btn reveal" aria-expanded="false">Show answer</button><div class="ans">Double-click the exported <code class="inl">.reg</code> file (or use File > Import in Regedit) to merge the original values back.</div></div>
+</section>
+<section id="evidence" aria-labelledby="h-evidence">
+<h2 id="h-evidence">Evidence to capture</h2>
+<p>Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.</p>
+<div class="evidence"><ul><li><input type="checkbox" id="ev1" data-evidence="ev1"><label for="ev1"><span class="shot">MMC</span>The Add or Remove Snap-ins window with Disk Management, Event Viewer, and Task Scheduler selected.</label></li><li><input type="checkbox" id="ev2" data-evidence="ev2"><label for="ev2"><span class="shot">Task</span>The Notepad task in Task Scheduler (or Notepad opening after sign-in).</label></li><li><input type="checkbox" id="ev3" data-evidence="ev3"><label for="ev3"><span class="shot">Volumes</span>Disk Management showing S: (NTFS) and L: (FAT32) on Disk 2.</label></li><li><input type="checkbox" id="ev4" data-evidence="ev4"><label for="ev4"><span class="shot">Task Manager</span>The Win8.1 Task Manager in More details view.</label></li><li><input type="checkbox" id="ev5" data-evidence="ev5"><label for="ev5"><span class="shot">Wait chain</span>Resource Monitor's Analyze Wait Chain window for explorer.exe.</label></li><li><input type="checkbox" id="ev6" data-evidence="ev6"><label for="ev6"><span class="shot">Registry</span>The desktop showing Trash Bin with Registry Editor open on the CLSID key.</label></li></ul></div>
+</section>
+<section id="cheat" aria-labelledby="h-cheat">
+<h2 id="h-cheat">Cheat sheet</h2>
+<div class="cheat"><div class="grid">
+<div><h3>Open it fast</h3>
+<ul><li><code class="inl">mmc</code> custom console; <code class="inl">compmgmt.msc</code> all-in-one</li><li><code class="inl">diskmgmt.msc</code> <code class="inl">eventvwr.msc</code> <code class="inl">taskschd.msc</code> <code class="inl">services.msc</code></li><li><kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Esc</kbd> Task Manager</li><li><code class="inl">resmon</code> Resource Monitor; <code class="inl">regedit</code> Registry</li></ul>
+</div>
+<div><h3>Remember</h3>
+<ul><li>Slow sign-in: Task Manager > Startup</li><li>Hung app: End task, then Analyze Wait Chain</li><li>FAT32 = 4 GB file limit; NTFS for Windows</li><li>GPT over 2 TB and for UEFI</li><li>Export the key before editing the Registry</li></ul>
+</div>
+</div></div>
+</section>
+</main></div>
+<footer><div class="in">
+  <p>Built for CompTIA A+ hands-on practice at Brookdale Community College, 2026. Open educational resource.</p>
+  <p>Companion to the NDG CompTIA A+ Lab Series v4 labs. This guide is independent and is not affiliated with or endorsed by CompTIA or Network Development Group. CompTIA A+ is a registered trademark of CompTIA, Inc.</p>
+</div></footer>
+<p id="live" class="sr" aria-live="polite"></p>
+<script>
+(function(){
+  var S={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
+         set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}},
+         del:function(k){try{localStorage.removeItem(k)}catch(e){}}};
+  window.__S=S;
+  var root=document.documentElement, tb=document.getElementById('theme');
+  function isDark(){var t=root.getAttribute('data-theme'); if(t) return t==='dark';
+    return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;}
+  function paintTheme(){var d=isDark(); tb.setAttribute('aria-pressed',d?'true':'false'); tb.textContent=d?'Light mode':'Dark mode';}
+  var saved=S.get('aplus-theme'); if(saved) root.setAttribute('data-theme',saved);
+  paintTheme();
+  tb.addEventListener('click',function(){var n=isDark()?'light':'dark'; root.setAttribute('data-theme',n); S.set('aplus-theme',n); paintTheme();});
+  var sc=parseFloat(S.get('aplus-scale'))||1;
+  function setScale(v){sc=Math.min(1.4,Math.max(.85,Math.round(v*100)/100)); root.style.setProperty('--scale',sc); S.set('aplus-scale',sc);}
+  setScale(sc);
+  document.getElementById('fs-up').addEventListener('click',function(){setScale(sc+.1)});
+  document.getElementById('fs-down').addEventListener('click',function(){setScale(sc-.1)});
+  document.getElementById('print').addEventListener('click',function(){window.print()});
+})();
+
+(function(){
+  var S=window.__S, P=document.body.getAttribute('data-prefix');
+  var live=document.getElementById('live');
+  function say(t){live.textContent=t;}
+  function load(k){try{return JSON.parse(S.get(P+k))||{}}catch(e){return {}}}
+  var done=load('done'), ev=load('evidence');
+  var tracks=[].slice.call(document.querySelectorAll('[data-done]'));
+  var bar=document.getElementById('meter-bar'), txt=document.getElementById('meter-txt'), meter=document.getElementById('meter');
+  function refresh(){
+    var n=0; tracks.forEach(function(c){ if(c.checked) n++;
+      var a=document.querySelector('.toc a[href="#'+c.getAttribute('data-done')+'"] .tick'); if(a) a.textContent=c.checked?'\u2713':'';});
+    var pct=tracks.length?Math.round(n/tracks.length*100):0;
+    bar.style.width=pct+'%'; meter.setAttribute('aria-valuenow',pct);
+    txt.textContent=n+' of '+tracks.length+' sections reviewed';
+    S.set(P+'meta',JSON.stringify({done:n,total:tracks.length}));
+  }
+  tracks.forEach(function(c){ c.checked=!!done[c.getAttribute('data-done')];
+    c.addEventListener('change',function(){done[c.getAttribute('data-done')]=c.checked; S.set(P+'done',JSON.stringify(done)); refresh();});});
+  refresh();
+  [].forEach.call(document.querySelectorAll('[data-evidence]'),function(c){ c.checked=!!ev[c.getAttribute('data-evidence')];
+    c.addEventListener('change',function(){ev[c.getAttribute('data-evidence')]=c.checked; S.set(P+'evidence',JSON.stringify(ev));});});
+  document.getElementById('clear').addEventListener('click',function(){
+    if(!window.confirm('Clear your checkmarks on this lab page?')) return;
+    S.del(P+'done'); S.del(P+'evidence'); done={}; ev={};
+    [].forEach.call(document.querySelectorAll('[data-done],[data-evidence]'),function(c){c.checked=false;});
+    refresh(); say('Progress cleared for this lab.');});
+  [].forEach.call(document.querySelectorAll('.reveal'),function(b){
+    b.addEventListener('click',function(){var a=b.nextElementSibling, o=a.classList.toggle('open');
+      b.setAttribute('aria-expanded',o?'true':'false'); b.textContent=o?'Hide answer':'Show answer';});});
+  [].forEach.call(document.querySelectorAll('pre.cmd'),function(pre){
+    var b=document.createElement('button'); b.type='button'; b.className='copy'; b.textContent='Copy';
+    b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
+    b.addEventListener('click',function(){
+      var code=pre.querySelector('code'), clone=code.cloneNode(true);
+      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
+      function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
+      function fallback(){var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+        try{document.execCommand('copy'); ok();}catch(e){say('Copy failed; select the text instead.');} ta.remove();}
+    });});
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){ if(e.isIntersecting){
+      links.forEach(function(l){l.setAttribute('aria-current', l.getAttribute('href')==='#'+e.target.id?'true':'false');});}});},
+      {rootMargin:'-20% 0px -70% 0px'});
+    [].forEach.call(document.querySelectorAll('main section[id]'),function(s){io.observe(s);});
+  }
+  var det=document.querySelector('.toc details');
+  if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
+})();
+</script>
+</body>
+</html>

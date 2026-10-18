@@ -1,0 +1,163 @@
+@lede Users notice their desktop more than any other part of Windows, and they'll ask you to change it. You will set desktop icons, appearance, screen saver lock, and text size, then customize the Start menu, taskbar, and notification area on Windows 7 and Windows 10.
+@vms Win7, Win10
+
+== overview | Why this lab matters
+Customization tickets look small, but they're frequent, and doing them quickly builds trust with users. More importantly, a few of these "preferences" have real security or accessibility weight. A **screen saver that requires sign-in on resume** locks an unattended PC. **Text size and scaling**, larger scroll bars, and **contrast** themes make a PC usable for someone with low vision.
+You'll also see how the same settings moved from Control Panel's Personalization window in Windows 7 to the Settings app in Windows 10, which helps you find anything on Windows 11.
+
+== environment | The environment you're working in
+| Machine | IP address | Account | Password |
+| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
+| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+The VMs have no sound hardware, so the Sounds dialog shows options but plays nothing.
+
+== then-now | Then vs. now: Windows 11
+| In the lab | On Windows 11 |
+| Personalize > Change desktop icons | Settings > Personalization > **Themes > Desktop icon settings** |
+| Change your account picture | Settings > Accounts > **Your info** |
+| Window Color and Appearance (scroll bar size) | Not available; use Settings > Accessibility > **Text size** and **Visual effects > Always show scrollbars** |
+| Screen Saver settings | Settings > Personalization > **Lock screen > Screen saver**. **Dynamic lock** and Settings > Accounts > Sign-in options > "If you've been away" also lock the PC. |
+| Display > Set custom text size (DPI) | Settings > System > **Display > Scale** (custom scaling under Scale > Custom) |
+| Taskbar and Start Menu Properties | Settings > Personalization > **Taskbar** and **Start**. The taskbar can't move to the sides; it can be centered or left-aligned. |
+| Notification Area Icons / system icons | Settings > Personalization > Taskbar > **Other system tray icons** |
+| Pin Calendar to the taskbar | Right-click any app in Start > **Pin to taskbar** |
+
+== walkthrough | Walkthrough
+## Task 1: Desktop settings (Win7)
+### Put Control Panel on the desktop
+Log in to **Win7**. Right-click the desktop > **Personalize > Change desktop icons**. Check **Control Panel** and click **OK**. A Control Panel icon appears on the desktop.
+### Change the account picture
+In Personalization, click **Change your account picture**, choose a picture, and click **Change Picture**. **Browse for more pictures** lets you use your own.
+### Make the scroll bars bigger
+Click **Window Color > Advanced appearance settings** if needed. In **Window Color and Appearance**, choose **Scrollbar** from **Item**, set **Size** to `30`, and click **OK**. Scroll bars are now wider, which helps users with limited mouse control.
+!shot The Window Color and Appearance dialog with Scrollbar size 30.
+### Look at Sounds
+Click **Sounds**. You can assign any `.wav` file to a Windows event. Review the list and click **Cancel**.
+### Set a screen saver that locks the PC
+Click **Screen Saver**. Choose **Blank**, set **Wait** to `15` minutes, check **On resume, display logon screen**, and click **OK**.
+!shot The Screen Saver Settings with Blank, 15 minutes, and On resume, display logon screen checked.
+!tip Why this matters | "On resume, display logon screen" means an unattended PC locks itself after 15 minutes. Many security policies require it.
+### Look at text size
+Click **Display** in the left pane. Note the text size options, click **Set custom text size (DPI)** to see the percentages, then **Cancel** and close the window.
+## Task 2: Personalization (Win10)
+### Set the background
+Log in to **Win10**. Open **Start > Settings > Personalization > Background**. Choose **Picture**, pick an image, and choose a fit (Fill, Fit, Stretch, Tile, Center, or Span).
+### Set colors and dark mode
+Click **Colors**. Pick an accent color and check **Start, taskbar, and action center** under **Show accent color on the following surfaces**. Choose **Dark**. Open Start to see the color applied.
+!shot The Win10 Colors page with Dark mode and the accent color applied.
+### Explore Start settings
+Click **Start** in the left pane and try options such as **Use Start full screen**. Change them back if you prefer.
+## Task 3: Taskbar and Start menu (Win7)
+### Open Taskbar properties
+On **Win7**, right-click the taskbar > **Properties**. Typical taskbar settings:
+| Setting | Typical |
+| Lock the taskbar | Unchecked (while you customize) |
+| Auto-hide the taskbar | Unchecked |
+| Use small icons | Checked |
+| Taskbar location | Bottom |
+| Taskbar buttons | Never combine |
+### Show all notification icons
+Click **Customize** next to the notification area. Check **Always show all icons and notifications on the taskbar** and click **OK**. All the tray icons now show.
+### Turn off the clock
+Click **Customize** again > **Turn system icons on or off**. Set **Clock** to **Off** and click **OK** twice. The clock disappears.
+### Customize the Start menu
+On the **Start Menu** tab, click **Customize**. Under **Computer**, choose **Don't display this item**; under **Control Panel**, choose **Display as a menu**. Click **OK**, then **Apply**, and open Start: Computer is gone and Control Panel opens as a submenu.
+!shot The Win7 Start menu with Control Panel shown as a menu and Computer removed.
+### Add the Desktop toolbar
+On the **Toolbars** tab, check **Desktop** and click **OK**. A **Desktop** toolbar appears near the notification area; click its double arrows to browse.
+## Task 4: Taskbar (Win10)
+### Pin an app
+On **Win10**, open **Start**, right-click **Calendar**, and choose **More > Pin to taskbar**.
+### Choose system icons
+Right-click the taskbar > **Taskbar settings**. Under **Notification area**, click **Turn system icons on or off** and toggle a few.
+!shot Win10 Turn system icons on or off, with Calendar pinned to the taskbar.
+The lab is complete.
+
+== reference | Reference: customization and accessibility
+### Where the common requests live (Windows 10 and 11)
+| Request | Location |
+| Wallpaper, colors, dark mode | Settings > Personalization |
+| Desktop icons (This PC, Recycle Bin, Control Panel) | Personalization > Themes > Desktop icon settings |
+| Lock after inactivity | Lock screen > Screen saver ("On resume, display logon screen"); Sign-in options |
+| Bigger text everywhere | System > Display > Scale |
+| Bigger text only | Accessibility > Text size |
+| High contrast | Accessibility > Contrast themes |
+| Mouse pointer size and color | Accessibility > Mouse pointer and touch |
+| Magnifier, Narrator, captions | Accessibility |
+| Taskbar alignment, items, tray icons | Personalization > Taskbar |
+| Default apps | Apps > Default apps |
+### Accessibility shortcuts worth knowing
+| Shortcut | Does |
+| [[Win]]+[[+]] | Starts Magnifier and zooms in; [[Win]]+[[Esc]] stops it |
+| [[Win]]+[[Ctrl]]+[[Enter]] | Starts or stops Narrator |
+| Left [[Alt]]+Left [[Shift]]+[[PrtScn]] | Turns a contrast theme on or off |
+| [[Shift]] five times | Sticky Keys prompt |
+| [[Win]]+[[U]] | Opens Accessibility settings |
+### Useful taskbar and desktop shortcuts
+| Shortcut | Does |
+| [[Win]]+[[D]] | Show or hide the desktop |
+| [[Win]]+[[L]] | Lock the PC |
+| [[Win]]+[[1]] through [[Win]]+[[9]] | Open the pinned taskbar app in that position |
+| [[Win]]+[[Tab]] | Task view and virtual desktops |
+| [[Win]]+[[V]] | Clipboard history |
+| [[Win]]+[[.]] | Emoji and symbols |
+
+== stuck | Where people get stuck
+| Problem | Why it happens | Fix |
+| Can't move or resize the taskbar | It's locked | Right-click the taskbar and uncheck Lock the taskbar |
+| Window Color and Appearance won't open | Windows 7 Basic or an Aero theme is active | Click Window Color, then Advanced appearance settings |
+| Calendar isn't in the Win10 Start menu | It's listed alphabetically, not pinned | Scroll to C in the app list, or search "Calendar" |
+| Clock is gone and the user wants it back | You turned it off | Turn system icons on or off > Clock: On |
+| Theme changes don't stick on a work PC | Group Policy controls them | Expected in a domain; ask the administrator |
+
+== on-the-job | On the job
+| The ticket says | Where you look | Likely fix |
+| "I need everything bigger; I can't read the screen." | Display > Scale, Accessibility > Text size, Magnifier | Raise scaling; show Magnifier shortcuts |
+| "Policy says screens must lock when we walk away." | Screen saver or sign-in options | Set a timeout with sign-in on resume; teach [[Win]]+[[L]] |
+| "My taskbar disappeared." | Taskbar settings | Turn off auto-hide |
+| "I lost the Recycle Bin from my desktop." | Desktop icon settings | Check Recycle Bin |
+| "The colors are inverted and everything is black." | Contrast themes | The user hit the shortcut; turn contrast off |
+!tip Professional habit | Teach the shortcut while you fix the problem. "Press Win+L when you leave your desk" prevents the next ticket.
+
+== exam | On the A+ exams
+**Core 2 (220-1202)** covers Windows Settings categories (Personalization, Accessibility, System, Apps, Accounts), Control Panel equivalents, and screen-lock settings as part of workstation security best practices.
+### High-yield facts
+- Screen saver with "On resume, display logon screen" (or an inactivity timeout) is a workstation security best practice.
+- [[Win]]+[[L]] locks the PC immediately.
+- Scale changes size without lowering resolution.
+- Desktop icon settings brings back This PC, Recycle Bin, and Control Panel icons.
+- Accessibility includes Magnifier, Narrator, contrast themes, and text size.
+
+== check | Check yourself
+?? Company policy requires PCs to lock after 10 minutes of inactivity. How do you set that on one PC?
+=> Set a screen saver (or screen timeout) of 10 minutes with **On resume, display logon screen** checked, or the equivalent sign-in option. In a domain, enforce it with Group Policy.
+?? A user's Recycle Bin icon vanished from the desktop. Where do you restore it?
+=> Settings > Personalization > Themes > Desktop icon settings (Personalize > Change desktop icons on Windows 7).
+?? A user with low vision says text is too small. What's the first setting to change?
+=> Display scaling (Settings > System > Display > Scale), and Accessibility > Text size for text only.
+?? What shortcut locks Windows instantly?
+=> [[Win]]+[[L]]
+?? Why couldn't you drag the taskbar to the left side of the screen on Windows 11?
+=> Windows 11 only supports the taskbar at the bottom; you can change its alignment but not its edge.
+
+== evidence | Evidence to capture
+Submit these screenshots as proof you completed the lab. Tick each one as you take it, then print this list as your cover sheet.
+[] Scroll bars | Win7 Window Color and Appearance with Scrollbar size 30.
+[] Screen saver | Win7 Screen Saver Settings with Blank, 15 minutes, and logon screen on resume.
+[] Colors | Win10 Colors page with Dark mode and the accent color applied.
+[] Start menu | Win7 Start menu with Control Panel as a menu and Computer removed.
+[] Taskbar | Win10 system icons settings with Calendar pinned.
+
+== cheat | Cheat sheet
+## Where it is
+- Settings > Personalization (look and taskbar)
+- Themes > Desktop icon settings
+- Lock screen > Screen saver
+- System > Display > Scale
+- Accessibility (text, contrast, Magnifier)
+## Shortcuts
+- [[Win]]+[[L]] lock
+- [[Win]]+[[D]] desktop
+- [[Win]]+[[+]] Magnifier
+- [[Win]]+[[U]] Accessibility
+- Taskbar: right-click > Taskbar settings
