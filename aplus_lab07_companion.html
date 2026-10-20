@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab07-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: maintenance and backup</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -292,6 +297,124 @@ dir</code></pre>
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Running the Disk Cleanup Utility</p>
+<p class="task-head">Task 1.1 - Running Disk Cleanup on Win8.1</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win8.1 virtual machine.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev7"><span class="shot">Backup files</span>The <code class="inl">dir</code> output on Win8.1 showing the File History folders.</label></li></div><div class="step"><h3 class="fh"><span class="n">2</span> On the Win8.1 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Right-click the Start menu and click on Search.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Type disk cleanup in the search field and click on Free up disk space by deleting unnecessary files.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Notice the Disk Cleanup utility appears and starts scanning the system. Wait until the utility finishes scanning.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Once the Disk Cleanup utility finishes scanning, notice the checkboxes in the Files to delete pane. These indicate which areas have files that can be cleaned up and the amount of disk space that can be recovered. Under normal operations, the users can be taught to perform the basic disk clean periodically. Now Windows would want to protect the system from a too aggressive cleanup, so system-level files, which also can collect quite a bit of junk, are not included but can be triggered by an "administrator" (a user with Administrator privileges). To access the system file cleanup area, click on the Clean up system files button.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Cleanup</span>Disk Cleanup after Clean up system files, showing the total space.</label></li></div><div class="step"><h3 class="fh"><span class="n">8</span> Notice another system scan takes place. The Disk Cleanup utility will be refreshed and will reappear with additional folders and areas to be cleaned up. Leave the defaulted checkboxes and review each item to understand what is being cleaned. Clicking on each entry will show a description. Notice the total amount of disk space to be cleaned. Click OK to initiate the cleanup process.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> When prompted, click Delete Files to confirm the process.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> The process should take about 2-3 minutes to complete. Once completed, the utility will close on its own. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.2 - Scheduling Disk Cleanup for Win8.1</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Right-click the Start menu and click on Search.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Type cleanmgr /sageset:1 in the search field and click on its respective icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Once the Disk Cleanup Settings window appears, click on the Clean up system files button to open all the files and areas.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Check all of the checkboxes and click OK. This process will create a set of registry keys that will store the cleanup settings you just have chosen. The value (1) you put in the command line allows you to store different cleanup options that can be run by the scheduler by using the /sagerun:n switch.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Click on the Start button, followed by clicking on Control Panel.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Click on Administrative Tools with the View by set to Small icons.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Double-click on Task Scheduler.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> In the Task Scheduler window, on the right-side pane, underneath Actions, click on Create a Basic Task.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> In the Create Basic Task Wizard window, type Disk Cleanup in the Name text field and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> You will now be directed through a series of questions for scheduling options. First, you are asked when you want the task to start. Click the radio button next to Weekly and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Next, specify the options for the scheduled task. Set the start time to 10-15 minutes after your current time. This should give you enough time to finish the wizard before it initiates. Leave the value of 1 in the Recur every text field. Set the day of the week to your current day. Click the Next button.     Start (date and time) - this indicates when the scheduled task will be run for the first time. It is important to choose a starting time when the computer will not be in use. Even though the task will run in the background, it will slow the computer down and an unsuspecting user might think the computer is malfunctioning and reboot.     Recur every - this indicates whether to run the task every week (1) every other week (2) every third week (3) and so on.     Sunday, Monday, Tuesday, etc. checkboxes - this will say on which day(s) of the week to run the scheduled task.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Restore point</span>The System Restore confirmation after the reboot.</label></li></div><div class="step"><h3 class="fh"><span class="n">12</span> On the next step, ensure that Start a program is selected and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Click the Browse button for Program/script.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> In the Windows Explorer window, ensure that you are in the C:\Windows\System32 directory and type cleanmgr.exe in the File name text field. Click Open.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> The program name will now display in the Program/script text field. Type /sagerun:1 in the Add arguments (optional) text field. This will use the folder and area cleanup settings you configured earlier. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> On the Finish page, confirm the settings and click Finish.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Back on the Task Scheduler window, on the left pane, click on the Task Scheduler Library folder. Notice the Disk Cleanup task is now listed in the center pane.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Schedule</span>The Disk Cleanup task in Task Scheduler Library with its trigger or Last Run Time.</label></li></div><div class="step"><h3 class="fh"><span class="n">18</span> Double-click on the Disk Cleanup task in the center pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">19</span> In the Disk Cleanup Properties window, select the list arrow next to the Configure for option and change it to Windows 8.1. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">20</span> At this point, if enough time has passed for the scheduled task, you should see a status of Running for the Disk Cleanup task. If you miss the running status, you can check the last time the schedule was run by looking at the Last Run Time column.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">21</span> Close the Task Scheduler window. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">22</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 2 - Running the Disk Defragmentation Utility</p>
+<p class="task-head">Task 2.1 - Running Disk Defragmentation in Win8.1</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> On the Win8.1 machine, with Administrative Tools opened, double-click on Defragment and Optimize Drives.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> To change the scheduled defragment and optimization times, click the Turn on button in the Scheduled optimization pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Notice a pop-up window appears. Check the checkbox for Run on a schedule (recommended). Select Weekly from the Frequency dropdown menu and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Initiate the Disk Defragmentation utility by first analyzing the disk. Select (C:) from the list of drives and click the Analyze button.</h3><div class="call tip"><span class="k">Note</span><p>The disk analysis should take about 1-2 minutes.</p></div></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Optimize</span>Optimize Drives showing C: after optimization.</label></li></div><div class="step"><h3 class="fh"><span class="n">5</span> Once the disk analysis completes, notice the percentage of fragmented for C: underneath the Current status column. In this example, 2% of the disk is fragmented, meaning that the overall disk consists of 2% of files that are not placed next to each other on the hard drive. Proceed by making sure that (C:) is highlighted and click the Optimize button. The disk defragmentation for this virtual machine should take about 3-4 minutes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Once the defragmentation completes, notice the percentage underneath the Current status column. Click Close when finished. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Close the Administrative Tools window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 3 - Creating System Restore Points</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win8.1 system, in the Control Panel window, click on the System applet.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click on System protection from the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the System Properties window, on the System Protection tab, click the Create button to begin creating a restore point.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> When prompted to enter a description for the restore point, type Background Configuration in the text field and click the Create button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Notice the utility will create the restore point. Once finished, click the Close button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Now, change the background to test the restore point. Right-click on the desktop and click Personalize.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the Personalization window, click on the Desktop Background link.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Ensure that Solid Colors is selected from the dropdown menu for Picture location and select any color that is different from the current background color. Click Save changes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Close the Personalization window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Change focus to the System Properties window, while on the System Protection tab, click on the System Restore button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Notice the System Restore wizard appears. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> A list of all the recent restore points will be shown. To view older restore points, you may check the box for Show more restore points. Select the Background Configuration restore point and then click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Verify the restore point information and click the Finish button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> When prompted, click Yes to continue.</h3><div class="call tip"><span class="k">Note</span><p>The system restore process should take about 8 minutes.</p></div></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Once the system restore point has been completed, the Windows OS will reboot itself. Log back into the system as sysadmin using Train1ing$ as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> When logged in, notice the desktop background has reverted to its original settings. On the System Restore confirmation window, click the Close button. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<p class="task-head">Task 4 - Windows Backup</p>
+<p class="task-head">Task 4.1 - Initiating a Backup Process on Win7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Click the Start button and navigate to All Programs &gt; Maintenance &gt; Backup and Restore.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> The first thing that will need to be done is to configure the backup settings. Click on the Set up backup link.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> The first step involves telling Windows where to backup the files. You can use the second partition that you are not backing up for this lab. Select Data (E:) and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> The next step of the wizard will ask what you would like to backup. Select the Let me choose radio button and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Select all the checkboxes under the Data Files and select the checkbox for Local Disk (C:) under Computer. Uncheck the Include a system image of drives: System Reserved, (C:). Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> On the Review your backup settings step, confirm the settings and check the schedule. You can change the schedule by clicking on Change schedule. Once confirmed, click Save settings and run backup.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Notice the backup will run for the first time and will continue to run according to the schedule that has been set.</h3><div class="call tip"><span class="k">Note</span><p>The backup process should take about 4 minutes.</p></div></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Now, to test the backup. There is a folder named Installs on the desktop that contains several programs. Right-click the Installs folder and click Delete.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> When prompted, click Yes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Right-click the Recycle Bin and select Empty Recycle Bin.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> When prompted, click Yes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Change focus to the Backup and Restore window. Click on the Restore my files button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> In the Restore Files window, click on the Browse for folders button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> On the left pane, click on sysadmin's backup followed by double-clicking on the Desktop folder in the right pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Select the Installs folder and click on the Add folder button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> Back on the Restore Files window, notice the Installs folder is listed. Click Next.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">File restore</span>The restored Installs folder on Win7 (or the Restore Files window).</label></li></div><div class="step"><h3 class="fh"><span class="n">19</span> When asked where to restore the files, ensure that In the original location radio button is selected and click the Restore button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">20</span> Once the restore process successfully completes, click Finish.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">21</span> Notice the Installs folder is back on the desktop. When opened, all original files should be present. Challenge Task: As a challenge, try to recreate this task in the Win10 machine that is made available in this lab environment. This will help show similarities and differences between the versions. Do note that the Backup and Recovery utility has been stripped from Windows 8.1 and instead only includes the System Image backup utility.</h3></div>
+<p class="task-head">Task 4.2 - Initiating a Backup Process on Win10</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Click on the Start button and then click Control Panel.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Click on Save backup copies of your files with File History.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> If there is no network location showing, click on Select a network location.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Click on Add network location.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Double-click on Win8-1.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Select Backup and then click on Select folder.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Click \\WIN8-1\Backup to highlight it and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Click on Exclude Folders from the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Click on Add.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Click on each Library and Add all but the Documents Library. You will have to repeat this step for each library separately. (Camera Roll, Music, Pictures, Saved Pictures, Videos)</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Click on Save Changes once you have added your selections.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Click on Advanced Settings from the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Click through the options to see how you could personalize the backup options. Once finished review, click Cancel.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Click the Turn on button to enable File History and to start the backup process. The information note in the yellow strip above may show up when you are backing up file that have been encrypted with EFS. File History will not back up sensitive data.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev6"><span class="shot">File History</span>File History turned on with the network location and last backup time.</label></li></div><div class="step"><h3 class="fh"><span class="n">18</span> It will take a few minutes to complete the backup, but you will see the timestamp of when the backup is completed. Run now will become available to do manual backups. Click the X in the top-right corner to close.</h3></div>
+<p class="task-head">Task 4.3 - Log in to the Win8.1 System to Find the Backup.</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Accessing MMC is similar to Windows 8.1 and Windows 10. Access the Win8.1 virtual machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Right-click on the Windows Button located in the lower-left corner of the screen. The Power User Menu will open. Click on Command Prompt (Admin).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Click Yes to answer the UAC question.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Change directories to the location of the Backup folder on C:\. C:\Windows\system32&gt; cd C:\Users\sysadmin\Documents\Backup\sysadmin\Win10</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> At the prompt, enter the dir command. Notice a Configurations and Data folder are present. If you explore the Data directory further, you'll notice that the backup files are located here. Practice by accessing the same directory using the File Explorer.</h3><pre class="cmd"><code>C:\Users\sysadmin\Documents\Backup\sysadmin\WIN10&gt; dir</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: maintenance and backup</h2>

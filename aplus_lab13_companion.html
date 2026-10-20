@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab13-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: installing software</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -260,6 +265,59 @@ ls</code></pre>
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Software Installation in Windows</p>
+<p class="task-head">Task 1.0 - Installing 7-Zip Compression Utility</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Once logged in, double-click on the Installs folder located on the desktop.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Double-click on the 7z1801 executable application file to launch the setup wizard for 7-Zip.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> When prompted with user account control, click Yes to continue. One of the security features that Microsoft added to the Windows operating system is User Account Control. One of the ways that Windows will protect itself from the possible installation of malicious software is to only allow administrators to install software. If a software package installation is attempted by a standard user, Even when installing software as an administrator, Windows will ask for confirmation before beginning the installation.</h3><div class="call tip"><span class="k">Note</span><p>Windows will ask for the username and password of an administrator.</p></div></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> The first step of this installation wizard is to ask where to install the program. The typical default location is C:\Program Files\&lt;program name&gt; (in this case, program name is 7-Zip). Leave the defaults and click the Install button. On a 64-bit system, there are two default install location. The first location is called Program Files (x86) which is for older 32-bit programs. The second default location is called Program Files which is for the new 64-bit programs.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Notice that the 7-Zip application is now installed. Click Close.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> To run the software, click on the Start button, navigate to All Programs, open the 7-Zip folder, and then click on 7-Zip File Manager.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> The program's main window will appear. You can create/modify compressed files here. Alternatively, 7-Zip will also install a connection into the context menu of Windows Explorer, so you can create/modify files with 7-Zip by right-clicking on files or folders. Change focus to the Windows Explorer with the Installs folder opened and right-click on the 7z1801 file; notice the available 7-Zip options.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">7-Zip</span>The right-click menu showing the 7-Zip submenu.</label></li></div><div class="step"><h3 class="fh"><span class="n">10</span> Close the 7-Zip program window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Leave the Win7 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.1 - Installing CPU-Z</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> In the Installs folder, double-click on the cpu-z_1.83-en.exe executable file.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> When prompted with a security warning, click Run to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> When prompted with user account control, click Yes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the setup wizard, select the radio button for I accept the agreement and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Modify the location of the installation to C:\Programs Files\CPU-Z and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> The next window will ask where the Start Menu Folder will reside. The default will create a folder called CPUID and another inside called CPU-Z. Click Next again.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> On the next step, the installer will ask if it should create a desktop icon. Leave the default selection and click Next to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Confirm the install options and click the Install button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> After the install is complete, click Finish.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Notice the readme file opens in notepad. This file will contain information about the program and release notes about the version installed. Briefly review the readme file and close the Notepad window when finished.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Notice the CPUID CPU-Z icon appears on the desktop; double-click it to launch the program.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">CPU-Z</span>CPU-Z on the CPU or SPD tab.</label></li></div><div class="step"><h3 class="fh"><span class="n">12</span> When prompted with user account control, click Yes to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Notice the available options in the main window. Below is a list of the available tabs and a brief description of each:      CPU:                  CPU Information      Caches:               CPU Level1, Level2, and Level3 Cache information      Mainboard:            Motherboard information including chipsets and BIOS      Memory:               Total memory information      SPD:                  Memory information by individual memory slot      Graphics:             Graphics card (or chipset graphics) information      Bench:                CPU Benchmarks      About:                Information about the software package</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> The software does not make any changes to your system, so it is considered a safe and effective desktop support tool. Close the application window.</h3></div>
+<p class="task-head">Task 2 - Software Installation in Linux</p>
+<p class="task-head">Task 2.1 - Installing LibreOffice</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Lubuntu system from the topology.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Sign as the sysadmin using Train1ng$ as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> On the taskbar, click on the File Manager icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the /home/sysadmin directory, double-click on the Downloads folder.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the Downloads folder, you will see a compressed LibreOffice installer file. Double-click on the LibreOffice_6.0.1_Linux_x86-64_deb.tar.gz file.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> The compressed file window will open, and you will see the contents. Click the Extract button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the Extract window, click on Desktop and click Extract.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Once the extraction of the files is completed, click Quit.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Click on the LXTerminal icon in the taskbar to launch the terminal.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> In the terminal window, type the command below, followed by pressing the Enter key. This will change your current working directory to the desktop. sysadmin@lubuntu:~$ cd Desktop</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Enter the ls command to verify that the LibreOffice file exists.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Desktop$ ls</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Now, enter the command below to change to the LibreOffice installation location. When typing out long names, using the Tab key can be useful as it can be used as an auto complete feature. For this example, typing Li followed by pressing the Tab key will auto complete the full name.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Desktop$ cd LibreOffice_6.0.1.1_Linux_x86-64_deb</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Enter the command below to change to the folder that contains the actual installation files.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Desktop/LibreOffice_6.0.1.1_Linux_x86-64_deb$ cd DEBS</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Enter the command below to begin the installation. This command will run the dpkg utility, which is the package manager for Debian-based Linux systems. It can install, remove, and build packages, but it cannot perform an automatic download/installation like apt-get. If prompted for the sudo password, enter Train1ng$. The switch used with dpkg uses a lower-case i to indicate install. The sudo part of the syntax is short for Super User Do. It tells Linux that the software is to be run with root, or Super User privileges. The -i switch tells dpkg to install the package(s). In this case, all the packages that have the .deb extension in the current folder</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Desktop/LibreOffice_6.0.1.1_Linux_x86-64_deb/DEBS$ sudo dpkg -i *.deb</code></pre></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">dpkg</span>The terminal after <code class="inl">sudo dpkg -i *.deb</code> finishes.</label></li></div><div class="step"><h3 class="fh"><span class="n">15</span> When the installation is complete, you will see the command prompt displayed. Close the terminal window by typing exit followed by pressing the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Click on the Start button and navigate to Office. Click on LibreOffice 6.0 Writer to launch the newly-installed program.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">LibreOffice</span>LibreOffice Writer open on Lubuntu.</label></li></div><div class="step"><h3 class="fh"><span class="n">17</span> The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: installing software</h2>

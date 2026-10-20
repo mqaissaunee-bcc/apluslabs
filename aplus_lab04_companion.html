@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab04-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: accounts, groups, and policy</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -278,6 +283,121 @@ footer p{margin:.25rem 0;max-width:80ch}
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Creating and Managing User Accounts</p>
+<p class="task-head">Task 1.1 - Adding and Managing User Accounts in Windows 7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Click the Start button, then click Control Panel on the right side of the menu.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the Control Panel window, click on User Accounts and Family Safety.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> On the next screen, click User Accounts.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Click on Manage another account.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Click on Create a new account.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> The next page will prompt you to enter the name and account type of the new account. In the New account name text field, type in Logan. For the User Type, make sure the Standard User radio button is selected and then click the Create Account button.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Standard user</span>The UAC prompt asking for admin credentials while signed in as Logan on Win7.</label></li></div><div class="step"><h3 class="fh"><span class="n">9</span> Notice that Logan has is now added to the list of users for this machine. To make a couple of customizations to the account, click on the Logan account.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Click on Create a Password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> The next window will prompt you to enter a password for the user. For this lab exercise, type Password1 in the New password text field and type it in again for confirmation. You can optionally put in a hint to remind the user what the password might be. Click on the Create password button to complete the process. Passwords keep unauthorized users out of the system and keep the information on the computer safe and secure. But, a password only works if it is difficult to guess or crack. Good password rules:  Security experts currently recommend a minimum of 15 characters.  Use a combination of upper/lower case letters, numbers and special characters.  Do not use common words and NEVER use self-identifying information (spouse's, pet's, children's names, etc.).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Close the User Accounts window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Click the Start button, then click the arrow next to Shut down and select Log off from the context menu.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Now, log into the newly created Logan account by clicking on the account picture. You will be asked to enter the user's password. Type Password1 followed by pressing the Enter key to log in.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Policy enforced</span>The error refusing Pass2 as Logan's new password.</label></li></div><div class="step"><h3 class="fh"><span class="n">15</span> Click on the Start button and then click on Computer.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Using Windows Explorer, navigate to C:\Users\sysadmin. Notice the pop-up window telling you that you cannot access the folder because you do not have the proper credentials. Click the Cancel button to close the window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Click the X in the File Explorer window to close it.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> Click on the Start button and then click on Control Panel.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">19</span> Change the View by: to Small icons.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">20</span> Click on User Accounts.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">21</span> On the User Accounts window, click on Manage another account.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">22</span> This time, you get a User Account Control message prompting you to enter the administrator's password. Standard users cannot create or manage other user accounts. If you entered the administrator's password here, you would be granted access. This is how administrators use their standard accounts but still can perform administrative functions safely. For now, click the No button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">23</span> Log off Logan's account.</h3></div>
+<p class="task-head">Task 1.2 - Adding and Managing User Accounts in Windows 8.1</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win8.1 virtual machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win8.1 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Adding users in Windows 8.1 (and Windows 10) can be started from the Control Panel, but the applet will take you to PC Settings, which is where most configuration settings are made. Click on the Start button and then click on PC Settings.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Under PC Settings, in the left pane, click on Accounts.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> On the Accounts window, click on Other accounts.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> On the right side of the screen, under Manage other accounts, click on Add an account. Microsoft has a new way for users to be created and assigned to Windows computers in Windows 8.1 and Windows 10. They would like you to create a Microsoft Account, and use that account to access not just Windows computers, but online/cloud files that are stored on Microsoft servers. However, you can still create local user accounts that do not synchronize with Microsoft cloud services.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Enter the following information to create a new user account, then click Next: a. User name: Logan b. Password: Password1 c. Password hint: A password with 1</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Confirm the new user account information and click Finish.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Notice the new user account is now added to the accounts list. To make Logan an administrative account, click on the user Logan, then click the Edit button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Use the pull-down list arrow under Account type and select Administrator. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Log off the sysadmin account. To do so in a Windows 8.1 environment, move your cursor to the top-right corner and wait 2-3 seconds until a navigation bar appears. Click Start.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> On the next window, click on the sysadmin icon and choose to Sign out.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Log into the Logan account. First, while on the splash screen, click anywhere to bring up the login screen. Click on Logan. You will be asked to enter the user's password, enter Password1, and press the Enter key. You have now completed the setup of a new administrative user account.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Notice that Windows is conducting an initial setup for the newly created account.</h3></div>
+<p class="task-head">Task 1.3 - Adding and Managing User Accounts in Windows 10</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Adding users in Windows 10 can be started from the Control Panel, but the applet will take you to PC Settings, which is where most configuration settings are made. Click on the Start button and then click on the Settings icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the Windows Settings, click on Accounts.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Click on Family &amp; other people from the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Underneath the Other people header, click on Add someone else to this PC.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Enter the following information for the user Logan to be added, followed by clicking Next: a. User name: Logan b. Password: Password1 c. Security Questions:</h3></div>
+<div class="step"><h3 class="fh"><span class="n">1</span> What was your first pet's name? Logan Jr</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> What was the name of the city where you were born? BigCity</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> What was your childhood nickname? Kidd</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Notice the new user account is now created and that it is a local account. Just like Windows 8.1, a newly created user is automatically a Standard User. To make the Logan user account an administrator, click on Logan, then click the Change Account Type button.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Admin account</span>Win10 Settings showing Logan as an Administrator local account.</label></li></div><div class="step"><h3 class="fh"><span class="n">10</span> Under Account type, change it to Administrator. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Now, log off the sysadmin account and log into the Logan account. Click on the Start button, followed by clicking on the sysadmin icon. Choose the Logan account to sign in.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> You will be asked to enter the user's password, enter Password1 followed by pressing the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Notice the Windows operating system is setting up the user account for first-time use.</h3></div>
+<p class="task-head">Task 2 - Using Local Users and Groups in Computer Management</p>
+<p class="task-head">Task 2.1 - Adding and Managing User Accounts in Windows 7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Change focus to the Win7 machine. Log in as the sysadmin account with Train1ing$ as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Right-click on the Computer icon located on the Desktop and click Manage.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the Computer Management window, click on Local Users and Groups from the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the center pane, double-click on the Users folder, which will open the list of users.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the center pane, right-click anywhere within the whitespace and select New User.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> In the New User window, type in the following: a. User name: Sal b. Full name: Sal A. c. Description: Analyst d. Password: SuperSecret</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Uncheck the checkbox for User must change password at next logon and check the box for Password never expires. Click the Create button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> In the New User window, click the Close button to close the window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> By default, any new user created using the Computer Management tool is a Standard User. To give the user administrative privileges, you must make them a member of the administrator's group. Click on Groups underneath Local Users and Groups from the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Double-click on the Administrators group located in the center pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> In the Administrator Properties window, click on the Add button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> On the Select Users window, type Sal into the Enter the object names to select and then click the Check Names button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> The username should now appear in the format &lt;COMPUTER&gt;\&lt;USER&gt;. If it doesn't, go back and check the spelling of the username and try again. If the username is found, click the OK button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> The Administrator Properties should now show Sal as a member of the Administrators group. Click OK to close the properties window and then close the Computer Management window.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Group</span>The Administrators Properties window listing Sal.</label></li></div><div class="step"><h3 class="fh"><span class="n">15</span> Logout of the sysadmin account and log back in again as Sal A.. Now that Sal is a member of the Administrators group, access to other user's files, and folders is permissible.</h3></div>
+<p class="task-head">Task 3 - Creating and Managing Local Group Policies</p>
+<p class="task-head">Task 3.1 - Using the Local Group Policy Editor in Windows 8.1</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Change focus to the Win8.1 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click the Start button, followed by clicking on the Logan icon located in the top-right corner. Select Sign out.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Sign on as sysadmin with Train1ing$ as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Once logged in, right-click on the Start button and select Search.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the Search text field, type in gpedit.msc followed by clicking on the gpedit search result.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Policy</span>The Password Policy settings in gpedit.msc on Win8.1.</label></li></div><div class="step"><h3 class="fh"><span class="n">6</span> In the Local Group Policy Editor, click the arrow to the left of Windows Settings underneath Computer Configuration, then Security Settings, and finally, Account Policies to expand their respective views.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Under Account Policies, click Password Policy to show all password policy options on the right. Make the following changes by double-clicking on each policy that is listed in the right pane: a. Maximum password age: 90 days b. Minimum password length: 8 characters c. Password must meet complexity requirements: Enabled</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Once the password policy is updated, to make the changes effective, reboot the Windows 8.1 computer. Right-click the Start button and select Shut down or sign out &gt; Restart.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> After rebooting, log in as Logan with Password1 as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Once logged in, you need to enter a CTRL+ALT+DEL sequence. In the NETLAB+ navigation bar, click the arrow next to the Win8.1 virtual machine tab, then click on Send CTRL+ALT+DEL.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Click on Change a password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Enter Password1 as the old password. For the new password, type Pass2. Confirm the password and then click on the arrow or press the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Notice the error message stating that the password does not meet the current policy requirements. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Now, try again to change the password but use Password2 as the new password (it has nine characters). Click OK to confirm the change.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Logout and log back in as Logan to confirm the new password has been applied successfully.</h3></div>
+<p class="task-head">Task 4 - Active Directory Users and Computers in Windows 10</p>
+<p class="task-head">Task 4.1 - Installing Remote Server Administration Tools (RSAT) in Windows 10</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> If already logged in as Logan, sign out of the Logan account.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log back in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Double-click on the Toolbox folder on the Desktop.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Double-click on the WindowsTH-RSAT_WS_1709-x64.msu file and follow the instructions for installation.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Select Yes to the installer.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Click I Accept to proceed.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> It will take a few minutes to install. Once the installation is complete, click Close. You can also close the Toolbox folder window.</h3></div>
+<p class="task-head">Task 4.2 - Using Administrative Tools and Active Directory in Windows 10</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Click on the Start button and then click on the Control Panel icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> In the Control Panel window, change the view to Small icons, and select Administrative Tools form the Control Panel applets After clicking on Administrative Tools, you will see a list of the installed Active Directory Management snap-ins.      Active Directory Users and Computers - can do the majority of AD admin tasks and duties. It does not manage GPOs. It can be used to reset passwords, edit group memberships, unlock users, and much more.      Active Directory Administrative Center - allows management of PowerShell history, password policies, and AD Trash Can.      Active Directory Domains and Trusts - with this tool, you can manage forest functional levels, UPN (User Principal Names), functional levels of multiple domains.     Active Directory Sites and Services - this tool allows you to control and insight into</h3><div class="call tip"><span class="k">Note</span><p>It also allows the management of trusts between forests and domains. Sites and Services. Also, schedule replication and determine AD's topology.</p></div></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev6"><span class="shot">RSAT</span>Administrative Tools listing the Active Directory snap-ins on Win10.</label></li></div><div class="step"><h3 class="fh"><span class="n">3</span> Double-click on Active Directory Users and Computers.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Notice a warning message appears to inform you that this is not for administering the local users and groups but for managing resources in the domain. This lab topology is not a domain, but this demonstrates how to manage resources for Active Directory and domain computers. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the Active Directory Users and Computers snap-in, notice that the system is not connected to a domain controller and so it will not be usable for managing resources. Click through the menu options to familiarize yourself with the tool. Try right-clicking on Active Directory Users and Computers in the left panel to see how to connect to or change domains.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: accounts, groups, and policy</h2>

@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab12-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: troubleshooting tools</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -292,6 +297,108 @@ DISM /Online /Cleanup-Image /RestoreHealth</code></pre>
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Windows Troubleshooting Tools</p>
+<p class="task-head">Task 1.1 - Action Center and Troubleshooters</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Click on the Start button, followed by typing action center in the search field. Click on Action Center from the search results.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Troubleshooter</span>The Aero troubleshooter's detailed results.</label></li></div><div class="step"><h3 class="fh"><span class="n">4</span> Notice the Action Center window appears. This is a central location of Windows' troubleshooting tools and a list of problems that have been detected with accompanying links to helps you resolve the detected issues. If the problem is not listed here, you can click the Troubleshooting icon to access a range of troubleshooters. Scroll down and click on the Troubleshooting icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the left pane, click on the View all link to display a complete list of troubleshooters available.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Many of the troubleshooters require that you run as administrator, allowing the program to run with administrative privileges if the user logged in is in the administrator group. Notice the list of available troubleshooters. Right-click on the Aero troubleshooter and select Run as administrator.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the Aero troubleshooter window, click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> This troubleshooter will quickly analyze any problems associated with the Aero theme for Windows. Notice it comes back with guidance on how to enable Aero so that it properly works on the system. It states that the video driver that is currently installed is not WDDM-compatible. It suggests updating the driver to fix the problem. Click Next to make the troubleshooter attempt to fix the problem.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Notice the troubleshooter was unable to fix the problem. However, now that the problem is known, it can be manually fixed by checking to see if a new video driver is available for the system. Click on the View detailed information link.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> More information is given about the problem. Review the information and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Click Close to exit the troubleshooter.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Close the Troubleshooting window. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Leave the Win7 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.2 - Managing Processes with Task Manager</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Right-click on the taskbar and select Start Task Manager.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> This launches the Windows Task Manager. This tool monitors applications, processes, and services running on the system. Task Manager can be used to start and stop programs and processes. It will also show you information about your computer and network performance. Ensure that you are on the Processes tab.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Right-click on the explorer.exe process and click Create Dump File. Dump files are useful when used with Windows' Debugger tool. A dump file is a snapshot of an app at the point in time the dump was taken. It shows what process was executing and what modules were loaded. It creates a file that contains information that a technician or programmer might find useful in finding problems with the application. If applications are freezing up, this is a good method of troubleshooting the issue.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Dump</span>The message showing where the explorer.exe dump file was saved.</label></li></div><div class="step"><h3 class="fh"><span class="n">4</span> Notice the pop-up window. Wait 1-2 minutes for the dump file to be created.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Once created, click OK. The dump file can now be used to send to the correct person to escalate support. The file is a record of everything that was in the computer's memory when a crash occurred, and it's meant to help diagnose what went wrong.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Close the Task Manager window. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Leave the Win7 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.3 - Check System Reliability</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Click the Start button and type reliability in the search field. Click View reliability history.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Notice a graph appears with data. By default, it should be selected for your current day. You can select any day by clicking on the chart above the printed dates. In the graph, problems are shown as red crosses, warnings are shown as yellow exclamation marks, and information is shown in blue 'i' icons.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Notice in this example, a problem is listed where the Notepad application stopped responding. You may not see this problem as it was listed on 7/15/18. You may try to create problems in the Win7 system to view the associated problems on your graph. Along the bottom of the page, there are links for saving a history, viewing reports, and checking for a solution. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Close the Reliability Monitor window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Leave the Win7 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.4 - Examining Event Viewer</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Click the Start button, type Event Viewer in the search field, and press the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Notice the Event Viewer appears, and by default, it shows the Overview and Summary page. This page displays all events from all Windows logs on the system. The total number of events for each type that has occurred is displayed, along with the number of events of each type that have occurred over the last seven days, the last 24 hours, and the last hour. In the middle pane, click the small up arrows at the end of the section headers to minimize all but the Summary of Administrative Events section.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev6"><span class="shot">Boot logs</span>The two boot logs side by side.</label></li></div><div class="step"><h3 class="fh"><span class="n">3</span> Viewing the Summary of Administrative Events section allows you to view the diverse types of events that may have occurred on this system. Click the + next to each type of event to view the related events that have occurred on this system. The different event types: Critical, Error, Warning, Information, and Audit Success.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Select any specific event and then double-click it to display detailed information on the event. Due to the date change, your events may be different from the example used. In this example, an Error event with an ID of 1002 is selected.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Reliability</span>Reliability Monitor with a day selected.</label></li></div><div class="step"><h3 class="fh"><span class="n">5</span> Notice more details emerge for the specific event. In this example, the event in which the Notepad application crashed is viewed. Click the back arrow when finished analyzing the specific event.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Event</span>A Security event's details or the saved event.evtx.</label></li></div><div class="step"><h3 class="fh"><span class="n">6</span> In the left pane, expand Windows Logs and click on Security.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the middle pane, double-click any security-specific event to display detailed information on the corresponding event.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Review the available information and click Close.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Right-click the same event you just opened and select Save Selected Events.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> In the Save As window, type C:\Users\sysadmin\event.evtx in the File name text field and click Save.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> When prompted about display information, leave the defaults and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Open File Explorer.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> In the Windows Explorer window, navigate to C:\Users\sysadmin and locate the event.evtx file. Double-click on the event file entry.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Notice the event file launches the Event Viewer application to view the saved detailed information. Close the window when finished reviewing the information. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Close all remaining windows in Win7.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Leave the Win7 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.5 - Using the System Configuration Utility</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Click the Start button, type msconfig in the search field, and press the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> In the System Configuration window, click on the Boot tab.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Check the checkbox next to Safe boot and ensure that the Minimal radio button is selected. Make sure that Boot log option is also checked. Click OK.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Safe boot</span>The msconfig Boot tab with Safe boot (Minimal) and Boot log checked.</label></li></div><div class="step"><h3 class="fh"><span class="n">4</span> Click on the Start button, then click on the arrow next to Shut down and select Restart.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Once the system finishes rebooting, log back in as sysadmin.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Notice that the context help for Safe Mode opens. Briefly read the information provided. For example, it explains that selecting Safe Boot with the Minimal option is like the regular safe mode, with a user interface and no networking services enabled. This boot can be an excellent tool for troubleshooting when a system is having a boot problem, especially when driver issues are suspected. Close the Windows Help and Support window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Notice the overall change in desktop appearance when in Safe Mode. Click the Start button, type C:\Windows\ntbtlog.txt in the search field, and press the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> In the Notepad window, notice the log contents of the safe boot. Click File and select Save As.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> In the Save As window, type C:\Users\sysadmin\safeboot.txt in the File name text field and click Save.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Once saved, close the Notepad application window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Click the Start button, type msconfig in the search field, and press the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> In the System Configuration window, click on the Boot tab. Uncheck the checkbox for Safe boot and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Restart the Win7 system.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Once the system reboots, log back in as sysadmin.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Once logged in, click the Start button, type C:\Windows\ntbtlog.txt in the search field, followed by pressing the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Open another file. Click the Start button, type C:\Users\sysadmin\safeboot.txt in the search field, and press the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Arrange the two Notepad windows side-by-side for comparison. This is how you could troubleshoot and identify differences in drivers loaded during the two- separate system bootups. These logs are also used to share with vendor tech support.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> Close both Notepad windows. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">19</span> Leave the Win7 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.6 - Analyzing System Files</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Click the Start button and type cmd in the search field. Right-click on cmd.exe from the search results and select Run as administrator.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> When prompted with user account control, click Yes to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Type the command below, followed by pressing the Enter key.</h3><pre class="cmd"><code>C:\Windows\system32&gt; sfc /scannow</code></pre><div class="call tip"><span class="k">Note</span><p>The SFC scanning process can take 5-7 minutes to complete.</p></div></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Once completed, the SFC utility reported back with no integrity issues.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Close the command prompt window.</h3></div>
+<p class="task-head">Task 1.7 - Using Deployment Image Servicing and Management (DISM) tool</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 virtual machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Click the Search button, type cmd. Right-click on Command Prompt listing and click on Run as administrator.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> When prompted, click Yes to allow the UAC to make changes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the command prompt window, type the command below, followed by pressing the Enter key. Using the /CheckHealth switch quickly scans the local image for corruption and detects if there are any issues but does not run repair operations. This will take a few seconds to complete.</h3><pre class="cmd"><code>C:\Windows\system32&gt; DISM /Online /Cleanup-Image /CheckHealth</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the command prompt window, enter the command below. Using the /ScanHealth switch initiates a more advanced scan of the local image but does not correct any issues. This will take approximately 4-6 minutes to complete.</h3><pre class="cmd"><code>C:\Windows\system32&gt; DISM /Online /Cleanup-Image /ScanHealth</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> In the command prompt window, enter the command below. Using the /RestoreHealth switch scans for component store corruption and attempts to repair the Windows 10 image. This will take several minutes to complete.</h3><pre class="cmd"><code>C:\Windows\system32&gt; DISM /Online /Cleanup-Image /RestoreHealth</code></pre></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev7"><span class="shot">SFC and DISM</span>The <code class="inl">sfc /scannow</code> result and the DISM <code class="inl">/RestoreHealth</code> result.</label></li></div><div class="step"><h3 class="fh"><span class="n">7</span> After the process is complete, close the command prompt window.</h3></div>
+<p class="task-head">Task 1.8 - Using Documentation Tools</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Change focus back to the Win7 VM. Click the Start button, type Problem Steps Recorder, and click on the Record steps to reproduce a problem search result entry.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> In the Problem Steps Recorder, click on the Start Record icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> When recording, you normally go through the process of diagnosing a problem. You can pause and resume the recording at any time. To simulate a problem, open Firefox and record the process of receiving the error when trying to connect out to the Internet. Notice, there is no active Internet connection in this environment.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Wait until Firefox responds with a message. On the Problem Steps Recorder window, click on the Add Comment button.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev8"><span class="shot">Steps</span>The Steps Recorder report with your highlighted comment.</label></li></div><div class="step"><h3 class="fh"><span class="n">6</span> Use your mouse to select the part of the screen with the error message. Once the selection is made, type "Unable to connect to website." in the Highlight Problem and Comment window. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> When you are done, click Stop Record.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Notice a Save As window appears. Choose the Files folder on the desktop as the save to location and type PSR-test in the File name text field. Click Save to save the recording.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Changes focus to the desktop and double-click the Files folder.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Double-click on the PSR-test.zip file.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Inside the zip file, double-click on the Problem_* file to view its contents.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> If prompted with Set up Internet Explorer 11, click Ask Me Later.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Review the recorded steps on the Recorder Problem Steps tab and notice how much detailed information is available. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: troubleshooting tools</h2>

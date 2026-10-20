@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab02-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: admin tools and shortcuts</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -302,6 +307,125 @@ footer p{margin:.25rem 0;max-width:80ch}
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Microsoft Management Console</p>
+<p class="task-head">Task 1.1 - Accessing MMC in Windows 7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Launch the Win7 virtual machine to access the graphical login screen. To launch the console window for a virtual machine, you may access by either clicking on the machine's graphic image from the topology page or by clicking on the machine's respective tab from the navigation bar.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Click the Start button, followed by typing run into the search field. Click on Run to launch the application.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the Run window, type mmc and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> If prompted for User Account Control, click Yes to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> In the Console1 window, click File, and then click Add/Remove Snap-in.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> A new Add or Remove Snap-ins window appears. Now, you will add the snap-ins that will be used to complete other exercises in the lab. Select Disk Management and then click the Add &gt; button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Another new window appears. In the Disk Management window, select the radio button next to This computer to manage disks on the local machine. Click Finish.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Notice the Disk Management snap-in appears on the right pane. Next, select Event Viewer from the left pane, followed by clicking on the Add &gt; button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> In the Select Computer window, ensure that Local computer (the computer this console is running) is selected and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Select Task Scheduler from the left pane, then click Add &gt;.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Task</span>The Notepad task in Task Scheduler (or Notepad opening after sign-in).</label></li></div><div class="step"><h3 class="fh"><span class="n">12</span> Ensure that Local computer (the computer this console is running) is selected and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> You should now see Disk Management, Event Viewer, and Task Scheduler listed in the Selected snap-ins pane. Click OK at the bottom of the Add or Remove Snap-ins window.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">MMC</span>The Add or Remove Snap-ins window with Disk Management, Event Viewer, and Task Scheduler selected.</label></li></div><div class="step"><h3 class="fh"><span class="n">14</span> In the Console1 window, click File, and select Save As.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> In the Save As window, type C:\Users\sysadmin\console in the File name box. Click Save, and then close the MMC window.</h3></div>
+<p class="task-head">Task 1.2 - Using Task Scheduler in Windows 8.1</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Accessing MMC is similar to Windows 8.1 and Windows 10. Access the Win8.1 virtual machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win8.1 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Right-click on the Windows Button located in the lower-left corner of the screen. The Power User Menu will open. Click on Run.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Type mmc and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> When prompted for User Account Control, click Yes to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> The MMC console appears. Click on File and select Add/Remove Snap-in.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Select Task Scheduler and click Add &gt;.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> In the Select Computer window, select the radio button for Local computer (the computer this console is running on) and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> In the Add or Remove Snap-ins window, click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Select Task Scheduler from the left pane, then proceed to click on Action from the menu bar and click on Create Task.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> In the Create Task window, type Notepad in the Name and Description boxes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Click the Triggers tab and then click New.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> In the New Trigger window, select At log on from the Begin the task dropdown menu. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Back on the Create Task window, click the Actions tab, and then click New.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> In the New Action window, ensure that Start a program is selected and click Browse.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Type C:\windows\system32\notepad.exe in the File name text field and click Open.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> Click OK to close the New Action window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">19</span> Click OK to close the Create Task window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">20</span> Close the MMC - Console by clicking the X in the upper-right corner.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">21</span> Click Yes to save the console settings.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">22</span> In the Save As window, type C:\Users\sysadmin\console in the File name box. Click Save, and then close the MMC window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">23</span> Click the Start button, followed by clicking on the sysadmin icon located in the top- right corner. Then choose to Sign out.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">24</span> Log back on using the sysadmin account to verify that the Notepad application is launched upon startup as configured using the Task Scheduler. Close the Notepad application.</h3></div>
+<p class="task-head">Task 2 - Create a Simple Volume in Disk Manager in Windows 7</p>
+<p class="task-head">Task 2.1 - Using Disk Management in Windows 7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Navigate back to the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click Start, type console.msc in the search box, and then click on console.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> When prompted for User Account Control, click Yes to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Double-click on Disk Management under Console Root in the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Right-click the Unallocated 5GB disk space for Disk 2 and click New Simple Volume. To view the Unallocated disk space on Disk 2 either maximize the</h3><div class="call tip"><span class="k">Note</span><p>Console window or scroll down on the bottom middle pane.</p></div></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> The New Simple Volume Wizard appears. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Enter 2048 for Simple volume size in MB and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Select the radio button next to Assign the following drive letter. From the file system dropdown list arrow, select the drive letter that will be assigned to this drive as S. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Ensure that the radio button for Format this volume with the following settings is selected and then that File system is selected as NTFS. Type NTFS as the Volume label, then click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Review the settings you have selected to verify accuracy and click Finish.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Notice after a few seconds, the new partition appears in blue. Right-click the Unallocated 3GB disk space and click New Simple Volume.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> In the New Simple Volume Wizard, click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Specify the new simple volume size as 2048 and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Ensure that the drive letter that will be assigned to this drive is L and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Ensure that the radio button for Format this volume with the following settings is selected. Select FAT32 from the File system dropdown list, name the Volume label to FAT32. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Review the settings you have selected to verify accuracy and click Finish.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Notice now that there are two new partitions on Disk 2. Close MMC and any dialog boxes that opened as a result of the previous steps, then click Yes to save the console.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Volumes</span>Disk Management showing S: (NTFS) and L: (FAT32) on Disk 2.</label></li></div><div class="step"><h3 class="fh"><span class="n">18</span> Double-click the Computer desktop icon to see the S and L drives that you just created. Creating Simple Volumes using Disk Management is the same in all versions of Windows (7 / 8.1 / 10). You can launch the other Windows</h3><div class="call tip"><span class="k">Note</span><p>VMs to practice doing this in Window 8.1 and Windows 10.</p></div></div>
+<div class="step"><h3 class="fh"><span class="n">19</span> Leave the Win7 machine open but close any remaining open programs or windows to continue with the next task.</h3></div>
+<p class="task-head">Task 3 - Exploring Task Manager</p>
+<p class="task-head">Task 3.1 - Accessing Task Manager in Windows 7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> While accessing the Win7 machine, click on the Start button and type notepad in the search. Click on Notepad to launch the application.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Right-click in the Taskbar located at the bottom and select Start Task Manager. In the Application tab, a list of the programs currently running on your machine is displayed. Applications that run minimized in the System Tray (such as antivirus software) won't show up on this list. One useful function of this tab is that it can be used to exit programs that have stopped responding and that can no longer be closed normally.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the Windows Task Manager window, click on the Applications tab and then click on the Notepad application to highlight it, then click the End Task button to terminate the Notepad program.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Notice the opened Notepad application is now closed. Click on the Processes tab, notice it displays a list of processes (instances of programs) running on the system. You can use the Processes tab to end a process, but this should be done with caution, as it could cause you to lose unsaved data. While ending the process of a nonresponsive application is sometimes the only way you can shut it down, be sure that you understand the purpose of the process you want to end. Terminating system processes may cause a system malfunction.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Click on the Services tab to show all the support programs running in the background on the system. You can Stop or Start services from this tab. Also, you can check the resources being used by a service by right-clicking a running service and clicking Go To Process.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Click on the Performance tab. This displays real-time monitoring of system performance.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Click on the Networking tab. This tab shows network utilization.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Click on the Users tab. This tab displays a list of active user sessions. The Users tab can be used to end a user's session by highlighting the user and clicking the Logoff button. Clicking the Disconnect button will end a user's session but keep it in memory so they can log on and resume the session later.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Click the Processes tab and select taskmgr.exe. Click the End Process button to close the Task Manager. When prompted, choose End process to continue.</h3></div>
+<p class="task-head">Task 3.2 - Accessing Task Manager in Windows 8.1</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Navigate back to the Win8.1 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Right-click in the Taskbar at the bottom of the Desktop and select Task Manager.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In Windows 8.1 and Windows 10, the Task Manager, by default, launches a simple view, where you can manage running applications. Click the More Details down arrow to see the expanded mode. There are a few significant changes to the tabs between Windows 7 Task Manager and Windows 8.1/Windows 10 Task Manager. a. Processes tab is now the default when the Windows 8.1 and Windows 10 Task Manager is launched. Now you can manage running applications and services, and also monitor high-level performance stats from this tab. b. Performance tab has some compelling new capabilities providing detailed and varied resource utilization information. c. There are a few added tabs - App History (historical utilization history for applications), and Startup (shows a summary of startup performance and allows you to manage startup behavior).</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Task Manager</span>The Win8.1 Task Manager in More details view.</label></li></div><div class="step"><h3 class="fh"><span class="n">4</span> Click on the Process tab and right-click on Task Manager, then select End task to terminate the program.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Leave the Win8.1 machine opened to continue with the next task.</h3></div>
+<p class="task-head">Task 4 - Resource Monitor</p>
+<p class="task-head">Task 4.1 - Accessing Resource Monitor in Windows 8.1</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win8.1 machine, right-click in the Taskbar located at the bottom and select Task Manager.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click the More Details down arrow to see the expanded mode.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Click on the Performance tab in Task Manager, then click Open Resource Monitor located at the bottom of the window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> The Resource Monitor opens to the Overview tab, which has links to summary graphs of activity for all tab categories and defaults to display CPU in full. Click on all the tabs in the Resource Monitor to explore the content.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Click on the CPU tab. This tab shows a list of processes, the name, process ID, and status, etc. If an application is not responding, you can use the Resource Monitor CPU tab to help track down the process that is not responding. A process that is not responding will appear red in the table. Locate the explorer.exe process under the Image column, then right-click on the explorer.exe process and click on Analyze Wait Chain. If a process is stalled or hanging having to wait on another process to complete, this could cause it to freeze. Analyze Wait Chain can identify the actual process that is causing the freeze up. The unresponsive process can be closed in Resource Monitor to correct the problem.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Wait chain</span>Resource Monitor's Analyze Wait Chain window for explorer.exe.</label></li></div><div class="step"><h3 class="fh"><span class="n">6</span> Close all remaining open windows in Win8.1 before continuing to the next task.</h3></div>
+<p class="task-head">Task 5 - Edit and Restore a Registry Setting for Recycle Bin Windows 7</p>
+<p class="task-head">Task 5.1 - Modifying Registry in Windows 7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Navigate back to the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click Start, type regedit in the search box, and click on the regedit entry to launch the application. (This exercise can also be completed in Windows 8.1 and Windows</h3><pre class="cmd"><code>10.)</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> When prompted for User Account Control, click Yes to continue. Backing up the Windows Registry before you make any changes is a very important thing to do. The settings in the registry control much of what goes on in the Windows operating system, so having it working correctly at all times is important.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Right-click Computer at the top of the list on the left, then click Export.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Type C:\Users\sysadmin\Documents\Reg-Backup.reg in the File name box and click Save. You have now backed-up the Registry so you can restore if you have issues.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> To change the name of the Recycle Bin on Windows 7/Windows 8.1/Windows 10 for the currently logged-on user, navigate to the following subkey, which holds the value for the name of the Recycle Bin: The (Default) value should read (value not set), which indicates no existing data for the value, and the default name Recycle Bin is used.</h3><pre class="cmd"><code>HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\CL
+SID\{645FF040-5081-101B-9F08-00AA002F954E}</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> To enter a new name for the Recycle Bin, in the right pane, double-click (Default). The Edit String box appears. In the Value data box, type Trash Bin and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Move the Registry Editor window so that you can see the Recycle Bin on the Desktop, but do not close the Registry Editor window.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev6"><span class="shot">Registry</span>The desktop showing Trash Bin with Registry Editor open on the CLSID key.</label></li></div><div class="step"><h3 class="fh"><span class="n">9</span> Right-click the Desktop and select Refresh from the shortcut menu.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Observe that the name of the Recycle Bin has successfully changed to Trash Bin.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Change focus to the Registry Editor, right-click on {645FF040-5081-101B-9F08- 00AA002F954E} from the left pane and select Export. If the full name of the key is not visible, the horizontal size of the two panes can be adjusted by clicking and dragging the middle bar that separates the two panes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Choose Desktop as the save to location. Type Trash Bin as the file name and click Save. There is now a file on the Desktop named Trash Bin.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> To restore the name to its default value, navigate back to the Registry Editor window, double-click (Default), delete the text in the Value data text field, and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Once again, right-click the Desktop and select Refresh from the shortcut menu to verify the change is made. The Recycle Bin name should return to its default value.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Exit the Registry Editor by clicking the "X" in the upper-right corner.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Double-click on the file named Trash Bin located on the Desktop.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Click Yes when you see the UAC warning.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">19</span> Click Yes when prompted before continuing.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">20</span> Click OK. This will confirm the import of the registry settings that you backed-up and changed.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">21</span> Right-click the Desktop and select Refresh from the shortcut menu.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">22</span> Observe that the name of the Recycle Bin has changed to Trash Bin, due to you restoring the changes to the registry with the backup file created earlier.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">27</span> The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: admin tools and shortcuts</h2>

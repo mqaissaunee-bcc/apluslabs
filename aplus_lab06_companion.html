@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab06-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: printers</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -248,6 +253,77 @@ footer p{margin:.25rem 0;max-width:80ch}
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Assign a Windows Computer to a Workgroup</p>
+<p class="task-head">Task 1.1 - Adding Win8.1 to a Workgroup</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win8.1 virtual machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win8.1 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Right-click on the This PC icon located on the desktop and select Properties.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> On the System window, click the Change settings link.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> On the System Properties window, click the Change button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the Computer name text field, type Reliant, to change the name of this computer. In the Workgroup text field, type MYGROUP to change the name of the Workgroup that this computer will be a member of. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Click OK when the Welcome to the MYGROUP workgroup message is displayed.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> When prompted to restart the computer, click the OK button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> In the System Properties window, click Close.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Click on the Restart Now button to reboot the computer.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Once the system reboots, log in as sysadmin using Train1ing$ as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Sharing on</span>Win8.1 Advanced sharing settings with discovery and file and printer sharing on.</label></li></div><p class="task-head">Task 2 - Configuring Network Settings</p>
+<p class="task-head">Task 2.1 - Modifying Network Settings in Win8.1</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Right-click on the Network icon (located in the notification area) and then click on the Open Network and Sharing Center menu option.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click on Change adapter settings located in the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Right-click on Ethernet and click on Properties.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Make sure the checkbox for File and Printer Sharing for Microsoft Networks is checked. Click OK to close the window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Close the Network Connections window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> In the Network and Sharing Center window, click on Change advanced sharing settings.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Ensure that the Turn on network discovery and Turn on file and printer sharing radio buttons are selected. Click Save changes or Cancel if the changes are already configured.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Close the Network and Sharing Center window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 3 - Local Printer Setup</p>
+<p class="task-head">Task 3.1 - Adding a Local Printer in Win8.1</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Click on the Start button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click the Control Panel icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the Control Panel window, click on View devices and printers.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Notice the currently available devices. Click on Add a printer.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> The Add Printer window will open and will automatically search for shared printers that are already installed on the network. Once the application finishes searching (no printer will be found), click on The printer that I want isn't listed.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Select the radio button for Add a local printer or network printer with manual settings. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In a real-world situation, you may encounter legacy equipment, and if the printer you intend to install connects using a legacy parallel port (LPT) or even a USB port, then "Use an existing port" would be selected. If the printer has a network interface card (NIC), then "Create a new port" would be chosen. Due to the virtual environment, you will select Use an existing port and select FILE: (Print to File) from the dropdown menu. Click Next to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> The next step of the wizard will ask to choose a printer driver. Select Generic underneath the Manufacturer pane, followed by selecting Generic / Text Only from the Printers pane. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> When prompted for a version of the printer driver, select Use the driver that is currently installed (recommended), click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> When prompted for a printer name, leave Generic / Text Only as the default name and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> For the next step, select the radio button for Share this printer so that others on your network can find and use it. Type Generic Office in the Share name text field. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Click Finish. Normally, you would want to print a test page, so you would click on the Print a Test Page button. Since there is no physical printer, we will not be printing a test page.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> In the Devices and Printers window, right-click the Generic / Text Only printer and click Printer properties.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Connected</span>Win7 Devices and Printers showing Generic Office on Reliant.</label></li></div><div class="step"><h3 class="fh"><span class="n">14</span> In the Generic / Text Only Properties window, click the Sharing tab and ensure that the checkbox is selected for Share this printer with Generic Office as the Share name. Click OK when finished.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Shared printer</span>The Generic / Text Only Sharing tab with share name Generic Office.</label></li></div><p class="task-head">Task 4 - Network Printer Setup</p>
+<p class="task-head">Task 4.1 - Add Win7 to a Workgroup</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Click the Start button, then click Control Panel on the right side of the menu.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the Control Panel window, change the View by to Small icons. Click on System.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> On the System window, locate the Computer name, domain &amp; workgroup settings section, click the Change settings link.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> On the System Properties window, click the Change button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Under Computer name, type Enterprise to change the name of this computer. Under Workgroup, type MYGROUP to change the name of the Workgroup of which this computer will be a member. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Click OK when the Welcome to the MYGROUP Workgroup window is displayed.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Next, a window will be displayed, reminding you that you need to reboot for the changes to take effect. Click the OK button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Click the Close button in the System Properties window to close the window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> When prompted, click on the Restart Now button to reboot the computer.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Leave the Win7 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 4.2 - Adding a Network Workgroup Printer</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Once the Win7 machine reboots, log back in as sysadmin using Train1ng$ as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click the Start button, then click Devices and Printers on the right side of the menu.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Click on Add a printer.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the Add Printer wizard, click on Add a network, wireless or Bluetooth printer.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> The Add Printer wizard will search for shared printers on the network. Notice that the Generic Office printer appears in the list. Select it and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> The wizard will attempt to connect to the printer. Once it successfully connects to the printer, click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> The printer is now added to the Win7 machine to utilize. Click Finish.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: printers</h2>

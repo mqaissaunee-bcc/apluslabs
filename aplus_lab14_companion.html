@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab14-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: RAID and Storage Spaces</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -246,6 +251,46 @@ footer p{margin:.25rem 0;max-width:80ch}
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Managing Storage</p>
+<p class="task-head">Task 1.1 - Configuring RAID1 in Win8.1</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win8.1 virtual machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win8.1 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Once logged in, right-click on the This PC icon and select Manage.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the Computer Management window, click on Disk Management located in the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Click on Disk 1 from the list of drives available to highlight it and then click on the Action menu item, selecting All Tasks &gt; New Mirrored Volume.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Notice the New Mirrored Volume wizard appears. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> The first step is to select the drives that will be included in a RAID1 format. Disk 1 should already be in the Selected pane. Click on Disk 2, followed by clicking on the Add &gt; button to move it over from Available to Selected. Verify that both Disk 1 and Disk 2 are in the Selected field. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> At this point, the mirrored array is just another file system for Windows that will be treated just like any other partition. Ensure that the radio button for Assign the following drive letter is selected and pick F from the dropdown menu to be chosen as the drive letter. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> On the Format Volume step, type Mirrored in the Volume label text field and check the checkbox for Perform a quick format. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Confirm the changes and click the Finish button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> If prompted with a disk management warning, click Yes to convert a "basic" disk to a "dynamic" disk.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Notice Disk 1 and 2 changed in the list. They are now both in the Mirrored array and reporting back as healthy. Close the Computer Management window.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Mirror</span>Disk Management showing Disk 1 and Disk 2 as a Mirrored volume, Healthy.</label></li></div><div class="step"><h3 class="fh"><span class="n">14</span> Change focus to the desktop and double-click This PC.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> In the Devices and drives pane, notice the new Mirrored volume is listed ready to be used.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Close the File Explorer window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.2 - Configuring Storage Spaces in Win8.1</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> On the Win8.1 desktop, click on the Start button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click on the Search icon located in the top-right corner.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the search field, type Storage Spaces. From the search results, click on the Storage Spaces icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the Storage Spaces window, click on Create a new pool and storage space.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Pool</span>Storage Spaces showing the pool and the Local Data parity space.</label></li></div><div class="step"><h3 class="fh"><span class="n">5</span> When prompted with user account control, click Yes to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> The next step is to select which drives to be included in the Storage Pool. Make sure Disk 3, 4, and 5 are selected and click on the Create pool button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> The last step is to create the Storage Space from the pool. Type Local Data in the Name text field. Choose E: from the Drive letter dropdown menu. Leave NTFS selected.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Drive E</span>This PC showing Local Data (E:).</label></li></div><div class="step"><h3 class="fh"><span class="n">8</span> The Resiliency section allows you to select the method to organize the space and how to protect your data (think of it as the RAID section). Choose Parity from the Resiliency type dropdown menu. Below is a table explaining each of the options: Simple (no resiliency)           This is the Storage Space version of RAID0. You can start with one drive and add drives as more space is needed. In the same manner, as RAID0, if one drive in the pool fails, all the data is lost. The total size of the pool is the total size of all the drives. Two-Way Mirror                   This is the Storage Space version of RAID1. You must start with at least two drives. During a write action, data is written to both drives. In the event of a single drive failure, the data will still be available on the second drive. The total size of the pool is half the total size of all of the drives. Three-Way Mirror                 This is the Storage Space version of RAID6 and RAID10. Requires at least five drives and can protect from a failure of two drives in the pool. The total size of the pool is one-third the total size of all the drives; the other two-thirds are used for parity. Parity                           This is the Storage Space version of RAID5. It requires at least three drives and can protect from the failure of one drive. The total size of the pool is two-thirds the total size of all the drives, and the other one-third is used for parity.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Drive F</span>This PC showing Mirrored (F:).</label></li></div><div class="step"><h3 class="fh"><span class="n">9</span> The Size section allows you to change the size. The default value depends on the Resiliency Type chosen. You can make the size larger in this type of setup even though you might not have the capacity to do so. Later, when the actual space in the pool runs out, you can add additional drives to the pool without provisioning the Storage Space again. Enter 15 GB in the Size (minimum) field.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Review your proposed configuration and click Create storage space.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> After the Storage Pool is formatted, the Storage Spaces management window will be displayed. Notice the new space is ready to be used. Close the Storage Spaces window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Change focus to the desktop and double-click This PC.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Notice the new volume, Local Data (E:), is listed.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: RAID and Storage Spaces</h2>

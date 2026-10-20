@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab11-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: remote access tools</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -290,6 +295,119 @@ footer p{margin:.25rem 0;max-width:80ch}
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Utilizing Remote Desktop</p>
+<p class="task-head">Task 1.1 - Configuring Remote Desktop in Win7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Click on the Start button followed by right-clicking on Computer and selecting Properties.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the System window, click on Remote settings located in the left pane.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Remote data</span>remote session.txt showing the pasted CPU summary.</label></li></div><div class="step"><h3 class="fh"><span class="n">5</span> In the System Properties window, on the Remote tab, select the radio button next to Allow connections only from computers running any version of Remote Desktop (less secure). Click Apply.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Click on the Select Users button to check and see which users have access.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Notice that sysadmin already has access. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Back on the System Properties window, click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> On the System window, click on the Control Panel Home link in the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Configure the View by to display Small icons and click on Windows Firewall.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Click on Allow a program or feature through Windows Firewall in the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Click on the Change settings button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Scroll down and make sure the checkbox next to Remote Desktop is checked, as well as the checkbox underneath the Home/Work (Private) column for Remote Desktop. Click OK.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Firewall</span>Win10 allowed-apps list with Remote Desktop checked for Private.</label></li></div><div class="step"><h3 class="fh"><span class="n">14</span> Close the Windows Firewall window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Click the Start button and click the arrow next to Shut down, selecting Log off. Remote Desktop is now configured on the Win7. Next, you will be configuring Remote Desktop on the Win10 system so they can communicate, then you will verify connectivity across the network.</h3></div>
+<p class="task-head">Task 1.2 - Configuring Remote Desktop in Win10</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 virtual machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Right-click the Start menu and click on Settings.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the Settings window, click on the System icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Click on Remote Desktop from the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the right pane, click on the Off icon underneath Enable Remote Desktop to enable the feature.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> When prompted, click on Confirm.</h3><div class="call tip"><span class="k">Note</span><p>Notice that the options for enabling remote desktop are now visible.</p></div></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Scroll down in the right pane and underneath the User accounts heading, click on the Select users that can remotely access this PC link.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Make sure the sysadmin already has access. If needed, add the sysadmin to provide access. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> In the Find a setting search box, located in the left pane, start typing Windows Firewall. From the search results, click on Allow an app through Windows Firewall.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Click on the Change settings button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Scroll down and ensure that the checkbox next to Remote Desktop is checked, as well as underneath the Private column for Remote Desktop. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Leave the Win10 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.3 - Connect from the Win10 VM to Win7 Using Remote Desktop</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> On the Win10 VM, click on the Search Windows button and start typing Remote Desktop Connection. From the search results, click on Remote Desktop Connection.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> In the Remote Desktop Connection window, click on Show Options to expand the view for more options.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Type 192.168.1.7 in the Computer text field to enter the IP address of the Win7 machine. Type sysadmin in the User name field. Click Connect.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> When prompted for credentials, type Train1ng$ in the Password field. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> When prompted about the certificate, click Yes to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> This will open an RDP connection to the Win7 machine. You will see a connection bar at the top of the window indicating the system you are accessing. Right-click anywhere on the desktop and select New &gt; Text Document.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Name the new text document remote access and press the Enter key once finished to save the filename.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Double-click the remote access file and type, "This file was created remotely from Win10."</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Click File &gt; Save to save the changes made.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Close the remote access - Notepad window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Exit the remote desktop session by clicking on the X located at the top connection bar.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> When prompted, click OK to continue.</h3></div>
+<p class="task-head">Task 1.4 - Connect to Win10 Using Remote Desktop</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Change focus back to the Win7 machine by directly accessing it (not from Win10).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Once logged in, notice the text file, remote access, is visible on the desktop. Double- click on the file to open it. Notice the message inside the text file. In a new line, type, "Confirmed by Win7 client."</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">RDP session</span>The session to Win7 with the connection bar and the remote access file.</label></li></div><div class="step"><h3 class="fh"><span class="n">4</span> Click File &gt; Save to save changes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Once saved, close the remote access - Notepad window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Click the Start button and in the search field, type Remote Desktop. Click on the Remote Desktop Connection search result to launch the application.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Type in the IP address of the Win10 machine, which should be 192.168.1.10. Click Connect.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> When prompted for credentials, type sysadmin in the User name field and enter Train1ng$ in the Password field. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> When prompted for certificate validation, click Yes to continue.</h3><div class="call tip"><span class="k">Note</span><p>If the remote session does not initiate immediately, wait 2-3 minutes.</p></div></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Once connected, notice the connection bar at the top and the IP address. You have successfully connected to the Win10 machine via a remote session. Leave the Win7 window open to continue with the next task.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">RDP host</span>Win7 Remote tab with Remote Desktop allowed.</label></li></div><p class="task-head">Task 1.5 - Using Remote Desktop and Task Manager for Troubleshooting</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win7 machine with an active remote session to the Win10 machine, right-click the taskbar and select Task Manager.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> In the Task Manager window, ensure that you are viewing the More details view. Click the Performance tab.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> The Performance tab is a summary view of hardware and network usage on the system. Viewing these values allows you to observe anomalies that could be causing the slowdown. To save the current information for later comparisons, right-click on the CPU graph in the left pane and select Copy. This will add the information to the clipboard, so it can be passed to a text file and saved.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Right-click anywhere on the desktop and select New &gt; Text Document.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Name the new file remote session.txt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Double-click the remote session file to open it.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Once opened, right-click anywhere in the white space and select Paste.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Notice the values from the CPU Task Manager graph have been passed to the text document. Click File &gt; Save.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Once saved, close the text document window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Close the Task Manager window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Click the Start button and then proceed to click on the Power button, followed by clicking on Disconnect to end your remote session.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Leave the Win7 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 2 - Utilizing a Third-Party Tool for Remote Desktop</p>
+<p class="task-head">Task 2.1 - Installing TightVNC on Win7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win7 machine, double-click the Installs folder located on the desktop.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev6"><span class="shot">VNC session</span>TightVNC Viewer on Win10 showing the Win7 desktop.</label></li></div><div class="step"><h3 class="fh"><span class="n">2</span> Double-click on the tightvnc-2.8.8-gpl-setup-32bit Windows Installer Package file.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> When prompted with a security warning, click Run to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> The setup wizard will appear. Click Next to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> On the next step, review the terms and accept them. Click Next to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Click on the Typical button as the installation option.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> The next screen has several options regarding file associations, server options, and firewall exceptions. Make sure all boxes are checked and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Click the Install button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> When prompted for user account control, click Yes to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> In the TightVNC Server: Set Passwords window, select the radio button for Require password-based authentication (make sure this box is always checked) and type VNCpwd for both password fields. Next, select the radio button for Protect control interface with an administrative password and type VNCpwd for both password fields. Click OK.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">VNC passwords</span>TightVNC Set Passwords with both options selected.</label></li></div><div class="step"><h3 class="fh"><span class="n">11</span> Once finished, click the Finish button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Now the VNC server is installed, and by default, the VNC server service is already started and configured to start automatically when the machine boots. Click the Start button and navigate to All Programs &gt; TightVNC &gt; TightVNC Server (Service Mode) and click on TightVNC Service - Offline Configuration.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> When prompted with user account control, click Yes to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> If the window does not appear automatically, check the taskbar and click on the application's icon to maximize the window on the screen. On the Server tab, in the Miscellaneous pane, ensure that the checkboxes for Hide desktop wallpaper and Show icon in the notification area are unchecked. Click OK.</h3></div>
+<p class="task-head">Task 2.2 - Installing TightVNC on Win10</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Change focus to the Win10 virtual machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> If not logged in, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Double-click the Toolbox folder located on the desktop.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Double-click on the tightvnc-2.8.8-gpl-setup-64bit Windows Installer Package file to begin installing the application.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> If prompted with a security warning, click Run.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> When the setup wizard appears, click Next to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Accept the terms and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> When presented with setup options, click on Custom.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> We only want to install the TightVNC Viewer. To do so, click the dropdown menu next to TightVNC Server and select Entire feature will be unavailable. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> On the next screen, make sure all boxes are checked and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> When ready, click Install.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> If prompted with user account control, click Yes to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Once the wizard finishes installing, click Finish.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Leave the Win10 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 2.3 - Using TightVNC Viewer on Win10</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Click the Windows Search icon and type TightVNC Viewer in the search field. Click on TightVNC Viewer from the search results.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> In the New TightVNC Connection, type 192.168.1.7 in the Remote Host field. Click Connect.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> When prompted for authentication, type VNCpwd in the Password field. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Notice that a successful remote session is made with the Win7 system.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: remote access tools</h2>

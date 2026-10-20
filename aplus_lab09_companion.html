@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab09-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: Settings, Control Panel, and shortcuts</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -269,6 +274,96 @@ systeminfo | findstr /B /C:"OS Name" /C:"OS Version"</code></pre>
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Using Settings to Make Configurations</p>
+<p class="task-head">Task 1.1 - Determine the Current Updates Installed in Win10</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 virtual machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Right-click the Start menu and click on Settings.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Click on System from the Windows Settings screen.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> In the left pane, click on About, which is located at the bottom, so you will have to scroll down.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the right panel, scroll to the Windows specifications heading and identify the Version and OS Build. This will display the latest major update installed. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Version</span>Win10 About page showing Version and OS Build.</label></li></div><p class="task-head">Task 1.2 - Changing the Display Resolution in Win8.1</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win8.1 virtual machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win8.1 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Click the Start button located on the bottom taskbar.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Click on PC settings.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> In the left pane, click on PC and devices.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Click on Display.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> In the right pane, notice the current resolution is configured to 1024 x 768. Move the slider to change it to 1280 x 768. Click Apply.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> When prompted for confirmation, click Keep changes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Notice the screen is now wider. Change back to the 1024 x 768 resolution. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 2 - Configuring Win8.1 with Control Panel Applets</p>
+<p class="task-head">Task 2.1 - Personalization Control Panel Applet</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win8.1 machine, on the PC and devices screen, click the back arrow to go back to the PC settings screen.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click on Control Panel located at the bottom in the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Change the View by to Small icons.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Click on Power Options.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Click the radio button next to Balanced (recommended) to change to the Balanced power plan.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Click on Change plan settings to the right of Balanced (recommended).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Click on Change advanced power settings.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> In the Power Options window, click on Change settings that are currently unavailable.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Scroll through all the options and familiarize yourself with the available options. Expand Hard disk by clicking on the + symbol, then continue to expand Turn off hard disk after. Change the setting for Turn off hard disk after to 45 Minutes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Scroll down and expand Sleep &gt; Sleep after. Change Sleep after to Never (type the number 0).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Expand USB settings &gt; USB selective suspend setting, and change the USB selective suspend setting to Disable.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Expand Display &gt; Turn off display after, and change Turn off display after to 30 Minutes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Click OK to save the changes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Close the Edit Plan Settings window. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 2.2 - Internet Options Control Panel Applet</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win8.1 machine, right-click the Start button and select Control Panel.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Notice how the Control Panel view stayed as Small icons. Click on the Internet Options applet.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Notice the Internet Properties window appears. There are many changes that can be made on the General tab, including changing the home page, deleting temporary Internet files, clearing cookies, and choosing settings to be sure to get the latest field. This is the website that you will be taken to when Internet Explorer is opened. (Since this environment is configured with no Internet access, the configured homepage will not be accessible.)</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Click the Delete button under the Browsing history section.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Internet Explorer will store several types of data on the system when you surf the Internet. Periodically deleting this data will help keep your hard drive clean and remove unnecessary files. Ensure that the Tracking Protection, ActiveX Filtering, and Do Not Track option is unchecked, and the rest are left at their defaults. Click Delete.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Back on the Internet Properties window, click the Settings button under the Browsing history section.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the Website Data Settings window, select the radio button next to Every time I visit the webpage to ensure that you view the newest version from the original server for that website.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Click on the History tab. Reduce the number of Days to keep pages in history to 10. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Back on the Internet Properties window, click on the Security tab. On the Security tab, the Internet is categorized into four different zones (Internet, Local intranet, Trusted sites, and Restricted sites). You can select a security level for each zone. Local, Trusted, and Restricted zones include the Sites button, to allow individual site inclusion and exclusion. The Sites button is not available if Internet is the selected zone.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Trusted sites</span>The Trusted sites window with a site added.</label></li></div><div class="step"><h3 class="fh"><span class="n">10</span> Click on the Internet zone and then click the Custom level button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Review the numerous settings that can be managed here. Disabling many of the options in these settings and then adding Trusted Sites with Custom Levels enabled is a best practice. Click Cancel to exit from the window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Back on the Internet Properties window, click on Trusted sites followed by clicking on the Sites button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> In the Trusted sites window, uncheck Requires server verification. Type by clicking the Add button. Click Close once finished.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Ensure that Trusted sites is highlighted and click the Custom Level button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Notice that most settings are enabled. Trusted sites can be added to your list to allow things like popups and JavaScript to run. JavaScript or spyware could potentially damage your PC or compromise your security, but you could add them because the sites are known to you and not expected to be malicious. Click Cancel to close the Security Settings - Trusted Sites Zone window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Back on the Internet Properties window, click on the Privacy tab. The Privacy tab allows you to choose your cookie settings and whether to allow popup windows. A cookie is a small text file that a website places on a PC to store information such as a user's surfing habits or store personal information about you that a website gathers when you visit it. Popups are usually just annoying ads, but a few can be malicious, launching harmful scripts in the background, or trying to get spyware onto a PC.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Ensure that there is a check in the checkbox for Turn on Pop-up Blocker. Click the Advanced button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> Enable Override automatic cookie handling, then proceed by selecting the radio button next to Block, underneath Third-party Cookies. Click OK to save the configuration.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Cookies</span>Advanced Privacy Settings blocking third-party cookies.</label></li></div><div class="step"><h3 class="fh"><span class="n">19</span> Back on the Internet Properties window, click OK. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">20</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 2.3 - Control Panel Personalization Applet</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win8.1 machine, ensure that the Control Panel window is opened. Click on Personalization.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> In the Personalization window, scroll down in the themes pane and click on High Contrast #1. This will change the overall look and feel of the Windows system by using a preconfigured theme.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Notice the change in the Window's theme. To change the background, click on Desktop Background.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Choose the desired color and click Save changes. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Close the Personalization window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 2.4 - Folder Options Control Panel Applet</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Click on the File Explorer icon located in the taskbar.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> In the File Explorer, double-click on Local Disk (C:).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Review the available folders. Click on the View menu item located near the top of the window and check the checkbox next to Hidden items.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Notice the available folders now. You should see a hidden folder appear called ProgramData, which was not visible before due to it being a hidden folder by default. Double-click on the Program Files folder.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Double-click on the TightVNC folder and notice the filenames within the folder.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Right-click the Start button and click on Control Panel.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the Control Panel window, click on Folder Options.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> In the Folder Options window, click on the View tab and uncheck the checkbox next to Hide extensions for known file types. Click OK to save changes.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Power</span>The Power Options advanced settings with your changes.</label></li></div><div class="step"><h3 class="fh"><span class="n">9</span> Change focus to the File Explorer window with the TightVNC folder opened. Notice the filenames now display their known extensions like .exe and .txt. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Extensions</span>The TightVNC folder showing file extensions.</label></li></div><div class="step"><h3 class="fh"><span class="n">10</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 2.5 - Action Control Panel Applet for Configuring User Account Control</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win8.1 machine, change focus to the Control Panel window. If it is not already opened, open it.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click on Action Center from the Control Panel window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the left pane, click on Change User Account Control Settings.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Change the slider all the way up to indicate Always notify (highest setting). Click OK.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev6"><span class="shot">UAC</span>The UAC slider at Always notify.</label></li></div><div class="step"><h3 class="fh"><span class="n">5</span> Notice the User Account Control warning appears, click Yes to continue. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: Settings, Control Panel, and shortcuts</h2>

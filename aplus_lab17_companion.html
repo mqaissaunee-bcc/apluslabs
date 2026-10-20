@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab17-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: scripting</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -332,6 +337,98 @@ ls -l lhostinfo.sh
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Creating a Windows Batch File (Script)</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Click on the search icon located in the taskbar, followed by typing cmd in the search field. Click on the Command Prompt search result.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> At the prompt, type the command below, followed by pressing the Enter key. This output is a list of commands that are available in the Windows command-line interpreter. Review the list of commands identified below to understand the commands used in the batch file you will be exploring. C:\Users\sysadmin&gt; HELP | MORE When looking through the list, press the Spacebar to move down the list per page or the Enter key to go down the list per line. Press Q to quit viewing the list at any time.</h3><pre class="cmd"><code>     echo
+     findstr
+     rem
+     systeminfo
+     wmic</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Once finished reviewing the command prompt's output, click on the search button and search for Notepad and click on the Notepad search result to open.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Enter the following text into the Notepad file. :: This batch file reveals OS, hardware, and networking configuration. TITLE My System Info ECHO Please wait... Checking system information. :: Section 1: OS information. rem findstr is used for searching for a text string in files. For more inline information, you can enter findstr /? at the command prompt. :: Section 2: Hardware information. :: Section 3: Networking information. Breakdown of commands in sysinfo.bat @ECHO - turns off ECHO prompt. Rem- this does not execute it is a remark or note for the :: - is a comment Findstr - is used for searching for a text string in files. For more inline information, enter findstr /? at the command prompt &gt;&gt; redirects output to a file if no directory is indicated it is added to the current directory so you will not see the output in the command prompt it will have to be read from the file. | (key located above the Enter key) - an operator that passes the output of the command before it in the line to the command on the right of it. PAUSE - requires a key press to continue</h3><pre class="cmd"><code>@ECHO OFF
+ECHO ============================
+ECHO OS INFO
+ECHO ============================
+systeminfo | findstr /c:"OS Name"
+systeminfo | findstr /c:"OS Version"
+systeminfo | findstr /c:"System Type"
+ECHO ============================
+ECHO HARDWARE INFO
+ECHO ============================
+systeminfo | findstr /c:"Total Physical Memory"
+wmic cpu get name
+ECHO ============================
+ECHO NETWORK INFO
+ECHO ============================
+ipconfig | findstr IPv4 &gt;&gt; info.txt
+ipconfig | findstr IPv6 &gt;&gt; info.txt
+PAUSE
+ECHO - print the command currently running on to the command
+programmer
+Ipconfig - display network information</code></pre></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">info.txt</span><code class="inl">more info.txt</code> showing the IPv4 and IPv6 lines.</label></li></div><div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Batch output</span>Sysinfo.bat running in Command Prompt.</label></li></div><div class="step"><h3 class="fh"><span class="n">8</span> Click File &gt; Save As.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Name the file Sysinfo.bat and save it in the C:\Users\sysadmin directory.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Change focus back to the command prompt window and list the contents of the sysadmin directory by entering the command below to verify that the file Sysinfo.bat is saved with the correct file extension. If not, rename the file to sysinfo.bat.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; dir</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> At the prompt, enter the command below to run the Sysinfo.bat script. Carefully watch the output to follow the commands listed in the file. When prompted to press any key to continue, press any key to continue.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; Sysinfo.bat</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> List the content of the sysadmin directory to verify that the file info.txt has been created as a result of the script. Enter the command below.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; dir</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> At the prompt, type the command more info.txt to see the file created by the script.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; more info.txt</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Close the command prompt window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Close the Notepad window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Stay logged in to the Win10 machine to continue to the next section.</h3></div>
+<p class="task-head">Task 2 - Creating a PowerShell Script</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Click the search icon in the taskbar and type PowerShell ISE. Right-click on the Windows PowerShell ISE search result and select Run as administrator.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Policy error</span>The PowerShell execution policy error.</label></li></div><div class="step"><h3 class="fh"><span class="n">2</span> Click Yes to accept the User Account Control.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> At the PowerShell ISE prompt, navigate to the sysadmin home directory using the cd command.</h3><pre class="cmd"><code>PS C:\WINDOWS\system32&gt; cd c:\users\sysadmin</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the PowerShell ISE window, click on File, then click New to create a new script.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Enter the following commands into the newly created Untitled.ps1 window. Write-Output "Computer name is:" Write-Output "Windows version is:" Write-Output "CPU is:" Write-Output "Total Memory is:" [Math]::Round((Get-WmiObject -Class Win32_ComputerSystem -ComputerName Write-Output "The Disks that are installed and their freespace:" Write-Output "IPv4 addresses:"</h3><pre class="cmd"><code>Get-Content env:computername
+(Get-WmiObject -Class Win32_OperatingSystem).Caption
+Get-WmiObject Win32_Processor | findstr "Name"
+localhost).TotalPhysicalMemory/1Gb)
+Get-WmiObject -Class Win32_LogicalDisk -Filter "DriveType = '3'"
+Get-NetIPAddress -AddressFamily IPv4 | Sort-Object -Property InterfaceIndex |
+Format-Table</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Once all the lines are typed, click File on the menu bar and select Save As.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the Save As window, name the file win10info.ps1 and be sure to save it to the C:\Users\sysadmin home directory.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">PowerShell output</span>win10info.ps1 running after setting RemoteSigned.</label></li></div><div class="step"><h3 class="fh"><span class="n">8</span> Back on the PowerShell ISE prompt, type the command below, followed by pressing the Enter key to run the script.</h3><pre class="cmd"><code>PS C:\WINDOWS\system32&gt; .\win10info.ps1</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Notice that an error appears signaling that scripts are disabled on the system by default. To disable the security feature, enter the command below.</h3><pre class="cmd"><code>PS C:\WINDOWS\system32&gt; Set-ExecutionPolicy RemoteSigned</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> A pop-up window appears. Click Yes to All to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Back on the PowerShell ISE prompt, reenter the command below to launch the script.</h3><pre class="cmd"><code>PS C:\WINDOWS\system32&gt; .\win10info.ps1</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Review the output of the script. What comparisons do you see between the Batch file and the PowerShell script? Notice that ECHO in the batch file is similar to Write- Output in PowerShell (PS). Also, %computername% in the batch represents a variable like Get-Content reads the env:computername. CPU is: %PROCESSOR_IDENTIFIER% is like Get-WmiObject Win32_Processor | findstr "Name". Try to find the other batch commands that equal the PowerShell commands and cmdlets.</h3></div>
+<p class="task-head">Task 3 - Creating a BASH Script</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Lubuntu system from the pod topology.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Sign in as the sysadmin using Train1ng$ as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Click on the Menu button located on the bottom taskbar and navigate to System Tools &gt; LXTerminal to open the terminal window, which in comparison to Windows, is similar to the command prompt with regards to using the command-line interface.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> At the prompt, type the command below, followed by pressing the Enter key to open the nano text editor.</h3><pre class="cmd"><code>sysadmin@lubuntu:~$ nano</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> You will use the nano text editor tool to create a file named lhostinfo.sh with the following text. Then you will save it in your home directory. First, start by creating the file by typing the following lines in the nano text editor. echo "Computer name is: " $HOSTNAME #!/bin/bash - #! Called shebang, is the syntax used in scripts to indicate an interpreter for execution in this case bash lsb - a utility that displays Linux Standard Base information about the Linux distribution. cat - short for concatenate, is a command which reads data from the file and gives the content as output. /proc - virtual files that contain dynamic information about the df - short for disk filesystem , this command will get a summary of the available and used disk space on your system.</h3><pre class="cmd"><code>#!/bin/bash
+echo "Operating System and distribution:"
+lsb_release -a
+echo "CPU cores"
+cat /proc/cpuinfo | grep processor
+echo "All available memory"
+cat /proc/meminfo | grep "MemTotal"
+echo "All disk space available."
+df -h
+echo "All IP addresses"
+ip addr show
+echo "Show the hostname IP address."
+hostname -i
+system
+ip addr - show all ip address on the system</code></pre></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Bash</span><code class="inl">ls -l</code> showing execute permission and the lhostinfo.sh output.</label></li></div><div class="step"><h3 class="fh"><span class="n">6</span> To save a file, use the keyboard shortcut Ctrl+O. With this key combination, the editor will ask you to provide a filename. Use lhostinfo.sh to name your file.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Press Enter to save the file to the sysadmin home directory.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Open a second terminal by selecting the Start button System Tools &gt; LXTerminal.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> You will need to make the script executable, enter the command below in the newly opened terminal.</h3><pre class="cmd"><code>sysadmin@lubuntu:~$ chmod 755 lhostinfo.sh</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> In the same terminal, enter the command below to execute the script. You will need to use the ./ to tell the BASH interpreter where the script is located. There is a fixed order of directories that the BASH interpreter checks to find and run a command. If your script is not in one of these directories, then it will not find your script unless you specify the path. The ./ is telling the BASH interpreter that the script is in the current directory, but you could also run the script from any other directory by using the full path.</h3><pre class="cmd"><code>sysadmin@lubuntu:~$ ./lhostinfo.sh</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: scripting</h2>

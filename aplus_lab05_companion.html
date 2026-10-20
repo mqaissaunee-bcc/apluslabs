@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab05-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: sharing and permissions</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -259,6 +264,135 @@ footer p{margin:.25rem 0;max-width:80ch}
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Assign a Windows Computer to a Workgroup</p>
+<p class="task-head">Task 1.1 - Adding Win7 to a Workgroup and Modifying Network Settings</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Click the Start button then click Control Panel on the right side of the menu.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the Control Panel window, change the View by to Small icons. Click on System.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> On the System window, locate the Computer name, domain &amp; workgroup settings section, click the Change settings link.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> On the System Properties window, click the Change button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Under Computer name, type Enterprise to change the name of this computer. Under Workgroup, type MYGROUP to change the name of the Workgroup of which this computer will be a member of. Click OK.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Workgroup</span>Win7's Computer Name/Domain Changes dialog with Enterprise and MYGROUP.</label></li></div><div class="step"><h3 class="fh"><span class="n">8</span> Click OK when the Welcome to the MYGROUP workgroup window is displayed.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Next, a window will be displayed, reminding you that you need to reboot for the changes to take effect. Click the OK button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Click the Close button in the System Properties window to close the window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> When prompted, click on the Restart Now button to reboot the computer.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Log back in as sysadmin using Train1ng$ as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Once logged in, right-click on the Network icon (located in the notification area) and then click on the Open Network and Sharing Center menu option.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Look on the left side of the Network and Sharing Center window and click on Change adapter settings.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Right-click on Local Area Connection and click on Properties.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Make sure the checkbox for File and Printer Sharing for Microsoft Networks is checked. Click OK to close the window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Click on the back arrow to return to the Network and Sharing Center.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> Click on Change advanced sharing settings located in the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">19</span> This window allows you to change the sharing options for various network profiles. Ensure that Turn on network discovery radio and Turn on file and printer sharing radio buttons are selected. Click Save changes if changes are made or Cancel if the selections are already made. Close the window.</h3></div>
+<p class="task-head">Task 1.2 - Adding Win 8.1 to a Workgroup and Modifying Network Settings</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win8.1 virtual machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win8.1 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Click on the Start button and then click on Control Panel.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the Control Panel window, ensure that Small icons are set for View by and click on System.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> On the System window, click the Change settings link.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> On the System Properties window, click the Change button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> In the Computer name text field, type Reliant, to change the name of this computer. In the Workgroup text field, type MYGROUP to change the name of the workgroup of which this computer will be a member of. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Click OK when the Welcome to the MYGROUP workgroup message is displayed.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> When prompted to restart the computer, click the OK button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> In the System Properties window, click Close.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Click on the Restart Now button to reboot the computer.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Once the system reboots, log back in as sysadmin using Train1ing$ as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Right-click on the Network icon (located in the notification area) and then click on the Open Network and Sharing Center menu option.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Click on Change adapter settings located in the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Right-click on Ethernet and click on Properties.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Make sure the checkbox for File and Printer Sharing for Microsoft Networks is checked. Click OK to close the window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> Close the Network Connections window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">19</span> In the Network and Sharing Center window, click on Change advanced sharing settings.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">20</span> Ensure that the Turn on network discovery and Turn on file and printer sharing radio buttons are selected. Click Save changes or Cancel if the changes are already configured.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">21</span> Close the Network and Sharing Center window.</h3></div>
+<p class="task-head">Task 1.3 - Adding Win10 to a Workgroup and Modifying Network Settings</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Click on the Start button and then click on Control Panel.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the Control Panel window, ensure that Small icons are set for the View by and click on System.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Click on the Change settings link.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the System Properties window, click the Change button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Type Client in the Computer name text field to change the name of this computer. In the Workgroup text field, type MYGROUP to change the name of the workgroup of which this computer will be a member. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Click OK when the Welcome to the MYGROUP workgroup window is displayed.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> A window will be displayed, reminding you that you need to reboot for the changes to take effect. Click the OK button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> In the System Properties window, click the Close button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> When prompted, click Restart Now.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Once the computer finishes rebooting, log back in as sysadmin using Train1ng$ as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Right-click on the Network icon (located in the notification area) and then click on the Open Network and Internet settings menu option.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Click Change adapter options.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Right-click on Ethernet and click on Properties.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Ensure the checkbox for File and Printer Sharing for Microsoft Networks is checked and then click OK to close the window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> Close the Network Connections window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">19</span> In the Network &amp; Internet Settings window, while viewing the Status tab, click on Sharing options.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">20</span> Ensure that Turn on network discovery and Turn on file and printer sharing radio buttons are selected. Click Save changes if you needed to check the radio button or Cancel if the radio buttons are already selected.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">21</span> Click the X in the corner to close the Settings window.</h3></div>
+<p class="task-head">Task 2 - Configuring Shared Folders</p>
+<p class="task-head">Task 2.1 - Creating a Shared Folder in Win7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Change focus to the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Logout of the sysadmin account and log back in as user1 with the password of SuperSecret.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Once logged in, right-click within an empty space on the desktop and select New &gt; Folder.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Type Data as the name of the new folder, followed by pressing the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Double-click the folder you just created to open it and create a new text document by right- clicking in any empty space within the folder, selecting New and then clicking Text Document.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Enter Test as the file name and press the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Close the Windows Explorer window and return to the Desktop and right-click the Data folder selecting Properties.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Click on the Sharing tab and then click the Advanced Sharing button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> If prompted for the sysadmin's password, enter Train1ng$ and click Yes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> In the Advanced Sharing window, check the checkbox next to Share this folder. Change the Share name to SharedData and then click the Permissions button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> In the Permissions for SharedData window, make sure the group Everyone is selected and check the checkbox for Full Control underneath the Allow column. This will check all checkboxes underneath the Allow column.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Share permissions</span>Permissions for SharedData showing Everyone and Users with Full Control.</label></li></div><div class="step"><h3 class="fh"><span class="n">12</span> Click Add.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Type Enterprise\Users and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Select Users (Enterprise\Users) from the list and then check the checkbox for Full Control underneath the Allow column and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Click OK to close the Advanced Sharing window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Click OK to close the Data Properties window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Next, you will access the shared folder from the Win8.1. Change focus to the Win8.1 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> Click the Start button, followed by clicking on the sysadmin icon and selecting user2 to log out from the sysadmin account and log in to the user2 account.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">19</span> When prompted for a password, enter SuperSecret.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">20</span> Click on the Windows Explorer icon in the taskbar.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">21</span> Click on Network located in the left navigational pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">22</span> You will see all of the computers on your network that have File and Printer Sharing turned on, which is why you only turn it on when you want to share files and printers on your network. Double-click on Enterprise.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Prompt</span>The Windows Security prompt when user2 first opens Enterprise.</label></li></div><div class="step"><h3 class="fh"><span class="n">23</span> Notice the Windows Security window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">24</span> Since the user2 account on the Win8.1 machine does not have any permissions on the Windows 7 computer, you will need to add user2 to the Win7 folder's Access Control List (ACL).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">25</span> Click Cancel to close the window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">26</span> Change focus to the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">27</span> Click the Start button, click the arrow next to Shut down and select Switch user. Switch users from the user1 account and log in as sysadmin.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">28</span> Click on the sysadmin icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">29</span> Log in using Train1ng$ as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">30</span> Once logged in, right-click the Computer icon located on the Desktop and select Manage.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">31</span> In the Computer Management window, select Local Users and Groups from the left pane followed by double-clicking on the Users folder in the right pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">32</span> In the right pane, right-click in an empty space and select New User.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">33</span> In the New User window, enter user2 in the User name text field. Enter SuperSecret in the Password text field. Uncheck the checkbox for User Must change password at next logon and check the box for Password never expires. Click Create.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">34</span> Once the new account is created, on the New User window, click Close.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">35</span> Verify the new user2 account appears in the list and close the Computer Management window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">36</span> Log off from the sysadmin account and log back in as user1 using SuperSecret as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">37</span> Right-click on the Data folder located on the Desktop and click Properties.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">38</span> Click the Security tab and then click the Edit button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">39</span> Click the Add button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">40</span> Type user2 in the Enter the object names to select text field and click the Check Names button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">41</span> Notice the text field automatically populates the user2 object name. Click OK to accept.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">42</span> Back on the Permissions for Data window, click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">43</span> In the Data Properties window, click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">44</span> Now, try to access the SharedData folder from the Win8.1 again. Change focus back to the Win8.1 machine and make sure you are logged in as user2.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Success</span>SharedData on Win8.1 showing Test2 created by user2.</label></li></div><div class="step"><h3 class="fh"><span class="n">45</span> Back on the Network window, double-click on Enterprise (If the Network window is not opened, open Windows Explorer and navigate to Network).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">46</span> You should now see the SharedData folder. Double-click SharedData to open the folder.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">47</span> You should see the Test text document in the folder. Try creating another document in the folder by right-clicking within the empty space and selecting New &gt; Text Document.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">48</span> You should get an access denied message. Remember, the default NTFS security permissions when you add a user/group to an ACL are Read &amp; Execute. Click Cancel.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">49</span> Add NTFS permissions to the folder for user2. Change focus back to the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">50</span> On the Desktop, right-click the Data folder and select Properties.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">51</span> Click the Security tab, then click the Edit button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">52</span> Select user2, click the checkbox next to the Modify permission underneath the Allow column, then click the OK button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">53</span> Back on the Data Properties windows, click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">54</span> Change focus back to the Win8.1.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">55</span> While logged in as user2, with the SharedData folder opened, right-click within the empty space and select New &gt; Text Document. Notice you are now allowed to create the file. Name the new text document Test2.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Denied</span>The access denied message when user2 tries to create a file.</label></li></div><div class="step"><h3 class="fh"><span class="n">56</span> The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: sharing and permissions</h2>

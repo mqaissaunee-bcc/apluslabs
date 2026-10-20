@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab10-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: customization and accessibility</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -276,6 +281,74 @@ footer p{margin:.25rem 0;max-width:80ch}
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Configuration Settings on Windows</p>
+<p class="task-head">Task 1.1 - Configure Desktop Property Settings in Win7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Right-click anywhere on the desktop and select Personalize from the context menu.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the Personalization window, click on Change desktop icons located in the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the Desktop Icon Settings window, check the checkbox next to Control Panel and click OK. This will place an icon for the Control Panel directly on the desktop for quick access.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Verify that a Control Panel icon now appears on the desktop.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Change focus back to the Personalization window and click on Change your account picture located in the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> This window will allow you to change the avatar that you can use for your account. To change, click on the picture you would like and then click on the Change Picture button. If you wish to use your own picture avatar, click on Browse for more pictures. This allows you to search your computer for the appropriate picture to use.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Click on the Windows Color icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Notice the Window Color and Appearance window appears. This allows you to change the color/font/size of various Windows items like the desktop, scrollbar, hyperlinks, menus, etc. Select Scrollbar from the Item dropdown menu and choose 30 as the Size. Click OK.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Scroll bars</span>Win7 Window Color and Appearance with Scrollbar size 30.</label></li></div><div class="step"><h3 class="fh"><span class="n">11</span> Back on the Personalization window, notice the size of the scrollbar is now larger than before. Click on the Sounds icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> In the Sound window, this will allow you to change the sound effects of all the action items. Microsoft has included many sound effects to choose from, or you can change a sound with any sound file with a ".WAV" file type. Review the available options and click Cancel. This lab environment does not feature sound ability from any of the virtual machines.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Back on the Personalization window, click on the Screen Saver icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Here, you can select a screen saver. Choose Blank from the Screensaver dropdown menu (this will configure the system to have a blank black screen as the screen saver). Once the screensaver is selected, you can set the number of minutes to wait before the screen saver turns on. In this example, 15 minutes is configured. You can also require the user to enter a password to return to the system by placing a check next to On resume, display logon screen. Click OK when finished.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Screen saver</span>Win7 Screen Saver Settings with Blank, 15 minutes, and logon screen on resume.</label></li></div><div class="step"><h3 class="fh"><span class="n">15</span> Back on the Personalization window, click on Display located near the bottom in the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> On the Display window, the configuration options here allow for the customization of the display properties, including screen resolution, color calibration, clear text settings, and text size. Notice the three radio buttons that allow you to select different text sizes being displayed on the screen. Click on Set custom text size (DPI) from the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> In the Custom DPI Setting window, notice the available DPI percentage values. Click Cancel.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> Close the Display window.</h3></div>
+<p class="task-head">Task 1.2 - Configure Desktop Property Settings in Win10</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Click on the Start button and then click on the Settings icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Click on Personalization to customize the look and feel of your desktop. Challenge Task: There are several options for customizing the look and feel in Windows 10 with desktop backgrounds, color accents, and a variety of settings to tweak the interface. In this exercise you will be shown a few ways to customize the appearance and make the experience a little more personal and have an opportunity to continue the exploration further by experimenting with other menu selections on your own.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Ensure that Background is selected from the left pane. Proceed by clicking on the Background dropdown menu and selecting the Picture option.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Click the image you want to use. Then click the Choose a fit dropdown menu and select the option that best suits the image (fill, stretch, center, span, etc.).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Click on Colors from the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Here you can choose colors that affect things like the taskbar and the Start menu. Experiment by picking a color. Underneath the Show accent color on the following surfaces, select the checkbox for Start, taskbar, and action center.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Colors</span>Win10 Colors page with Dark mode and the accent color applied.</label></li></div><div class="step"><h3 class="fh"><span class="n">10</span> Also, notice that there is an option made available here that allows you to choose a light or dark theme. Select the Dark theme and see the change.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Click on the Start button and view the color of the Start menu. Notice that the color is different based on the color that was chosen for the Start, taskbar, and action center checkbox. You can also notice right away that the taskbar changed color.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Change focus back to the Settings window. Click on Start from the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> The setting options available here allow you to customize certain options for the Start menu, like choosing to show the Start menu in full-screen mode. Experiment selecting various options to see how the Start menu changes and what are your personal preferences.</h3></div>
+<p class="task-head">Task 2 - Configure Taskbar Property Settings</p>
+<p class="task-head">Task 2.1 - Configure Taskbar Settings in Win7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Change focus to the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> If you need to log back in, log in as sysadmin using Train1ng$ as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Right-click on the Taskbar and then click on Properties from the menu.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Notice the Taskbar and Start Menu Properties window appears. On the Taskbar tab, the typical settings are noted below. Click on Customize. Taskbar Appearance                       Typical Setting Lock the Taskbar                         Unchecked Auto-Hide the Taskbar                    Unchecked Use Small Icons                          Checked Taskbar Location on Screen               Bottom Taskbar Button                           Never Combine</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Taskbar</span>Win10 system icons settings with Calendar pinned.</label></li></div><div class="step"><h3 class="fh"><span class="n">5</span> A Notification Area Icons window appears. Below are the settings to select which icons appear on the taskbar. This gives you the ability to configure which icons will appear in the notification area. Check the checkbox next to Always show all icons and notifications on the taskbar. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Notice that the icons in the notification area now all appear without having to expand anything.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> On the Taskbar and Start Menu Properties window, click the Customize button again.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> In the Notification Area Icons window, click on the Turn system icons on or off link.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Here, you can change which system icons to turn off/on. Select Off from the dropdown menu next to Clock. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Notice that the clock display is now gone from the taskbar.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Back on the Notification Area Icons window, click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> On the Taskbar and Start Menu Properties window, click on the Start Menu tab, followed by clicking on the Customize button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Here, you can customize links, icons, and menu options in the Start menu. Underneath Computer, select the Don't display this item radio button. Underneath Control Panel, select the Display as a menu radio button. Click OK.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Start menu</span>Win7 Start menu with Control Panel as a menu and Computer removed.</label></li></div><div class="step"><h3 class="fh"><span class="n">14</span> Click the Start button and take note of the appearance of Computer and Control Panel.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Change focus to the Taskbar and Start Menu Properties window and click Apply.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Click the Start button again and notice the changes. The Computer icon is now gone, and the Control Panel has a menu selection made available.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> Change focus to the Taskbar and Start Menu Properties window. Click on the Toolbars tab and check the Desktop checkbox. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> Notice the Desktop icon appears in the toolbar next to the notification area. Click the double-arrows and review the available selections.</h3></div>
+<p class="task-head">Task 2.2 - Configure Taskbar Settings in Win10</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Change focus back to the Win10 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click on the Start menu. Right-click on Calender and select More &gt; Pin to taskbar.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Notice the Calendar app is now displayed in the taskbar.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> To modify the notification area in the taskbar, right-click any open area on the taskbar and then click Taskbar Settings.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Scroll down to the Notification Area section and click the Turn system icons on or off link.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Review the list of system icons and toggle each one on or off to personalize to your liking. Challenge Task: Continue to explore the taskbar right-click context menu for other customizations that will work for you.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: customization and accessibility</h2>

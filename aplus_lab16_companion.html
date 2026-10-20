@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab16-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: virtualization</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -252,6 +257,64 @@ footer p{margin:.25rem 0;max-width:80ch}
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Creating a Virtual Machine Using Hyper-V</p>
+<p class="task-head">Task 1.1 - Verifying that Hyper-V is Available</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the taskbar, click on the search icon. Type PowerShell, and from the results, right-click on Windows PowerShell and select Run as Administrator.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Click Yes on the UAC prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> At the prompt, type the command below, followed by pressing the Enter key.</h3><pre class="cmd"><code>PS C:\WINDOWS\system32&gt; systeminfo.exe</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Scroll down to the bottom and locate the Hyper-V Requirements section to check and see if the PC can run Hyper-V. If this says "No" then the system is not capable of running Hyper-V. You can see on this machine a hypervisor has been detected, showing the lab machine is able to run it.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Requirements</span>The Hyper-V Requirements section of systeminfo.</label></li></div><div class="step"><h3 class="fh"><span class="n">8</span> Leave PowerShell open to use in the next section.</h3></div>
+<p class="task-head">Task 1.2 - Enabling Hyper-V</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> At the PowerShell prompt, enter the command below.</h3><pre class="cmd"><code>PS C:\WINDOWS\system32&gt; Enable-WindowsOptionalFeature -Online
+-FeatureName:Microsoft-Hyper-V -All</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Carefully read the output of the command to see your choices. Press Y followed by pressing the Enter key to accept the default answer "Yes".</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Your system will restart.</h3></div>
+<p class="task-head">Task 1.3 - Making Sure Hyper-V is Enabled</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Once the system reboots, log back in as sysadmin.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Once logged in, click the search icon on the taskbar and type turn windows features on or off. Click on the Turn Windows features on or off search result.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Verify that a check is in the checkbox next to Hyper-V in the Windows Features dialog box. Click OK. If Hyper-V was not previously enabled, this box would not be checked and would require you check and reboot the machine to apply the change, but you enabled it by entering the command Enable- WindowsOptionalFeature -Online -FeatureName:Microsoft-Hyper-V - All in PowerShell.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Feature</span>Windows Features with Hyper-V checked.</label></li></div><p class="task-head">Task 1.4 - Creating a Virtual Machine</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Click on the search button and type Hyper-V Manager. Right-click the Hyper-V Manager search result and select Run as Administrator.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">VM created</span>Hyper-V Manager listing New-Lubuntu.</label></li></div><div class="step"><h3 class="fh"><span class="n">2</span> In the Hyper-V Manager window, click on the Action menu. Select New and click on Virtual Machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the New Virtual Machine Wizard window, click the Next button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> On the Specify Name and Locations step, type New-Lubuntu in the Name text field. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> On the Specify Generation step, leave the default Generation 1 option selected. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> On the Assign Memory step, select the amount of RAM to allocate for your virtual machine. Type 2048 in the Startup memory field to configure 2 GB of RAM of the new VM. Uncheck the checkbox next to Dynamic Memory. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> On the Configure Networking step, use the dropdown menu to select the virtual switch, named Default Switch, which was already pre-configured on the Win10 VM by default.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> On the Connect Virtual Hard Disk step, change the Size setting to 10 GB. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> On the Installation Options step, select the Install an operating system from a bootable CD/DVD-ROM option. Select the Image file (.iso) radio button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Click the Browse button and navigate to the path for the ISO file with the Lubuntu installation files (C:\Users\sysadmin\Desktop\ToolBox\lubuntu-18.04.3-desktop- amd6.iso). Select the lubuntu-18.04.3-desktop-amd6.iso file and click Open.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Back on the New Virtual Machine Wizard, confirm your selections, and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> On the Completing the New Virtual Machine Wizard step, review the settings and click Finish.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> You will now see your newly deployed virtual machine in the list of virtual machines within the Hyper-V Manager. Leave the Win10 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.5 - Install Lubuntu on the Virtual Machine</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> In the Hyper-V Manager window and underneath the Virtual Machines section, right-click on New-Lubuntu, and select Connect.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Hyper-V will now prompt you to start your virtual machine. Click the Start button to begin installing the operating system.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> The first step asks what language to use. Select English using the arrow keys, followed by pressing the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Using the arrow keys, navigate to the Try Lubuntu without installation selection and press Enter (It will be white when selected).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Once the virtual machine finishes booting from the live CD, you will arrive at the Lubuntu desktop. On the desktop, there is an icon that will allow you to install Lubuntu to the hard disk and not be running directly from the media. This is a fully operational OS, but it is currently not installed on the hard disk at this point. Double- click the Install Lubuntu 18.04.03 LTS icon to install it to the virtual hard disk. Once the install window appears, you may have to move the window by dragging it more in the center to see the entire window comfortably.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Installed</span>The Lubuntu desktop running in the New-Lubuntu connection window.</label></li></div><div class="step"><h3 class="fh"><span class="n">6</span> In the Install window, select English and click Continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> On the Keyboard Layout step, click Continue to select the default of English.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> On the Updates and other software step, click Continue to accept the default Normal Installation. Notice that Download updates while installing Lubuntu is greyed out because there is no internet connection available in the lab environment.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> On the Installation type step, keep the default, but carefully read the other options on the next screen. Click Install Now.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Review the configuration for installation and click Continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> The next screen will configure your regional settings. You can click on the map nearest your location or type in a city or location nearest you, and the OS will select a location setting suitable to your location. Click Continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> On the next screen, you will be creating the user account.  Type Student in the Your name text box. This will also create a username. Keep the default student.  Type MY-VM in the Your computer's name text box.  Type the lab password Train1ng$ in both the Choose and Confirm password text boxes.  Select the Require my password to login radio button.  Click Continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Notice the installation will begin. This will take several minutes to complete, but you can watch the introductory slideshow as the installation progresses.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Once the installation is complete, click Restart Now (you may need to move the window to see the button).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> When prompted to remove the installation media, press the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Once the login screen appears, type Train1ng$ in the password field and click Log In.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> When the Update information window appears, click Close.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> You have successfully installed a new virtual machine using Hyper-V. The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: virtualization</h2>

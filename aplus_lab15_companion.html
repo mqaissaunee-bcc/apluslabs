@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab15-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: Windows security tools</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -329,6 +334,152 @@ manage-bde -status</code></pre>
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Windows Defender Security Center</p>
+<p class="task-head">Task 1.1 - Scanning your System for Malware</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Click on the Windows Search icon and type Windows Defender. From the search results, click on the Windows Defender Security Center icon. Windows Defender Security Center in Windows 10 acts as a dashboard for all the security features, including third-party security, providing an overview of the risks on the machine. It is designed to simplify and centralize security settings of Windows.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Notice the security center window appears. By default, it will open to the Home dashboard, where you can view the status of all security features and alerts for actions needed to be taken on the system. The dashboard will also display antivirus information, such as when the last scan was performed and when the last definition was updated. There are diverse types of scans that can be performed manually. Click on the Virus &amp; threat protection icon. When all is well, you will see the green checkmark overlay. If an issue requires your attention, you will see a yellow exclamation mark overlay.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Notice a Quick Scan option is available here (if not immediately available, wait a few seconds). As the name indicates, this is a fast scan that targets only the parts of the system where malware is known to hide. Click on the Run a new advanced scan link.    Full scan - This scan will scan your entire hard drive, including all files and programs.    Custom scan - This scan allows you to choose the locations and files which you would like to scan. One method is to select the radio button next to Custom scan and then click the Scan now button. A second method is to right-click a drive, folder, or file and select the Scan with Windows Defender option from the context menu to perform a custom scan.    Windows Defender Offline scan - Depending on the type of malware infecting the system, the antivirus software may not be able to remove it while Windows is running. It may be necessary to run an offline scan.</h3><div class="call tip"><span class="k">Note</span><p>Notice several types of scans are available here: There are two ways that a custom scan can be run.</p></div></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Scan options</span>The advanced scan options page with Offline scan available.</label></li></div><div class="step"><h3 class="fh"><span class="n">7</span> Select the radio button for Windows Defender Offline scan and click the Scan now button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Click Scan to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> When prompted with user account control, click Yes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Notice that Windows will automatically sign you out and reboot the system to begin the scanning process. It will boot using the Windows Defender Antivirus environment. The latest definition update will be installed (if an Internet connection is available). Since this lab environment has no Internet connection, it will skip the update process and begin scanning. This will run a few minutes before the option to cancel pops up. Since this system contains no malware, click the Cancel scan button. The system will attempt to proceed to boot so you can continue with the rest of the lab.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Leave the Win10 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.2 - Viewing the Health and Performance Report</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Log back into the system as sysadmin.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Once logged in, click on the Show hidden icons arrow in the System Tray, followed by clicking on the Windows Defender icon (if it isn't visible right away, wait a couple of seconds for the icon to appear).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the Windows Defender Security Center window, click on Device performance &amp; health.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Health</span>The Device performance & health report.</label></li></div><div class="step"><h3 class="fh"><span class="n">4</span> A colored symbol indicates the status of each of the options: green is good, yellow is a recommendation, and red is a warning. Health report is the header for the area which tells you if there are any issues impacting the device health.  Storage capacity - Checks if your device has enough space to update Windows.  Device driver - Checks the drivers on your device to see if they're functioning properly.  Apps and software - Checks the health of installed apps and running software.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> If a system is having issues that are difficult to resolve or it needs to be refreshed, the Fresh start feature can be used to perform a clean reinstallation and update of Windows while keeping your data and most Windows settings intact. Click the back arrow to go back to the main Windows Defender Security Center dashboard.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Leave the Win10 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.3 - Managing Network Security</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> In the Windows Defender window, click on Firewall &amp; network protection.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> This opens the page where you can view network profiles. Click on Private network.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Review the available options on the page. Notice that one of your options here is to turn on/off the firewall. Click the back arrow. Users must have an administrator account to customize the rules in Windows Firewall. Firewall &amp; network protection includes access to several other advanced firewall settings such as Allow an app through firewall, Network and Internet troubleshooter, and others.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Close the Windows Defender Security Center window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Leave the Win10 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.4 - Using the Allowed Apps Feature</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Right-click the Start button and click Run.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Type Control Panel in the text field and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the Control Panel window, click on System and Security.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Click on Windows Defender Firewall.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> To enable or disable the Windows Defender Firewall, notice in the left column the Turn Windows Defender Firewall on or off link, click it.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> The customize settings for Windows Defender Firewall appears. Here is where you can set how you want the firewall turned on for each network profile. Click the back arrow.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the left column, click the Allow an app or feature through Windows Defender Firewall link. This feature allows any user with an administrator account to change the list of rules and exceptions applied directly for applications.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Notice apps, programs, or features in the list have checkmarks on the left side of their name to show the rule is enabled and used by the Windows Defender Firewall to allow access. The Private and Public columns on the right have checkmarks in them too, to indicate if the rule is active when the device is connected to that particular network profile. Scroll down in the list, and select Windows Media Player, followed by clicking the Details button.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Allowed apps</span>The allowed apps list with Windows Media Player and Imaging Devices Console.</label></li></div><div class="step"><h3 class="fh"><span class="n">9</span> The details pane gives a bit more information about the application or feature in relevance to the firewall viewpoint. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Currently, Window Media Player is configured as a "disallowed" application. Check the checkbox to the left of the entry. Notice that the checkmark in the Private column will automatically check itself. This will allow its access in only the private network profile.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Leave the Allowed apps and features window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.5 - Adding Apps to the Allowed List</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> In the Allowed apps window, click on the Allow another app button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click the Browse button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the Browse window, navigate to C:\Program Files\Windows Photo Viewer directory and select ImagingDevices.exe. Click Open.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Back on the Add an app window, confirm that the Imaging Devices app appears and click Add.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Locate the Imaging Devices Console app in the list. Notice that the app is enabled in the Private network profile.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Leave the Win10 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.6 - Removing Apps from the Allowed List</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Select Imaging Devices Console followed by clicking on the Remove button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> When prompted, click Yes to continue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Notice Imaging Devices Console no longer appears in the list. Click OK to return to the Windows Defender Firewall page.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Leave the Win10 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 1.7 - Windows Firewall Advanced Security</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> In the Windows Defender Firewall window, on the left pane, click on Advanced settings.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click the Windows Search icon in the taskbar and type cmd followed by pressing the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the command prompt window, type the command below, followed by pressing the Enter key. Notice that the Win10 system can successfully ping the Win7 system.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; ping 192.168.1.7</code></pre></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Blocked ping</span>Win7's ping to Win10 timing out while the rule is enabled.</label></li></div><div class="step"><h3 class="fh"><span class="n">4</span> Access the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Once logged in, click the Start button and type cmd followed by pressing the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the command prompt window, type the command below, followed by pressing the Enter key. Notice that the Win7 system can ping the Win10 system successfully.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; ping 192.168.1.10</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Change focus to the Win10 window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> While accessing Win10, focus on the Windows Defender Firewall with Advanced Security window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> In the left pane, you will see several types of rules that can be applied. Click on Inbound Rules located in the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> In the middle pane, notice the number of rules that are in effect. Scroll down the list and locate the File and Printer Sharing (Echo Request - ICMPv4-In) entry for the Private network profile. This rule must be enabled for incoming pings to be allowed. Right-click this entry and notice that the rule is enabled with the ability to disable the rule. Leave the rule enabled for the lab, but if you wanted to prevent incoming pings, you would select Disable Rule.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> You will continue on the Win10 windows machine for the next task.</h3></div>
+<p class="task-head">Task 1.8 - Creating New Rules with Windows Firewall</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win10 system, focus on the Windows Defender Firewall with Advanced Security window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Right-click on Inbound Rules and click New Rule.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the New Inbound Rule Wizard, select the radio button for Custom. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> On the Program step, ensure that the radio button for All programs is selected and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> On the Protocol and Ports step, select ICMPv4 from the Protocol type dropdown menu. Click the Customize button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> In the Customize ICMP Settings window, select the radio button for Specific ICMP types. From the list of ICMP types, check the checkbox next to Echo Request to enable it. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Back on the New Inbound Rule Wizard, click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> On the Scope step, you can configure specific IP addresses to which the system will respond to. Leave the defaults and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> On the Action step, ensure that Block the connection is selected. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> On the Profile step, this page allows you to control when the rule is active in which network types. Leave the defaults and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> On the Name step, type Block Incoming ICMPv4 Echo Requests in the Name text field. Click Finish.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Change focus to the Win7 system.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> At the command prompt window of the Win7 system, enter the command below. Can the Win7 system still ping successfully?</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; ping 192.168.1.10</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Change focus to the Win10 system.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Go back to the Windows Defender Firewall with Advanced Security window on the Win10 system, right-click on the Block Incoming ICMPv4 Echo Requests rule, and select Disable rule.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Rule</span>The Block Incoming ICMPv4 Echo Requests rule in Inbound Rules.</label></li></div><div class="step"><h3 class="fh"><span class="n">16</span> Change focus to the Win7 system.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> At the command prompt window of the Win7 system, enter the command below. Notice the Win7 system will not be able to ping successfully now.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; ping 192.168.1.10</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> Exit the command prompt window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">19</span> Leave the Win7 window open to continue with the next task.</h3></div>
+<p class="task-head">Task 2 - Windows Encryption</p>
+<p class="task-head">Task 2.1 - Encrypting File System</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Right-click on the Win7 desktop and select New &gt; Text Document.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Name the new file encrypted.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Right-click the encrypted text file and click on Properties.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> On the General tab, click on the Advanced button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> On the Advanced Attributes window, check the checkbox for Encrypt contents to secure data. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Back on the encrypted Properties window, click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> A pop-up will appear. This is where you can choose how extensive you want the encryption to be for the data. Select the radio button next to Encrypt the file only. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> A notification appears. Click on the Back up your encryption key notification icon to back up the key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> In the Encrypting File System window, click Back up now (recommended).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> In the Certificate Export Wizard, click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Read the selections and then accept the default selection for the file format for the exported encryption certificate and key. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Type mypassword in the Password field. Type it again in the confirmation field. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Type EFS-key in the File name field. Click Next.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev6"><span class="shot">EFS key</span>The Certificate Export Wizard showing the EFS-key file location.</label></li></div><div class="step"><h3 class="fh"><span class="n">14</span> Review the configurations and take note of the File Name location. Click Finish.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> The export is successful, click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Using EFS, you have just encrypted a single file on a per-user basis for sysadmin. Encrypted files can only be accessed by the user who created the encrypted file. The encryption is transparent. Since you are logged in as sysadmin, you will be able to access the file without any additional authentication. If another user account is logged in, the file will not be accessible. Double-click on the encrypted file, notice that it opens.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev7"><span class="shot">EFS denied</span>Access denied when user1 opens the encrypted file.</label></li></div><div class="step"><h3 class="fh"><span class="n">17</span> Close the Notepad window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> Click the Start button, click the arrow next to Shut down and click on Switch user.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">19</span> Log in as user1 with SuperSecret as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">20</span> Click on the Windows Explorer icon located in the taskbar.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">21</span> Navigate to C:\Users\sysadmin and if prompted for authentication, enter Train1ng$ as the password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">22</span> Double-click the Desktop folder.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">23</span> Double-click the encrypted file.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">24</span> Notice a message appears stating that access is denied. Click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">25</span> Log out of user1.</h3></div>
+<p class="task-head">Task 2.2 - Enabling BitLocker without TPM</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Change focus to the Win10 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click on the Windows Search icon on the Win10 VM and type gpedit.msc in the search field, followed by pressing the Enter key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the Local Group Policy Editor window, navigate to Computer Configuration &gt; Administrative Templates &gt; Windows Components &gt; BitLocker Drive Encryption &gt; Operating System Drives.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the right pane, double-click on Require additional authentication at startup.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the pop-up window, select the radio button for Enabled and click OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Close the Local Group Policy Editor window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Click the Start button and click on Control Panel.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> In the Control Panel window, change the view to Small icons and click on BitLocker Drive Encryption.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Click Turn on BitLocker.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> In the pop-up window, let it scan the system and then click Enter a password.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Type Train1ng$ in both password fields. Click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> When asked how to back up your recovery key, click Print the recovery key.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Select the Microsoft XPS Document Writer print option. Click Print.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> In the Save Print Output As window, name the file EFS-Recover and click Save to save the file in the default user Documents location.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Back on the BitLocker Drive Encryption window, click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Ensure that the radio button for Encrypt used disk space only is selected and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">17</span> On the next step, ensure that New encryption mode is selected and click Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> Uncheck Run BitLocker system check and click Start encrypting.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">19</span> Notice the notification that appears. Click the notification icon to view the progress of the encryption.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">20</span> Once the encryption process completes, click Close and move on to the next task.</h3></div>
+<p class="task-head">Task 2.3 - Disabling BitLocker with PowerShell</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Click Search and type PowerShell ISE. Right-click the Windows PowerShell ISE entry and select Run as administrator.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click Yes to accept the User Account Control.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> At the prompt, type manage-bde -status followed by pressing the Enter key to check the encryption status of each drive.</h3><pre class="cmd"><code>PS C:\Windows\system32&gt; manage-bde -status</code></pre><div class="call tip"><span class="k">Note</span><p>Notice that Volume C: is protected and encrypted with XTS-AES 128.</p></div></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev8"><span class="shot">BitLocker</span>BitLocker showing C: encrypted, and <code class="inl">manage-bde -status</code> output.</label></li></div><div class="step"><h3 class="fh"><span class="n">4</span> At the prompt, type Disable-BitLocker -MountPoint "C:" (include the quotes around "C:") followed by pressing the Enter key.</h3><pre class="cmd"><code>PS C:\Windows\system32&gt; Disable-BitLocker -MountPoint "C:"</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Remove the encryption off of the C: drive by entering the manage-bde -off C: command. The decryption continues in the background until the drive is in a fully decrypted status.</h3><pre class="cmd"><code>PS C:\Windows\system32&gt; manage-bde -off C:</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Enter the manage-bde -status command to check the status of decryption progress while it is running in the background.</h3><pre class="cmd"><code>PS C:\Windows\system32&gt; manage-bde -status</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">21</span> Once the drive is completely decrypted, type exit followed by pressing the Enter key to close PowerShell.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">22</span> At this point, you have completed the BitLocker procedure; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: Windows security tools</h2>

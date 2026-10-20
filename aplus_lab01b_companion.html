@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab01b-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: system information tools</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -270,6 +275,89 @@ systeminfo | findstr /i "OS Memory BIOS"</code></pre>
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Accessing System Information</p>
+<p class="task-head">Task 1.1 - System Control Panel Applet in Windows 7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Launch the Win7 virtual machine to access the graphical login screen. To launch the console window for a virtual machine, you may access by either clicking on the machine's graphic image from the topology page or by clicking on the machine's respective tab from the navigation bar.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Click the Start button followed by clicking on Control Panel. Lab 01-B: Examining PC Hardware</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the Control Panel window, make sure to change the View by to Small icons and click on the System icon.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the System window, notice the Windows edition, processor, memory, system type, computer name, and product ID information that is made available. When finished reviewing the data, close the window by clicking the X in the top-right corner. Lab 01-B: Examining PC Hardware</h3></div>
+<p class="task-head">Task 1.2 - System Control Panel Applet in Windows 8.1</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Launch the Win8.1 virtual machine to access the graphical login screen.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win8.1 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Located on the taskbar, in the lower-left corner of the screen, right-click on the Start button. The Power User Menu will open. Click on System. Lab 01-B: Examining PC Hardware</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the System window, notice the Windows edition, processor, memory, system type, computer name, and product ID information that is made available. When finished reviewing the data, close the window by clicking the X in the top-right corner. Lab 01-B: Examining PC Hardware</h3></div>
+<p class="task-head">Task 2 - Systeminfo.exe</p>
+<p class="task-head">Task 2.1 - Accessing Systeminfo.exe in Windows 7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Change focus back to the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click the Start button and type command prompt in the textbox. Right-click on the first Command Prompt search result entry and select Run as administrator from the menu. (It is necessary to be using an Administrator account to get all the features available with this tool.)</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">systeminfo</span>The systeminfo output from an elevated prompt on Win7.</label></li></div><div class="step"><h3 class="fh"><span class="n">3</span> When prompted for User Access Control, click Yes to continue. Lab 01-B: Examining PC Hardware</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> In the Command Prompt window, type systeminfo.exe at the prompt and press the Enter key to launch the utility.</h3><pre class="cmd"><code>C:\Windows\System32&gt; systeminfo.exe</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> In the Command Prompt window, scroll up and review the system information provided by the utility.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Once finished, type exit followed by pressing the Enter key to close the Command Prompt window.</h3><pre class="cmd"><code>C:\Windows\System32&gt;exit</code></pre></div>
+<p class="task-head">Task 2.2 - Accessing Systeminfo.exe in Windows 10</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Launch the Win10 virtual machine to access the graphical login screen.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt. Lab 01-B: Examining PC Hardware</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Located on the taskbar, in the lower-left corner of the screen, right-click on the Start button. The Power User Menu displays, click on Run.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Type cmd in the text field and press the Enter key or click on OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> In the Command Prompt window, type systeminfo.exe at the prompt and press Enter to run the utility. Lab 01-B: Examining PC Hardware</h3><pre class="cmd"><code>C:\Windows\System32&gt; systeminfo.exe</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the Command Prompt window, scroll up and review the information provided by the utility.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Close the command prompt by typing exit followed by pressing the Enter key.</h3><pre class="cmd"><code>C:\Windows\System32&gt; exit</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Leave the Win10 machine open to continue with the next task. Lab 01-B: Examining PC Hardware</h3></div>
+<p class="task-head">Task 3 - MSInfo32 Utility</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> System Summary - Displays general information about your computer and the operating system, such as the computer name and manufacturer, the type of basic input/output system (BIOS) your computer uses, and the amount of memory that's installed.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Hardware Resources - Displays advanced details about your computer's hardware and is intended for IT professionals.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Components - Displays information about disk drives, sound devices, modems, and other components installed on your computer.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Software Environment - Displays information about drivers, network connections, and other program-related details. In this exercise, you will explore using the System Information or MSInfo32 Utility. Choose any one of the Windows hosts and launch it if you are not already running one.</h3></div>
+<p class="task-head">Task 3.1 - Accessing the MSInfo32 Utility</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> The easiest way to access the MSInfo32 utility is by utilizing the Run command window. Located on the taskbar, in the lower-left corner of the screen, right-click on the Start button and click on Run. Lab 01-B: Examining PC Hardware</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Type msinfo32.exe in the text field and press the Enter key or click on OK.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> The System Information window appears. In the left panel, click on the + sign next to each of the categories to see what type of information is available using this utility.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Go back to the top of the left panel, click and highlight System Summary. Inspect the information in the right pane. This includes information on the system model, system type, processor, memory, and BIOS information. Lab 01-B: Examining PC Hardware Not all hardware information is located on the System Summary. To locate information about specific components, click on the + sign next to the Components category, or use the find feature. It is necessary to be specific in providing information, as the search is not intuitive.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Type Display into the Find what: text field found on the bottom of the window. Click the Find button. (It may be required to click Find Next until you get to the specific information you wish to obtain.) Lab 01-B: Examining PC Hardware</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Notice the search feature found the Display subcategory underneath the Components category and helped identify information about the display adapter.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Leave the Win10 machine open to continue with the next task.</h3></div>
+<p class="task-head">Task 3.2 - Generating a System Information Report</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win10 machine, if not already opened, open System Information (MSinfo32 Utility).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Select the information for which you wish to create a report. In this example, you will use Display. This would be useful to do before you update the display adapter drivers. Lab 01-B: Examining PC Hardware</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> If Display is not selected, click on the + sign next to the Components category and select Display. This will put the Display adapter information on the right pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Click on File &gt; Export in the menu bar.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> The Export As dialog box appears. Navigate to the Documents folder from the Quick access pane. Lab 01-B: Examining PC Hardware</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Export</span>The msinfo32 Export As dialog showing the System Info folder and your file name.</label></li></div><div class="step"><h3 class="fh"><span class="n">6</span> In the Export As window, right-click in the whitespace and select New &gt; New Folder. Lab 01-B: Examining PC Hardware</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> When naming the new folder, type System Info, and press Enter. Once created, double-click on the System Info folder.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Type &lt;date&gt;-display_info into the File name text field and click Save. (For this example, "20200326-display_info", was used as the filename.) Lab 01-B: Examining PC Hardware</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Close the System Information window by clicking the X in the upper-right corner.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Open a File Explorer window by clicking on the icon located in the taskbar.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> In the File Explorer window, navigate to the Documents &gt; System Info.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> Double-click the file you just created from the export process. Lab 01-B: Examining PC Hardware</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Notice the report displays the text file with the display adapter information.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Report</span>Your exported display report open in Notepad.</label></li></div><div class="step"><h3 class="fh"><span class="n">14</span> Close each remaining window by clicking the X in the top-right corner. A best practice would be to save this file externally in case the system cannot boot. If needed, you would then be able to retrieve the information. Lab 01-B: Examining PC Hardware</h3></div>
+<p class="task-head">Task 4 - DirectX Diagnostic Tool</p>
+<p class="task-head">Task 4.1 - Checking Device Drivers with Dxdiag</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Change focus back to the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click on the Start button and type dxdiag in the search box, then click on the dxdiag search result to launch the program. Alternatively, you can also access this utility by using the Run command window and typing the command dxdiag.exe. Lab 01-B: Examining PC Hardware</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Before the program opens, it will ask about checking to see if drivers are digitally signed. While this is usually a good practice, in this lab, you will click No to proceed. When the tool opens, you will be presented with four category tabs; System, Display, Sound, and Input. If there is more than one of any device in a category, each will be represented with its own tab.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Audit</span>Free PC Audit results on the System tab.</label></li></div><div class="step"><h3 class="fh"><span class="n">4</span> To become familiar with the information that can be found on each device, navigate through the tabs. Click the Next Page button to move through the tabs and review the types of information found on each. Notice on each page for every device there is a Notes pane at the bottom of the page. If problems exist, they are described here. Lab 01-B: Examining PC Hardware When you are troubleshooting system problems, there may be times when you work in collaboration with other technicians or vendors. Being able to share information is very important in order to work together productively. In the event that assistance is needed, using a diagnostic tool to collect system information and save settings can be very helpful.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Click on the Save All Information button at the bottom of the page. Lab 01-B: Examining PC Hardware</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> In the Save As window, click on Desktop in the left pane, and in the File name text field, leave the default filename of DxDiag. Click Save.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Double-click the DxDiag file that is now on your Desktop. It contains all the information that was discovered when using the DirectX Diagnostic Tool. Lab 01-B: Examining PC Hardware</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">DxDiag</span>The saved DxDiag.txt file open on the Win7 desktop.</label></li></div><div class="step"><h3 class="fh"><span class="n">8</span> Review the information and then close the DxDiag - Notepad window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Close any remaining windows open on the Win7 machine. Leave the Win7 machine open to continue on with the next task. Lab 01-B: Examining PC Hardware</h3></div>
+<p class="task-head">Task 5 - Use Free PC Audit to Examine Computer System Components</p>
+<p class="task-head">Task 5.1 - Using Free PC Audit</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Locate the Free PC Audit program shortcut icon on your Desktop. Right-click the icon and select Run as administrator from the context menu.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> When prompted, click Yes in the User Account Control window to continue. Lab 01-B: Examining PC Hardware</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Free PC Audit will begin an analysis of the system; this may take a few seconds. Once the Free PC Audit analysis is complete, it will display the findings in the application interface. These findings can be saved to a text file for use outside of the application.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Scroll through items listed on the System tab. As you scroll down through the details, notice that it also contains Shares and Hotfixes from Windows Updates.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: system information tools</h2>

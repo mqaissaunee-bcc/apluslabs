@@ -142,6 +142,11 @@ footer p{margin:.25rem 0;max-width:80ch}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
+
+#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
+#fullsteps .step h3.fh .n{margin-right:.5rem}
+#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
+#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab03-v1:">
@@ -167,7 +172,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: network tools</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -282,6 +287,79 @@ net use Z: /delete</code></pre>
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
+</section>
+
+<section id="fullsteps" aria-labelledby="h-fullsteps">
+<h2 id="h-fullsteps">Full lab steps</h2>
+<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
+<p class="task-head">Task 1 - Windows Network Tools</p>
+<p class="task-head">Task 1.1 - Accessing Network and Sharing Center</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win7 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Click the Start button, then click Control Panel on the right side of the menu.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Change the View by to Small icons and click Network and Sharing Center in the list. A window opens that shows basic network information and active networks.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> From this page, you have options to change the network settings:     Setup a new connection or network: allows you to set up a wireless, broadband, dial-up, ad hoc, or VPN connection; or set up a router or access point.     Connect to a Network: allows you to connect to an existing network     Choose homegroup and sharing options: allows you to access files and printers located on other network computers and change sharing settings.     Troubleshoot problems: is useful to diagnose and repair network problems or to receive troubleshooting information.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Click Connect to a Network. The available networks are shown, with only Unidentified network being available in this lab environment.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Leave the Win7 machine with Network and Sharing Center opened to continue with the next task.</h3></div>
+<p class="task-head">Task 1.2 - Change Adapter Settings</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> While viewing the Network and Sharing Center, click on Change Adapter Settings in the left pane.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Explore the availability of network adapters on the machine. If you have an Ethernet, WiFi, or any other type of network adapter, it will be listed here. Right-click on Local Area Connection and choose Properties.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the Local Area Connection Properties window, double-click on Internet Protocol Version 4 (TCP/IPv4).</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Here, you can configure the computer to use a static IP address or obtain one from a DHCP server. Change the static IP address for the machine to 192.168.1.77. Click OK.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Static IP</span>Win7 IPv4 Properties showing 192.168.1.77.</label></li></div><div class="step"><h3 class="fh"><span class="n">5</span> Click OK on the Local Area Connection Properties window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Click the Start button and type cmd into the search field. Click on cmd.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> In the command prompt interface, type the command below, followed by pressing the Enter key to verify that the newly assigned static IP address is configured correctly.</h3><pre class="cmd"><code>C:\User\sysadmin&gt; ipconfig /all</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Once confirmed, type exit followed by pressing the Enter key to close the command prompt window.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Change focus to the Network Connections window and click the Back arrow to return to Network and Sharing Center.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Leave the Win7 machine with the Network and Sharing Center window opened to continue with the next task.</h3></div>
+<p class="task-head">Task 2 - Advanced Sharing Settings</p>
+<p class="task-head">Task 2.1 - Configure Network Sharing Settings</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> In the Network and Sharing Center window, on the left pane, click on Change advanced sharing settings.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Notice the configuration options available for the current profile, Home or Work. Click on the radio button next to turn off file and printer sharing. This configuration will prevent the files on this folder from being accessible by anyone on the network with permission.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Scroll down to locate Media Streaming and be sure it is disabled unless you need to use it. When enabled, it opens up quite a few ports in your firewall, which could be a security issue.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Scroll to locate File Sharing Connections and make sure it's set to use 128-bit encryption.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Ensure that the radio button for Turn on password protected sharing is selected as this will help secure access to shared files by requiring username and passwords.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Sharing</span>The Advanced sharing settings page with file sharing off and password protected sharing on.</label></li></div><div class="step"><h3 class="fh"><span class="n">6</span> Scroll through and read about the other settings available. The settings are the same in each profile and just organized differently when compared to Windows 8.1 and Windows 10. Click the Save changes button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Leave the Win7 machine opened to continue with the next task.</h3></div>
+<p class="task-head">Task 3 - Setup New Network &amp; Troubleshoot Problems</p>
+<p class="task-head">Task 3.1 - Network Troubleshooting Steps in Windows 7</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> While in the Network and Sharing Center window, in the main pane, click on Troubleshoot problems.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Here, you will see a list of troubleshooting links to programs that will run and attempt to fix issues with various networking-related services. Click on Network Adapter.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the Network Adapter window, click on Next.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Notice the tool begins to scan for problems. As it does this, read the operations that the troubleshooting tool is running for diagnostics. The troubleshooting tool should not find any issues at this point; click Close.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> Close the Network and Internet window.</h3></div>
+<p class="task-head">Task 3.2 - Network Troubleshooting Steps in Windows 10</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Using the Network troubleshooter can help diagnose and fix common connection problems. Click on the Start button and then click on the Settings icon.</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Troubleshooter</span>The Win10 network troubleshooter results.</label></li></div><div class="step"><h3 class="fh"><span class="n">5</span> In the Windows Settings, click on Network &amp; Internet.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">6</span> Underneath the Status header, click on Troubleshoot. The network troubleshooter will run and attempt to discover and, if possible, resolve the issues with the network connection or configuration. The error displayed may be different than the error shown in the documentation.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> Read the results and click Close.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Leave the Win10 machine opened to continue with the next task.</h3></div>
+<p class="task-head">Task 4 - Using Network Command-Line Utilities</p>
+<p class="task-head">Task 4.1 - Interacting with the CLI</p>
+<div class="step"><h3 class="fh"><span class="n">1</span> Click the Start button, type cmd. Right-click on Command Prompt listing and click on Run as administrator.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">2</span> Click Yes to allow the UAC to make changes.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">3</span> In the command prompt window, type the ipconfig /? command and press Enter to view help for the command. Ipconfig's primary use is finding TCP/IP configuration information, but it has many useful switches that can be considered with the help switch.</h3><pre class="cmd"><code>C:\Windows\system32&gt; ipconfig /?</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">4</span> Type ipconfig to view the TCP/IP configuration information. This command will show the current Windows IP configuration.</h3><pre class="cmd"><code>C:\Windows\system32&gt; ipconfig</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">5</span> To view more detailed information about the machine's TCP/IP configuration, enter ipconfig /all. What is the MAC address of the local network adapter? Is DHCP being used on this system? What is the DNS server? All these questions and more can be answered with this command. Other ipconfig switches that are useful to use at the CLI when troubleshooting network issues are:  ipconfig /release - sends a message to the server that forces the client to give up its leased DHCP address.  ipconfig /renew - executed to request a new IP address  ipconfig /flushdns - flushes and resets the DNS client resolver cache helpful if you change DNS servers or an IP address assigned to a domain name changes</h3><pre class="cmd"><code>C:\Windows\system32&gt; ipconfig /all</code></pre></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">ipconfig</span><code class="inl">ipconfig /all</code> on Win10 showing the Physical Address and DHCP status.</label></li></div><div class="step"><h3 class="fh"><span class="n">6</span> In the command prompt interface, enter the ping 192.168.1.8 command. Is it successful? When referring to the topology, this is the IP address of the Win8.1 host. Using the ping command verifies connectivity to it.</h3><pre class="cmd"><code>C:\Windows\system32&gt; ping 192.168.1.8</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">7</span> At the command prompt, enter the tracert 192.168.1.8 command. Tracert traces the route it takes for a packet to reach a destination and shows you information about each hop along that route. Based on the output of the command, it can be determined that this device is on the same local subnet as Win8.1. Because this lab environment is a flat network (a single subnet), only one hop is shown.</h3><pre class="cmd"><code>C:\Windows\system32&gt; tracert 192.168.1.8</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">8</span> Enter the netstat -help command and review the available options. This network utility displays network connections from the host machine. C:\Windows\system32&gt; netstat -help</h3></div>
+<div class="step"><h3 class="fh"><span class="n">9</span> Enter the netstat -an | more command. This network utility will display a list of all open network connections on the computer, the ports they are using, and the foreign IP address they are connected to, which is useful in tracking connections that are unexpected. Use the output of the netstat -help command to learn what the -a and -n switches display. Use the spacebar to continue viewing more of the output until the prompt comes back. C:\Windows\system32&gt; netstat -an | more</h3></div>
+<div class="step"><h3 class="fh"><span class="n">10</span> Enter the net command to review the syntax of the command and to list the subset of commands for the net command. This network utility is used to manage the network and view its settings.</h3><pre class="cmd"><code>C:\Windows\system32&gt; net</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">11</span> Enter the net accounts command. This command allows you to view account settings and make changes to various account options from the command-line. If you are unable to access the GUI and need to make changes to user account login settings from the command line, this command is invaluable. Use net accounts /? for the full syntax. C:\Windows\system32&gt; net accounts</h3></div>
+<div class="step"><h3 class="fh"><span class="n">12</span> You can type net use /? to display help for the net use command. The net use command lists the resources that you are currently connected to, and by using one or more of the many switches available, it can also be used to connect to new resources and disconnect from ones that are already connected.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">13</span> Enter the net use command with no switches. This allows you to view current network connections. You will see by the output that you are not connected to any network resources.</h3></div>
+<div class="step"><h3 class="fh"><span class="n">14</span> Now you will use the net command to connect to a network resource. Enter net use * "\\Win8-1\Users\sysadmin\Downloads" /user:sysadmin Train1ng$ C:\Windows\system32&gt; net use * "\\Win8-1\Users\sysadmin\Downloads" The * allows the system to select the drive letter assigned to the \\Win8-1\Users\sysadmin\Downloads is the network resource being sysadmin - username Train1ng$ - password</h3><pre class="cmd"><code>/user:sysadmin Train1ng$
+resource
+mapped</code></pre></div>
+<div class="step"><h3 class="fh"><span class="n">15</span> Enter the net use command. This allows you to view current network connections. You will see any network resources you are connected to now. The mapped network drive is Z. C:\Windows\system32&gt; net use</h3></div>
+<div class="step"><h3 class="fh"><span class="n">16</span> Enter the net use Z: /delete command. This allows you to remove network connection to Drive Z. If you type net use you see will any network resources you are connected to now. The mapped network drive is Z should be removed. C:\Windows\system32&gt; net use Z: /delete</h3></div>
+<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">net use</span><code class="inl">net use</code> output showing the mapped Z: drive.</label></li></div><div class="step"><h3 class="fh"><span class="n">17</span> Nslookup is a command-line utility that queries the DNS to obtain a domain name, IP address mapping, or other types of DNS records. Enter the nslookup command. Because this lab environment is not connected to the internet and uses no DNS server while running Windows it is not resolving the names. In Windows operating systems an nslookup will by default check the specified DNS server for the record and will not look at the hosts file.</h3><pre class="cmd"><code>C:\Windows\system32&gt; nslookup</code></pre><div class="call tip"><span class="k">Note</span><p>Example output of a Windows system using DNS server.</p></div></div>
+<div class="step"><h3 class="fh"><span class="n">18</span> The lab is now complete; you may end the reservation.</h3></div>
+<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: network tools</h2>
