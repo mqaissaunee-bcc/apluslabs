@@ -12,6 +12,7 @@
   --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
   --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
   --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --m-win7:#1F5FA8; --m-win81:#0B7377; --m-win10:#6A3FB0; --m-lub:#B4481A; --m-newlub:#8A5A00; --m-bg:#F3F6FA;
   --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
   --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
@@ -22,13 +23,15 @@
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}}
 :root[data-theme="dark"]{
   --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
@@ -108,6 +111,22 @@ main p,main li{max-width:68ch}
 p.shotline{margin:.5rem 0}
 pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
 pre.cmd .c{color:var(--code-dim)}
+pre.cmd .pr{color:var(--code-dim);user-select:none;-webkit-user-select:none}
+pre.cmd.file{border-left:4px solid var(--tag)}
+.fcap{font-size:.85rem;color:var(--ink-2);margin:.6rem 0 -.3rem}
+.m-win7{--mc:var(--m-win7)} .m-win81{--mc:var(--m-win81)} .m-win10{--mc:var(--m-win10)} .m-lub{--mc:var(--m-lub)} .m-newlub{--mc:var(--m-newlub)}
+.mrun{border-left:5px solid var(--mc);padding:.1rem 0 .1rem .9rem;margin:1rem 0 1.25rem}
+.mband{display:inline-flex;align-items:center;gap:.4rem;margin:0 0 .25rem -.9rem;padding:.3rem .8rem .3rem .7rem;background:var(--m-bg);border:1px solid var(--mc);border-left:5px solid var(--mc);border-radius:0 6px 6px 0;font-weight:700;color:var(--mc);font-family:var(--f-display)}
+.onm{display:inline-block;font-weight:700;color:var(--mc);border:1px solid var(--mc);border-radius:4px;padding:0 .35rem;font-size:.88em;background:var(--m-bg)}
+.pdfref{display:inline-block;margin-left:.5rem;font-family:var(--f-body);font-weight:600;font-size:.75rem;color:var(--ink-2);border:1px solid var(--rule);border-radius:3px;padding:0 .4rem;vertical-align:middle}
+.topo{margin:1rem 0;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--surface-2)}
+.topo .bus{text-align:center;font-family:var(--f-mono);font-size:.85rem;color:var(--ink-2);margin:0 0 .3rem;padding-bottom:.3rem;border-bottom:4px solid var(--ink)}
+.topo ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+.topo li{position:relative;margin-top:.9rem;border:2px solid var(--mc);border-top-width:6px;border-radius:6px;padding:.35rem .7rem;background:var(--surface);text-align:center;min-width:7.5rem}
+.topo li::before{content:"";position:absolute;top:-1.05rem;left:50%;height:.9rem;border-left:2px solid var(--ink)}
+.topo li b{display:block;color:var(--mc)} .topo li span{font-family:var(--f-mono);font-size:.85rem}
+.vmnote{font-size:.8rem;color:var(--ink-2)} .topo li.unused{border-style:dashed;opacity:.75}
+.topo .hosted{font-size:.85rem;color:var(--ink-2);text-align:center;margin:.5rem 0 0}
 .copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
 .tbl{overflow-x:auto;margin:.75rem 0}
 table{border-collapse:collapse;width:100%;font-size:.94rem}
@@ -136,17 +155,13 @@ footer p{margin:.25rem 0;max-width:80ch}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media print{
+  .mrun{border-left-color:#000} .mband,.onm{color:#000;border-color:#000;background:#fff}
   .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
   body{background:#fff;color:#000} .wrap{display:block;padding:0}
   main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
-
-#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
-#fullsteps .step h3.fh .n{margin-right:.5rem}
-#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
-#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab01b-v1:">
@@ -172,7 +187,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: system information tools</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -191,8 +206,9 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="environment" aria-labelledby="h-environment">
 <h2 id="h-environment">The environment you're working in</h2>
-<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code class="inl">192.168.1.7/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win8.1</td><td><code class="inl">192.168.1.8/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
-<p>You'll move between all three. Task 3 (msinfo32) works on any of them; the lab continues on Win10. <strong>Free PC Audit</strong> is already on the Win7 desktop.</p>
+<p class="fcap">Lab Settings, exactly as listed in the PDF</p><div class="tbl"><table><thead><tr><th scope="col">Virtual Machine</th><th scope="col">IP Address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code>192.168.1.7/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Win8.1</td><td><code>192.168.1.8/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Win10</td><td><code>192.168.1.10/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr></tbody></table></div>
+<div class="topo" role="img" aria-label="Pod topology: Win7 at 192.168.1.7/24, Win8.1 at 192.168.1.8/24, Win10 at 192.168.1.10/24, all on 192.168.1.0/24"><div class="bus">192.168.1.0/24 (one flat subnet, no router or internet)</div><ul><li class="m-win7"><b><span aria-hidden="true">🪟</span> Win7</b><span>.7</span></li><li class="m-win81"><b><span aria-hidden="true">🪟</span> Win8.1</b><span>.8</span></li><li class="m-win10"><b><span aria-hidden="true">🪟</span> Win10</b><span>.10</span></li></ul></div>
+<p>You move between all three machines; the colored bands in the walkthrough show which one each run of steps is on. <strong>Free PC Audit</strong> is already on the Win7 desktop.</p>
 <div class="call tip"><span class="k">Good to know before you start</span><p>Run systeminfo from an <strong>elevated</strong> prompt (Run as administrator) on Win7, as the lab asks. Some fields come back incomplete from a standard prompt.</p></div>
 
 <div class="done-row"><input type="checkbox" id="done-environment" data-done="environment"><label for="done-environment">Mark this section reviewed</label></div>
@@ -205,159 +221,95 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="walkthrough" aria-labelledby="h-walkthrough">
 <h2 id="h-walkthrough">Walkthrough</h2>
-<p class="task-head">Task 1: The System page</p>
+<p class="task-head">Task 1: The System Control Panel applet <span class="pdfref">PDF 1.1–1.2</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
 <h3><span class="n">1</span>Read the summary on Win7</h3>
-<p>Log in to <strong>Win7</strong>. Open <strong>Start > Control Panel</strong>, set <strong>View by</strong> to <strong>Small icons</strong>, and click <strong>System</strong>. Note the Windows edition, processor, installed memory, system type (32- or 64-bit), computer name, and product ID.</p>
+<p>Open the <strong>Win7</strong> console and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Click <strong>Start > Control Panel</strong>, set <strong>View by</strong> to <strong>Small icons</strong>, and click <strong>System</strong>. Note the Windows edition, processor, memory, system type (32- or 64-bit), computer name, and product ID. Close the window.</p>
 </div>
+</div>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
 <h3><span class="n">2</span>Use the Power User menu on Win8.1</h3>
-<p>Log in to <strong>Win8.1</strong>, right-click <strong>Start</strong>, and choose <strong>System</strong>. It's the same page, reached faster. Close it when you've compared.</p>
+<p>Open the <strong>Win8.1</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Right-click <strong>Start</strong> (lower-left corner of the taskbar) and click <strong>System</strong>. It's the same page, reached faster. Review the same details and close the window.</p>
 </div>
-<p class="task-head">Task 2: systeminfo</p>
+</div>
+<p class="task-head">Task 2: systeminfo.exe <span class="pdfref">PDF 2.1–2.2</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
-<h3><span class="n">3</span>Run systeminfo elevated on Win7</h3>
-<p>On <strong>Win7</strong>, click <strong>Start</strong>, type <code class="inl">command prompt</code>, right-click the result, and choose <strong>Run as administrator</strong>. Accept the UAC prompt, then run:</p>
-<pre class="cmd"><code>systeminfo.exe</code></pre>
-<p>Scroll up through the output: OS version and build, install date, last boot time, BIOS version, processor, total memory, hotfixes, and network adapters.</p>
+<h3><span class="n">3</span>Open an elevated Command Prompt on Win7</h3>
+<p>Change focus back to <strong>Win7</strong>. Click <strong>Start</strong>, type <code class="inl">command prompt</code> in the search box, right-click the first <strong>Command Prompt</strong> result, and choose <strong>Run as administrator</strong>. Click <strong>Yes</strong> at the User Account Control prompt.</p>
+</div>
+<div class="step">
+<h3><span class="n">4</span>Run systeminfo, then exit</h3>
+<pre class="cmd" data-prompt="C:\Windows\System32&gt;"><code><span class="pr" aria-hidden="true">C:\Windows\System32&gt; </span>systeminfo.exe</code></pre>
+<p>Scroll up and review the output: OS version and build, install date, BIOS version, processor, total memory, hotfixes, and network adapters. Then close the prompt:</p>
+<pre class="cmd" data-prompt="C:\Windows\System32&gt;"><code><span class="pr" aria-hidden="true">C:\Windows\System32&gt; </span>exit</code></pre>
 <p class="shotline"><span class="shot">Screenshot</span>The systeminfo output on Win7, showing the OS and BIOS lines.</p>
 </div>
-<div class="step">
-<h3><span class="n">4</span>Run it on Win10</h3>
-<p>Log in to <strong>Win10</strong>, right-click <strong>Start > Run</strong>, enter <code class="inl">cmd</code>, and run <code class="inl">systeminfo.exe</code> again. Compare the output with Win7. Type <code class="inl">exit</code> when you're done.</p>
-<pre class="cmd"><code><span class="c">Useful variations on a real PC</span>
-systeminfo | more
-systeminfo &gt; C:\Users\sysadmin\Desktop\sysinfo.txt
-systeminfo /fo csv &gt; sysinfo.csv
-systeminfo | findstr /i "OS Memory BIOS"</code></pre>
 </div>
-<p class="task-head">Task 3: System Information (msinfo32)</p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
-<h3><span class="n">5</span>Open msinfo32 and explore the categories</h3>
-<p>On Win10, right-click <strong>Start > Run</strong> and enter:</p>
-<pre class="cmd"><code>msinfo32</code></pre>
-<p>Expand each category in the left pane: <strong>Hardware Resources</strong>, <strong>Components</strong>, and <strong>Software Environment</strong>. Then click <strong>System Summary</strong> and read the system model, processor, memory, and BIOS details.</p>
+<h3><span class="n">5</span>Run it on Win10</h3>
+<p>Open the <strong>Win10</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Right-click <strong>Start</strong>, click <strong>Run</strong>, type the command below, and press <kbd>Enter</kbd>:</p>
+<pre class="cmd" data-prompt="Run box:"><code><span class="pr" aria-hidden="true">Run box: </span>cmd</code></pre>
+<p>In the Command Prompt window, run systeminfo, review the output, and exit:</p>
+<pre class="cmd" data-prompt="C:\Windows\System32&gt;"><code><span class="pr" aria-hidden="true">C:\Windows\System32&gt; </span>systeminfo.exe
+<span class="pr" aria-hidden="true">C:\Windows\System32&gt; </span>exit</code></pre>
+<div class="call tip"><span class="k">Which prompt will you actually see?</span><p>The PDF shows <code class="inl">C:\Windows\System32&gt;</code> for both machines. A Command Prompt opened from <strong>Run</strong> usually starts in <code class="inl">C:\Users\sysadmin&gt;</code> instead. The command works the same from either folder.</p><p>Leave Win10 open for the next task.</p></div>
+</div>
+</div>
+<p class="task-head">Task 3: The MSInfo32 utility <span class="pdfref">PDF 3.1–3.2</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
+<div class="step">
+<h3><span class="n">6</span>Open System Information</h3>
+<p>On <strong>Win10</strong>, right-click <strong>Start > Run</strong>, type the command below, and press <kbd>Enter</kbd> (or click <strong>OK</strong>):</p>
+<pre class="cmd" data-prompt="Run box:"><code><span class="pr" aria-hidden="true">Run box: </span>msinfo32.exe</code></pre>
+<p>In the left panel, click the <strong>+</strong> next to each category (System Summary, Hardware Resources, Components, Software Environment) to see what each holds. Then click <strong>System Summary</strong> and inspect the system model, system type, processor, memory, and BIOS information.</p>
 </div>
 <div class="step">
-<h3><span class="n">6</span>Find the display adapter</h3>
-<p>Type <code class="inl">Display</code> in <strong>Find what</strong> at the bottom of the window and click <strong>Find</strong>. Use <strong>Find Next</strong> if needed. It jumps to <strong>Components > Display</strong>.</p>
-<div class="call stuck"><span class="k">Where people get stuck</span><p>Find matches category names and values exactly, and it isn't forgiving. Search for "Display", not "graphics card". If you get nothing, check that <strong>Search selected category only</strong> is unchecked.</p></div>
+<h3><span class="n">7</span>Find the display adapter</h3>
+<p>Type <code class="inl">Display</code> in <strong>Find what</strong> at the bottom of the window and click <strong>Find</strong> (click <strong>Find Next</strong> if needed). It finds <strong>Components > Display</strong>.</p>
+<div class="call stuck"><span class="k">Where people get stuck</span><p>Find matches exact category names and values. Search for <code class="inl">Display</code>, not "graphics card". If you get nothing, check that <strong>Search selected category only</strong> is unchecked.</p></div>
 </div>
 <div class="step">
-<h3><span class="n">7</span>Export a report</h3>
-<p>With <strong>Components > Display</strong> selected, choose <strong>File > Export</strong>. Go to <strong>Documents</strong>, create a folder named <code class="inl">System Info</code>, open it, and save the file as <code class="inl">&lt;date&gt;-display_info</code> (for example <code class="inl">20261017-display_info</code>).</p>
+<h3><span class="n">8</span>Export a report</h3>
+<p>With <strong>Components > Display</strong> selected, choose <strong>File > Export</strong>. In the <strong>Export As</strong> dialog, click <strong>Documents</strong> in Quick access. Right-click in the white space, choose <strong>New > New Folder</strong>, name it <code class="inl">System Info</code>, press <kbd>Enter</kbd>, and double-click it. In <strong>File name</strong> type <code class="inl">&lt;date&gt;-display_info</code> (for example <code class="inl">20261017-display_info</code>) and click <strong>Save</strong>.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The Export As dialog showing the System Info folder and your file name.</p>
 </div>
 <div class="step">
-<h3><span class="n">8</span>Open the report</h3>
-<p>Open <strong>File Explorer > Documents > System Info</strong> and double-click your file. It's plain text you can attach to a ticket or keep as a baseline. On a real system, copy it somewhere off the PC so it's available if the machine won't boot.</p>
+<h3><span class="n">9</span>Open the report</h3>
+<p>Close System Information. Open <strong>File Explorer</strong> from the taskbar, go to <strong>Documents > System Info</strong>, and double-click your file. It's a text file with the display adapter information. Close the windows.</p>
+<div class="call tip"><span class="k">Best practice from the PDF</span><p>Save a copy of reports like this somewhere off the PC, so you can still read them if the system won't boot.</p></div>
 </div>
-<p class="task-head">Task 4: DirectX Diagnostic Tool</p>
+</div>
+<p class="task-head">Task 4: DirectX Diagnostic Tool <span class="pdfref">PDF 4.1</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
-<h3><span class="n">9</span>Launch dxdiag on Win7</h3>
-<p>On <strong>Win7</strong>, click <strong>Start</strong>, type <code class="inl">dxdiag</code>, and open it. When asked whether to check that drivers are digitally signed, click <strong>No</strong> for this lab. On a real PC, saying <strong>Yes</strong> is the better habit.</p>
+<h3><span class="n">10</span>Launch dxdiag on Win7</h3>
+<p>Change focus back to <strong>Win7</strong>. Click <strong>Start</strong>, type <code class="inl">dxdiag</code> in the search box, and click the <strong>dxdiag</strong> result. (Run box <code class="inl">dxdiag.exe</code> also works.) When it asks whether to check that drivers are digitally signed, click <strong>No</strong> for this lab.</p>
 </div>
 <div class="step">
-<h3><span class="n">10</span>Read the tabs</h3>
-<p>Step through <strong>System</strong>, <strong>Display</strong>, <strong>Sound</strong>, and <strong>Input</strong> with <strong>Next Page</strong>. Check the <strong>Notes</strong> box at the bottom of each tab. That's where dxdiag reports any problem it finds.</p>
+<h3><span class="n">11</span>Read the tabs</h3>
+<p>Click <strong>Next Page</strong> to move through <strong>System</strong>, <strong>Display</strong>, <strong>Sound</strong>, and <strong>Input</strong>. Check the <strong>Notes</strong> pane at the bottom of each page; problems are described there.</p>
 </div>
 <div class="step">
-<h3><span class="n">11</span>Save the report</h3>
-<p>Click <strong>Save All Information</strong>, choose <strong>Desktop</strong>, keep the name <code class="inl">DxDiag</code>, and click <strong>Save</strong>. Open the file from the desktop and look through it.</p>
+<h3><span class="n">12</span>Save the report</h3>
+<p>Click <strong>Save All Information</strong>. In the Save As window click <strong>Desktop</strong>, keep the file name <strong>DxDiag</strong>, and click <strong>Save</strong>. Double-click the <strong>DxDiag</strong> file on the desktop, review it, and close Notepad. Close any other windows but leave Win7 open.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The DxDiag.txt file open in Notepad.</p>
 </div>
-<p class="task-head">Task 5: Free PC Audit</p>
+</div>
+<p class="task-head">Task 5: Free PC Audit <span class="pdfref">PDF 5.1</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
-<h3><span class="n">12</span>Run the audit</h3>
-<p>On Win7, right-click the <strong>Free PC Audit</strong> desktop shortcut, choose <strong>Run as administrator</strong>, and accept UAC. When the scan finishes, scroll through the <strong>System</strong> tab. It also lists shares and installed hotfixes.</p>
+<h3><span class="n">13</span>Run the audit</h3>
+<p>On <strong>Win7</strong>, right-click the <strong>Free PC Audit</strong> desktop shortcut and choose <strong>Run as administrator</strong>. Click <strong>Yes</strong> at UAC. When the analysis finishes, scroll through the <strong>System</strong> tab; it also lists shares and Windows Update hotfixes.</p>
 <p class="shotline"><span class="shot">Screenshot</span>Free PC Audit results on the System tab.</p>
 <p>The lab is complete.</p>
 </div>
+</div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
-</section>
-
-<section id="fullsteps" aria-labelledby="h-fullsteps">
-<h2 id="h-fullsteps">Full lab steps</h2>
-<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
-<p class="task-head">Task 1 - Accessing System Information</p>
-<p class="task-head">Task 1.1 - System Control Panel Applet in Windows 7</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Launch the Win7 virtual machine to access the graphical login screen. To launch the console window for a virtual machine, you may access by either clicking on the machine's graphic image from the topology page or by clicking on the machine's respective tab from the navigation bar.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Click the Start button followed by clicking on Control Panel. Lab 01-B: Examining PC Hardware</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> In the Control Panel window, make sure to change the View by to Small icons and click on the System icon.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> In the System window, notice the Windows edition, processor, memory, system type, computer name, and product ID information that is made available. When finished reviewing the data, close the window by clicking the X in the top-right corner. Lab 01-B: Examining PC Hardware</h3></div>
-<p class="task-head">Task 1.2 - System Control Panel Applet in Windows 8.1</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Launch the Win8.1 virtual machine to access the graphical login screen.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> On the Win8.1 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Located on the taskbar, in the lower-left corner of the screen, right-click on the Start button. The Power User Menu will open. Click on System. Lab 01-B: Examining PC Hardware</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> In the System window, notice the Windows edition, processor, memory, system type, computer name, and product ID information that is made available. When finished reviewing the data, close the window by clicking the X in the top-right corner. Lab 01-B: Examining PC Hardware</h3></div>
-<p class="task-head">Task 2 - Systeminfo.exe</p>
-<p class="task-head">Task 2.1 - Accessing Systeminfo.exe in Windows 7</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Change focus back to the Win7 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Click the Start button and type command prompt in the textbox. Right-click on the first Command Prompt search result entry and select Run as administrator from the menu. (It is necessary to be using an Administrator account to get all the features available with this tool.)</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">systeminfo</span>The systeminfo output from an elevated prompt on Win7.</label></li></div><div class="step"><h3 class="fh"><span class="n">3</span> When prompted for User Access Control, click Yes to continue. Lab 01-B: Examining PC Hardware</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> In the Command Prompt window, type systeminfo.exe at the prompt and press the Enter key to launch the utility.</h3><pre class="cmd"><code>C:\Windows\System32&gt; systeminfo.exe</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> In the Command Prompt window, scroll up and review the system information provided by the utility.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Once finished, type exit followed by pressing the Enter key to close the Command Prompt window.</h3><pre class="cmd"><code>C:\Windows\System32&gt;exit</code></pre></div>
-<p class="task-head">Task 2.2 - Accessing Systeminfo.exe in Windows 10</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Launch the Win10 virtual machine to access the graphical login screen.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt. Lab 01-B: Examining PC Hardware</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Located on the taskbar, in the lower-left corner of the screen, right-click on the Start button. The Power User Menu displays, click on Run.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Type cmd in the text field and press the Enter key or click on OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> In the Command Prompt window, type systeminfo.exe at the prompt and press Enter to run the utility. Lab 01-B: Examining PC Hardware</h3><pre class="cmd"><code>C:\Windows\System32&gt; systeminfo.exe</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> In the Command Prompt window, scroll up and review the information provided by the utility.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Close the command prompt by typing exit followed by pressing the Enter key.</h3><pre class="cmd"><code>C:\Windows\System32&gt; exit</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Leave the Win10 machine open to continue with the next task. Lab 01-B: Examining PC Hardware</h3></div>
-<p class="task-head">Task 3 - MSInfo32 Utility</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> System Summary - Displays general information about your computer and the operating system, such as the computer name and manufacturer, the type of basic input/output system (BIOS) your computer uses, and the amount of memory that's installed.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Hardware Resources - Displays advanced details about your computer's hardware and is intended for IT professionals.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Components - Displays information about disk drives, sound devices, modems, and other components installed on your computer.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Software Environment - Displays information about drivers, network connections, and other program-related details. In this exercise, you will explore using the System Information or MSInfo32 Utility. Choose any one of the Windows hosts and launch it if you are not already running one.</h3></div>
-<p class="task-head">Task 3.1 - Accessing the MSInfo32 Utility</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> The easiest way to access the MSInfo32 utility is by utilizing the Run command window. Located on the taskbar, in the lower-left corner of the screen, right-click on the Start button and click on Run. Lab 01-B: Examining PC Hardware</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Type msinfo32.exe in the text field and press the Enter key or click on OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> The System Information window appears. In the left panel, click on the + sign next to each of the categories to see what type of information is available using this utility.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Go back to the top of the left panel, click and highlight System Summary. Inspect the information in the right pane. This includes information on the system model, system type, processor, memory, and BIOS information. Lab 01-B: Examining PC Hardware Not all hardware information is located on the System Summary. To locate information about specific components, click on the + sign next to the Components category, or use the find feature. It is necessary to be specific in providing information, as the search is not intuitive.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Type Display into the Find what: text field found on the bottom of the window. Click the Find button. (It may be required to click Find Next until you get to the specific information you wish to obtain.) Lab 01-B: Examining PC Hardware</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Notice the search feature found the Display subcategory underneath the Components category and helped identify information about the display adapter.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Leave the Win10 machine open to continue with the next task.</h3></div>
-<p class="task-head">Task 3.2 - Generating a System Information Report</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win10 machine, if not already opened, open System Information (MSinfo32 Utility).</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Select the information for which you wish to create a report. In this example, you will use Display. This would be useful to do before you update the display adapter drivers. Lab 01-B: Examining PC Hardware</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> If Display is not selected, click on the + sign next to the Components category and select Display. This will put the Display adapter information on the right pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Click on File &gt; Export in the menu bar.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> The Export As dialog box appears. Navigate to the Documents folder from the Quick access pane. Lab 01-B: Examining PC Hardware</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Export</span>The msinfo32 Export As dialog showing the System Info folder and your file name.</label></li></div><div class="step"><h3 class="fh"><span class="n">6</span> In the Export As window, right-click in the whitespace and select New &gt; New Folder. Lab 01-B: Examining PC Hardware</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> When naming the new folder, type System Info, and press Enter. Once created, double-click on the System Info folder.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Type &lt;date&gt;-display_info into the File name text field and click Save. (For this example, "20200326-display_info", was used as the filename.) Lab 01-B: Examining PC Hardware</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Close the System Information window by clicking the X in the upper-right corner.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Open a File Explorer window by clicking on the icon located in the taskbar.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> In the File Explorer window, navigate to the Documents &gt; System Info.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Double-click the file you just created from the export process. Lab 01-B: Examining PC Hardware</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Notice the report displays the text file with the display adapter information.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Report</span>Your exported display report open in Notepad.</label></li></div><div class="step"><h3 class="fh"><span class="n">14</span> Close each remaining window by clicking the X in the top-right corner. A best practice would be to save this file externally in case the system cannot boot. If needed, you would then be able to retrieve the information. Lab 01-B: Examining PC Hardware</h3></div>
-<p class="task-head">Task 4 - DirectX Diagnostic Tool</p>
-<p class="task-head">Task 4.1 - Checking Device Drivers with Dxdiag</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Change focus back to the Win7 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Click on the Start button and type dxdiag in the search box, then click on the dxdiag search result to launch the program. Alternatively, you can also access this utility by using the Run command window and typing the command dxdiag.exe. Lab 01-B: Examining PC Hardware</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Before the program opens, it will ask about checking to see if drivers are digitally signed. While this is usually a good practice, in this lab, you will click No to proceed. When the tool opens, you will be presented with four category tabs; System, Display, Sound, and Input. If there is more than one of any device in a category, each will be represented with its own tab.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Audit</span>Free PC Audit results on the System tab.</label></li></div><div class="step"><h3 class="fh"><span class="n">4</span> To become familiar with the information that can be found on each device, navigate through the tabs. Click the Next Page button to move through the tabs and review the types of information found on each. Notice on each page for every device there is a Notes pane at the bottom of the page. If problems exist, they are described here. Lab 01-B: Examining PC Hardware When you are troubleshooting system problems, there may be times when you work in collaboration with other technicians or vendors. Being able to share information is very important in order to work together productively. In the event that assistance is needed, using a diagnostic tool to collect system information and save settings can be very helpful.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Click on the Save All Information button at the bottom of the page. Lab 01-B: Examining PC Hardware</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> In the Save As window, click on Desktop in the left pane, and in the File name text field, leave the default filename of DxDiag. Click Save.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Double-click the DxDiag file that is now on your Desktop. It contains all the information that was discovered when using the DirectX Diagnostic Tool. Lab 01-B: Examining PC Hardware</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">DxDiag</span>The saved DxDiag.txt file open on the Win7 desktop.</label></li></div><div class="step"><h3 class="fh"><span class="n">8</span> Review the information and then close the DxDiag - Notepad window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Close any remaining windows open on the Win7 machine. Leave the Win7 machine open to continue on with the next task. Lab 01-B: Examining PC Hardware</h3></div>
-<p class="task-head">Task 5 - Use Free PC Audit to Examine Computer System Components</p>
-<p class="task-head">Task 5.1 - Using Free PC Audit</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Locate the Free PC Audit program shortcut icon on your Desktop. Right-click the icon and select Run as administrator from the context menu.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> When prompted, click Yes in the User Account Control window to continue. Lab 01-B: Examining PC Hardware</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Free PC Audit will begin an analysis of the system; this may take a few seconds. Once the Free PC Audit analysis is complete, it will display the findings in the application interface. These findings can be saved to a text file for use outside of the application.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Scroll through items listed on the System tab. As you scroll down through the details, notice that it also contains Shares and Hotfixes from Windows Updates.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> The lab is now complete; you may end the reservation.</h3></div>
-<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: system information tools</h2>
@@ -477,7 +429,7 @@ systeminfo | findstr /i "OS Memory BIOS"</code></pre>
     b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
     b.addEventListener('click',function(){
       var code=pre.querySelector('code'), clone=code.cloneNode(true);
-      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      [].forEach.call(clone.querySelectorAll('.c,.pr'),function(x){x.remove();});
       var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
       function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
@@ -495,167 +447,5 @@ systeminfo | findstr /i "OS Memory BIOS"</code></pre>
   if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
 })();
 </script>
-
-<!-- ===== LAB MODE (begin) — self-contained; safe to remove as a block ===== -->
-<style id="lab-mode-css">
-/* Floating toggle button — always available, top-right */
-.pm-toggle{position:fixed;top:10px;right:12px;z-index:2147483100;display:inline-flex;
-  align-items:center;gap:7px;min-height:40px;padding:0 15px;cursor:pointer;
-  font:600 .85rem/1 var(--f-body);border-radius:999px;
-  background:var(--accent);color:var(--accent-ink);border:1px solid transparent;
-  box-shadow:0 4px 14px rgba(0,0,0,.28)}
-.pm-toggle:hover{filter:brightness(1.08)}
-.pm-toggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.pm-toggle .pm-ico{font-family:var(--f-mono);font-weight:700}
-@media print{.pm-toggle{display:none!important}}
-
-/* ---- When lab mode is ON ---- */
-html[data-present="on"] body{line-height:1.5}
-/* Collapse the sidebar grid to a single column and go full width */
-html[data-present="on"] .wrap{display:block;max-width:100%;padding:8px 14px 90px}
-
-/* Hide page chrome that wastes room in a narrow column */
-html[data-present="on"] .toc,
-html[data-present="on"] header.bar,
-html[data-present="on"] .badges,
-html[data-present="on"] .ticket .lede,
-html[data-present="on"] .ticket .fields,
-html[data-present="on"] .done-row{display:none!important}
-
-/* Slim the title block down to a compact header */
-html[data-present="on"] .ticket{margin:0 0 10px}
-html[data-present="on"] .ticket-in{padding:10px 14px}
-html[data-present="on"] .ticket h1{font-size:1.15rem;line-height:1.25;margin:2px 0 0}
-
-/* Show one section at a time */
-html[data-present="on"] #main > section{display:none}
-html[data-present="on"] #main > section.pm-current{display:block;animation:pm-fade .18s ease}
-@keyframes pm-fade{from{opacity:0}to{opacity:1}}
-
-/* Readability bump for the one visible section */
-html[data-present="on"] #main > section{font-size:1.05rem}
-html[data-present="on"] #main > section h2{font-size:1.2rem}
-html[data-present="on"] .step h3,
-html[data-present="on"] .step h4{font-size:1.04rem}
-html[data-present="on"] .cmd{font-size:1rem;white-space:pre-wrap;word-break:break-word}
-
-/* Slim bottom control dock for advancing through sections */
-.pm-dock{display:none}
-html[data-present="on"] .pm-dock{position:fixed;left:0;right:0;bottom:0;z-index:2147483100;
-  display:flex;align-items:center;gap:8px;padding:8px 12px;
-  padding-bottom:calc(8px + env(safe-area-inset-bottom,0));
-  background:var(--surface);border-top:1px solid var(--rule)}
-.pm-dock button{flex:0 0 auto;min-height:40px;min-width:44px;padding:0 14px;cursor:pointer;
-  font:700 .9rem/1 var(--f-body);border-radius:9px;
-  background:var(--surface-2);color:var(--ink);border:1px solid var(--rule)}
-.pm-dock button:hover{background:var(--accent);color:var(--accent-ink)}
-.pm-dock button:disabled{opacity:.4;cursor:not-allowed}
-.pm-dock button:disabled:hover{background:var(--surface-2);color:var(--ink)}
-.pm-dock .pm-where{flex:1 1 auto;text-align:center;min-width:0;
-  font:600 .82rem/1.25 var(--f-body);color:var(--ink-2);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pm-dock .pm-where b{color:var(--ink);display:block;font-size:.9rem}
-.pm-dock .pm-exit{background:transparent}
-</style>
-
-<div class="pm-dock" id="pmDock" aria-hidden="true">
-  <button type="button" data-pm="prev" aria-label="Previous section">◀</button>
-  <div class="pm-where"><span id="pmCount"></span><b id="pmName"></b></div>
-  <button type="button" data-pm="next" aria-label="Next section">▶</button>
-  <button type="button" data-pm="exit" class="pm-exit" aria-label="Exit lab mode">✕</button>
-</div>
-
-<script id="lab-mode-js">
-(function () {
-  "use strict";
-  var root = document.documentElement;
-  var KEY = "aplus:labmode:v1";               // shared across all A+ companion pages
-  var sections = [], idx = 0;
-  var dock, countEl, nameEl, prevBtn, nextBtn;
-
-  function labelFor(sec) {
-    var h = sec.querySelector("h2");
-    if (!h) return sec.id || "Section";
-    return (h.textContent || "").replace(/\s+/g, " ").trim();
-  }
-
-  function show(i) {
-    if (!sections.length) return;
-    idx = Math.max(0, Math.min(sections.length - 1, i));
-    sections.forEach(function (s, n) { s.classList.toggle("pm-current", n === idx); });
-    if (countEl) countEl.textContent = (idx + 1) + " / " + sections.length;
-    if (nameEl) nameEl.textContent = labelFor(sections[idx]);
-    if (prevBtn) prevBtn.disabled = idx === 0;
-    if (nextBtn) nextBtn.disabled = idx === sections.length - 1;
-    window.scrollTo(0, 0);
-  }
-
-  function enter() {
-    sections = Array.prototype.slice.call(document.querySelectorAll("#main > section"));
-    root.setAttribute("data-present", "on");
-    if (dock) dock.setAttribute("aria-hidden", "false");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "true");
-      btn.querySelector(".pm-txt").textContent = "Exit lab mode"; }
-    try { localStorage.setItem(KEY, "1"); } catch (e) {}
-    show(0);
-  }
-
-  function exit() {
-    root.removeAttribute("data-present");
-    sections.forEach(function (s) { s.classList.remove("pm-current"); });
-    if (dock) dock.setAttribute("aria-hidden", "true");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "false");
-      btn.querySelector(".pm-txt").textContent = "Lab mode"; }
-    try { localStorage.setItem(KEY, "0"); } catch (e) {}
-  }
-
-  function toggle() { root.getAttribute("data-present") === "on" ? exit() : enter(); }
-
-  function build() {
-    var btn = document.createElement("button");
-    btn.className = "pm-toggle"; btn.id = "pmToggle"; btn.type = "button";
-    btn.setAttribute("aria-pressed", "false");
-    btn.title = "Lab mode — steps beside the lab, one section at a time (Shift+L)";
-    btn.innerHTML = '<span class="pm-ico" aria-hidden="true">⇥</span><span class="pm-txt">Lab mode</span>';
-    btn.addEventListener("click", toggle);
-    document.body.appendChild(btn);
-
-    dock = document.getElementById("pmDock");
-    countEl = document.getElementById("pmCount");
-    nameEl = document.getElementById("pmName");
-    if (dock) {
-      prevBtn = dock.querySelector('[data-pm="prev"]');
-      nextBtn = dock.querySelector('[data-pm="next"]');
-      dock.addEventListener("click", function (e) {
-        var t = e.target.closest("[data-pm]"); if (!t) return;
-        var a = t.getAttribute("data-pm");
-        if (a === "prev") show(idx - 1);
-        else if (a === "next") show(idx + 1);
-        else if (a === "exit") exit();
-      });
-    }
-
-    document.addEventListener("keydown", function (e) {
-      if (e.shiftKey && (e.key === "L" || e.key === "l")) {
-        var tag = (e.target && e.target.tagName) || "";
-        if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
-        e.preventDefault(); toggle(); return;
-      }
-      if (root.getAttribute("data-present") !== "on") return;
-      if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); show(idx + 1); }
-      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(idx - 1); }
-      else if (e.key === "Escape") { e.preventDefault(); exit(); }
-    });
-  }
-
-  if (document.readyState === "loading")
-    document.addEventListener("DOMContentLoaded", build);
-  else build();
-})();
-</script>
-<!-- ===== LAB MODE (end) ===== -->
-
 </body>
 </html>

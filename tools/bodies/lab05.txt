@@ -1,4 +1,7 @@
 @lede A shared folder has two locks on it: share permissions and NTFS permissions. You will put three PCs in one workgroup, share a folder, watch access fail for exactly the reasons a user would hit, and fix each one until a user on another PC can create files in it.
+@vm Win7|192.168.1.7/24|sysadmin|Train1ng$|Renamed Enterprise in this lab
+@vm Win8.1|192.168.1.8/24|sysadmin|Train1ng$|Renamed Reliant in this lab
+@vm Win10|192.168.1.10/24|sysadmin|Train1ng$|Renamed Client in this lab
 
 == overview | Why this lab matters
 "I can't get to the shared folder" is one of the most common small-office tickets, and it almost always comes down to one of three things: the PCs can't see each other, the remote user has no account the sharing PC recognizes, or the permissions don't allow what they're trying to do.
@@ -6,10 +9,7 @@ This lab walks straight through all three. You'll set computer names and a commo
 The rule to take away: **when share and NTFS permissions differ, the more restrictive one wins.**
 
 == environment | The environment you're working in
-| Machine | New name | Workgroup | IP address |
-| Win7 | `Enterprise` | `MYGROUP` | `192.168.1.7/24` |
-| Win8.1 | `Reliant` | `MYGROUP` | `192.168.1.8/24` |
-| Win10 | `Client` | `MYGROUP` | `192.168.1.10/24` |
+{{VMTABLE}}
 
 | Account | On | Password |
 | sysadmin | All three | `Train1ng$` |
@@ -27,40 +27,51 @@ The rule to take away: **when share and NTFS permissions differ, the more restri
 !tip SMB1 is off | Windows 10 and 11 disable the old SMB1 protocol and its "Computer Browser" service, so PCs don't always appear under Network. Typing `\\Enterprise` or `\\192.168.1.7` still connects.
 
 == walkthrough | Walkthrough
-## Task 1: Join all three PCs to a workgroup
+## Task 1: Join all three PCs to the workgroup <<1.1–1.3>>
+@@ Win7
 ### Rename Win7 and join MYGROUP
-Log in to **Win7** as sysadmin. Open **Control Panel > System > Change settings > Change**. Set the computer name to `Enterprise` and the workgroup to `MYGROUP`. Click **OK** through the welcome and restart messages, **Close**, then **Restart Now**.
+Open the **Win7** console and sign in as `sysadmin` with `Train1ng$`. Click **Start > Control Panel**, set **View by** to **Small icons**, and click **System**. Under **Computer name, domain, and workgroup settings**, click **Change settings**, then **Change**. Set the computer name to `Enterprise` and the workgroup to `MYGROUP`, and click **OK**. Click **OK** at the welcome message and the restart reminder, **Close**, then **Restart Now**.
 !shot The Computer Name/Domain Changes dialog showing Enterprise and MYGROUP.
 ### Turn on sharing on Win7
-After the restart, sign in as sysadmin. Right-click the network icon > **Open Network and Sharing Center > Change adapter settings**. In **Local Area Connection > Properties**, confirm **File and Printer Sharing for Microsoft Networks** is checked.
-Back in Network and Sharing Center, open **Change advanced sharing settings** and make sure **Turn on network discovery** and **Turn on file and printer sharing** are selected. Save or cancel.
-### Repeat on Win8.1 and Win10
-Do the same on **Win8.1** (name `Reliant`) and **Win10** (name `Client`), both in `MYGROUP`, then restart each. On Win10, right-click the network icon > **Open Network and Internet settings > Change adapter options** for the adapter, and **Sharing options** for discovery and sharing.
+Sign back in as `sysadmin`. Right-click the network icon in the notification area and click **Open Network and Sharing Center > Change adapter settings**. Right-click **Local Area Connection > Properties**, confirm **File and Printer Sharing for Microsoft Networks** is checked, and click **OK**. Click the back arrow, open **Change advanced sharing settings**, and make sure **Turn on network discovery** and **Turn on file and printer sharing** are selected. Click **Save changes** (or **Cancel** if nothing changed) and close the window.
+@@ Win8.1
+### Rename Win8.1 and turn on sharing
+Open the **Win8.1** console, click the splash screen, and sign in as `sysadmin`. Click **Start > Control Panel > System > Change settings > Change**. Set the computer name to `Reliant` and the workgroup to `MYGROUP`, click **OK** through the messages, **Close**, and **Restart Now**. Sign back in, then: network icon > **Open Network and Sharing Center > Change adapter settings**, right-click **Ethernet > Properties**, confirm **File and Printer Sharing for Microsoft Networks** is checked, **OK**. In **Change advanced sharing settings**, turn on network discovery and file and printer sharing, and save.
+@@ Win10
+### Rename Win10 and turn on sharing
+Open the **Win10** console, click the splash screen, and sign in as `sysadmin`. Click **Start > Control Panel > System > Change settings > Change**. Set the computer name to `Client` and the workgroup to `MYGROUP`, click **OK** through the messages, **Close**, and **Restart Now**. Sign back in, then: right-click the network icon > **Open Network and Internet settings > Change adapter options**, right-click **Ethernet > Properties**, confirm **File and Printer Sharing for Microsoft Networks** is checked, **OK**. Close Network Connections. On the **Status** page click **Sharing options**, turn on network discovery and file and printer sharing, save, and close Settings.
 !stuck Where people get stuck | Workgroup names must match exactly. `MYGROUP` and `MY GROUP` are different workgroups.
-## Task 2: Share a folder from Win7
+## Task 2: Share a folder from Win7 <<2.1, steps 1–16>>
+@@ Win7
 ### Create the folder as user1
-On **Win7**, log out of sysadmin and log in as **user1** (`SuperSecret`). Create a folder on the desktop named `Data`, and inside it a text document named `Test`.
+Change focus to **Win7**. Log off sysadmin and sign in as **user1** with `SuperSecret`. Right-click the desktop, choose **New > Folder**, and name it `Data`. Open it, right-click inside, choose **New > Text Document**, and name it `Test`. Close the window.
 ### Share it with share permissions
-Right-click **Data > Properties > Sharing > Advanced Sharing**. Enter the sysadmin password if asked. Check **Share this folder**, set the share name to `SharedData`, and click **Permissions**.
-Select **Everyone** and check **Full Control** under Allow. Click **Add**, type `Enterprise\Users`, click **OK**, select it, and check **Full Control**. Click **OK** three times.
+Right-click **Data > Properties > Sharing > Advanced Sharing**. If asked for the sysadmin password, enter `Train1ng$` and click **Yes**. Check **Share this folder**, change the share name to `SharedData`, and click **Permissions**. Select **Everyone** and check **Full Control** under Allow. Click **Add**, type the name below, and click **OK**:
+```Object name:
+Enterprise\Users
+```
+Select **Users (Enterprise\Users)** and check **Full Control** under Allow. Click **OK**, **OK** to close Advanced Sharing, and **OK** to close Data Properties.
 !shot The Permissions for SharedData window showing Everyone and Users with Full Control.
-## Task 3: Try it from Win8.1, and fix what fails
+## Task 3: Try it from Win8.1, and fix what fails <<2.1, steps 17–56>>
+@@ Win8.1
 ### Browse to the share as user2
-On **Win8.1**, switch to **user2** (`SuperSecret`). Open **File Explorer > Network** and double-click **Enterprise**. A **Windows Security** sign-in box appears.
-That's the first failure: Win7 has no account named user2, so it can't authenticate the connection. Click **Cancel**.
+Change focus to **Win8.1**. Click **Start**, click the **sysadmin** icon, and choose **user2**; sign in with `SuperSecret`. Open **File Explorer** from the taskbar, click **Network**, and double-click **Enterprise**. A **Windows Security** sign-in box appears. That's the first failure: Win7 has no account named user2, so it can't authenticate the connection. Click **Cancel**.
 !shot The Windows Security prompt when user2 opens Enterprise.
+@@ Win7
 ### Create a matching user2 on Win7
-On **Win7**, use **Switch user** to sign in as sysadmin. Open **Computer > Manage > Local Users and Groups > Users > New User**. Create `user2` with password `SuperSecret`, uncheck **User must change password at next logon**, and check **Password never expires**.
+Change focus to **Win7**. Click **Start**, the arrow next to **Shut down**, and **Switch user**. Click **sysadmin** and sign in with `Train1ng$`. Right-click **Computer** on the desktop > **Manage > Local Users and Groups**, double-click **Users**, right-click empty space, and choose **New User**. Create `user2` with password `SuperSecret`, uncheck **User must change password at next logon**, check **Password never expires**, click **Create**, then **Close**. Confirm user2 is listed and close Computer Management.
 !tip Why this works | In a workgroup, each PC checks its own accounts. When the user name and password on Win8.1 match an account on Win7, Windows signs in automatically. This is called pass-through authentication.
 ### Add user2 to the folder's NTFS permissions
-Log off sysadmin and log in as **user1**. Right-click **Data > Properties > Security > Edit > Add**, type `user2`, click **Check Names**, and click **OK** twice.
+Log off sysadmin and sign in as **user1** (`SuperSecret`). Right-click **Data > Properties > Security > Edit > Add**, type `user2`, click **Check Names**, and click **OK**. Click **OK** in Permissions for Data and **OK** in Data Properties.
+@@ Win8.1
 ### Open the share, then try to write
-On **Win8.1** as user2, open **Network > Enterprise**. **SharedData** now appears. Open it and you'll see `Test`. Try **New > Text Document**: access is denied.
+Change focus back to **Win8.1**, still signed in as user2. In **Network**, double-click **Enterprise** (reopen File Explorer > Network if you closed it). **SharedData** now appears. Open it: you'll see `Test`. Right-click empty space and choose **New > Text Document**: access is denied. Click **Cancel**.
 That's the second failure. Share permissions allow Full Control, but the NTFS entry you added defaults to **Read & execute**, and the more restrictive permission wins.
 !shot The access denied message when creating a file in SharedData.
 ### Grant Modify and try again
-On **Win7** as user1, open **Data > Properties > Security > Edit**, select **user2**, and check **Modify** under Allow. Click **OK** twice.
-On **Win8.1**, in SharedData, create a new text document named `Test2`. It works.
+This step switches machines partway through.
+{{on Win7}} On the desktop, right-click **Data > Properties > Security > Edit**, select **user2**, check **Modify** under Allow, and click **OK**, then **OK** again.
+{{on Win8.1}} Still signed in as user2 with SharedData open, right-click empty space, choose **New > Text Document**, and name it `Test2`. This time it works.
 !shot SharedData on Win8.1 showing Test2 created by user2.
 The lab is complete.
 

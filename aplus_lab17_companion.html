@@ -12,6 +12,7 @@
   --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
   --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
   --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --m-win7:#1F5FA8; --m-win81:#0B7377; --m-win10:#6A3FB0; --m-lub:#B4481A; --m-newlub:#8A5A00; --m-bg:#F3F6FA;
   --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
   --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
@@ -22,13 +23,15 @@
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}}
 :root[data-theme="dark"]{
   --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
@@ -108,6 +111,22 @@ main p,main li{max-width:68ch}
 p.shotline{margin:.5rem 0}
 pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
 pre.cmd .c{color:var(--code-dim)}
+pre.cmd .pr{color:var(--code-dim);user-select:none;-webkit-user-select:none}
+pre.cmd.file{border-left:4px solid var(--tag)}
+.fcap{font-size:.85rem;color:var(--ink-2);margin:.6rem 0 -.3rem}
+.m-win7{--mc:var(--m-win7)} .m-win81{--mc:var(--m-win81)} .m-win10{--mc:var(--m-win10)} .m-lub{--mc:var(--m-lub)} .m-newlub{--mc:var(--m-newlub)}
+.mrun{border-left:5px solid var(--mc);padding:.1rem 0 .1rem .9rem;margin:1rem 0 1.25rem}
+.mband{display:inline-flex;align-items:center;gap:.4rem;margin:0 0 .25rem -.9rem;padding:.3rem .8rem .3rem .7rem;background:var(--m-bg);border:1px solid var(--mc);border-left:5px solid var(--mc);border-radius:0 6px 6px 0;font-weight:700;color:var(--mc);font-family:var(--f-display)}
+.onm{display:inline-block;font-weight:700;color:var(--mc);border:1px solid var(--mc);border-radius:4px;padding:0 .35rem;font-size:.88em;background:var(--m-bg)}
+.pdfref{display:inline-block;margin-left:.5rem;font-family:var(--f-body);font-weight:600;font-size:.75rem;color:var(--ink-2);border:1px solid var(--rule);border-radius:3px;padding:0 .4rem;vertical-align:middle}
+.topo{margin:1rem 0;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--surface-2)}
+.topo .bus{text-align:center;font-family:var(--f-mono);font-size:.85rem;color:var(--ink-2);margin:0 0 .3rem;padding-bottom:.3rem;border-bottom:4px solid var(--ink)}
+.topo ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+.topo li{position:relative;margin-top:.9rem;border:2px solid var(--mc);border-top-width:6px;border-radius:6px;padding:.35rem .7rem;background:var(--surface);text-align:center;min-width:7.5rem}
+.topo li::before{content:"";position:absolute;top:-1.05rem;left:50%;height:.9rem;border-left:2px solid var(--ink)}
+.topo li b{display:block;color:var(--mc)} .topo li span{font-family:var(--f-mono);font-size:.85rem}
+.vmnote{font-size:.8rem;color:var(--ink-2)} .topo li.unused{border-style:dashed;opacity:.75}
+.topo .hosted{font-size:.85rem;color:var(--ink-2);text-align:center;margin:.5rem 0 0}
 .copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
 .tbl{overflow-x:auto;margin:.75rem 0}
 table{border-collapse:collapse;width:100%;font-size:.94rem}
@@ -136,17 +155,13 @@ footer p{margin:.25rem 0;max-width:80ch}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media print{
+  .mrun{border-left-color:#000} .mband,.onm{color:#000;border-color:#000;background:#fff}
   .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
   body{background:#fff;color:#000} .wrap{display:block;padding:0}
   main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
-
-#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
-#fullsteps .step h3.fh .n{margin-right:.5rem}
-#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
-#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab17-v1:">
@@ -172,7 +187,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: scripting</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -191,7 +206,8 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="environment" aria-labelledby="h-environment">
 <h2 id="h-environment">The environment you're working in</h2>
-<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Lubuntu</td><td><code class="inl">192.168.1.11/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<p class="fcap">Lab Settings, exactly as listed in the PDF</p><div class="tbl"><table><thead><tr><th scope="col">Virtual Machine</th><th scope="col">IP Address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win10</td><td><code>192.168.1.10/24</code></td><td><code>Sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Lubuntu</td><td><code>192.168.1.11/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr></tbody></table></div><p class="fcap">The PDF capitalizes the Win10 account as <code>Sysadmin</code>. Windows user names aren't case-sensitive, so <code>sysadmin</code> works too. The password is case-sensitive.</p>
+<div class="topo" role="img" aria-label="Pod topology: Win10 at 192.168.1.10/24, Lubuntu at 192.168.1.11/24, all on 192.168.1.0/24"><div class="bus">192.168.1.0/24 (one flat subnet, no router or internet)</div><ul><li class="m-win10"><b><span aria-hidden="true">🪟</span> Win10</b><span>.10</span></li><li class="m-lub"><b><span aria-hidden="true">🐧</span> Lubuntu</b><span>.11</span></li></ul></div>
 <div class="tbl"><table><thead><tr><th scope="col">Script</th><th scope="col">Saved as</th></tr></thead><tbody><tr><td>Batch</td><td><code class="inl">C:\Users\sysadmin\Sysinfo.bat</code></td></tr><tr><td>PowerShell</td><td><code class="inl">C:\Users\sysadmin\win10info.ps1</code></td></tr><tr><td>Bash</td><td><code class="inl">/home/sysadmin/lhostinfo.sh</code></td></tr></tbody></table></div>
 <div class="call stuck"><span class="k">Copying from the PDF</span><p>The PDF's scripts contain curly quotes (<code class="inl">“ ”</code>) and en dashes (<code class="inl">–a</code>, <code class="inl">–h</code>, <code class="inl">–i</code>) that the shells don't understand, and two long lines are wrapped. Use the versions on this page; they're corrected and have Copy buttons.</p></div>
 
@@ -205,24 +221,26 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="walkthrough" aria-labelledby="h-walkthrough">
 <h2 id="h-walkthrough">Walkthrough</h2>
-<p class="task-head">Task 1: A Windows batch file (Win10)</p>
+<p class="task-head">Task 1: A Windows batch file <span class="pdfref">PDF 1</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">1</span>Look at the available commands</h3>
-<p>Log in to <strong>Win10</strong>, open <strong>Command Prompt</strong>, and run:</p>
-<pre class="cmd"><code>help | more</code></pre>
-<p>Press <kbd>Space</kbd> for the next page and <kbd>Q</kbd> to quit. Find <code class="inl">echo</code>, <code class="inl">findstr</code>, <code class="inl">rem</code>, and <code class="inl">systeminfo</code>.</p>
+<p>Open the <strong>Win10</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Click the search icon, type <code class="inl">cmd</code>, and open <strong>Command Prompt</strong>. List the built-in commands one page at a time:</p>
+<pre class="cmd" data-prompt="C:\Users\sysadmin&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>HELP | MORE</code></pre>
+<p>Press <kbd>Space</kbd> for the next page and <kbd>Q</kbd> to quit. Find <code class="inl">echo</code>, <code class="inl">findstr</code>, <code class="inl">rem</code>, and <code class="inl">systeminfo</code> (<code class="inl">wmic</code> is a separate program, so it isn't in this list).</p>
 </div>
 <div class="step">
 <h3><span class="n">2</span>Write the script in Notepad</h3>
-<p>Open <strong>Notepad</strong> and type (or copy) the script:</p>
-<pre class="cmd"><code>:: This batch file reveals OS, hardware, and networking configuration.
+<p>Click the search icon, type <code class="inl">Notepad</code>, and open it. Type (or copy) the script:</p>
+<p class="fcap">File <code class="inl">Sysinfo.bat</code>: type this into the editor, not the prompt</p><pre class="cmd file"><code>@ECHO OFF
+:: This batch file reveals OS, hardware, and networking configuration.
 TITLE My System Info
 ECHO Please wait... Checking system information.
 :: Section 1: OS information.
 ECHO ============================
 ECHO OS INFO
 ECHO ============================
-rem findstr searches for a text string. Enter findstr /? for details.
+rem findstr is used for searching for a text string in files. For more inline information, you can enter findstr /? at the command prompt.
 systeminfo | findstr /c:"OS Name"
 systeminfo | findstr /c:"OS Version"
 systeminfo | findstr /c:"System Type"
@@ -239,6 +257,7 @@ ECHO ============================
 ipconfig | findstr IPv4 &gt;&gt; info.txt
 ipconfig | findstr IPv6 &gt;&gt; info.txt
 PAUSE</code></pre>
+<div class="call stuck"><span class="k">Keep wrapped lines whole</span><p>The PDF wraps the long <code class="inl">rem</code> line onto two lines. Type it as <strong>one</strong> line. If <code class="inl">information, you can enter...</code> lands on its own line, cmd tries to run it as a command and prints an error.</p></div>
 </div>
 <div class="step">
 <h3><span class="n">3</span>Save it as a .bat file</h3>
@@ -247,25 +266,28 @@ PAUSE</code></pre>
 </div>
 <div class="step">
 <h3><span class="n">4</span>Run it</h3>
-<pre class="cmd"><code>dir
-Sysinfo.bat</code></pre>
+<pre class="cmd" data-prompt="C:\Users\sysadmin&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>dir
+<span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>Sysinfo.bat</code></pre>
 <p>Watch the OS and hardware sections print on screen. Press any key at <code class="inl">PAUSE</code>. The network lines don't appear because <code class="inl">&gt;&gt;</code> sent them to a file:</p>
-<pre class="cmd"><code>dir
-more info.txt</code></pre>
+<pre class="cmd" data-prompt="C:\Users\sysadmin&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>dir
+<span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>more info.txt</code></pre>
 <p class="shotline"><span class="shot">Screenshot</span>The batch file's output in Command Prompt.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The contents of info.txt.</p>
 <p>Close Command Prompt and Notepad.</p>
 </div>
-<p class="task-head">Task 2: A PowerShell script (Win10)</p>
+</div>
+<p class="task-head">Task 2: A PowerShell script <span class="pdfref">PDF 2</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">5</span>Open PowerShell ISE as administrator</h3>
 <p>Search for <code class="inl">PowerShell ISE</code>, right-click it > <strong>Run as administrator</strong>, and accept UAC. Move to your home folder:</p>
-<pre class="cmd"><code>cd C:\Users\sysadmin</code></pre>
+<pre class="cmd" data-prompt="PS C:\WINDOWS\system32&gt;"><code><span class="pr" aria-hidden="true">PS C:\WINDOWS\system32&gt; </span>cd c:\users\sysadmin</code></pre>
+<p>The prompt changes to <code class="inl">PS C:\users\sysadmin&gt;</code>.</p>
 </div>
 <div class="step">
 <h3><span class="n">6</span>Write the script</h3>
-<p>Choose <strong>File > New</strong> and enter:</p>
-<pre class="cmd"><code>Write-Output "Computer name is:"
+<p>Choose <strong>File > New</strong> and enter this in the <strong>Untitled.ps1</strong> script pane:</p>
+<p class="fcap">File <code class="inl">win10info.ps1</code>: type this into the editor, not the prompt</p><pre class="cmd file"><code>Write-Output "Computer name is:"
 Get-Content env:computername
 Write-Output "Windows version is:"
 (Get-WmiObject -Class Win32_OperatingSystem).Caption
@@ -281,15 +303,17 @@ Get-NetIPAddress -AddressFamily IPv4 | Sort-Object -Property InterfaceIndex | Fo
 </div>
 <div class="step">
 <h3><span class="n">7</span>Try to run it</h3>
-<pre class="cmd"><code>.\win10info.ps1</code></pre>
+<pre class="cmd" data-prompt="PS C:\users\sysadmin&gt;"><code><span class="pr" aria-hidden="true">PS C:\users\sysadmin&gt; </span>.\win10info.ps1</code></pre>
 <p>It fails with <strong>running scripts is disabled on this system</strong>. That's the execution policy doing its job.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The execution policy error.</p>
 </div>
 <div class="step">
 <h3><span class="n">8</span>Allow local scripts, then run it again</h3>
-<pre class="cmd"><code>Set-ExecutionPolicy RemoteSigned
-.\win10info.ps1</code></pre>
-<p>Click <strong>Yes to All</strong> at the prompt. The script now runs.</p>
+<pre class="cmd" data-prompt="PS C:\users\sysadmin&gt;"><code><span class="pr" aria-hidden="true">PS C:\users\sysadmin&gt; </span>Set-ExecutionPolicy RemoteSigned</code></pre>
+<p>Click <strong>Yes to All</strong> in the Execution Policy Change window. Then run the script again:</p>
+<pre class="cmd" data-prompt="PS C:\users\sysadmin&gt;"><code><span class="pr" aria-hidden="true">PS C:\users\sysadmin&gt; </span>.\win10info.ps1</code></pre>
+<p>The script now runs.</p>
+<div class="call tip"><span class="k">Which prompt?</span><p>The PDF shows these commands at <code class="inl">PS C:\WINDOWS\system32&gt;</code>, but its own screenshots show <code class="inl">PS C:\users\sysadmin&gt;</code>, because you ran <code class="inl">cd</code> first. <code class="inl">.\win10info.ps1</code> only works from the folder the script is in.</p></div>
 <p class="shotline"><span class="shot">Screenshot</span>The win10info.ps1 output.</p>
 <div class="call tip"><span class="k">What RemoteSigned means</span><p>Scripts you write on this PC run; scripts downloaded from the internet must be signed by a trusted publisher. It's the usual choice for admins. On a real PC, <code class="inl">Set-ExecutionPolicy RemoteSigned -Scope CurrentUser</code> changes it only for you.</p></div>
 </div>
@@ -297,15 +321,18 @@ Get-NetIPAddress -AddressFamily IPv4 | Sort-Object -Property InterfaceIndex | Fo
 <h3><span class="n">9</span>Compare the two scripts</h3>
 <div class="tbl"><table><thead><tr><th scope="col">Batch</th><th scope="col">PowerShell</th></tr></thead><tbody><tr><td><code class="inl">ECHO text</code></td><td><code class="inl">Write-Output "text"</code></td></tr><tr><td><code class="inl">%COMPUTERNAME%</code></td><td><code class="inl">$env:computername</code> (or <code class="inl">Get-Content env:computername</code>)</td></tr><tr><td><code class="inl">systeminfo</code> piped to <code class="inl">findstr</code></td><td><code class="inl">Get-WmiObject</code> / <code class="inl">Get-CimInstance</code> returning objects with named properties</td></tr><tr><td><code class="inl">&gt;&gt; info.txt</code></td><td><code class="inl">Out-File info.txt -Append</code> (or <code class="inl">&gt;&gt;</code>)</td></tr></tbody></table></div>
 </div>
-<p class="task-head">Task 3: A Bash script (Lubuntu)</p>
+</div>
+<p class="task-head">Task 3: A Bash script <span class="pdfref">PDF 3</span></p>
+<div class="mrun m-lub"><p class="mband"><span aria-hidden="true">🐧</span> On Lubuntu</p>
 <div class="step">
 <h3><span class="n">10</span>Open nano</h3>
-<p>Sign in to <strong>Lubuntu</strong>, open <strong>Menu > System Tools > LXTerminal</strong>, and run:</p>
-<pre class="cmd"><code>nano</code></pre>
+<p>Open the <strong>Lubuntu</strong> console and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Open <strong>Menu > System Tools > LXTerminal</strong> and start the nano editor:</p>
+<pre class="cmd" data-prompt="sysadmin@lubuntu:~$"><code><span class="pr" aria-hidden="true">sysadmin@lubuntu:~$ </span>nano</code></pre>
 </div>
 <div class="step">
 <h3><span class="n">11</span>Write the script</h3>
-<pre class="cmd"><code>#!/bin/bash
+<p>Type these lines into nano (not at the prompt):</p>
+<p class="fcap">File <code class="inl">lhostinfo.sh</code>: type this into the editor, not the prompt</p><pre class="cmd file"><code>#!/bin/bash
 echo "Computer name is: " $HOSTNAME
 echo "Operating System and distribution:"
 lsb_release -a
@@ -327,108 +354,18 @@ hostname -i</code></pre>
 </div>
 <div class="step">
 <h3><span class="n">13</span>Make it executable and run it</h3>
-<p>Open a second terminal (or use the same one) and run:</p>
-<pre class="cmd"><code>chmod 755 lhostinfo.sh
-ls -l lhostinfo.sh
-./lhostinfo.sh</code></pre>
+<p>Open a second terminal (<strong>Menu > System Tools > LXTerminal</strong>) and run:</p>
+<pre class="cmd" data-prompt="sysadmin@lubuntu:~$"><code><span class="pr" aria-hidden="true">sysadmin@lubuntu:~$ </span>chmod 755 lhostinfo.sh
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~$ </span>ls -l lhostinfo.sh
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~$ </span>./lhostinfo.sh</code></pre>
+<p>(<code class="inl">ls -l</code> is an extra check, not in the PDF.)</p>
 <p><code class="inl">ls -l</code> now shows <code class="inl">-rwxr-xr-x</code>: the <code class="inl">x</code> is execute permission. <code class="inl">./</code> tells Bash the script is in the current folder, which isn't in the search path.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The <code class="inl">ls -l</code> line showing execute permission, and the script's output.</p>
 <p>The lab is complete.</p>
 </div>
+</div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
-</section>
-
-<section id="fullsteps" aria-labelledby="h-fullsteps">
-<h2 id="h-fullsteps">Full lab steps</h2>
-<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
-<p class="task-head">Task 1 - Creating a Windows Batch File (Script)</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Click on the search icon located in the taskbar, followed by typing cmd in the search field. Click on the Command Prompt search result.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> At the prompt, type the command below, followed by pressing the Enter key. This output is a list of commands that are available in the Windows command-line interpreter. Review the list of commands identified below to understand the commands used in the batch file you will be exploring. C:\Users\sysadmin&gt; HELP | MORE When looking through the list, press the Spacebar to move down the list per page or the Enter key to go down the list per line. Press Q to quit viewing the list at any time.</h3><pre class="cmd"><code>     echo
-     findstr
-     rem
-     systeminfo
-     wmic</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Once finished reviewing the command prompt's output, click on the search button and search for Notepad and click on the Notepad search result to open.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Enter the following text into the Notepad file. :: This batch file reveals OS, hardware, and networking configuration. TITLE My System Info ECHO Please wait... Checking system information. :: Section 1: OS information. rem findstr is used for searching for a text string in files. For more inline information, you can enter findstr /? at the command prompt. :: Section 2: Hardware information. :: Section 3: Networking information. Breakdown of commands in sysinfo.bat @ECHO - turns off ECHO prompt. Rem- this does not execute it is a remark or note for the :: - is a comment Findstr - is used for searching for a text string in files. For more inline information, enter findstr /? at the command prompt &gt;&gt; redirects output to a file if no directory is indicated it is added to the current directory so you will not see the output in the command prompt it will have to be read from the file. | (key located above the Enter key) - an operator that passes the output of the command before it in the line to the command on the right of it. PAUSE - requires a key press to continue</h3><pre class="cmd"><code>@ECHO OFF
-ECHO ============================
-ECHO OS INFO
-ECHO ============================
-systeminfo | findstr /c:"OS Name"
-systeminfo | findstr /c:"OS Version"
-systeminfo | findstr /c:"System Type"
-ECHO ============================
-ECHO HARDWARE INFO
-ECHO ============================
-systeminfo | findstr /c:"Total Physical Memory"
-wmic cpu get name
-ECHO ============================
-ECHO NETWORK INFO
-ECHO ============================
-ipconfig | findstr IPv4 &gt;&gt; info.txt
-ipconfig | findstr IPv6 &gt;&gt; info.txt
-PAUSE
-ECHO - print the command currently running on to the command
-programmer
-Ipconfig - display network information</code></pre></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">info.txt</span><code class="inl">more info.txt</code> showing the IPv4 and IPv6 lines.</label></li></div><div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Batch output</span>Sysinfo.bat running in Command Prompt.</label></li></div><div class="step"><h3 class="fh"><span class="n">8</span> Click File &gt; Save As.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Name the file Sysinfo.bat and save it in the C:\Users\sysadmin directory.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Change focus back to the command prompt window and list the contents of the sysadmin directory by entering the command below to verify that the file Sysinfo.bat is saved with the correct file extension. If not, rename the file to sysinfo.bat.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; dir</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> At the prompt, enter the command below to run the Sysinfo.bat script. Carefully watch the output to follow the commands listed in the file. When prompted to press any key to continue, press any key to continue.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; Sysinfo.bat</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> List the content of the sysadmin directory to verify that the file info.txt has been created as a result of the script. Enter the command below.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; dir</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> At the prompt, type the command more info.txt to see the file created by the script.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; more info.txt</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Close the command prompt window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> Close the Notepad window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">16</span> Stay logged in to the Win10 machine to continue to the next section.</h3></div>
-<p class="task-head">Task 2 - Creating a PowerShell Script</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Click the search icon in the taskbar and type PowerShell ISE. Right-click on the Windows PowerShell ISE search result and select Run as administrator.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Policy error</span>The PowerShell execution policy error.</label></li></div><div class="step"><h3 class="fh"><span class="n">2</span> Click Yes to accept the User Account Control.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> At the PowerShell ISE prompt, navigate to the sysadmin home directory using the cd command.</h3><pre class="cmd"><code>PS C:\WINDOWS\system32&gt; cd c:\users\sysadmin</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> In the PowerShell ISE window, click on File, then click New to create a new script.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Enter the following commands into the newly created Untitled.ps1 window. Write-Output "Computer name is:" Write-Output "Windows version is:" Write-Output "CPU is:" Write-Output "Total Memory is:" [Math]::Round((Get-WmiObject -Class Win32_ComputerSystem -ComputerName Write-Output "The Disks that are installed and their freespace:" Write-Output "IPv4 addresses:"</h3><pre class="cmd"><code>Get-Content env:computername
-(Get-WmiObject -Class Win32_OperatingSystem).Caption
-Get-WmiObject Win32_Processor | findstr "Name"
-localhost).TotalPhysicalMemory/1Gb)
-Get-WmiObject -Class Win32_LogicalDisk -Filter "DriveType = '3'"
-Get-NetIPAddress -AddressFamily IPv4 | Sort-Object -Property InterfaceIndex |
-Format-Table</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Once all the lines are typed, click File on the menu bar and select Save As.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> In the Save As window, name the file win10info.ps1 and be sure to save it to the C:\Users\sysadmin home directory.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">PowerShell output</span>win10info.ps1 running after setting RemoteSigned.</label></li></div><div class="step"><h3 class="fh"><span class="n">8</span> Back on the PowerShell ISE prompt, type the command below, followed by pressing the Enter key to run the script.</h3><pre class="cmd"><code>PS C:\WINDOWS\system32&gt; .\win10info.ps1</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Notice that an error appears signaling that scripts are disabled on the system by default. To disable the security feature, enter the command below.</h3><pre class="cmd"><code>PS C:\WINDOWS\system32&gt; Set-ExecutionPolicy RemoteSigned</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> A pop-up window appears. Click Yes to All to continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Back on the PowerShell ISE prompt, reenter the command below to launch the script.</h3><pre class="cmd"><code>PS C:\WINDOWS\system32&gt; .\win10info.ps1</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Review the output of the script. What comparisons do you see between the Batch file and the PowerShell script? Notice that ECHO in the batch file is similar to Write- Output in PowerShell (PS). Also, %computername% in the batch represents a variable like Get-Content reads the env:computername. CPU is: %PROCESSOR_IDENTIFIER% is like Get-WmiObject Win32_Processor | findstr "Name". Try to find the other batch commands that equal the PowerShell commands and cmdlets.</h3></div>
-<p class="task-head">Task 3 - Creating a BASH Script</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Lubuntu system from the pod topology.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Sign in as the sysadmin using Train1ng$ as the password.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Click on the Menu button located on the bottom taskbar and navigate to System Tools &gt; LXTerminal to open the terminal window, which in comparison to Windows, is similar to the command prompt with regards to using the command-line interface.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> At the prompt, type the command below, followed by pressing the Enter key to open the nano text editor.</h3><pre class="cmd"><code>sysadmin@lubuntu:~$ nano</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> You will use the nano text editor tool to create a file named lhostinfo.sh with the following text. Then you will save it in your home directory. First, start by creating the file by typing the following lines in the nano text editor. echo "Computer name is: " $HOSTNAME #!/bin/bash - #! Called shebang, is the syntax used in scripts to indicate an interpreter for execution in this case bash lsb - a utility that displays Linux Standard Base information about the Linux distribution. cat - short for concatenate, is a command which reads data from the file and gives the content as output. /proc - virtual files that contain dynamic information about the df - short for disk filesystem , this command will get a summary of the available and used disk space on your system.</h3><pre class="cmd"><code>#!/bin/bash
-echo "Operating System and distribution:"
-lsb_release -a
-echo "CPU cores"
-cat /proc/cpuinfo | grep processor
-echo "All available memory"
-cat /proc/meminfo | grep "MemTotal"
-echo "All disk space available."
-df -h
-echo "All IP addresses"
-ip addr show
-echo "Show the hostname IP address."
-hostname -i
-system
-ip addr - show all ip address on the system</code></pre></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Bash</span><code class="inl">ls -l</code> showing execute permission and the lhostinfo.sh output.</label></li></div><div class="step"><h3 class="fh"><span class="n">6</span> To save a file, use the keyboard shortcut Ctrl+O. With this key combination, the editor will ask you to provide a filename. Use lhostinfo.sh to name your file.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Press Enter to save the file to the sysadmin home directory.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Open a second terminal by selecting the Start button System Tools &gt; LXTerminal.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> You will need to make the script executable, enter the command below in the newly opened terminal.</h3><pre class="cmd"><code>sysadmin@lubuntu:~$ chmod 755 lhostinfo.sh</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> In the same terminal, enter the command below to execute the script. You will need to use the ./ to tell the BASH interpreter where the script is located. There is a fixed order of directories that the BASH interpreter checks to find and run a command. If your script is not in one of these directories, then it will not find your script unless you specify the path. The ./ is telling the BASH interpreter that the script is in the current directory, but you could also run the script from any other directory by using the full path.</h3><pre class="cmd"><code>sysadmin@lubuntu:~$ ./lhostinfo.sh</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> The lab is now complete; you may end the reservation.</h3></div>
-<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: scripting</h2>
@@ -558,7 +495,7 @@ powershell -ExecutionPolicy Bypass -File .\script.ps1</code></pre>
     b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
     b.addEventListener('click',function(){
       var code=pre.querySelector('code'), clone=code.cloneNode(true);
-      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      [].forEach.call(clone.querySelectorAll('.c,.pr'),function(x){x.remove();});
       var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
       function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
@@ -576,167 +513,5 @@ powershell -ExecutionPolicy Bypass -File .\script.ps1</code></pre>
   if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
 })();
 </script>
-
-<!-- ===== LAB MODE (begin) — self-contained; safe to remove as a block ===== -->
-<style id="lab-mode-css">
-/* Floating toggle button — always available, top-right */
-.pm-toggle{position:fixed;top:10px;right:12px;z-index:2147483100;display:inline-flex;
-  align-items:center;gap:7px;min-height:40px;padding:0 15px;cursor:pointer;
-  font:600 .85rem/1 var(--f-body);border-radius:999px;
-  background:var(--accent);color:var(--accent-ink);border:1px solid transparent;
-  box-shadow:0 4px 14px rgba(0,0,0,.28)}
-.pm-toggle:hover{filter:brightness(1.08)}
-.pm-toggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.pm-toggle .pm-ico{font-family:var(--f-mono);font-weight:700}
-@media print{.pm-toggle{display:none!important}}
-
-/* ---- When lab mode is ON ---- */
-html[data-present="on"] body{line-height:1.5}
-/* Collapse the sidebar grid to a single column and go full width */
-html[data-present="on"] .wrap{display:block;max-width:100%;padding:8px 14px 90px}
-
-/* Hide page chrome that wastes room in a narrow column */
-html[data-present="on"] .toc,
-html[data-present="on"] header.bar,
-html[data-present="on"] .badges,
-html[data-present="on"] .ticket .lede,
-html[data-present="on"] .ticket .fields,
-html[data-present="on"] .done-row{display:none!important}
-
-/* Slim the title block down to a compact header */
-html[data-present="on"] .ticket{margin:0 0 10px}
-html[data-present="on"] .ticket-in{padding:10px 14px}
-html[data-present="on"] .ticket h1{font-size:1.15rem;line-height:1.25;margin:2px 0 0}
-
-/* Show one section at a time */
-html[data-present="on"] #main > section{display:none}
-html[data-present="on"] #main > section.pm-current{display:block;animation:pm-fade .18s ease}
-@keyframes pm-fade{from{opacity:0}to{opacity:1}}
-
-/* Readability bump for the one visible section */
-html[data-present="on"] #main > section{font-size:1.05rem}
-html[data-present="on"] #main > section h2{font-size:1.2rem}
-html[data-present="on"] .step h3,
-html[data-present="on"] .step h4{font-size:1.04rem}
-html[data-present="on"] .cmd{font-size:1rem;white-space:pre-wrap;word-break:break-word}
-
-/* Slim bottom control dock for advancing through sections */
-.pm-dock{display:none}
-html[data-present="on"] .pm-dock{position:fixed;left:0;right:0;bottom:0;z-index:2147483100;
-  display:flex;align-items:center;gap:8px;padding:8px 12px;
-  padding-bottom:calc(8px + env(safe-area-inset-bottom,0));
-  background:var(--surface);border-top:1px solid var(--rule)}
-.pm-dock button{flex:0 0 auto;min-height:40px;min-width:44px;padding:0 14px;cursor:pointer;
-  font:700 .9rem/1 var(--f-body);border-radius:9px;
-  background:var(--surface-2);color:var(--ink);border:1px solid var(--rule)}
-.pm-dock button:hover{background:var(--accent);color:var(--accent-ink)}
-.pm-dock button:disabled{opacity:.4;cursor:not-allowed}
-.pm-dock button:disabled:hover{background:var(--surface-2);color:var(--ink)}
-.pm-dock .pm-where{flex:1 1 auto;text-align:center;min-width:0;
-  font:600 .82rem/1.25 var(--f-body);color:var(--ink-2);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pm-dock .pm-where b{color:var(--ink);display:block;font-size:.9rem}
-.pm-dock .pm-exit{background:transparent}
-</style>
-
-<div class="pm-dock" id="pmDock" aria-hidden="true">
-  <button type="button" data-pm="prev" aria-label="Previous section">◀</button>
-  <div class="pm-where"><span id="pmCount"></span><b id="pmName"></b></div>
-  <button type="button" data-pm="next" aria-label="Next section">▶</button>
-  <button type="button" data-pm="exit" class="pm-exit" aria-label="Exit lab mode">✕</button>
-</div>
-
-<script id="lab-mode-js">
-(function () {
-  "use strict";
-  var root = document.documentElement;
-  var KEY = "aplus:labmode:v1";               // shared across all A+ companion pages
-  var sections = [], idx = 0;
-  var dock, countEl, nameEl, prevBtn, nextBtn;
-
-  function labelFor(sec) {
-    var h = sec.querySelector("h2");
-    if (!h) return sec.id || "Section";
-    return (h.textContent || "").replace(/\s+/g, " ").trim();
-  }
-
-  function show(i) {
-    if (!sections.length) return;
-    idx = Math.max(0, Math.min(sections.length - 1, i));
-    sections.forEach(function (s, n) { s.classList.toggle("pm-current", n === idx); });
-    if (countEl) countEl.textContent = (idx + 1) + " / " + sections.length;
-    if (nameEl) nameEl.textContent = labelFor(sections[idx]);
-    if (prevBtn) prevBtn.disabled = idx === 0;
-    if (nextBtn) nextBtn.disabled = idx === sections.length - 1;
-    window.scrollTo(0, 0);
-  }
-
-  function enter() {
-    sections = Array.prototype.slice.call(document.querySelectorAll("#main > section"));
-    root.setAttribute("data-present", "on");
-    if (dock) dock.setAttribute("aria-hidden", "false");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "true");
-      btn.querySelector(".pm-txt").textContent = "Exit lab mode"; }
-    try { localStorage.setItem(KEY, "1"); } catch (e) {}
-    show(0);
-  }
-
-  function exit() {
-    root.removeAttribute("data-present");
-    sections.forEach(function (s) { s.classList.remove("pm-current"); });
-    if (dock) dock.setAttribute("aria-hidden", "true");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "false");
-      btn.querySelector(".pm-txt").textContent = "Lab mode"; }
-    try { localStorage.setItem(KEY, "0"); } catch (e) {}
-  }
-
-  function toggle() { root.getAttribute("data-present") === "on" ? exit() : enter(); }
-
-  function build() {
-    var btn = document.createElement("button");
-    btn.className = "pm-toggle"; btn.id = "pmToggle"; btn.type = "button";
-    btn.setAttribute("aria-pressed", "false");
-    btn.title = "Lab mode — steps beside the lab, one section at a time (Shift+L)";
-    btn.innerHTML = '<span class="pm-ico" aria-hidden="true">⇥</span><span class="pm-txt">Lab mode</span>';
-    btn.addEventListener("click", toggle);
-    document.body.appendChild(btn);
-
-    dock = document.getElementById("pmDock");
-    countEl = document.getElementById("pmCount");
-    nameEl = document.getElementById("pmName");
-    if (dock) {
-      prevBtn = dock.querySelector('[data-pm="prev"]');
-      nextBtn = dock.querySelector('[data-pm="next"]');
-      dock.addEventListener("click", function (e) {
-        var t = e.target.closest("[data-pm]"); if (!t) return;
-        var a = t.getAttribute("data-pm");
-        if (a === "prev") show(idx - 1);
-        else if (a === "next") show(idx + 1);
-        else if (a === "exit") exit();
-      });
-    }
-
-    document.addEventListener("keydown", function (e) {
-      if (e.shiftKey && (e.key === "L" || e.key === "l")) {
-        var tag = (e.target && e.target.tagName) || "";
-        if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
-        e.preventDefault(); toggle(); return;
-      }
-      if (root.getAttribute("data-present") !== "on") return;
-      if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); show(idx + 1); }
-      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(idx - 1); }
-      else if (e.key === "Escape") { e.preventDefault(); exit(); }
-    });
-  }
-
-  if (document.readyState === "loading")
-    document.addEventListener("DOMContentLoaded", build);
-  else build();
-})();
-</script>
-<!-- ===== LAB MODE (end) ===== -->
-
 </body>
 </html>

@@ -1,4 +1,6 @@
 @lede Installing software looks simple until it isn't: the wrong architecture, a missing permission, a download you shouldn't trust. You will install and verify two Windows utilities, then install an office suite on Linux from packages at the command line.
+@vm Win7|192.168.1.7/24|sysadmin|Train1ng$
+@vm Lubuntu|192.168.1.11/24|sysadmin|Train1ng$
 @vms Win7, Lubuntu
 
 == overview | Why this lab matters
@@ -6,9 +8,7 @@ Every software install is a decision. Does the PC meet the requirements? Is it t
 In this lab you install **7-Zip** (a compression tool) and **CPU-Z** (a hardware information tool) on Windows, watching where each one goes and what it adds. Then you install **LibreOffice** on Linux using `dpkg` and `sudo`, which shows how Linux handles the same job with packages instead of setup wizards.
 
 == environment | The environment you're working in
-| Machine | IP address | Account | Password |
-| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
-| Lubuntu | `192.168.1.11/24` | `sysadmin` | `Train1ng$` |
+{{VMTABLE}}
 
 | Installer | Location |
 | `7z1801` (7-Zip) | Win7: **Installs** folder on the desktop |
@@ -26,21 +26,26 @@ In this lab you install **7-Zip** (a compression tool) and **CPU-Z** (a hardware
 | `dpkg -i *.deb` on Lubuntu | Same on Debian/Ubuntu; `sudo apt install ./file.deb` also resolves dependencies |
 
 == walkthrough | Walkthrough
-## Task 1: Install 7-Zip (Win7)
+## Task 1: Install 7-Zip <<1.0>>
+@@ Win7
 ### Run the installer
-Log in to **Win7**, open the **Installs** folder, and double-click **7z1801**. Accept the UAC prompt.
+Open the **Win7** console and sign in as `sysadmin` with `Train1ng$`. Double-click the **Installs** folder on the desktop, then double-click **7z1801** to launch the 7-Zip setup. Click **Yes** at the UAC prompt.
 !tip Why UAC appears | Only administrators can install software for all users. A standard user would be asked for an admin's credentials here; an admin is asked to confirm.
 ### Keep the default location
 Leave the folder as `C:\Program Files\7-Zip` and click **Install**, then **Close**.
 !tip Program Files or Program Files (x86)? | On 64-bit Windows, 64-bit programs go in `C:\Program Files` and 32-bit programs in `C:\Program Files (x86)`. A 32-bit Windows has only `Program Files` and can't run 64-bit programs.
 ### Find what it added
-Open **Start > All Programs > 7-Zip > 7-Zip File Manager**. Then in the Installs folder, right-click **7z1801**: the **7-Zip** submenu is new. Installers often add shortcuts, context-menu entries, and file associations as well as the program itself.
+Open **Start > All Programs > 7-Zip > 7-Zip File Manager**; you can create and open archives here. Then switch to the Installs folder window and right-click **7z1801**: the **7-Zip** submenu is new. Close the 7-Zip window. Installers often add shortcuts, context-menu entries, and file associations as well as the program itself.
 !shot The right-click menu showing the 7-Zip submenu.
-## Task 2: Install CPU-Z (Win7)
+## Task 2: Install CPU-Z <<1.1>>
+@@ Win7
 ### Run the installer
-In **Installs**, double-click `cpu-z_1.83-en.exe`, click **Run** at the security warning, and accept UAC. Accept the agreement.
+In **Installs**, double-click `cpu-z_1.83-en.exe`, click **Run** at the security warning, and accept UAC. Select **I accept the agreement** and click **Next**.
 ### Choose the location and options
-Set the location to `C:\Program Files\CPU-Z` and click **Next**. Keep the Start Menu folder (**CPUID\CPU-Z**) and the desktop icon option, click **Install**, then **Finish**. Read the readme that opens and close it.
+Set the location below and click **Next**:
+```Destination folder:
+C:\Program Files\CPU-Z
+``` Keep the Start Menu folder (**CPUID\CPU-Z**) and the desktop icon option, click **Install**, then **Finish**. Read the readme that opens and close it.
 ### Explore CPU-Z
 Double-click the **CPUID CPU-Z** desktop icon and accept UAC. Look through the tabs:
 | Tab | Shows |
@@ -53,24 +58,29 @@ Double-click the **CPUID CPU-Z** desktop icon and accept UAC. Look through the t
 | Bench | A CPU benchmark |
 !shot CPU-Z on the CPU or SPD tab.
 CPU-Z only reads information and changes nothing. Close it.
-## Task 3: Install LibreOffice (Lubuntu)
+## Task 3: Install LibreOffice <<2.1>>
+@@ Lubuntu
 ### Extract the archive
-Sign in to **Lubuntu** and open the **File Manager** from the taskbar. Go to **Downloads** and double-click `LibreOffice_6.0.1_Linux_x86-64_deb.tar.gz`. Click **Extract**, choose **Desktop**, click **Extract**, then **Quit**.
+Open the **Lubuntu** console and sign in as `sysadmin` with `Train1ng$`. Open the **File Manager** from the taskbar. Go to **Downloads** and double-click `LibreOffice_6.0.1_Linux_x86-64_deb.tar.gz`. Click **Extract**, choose **Desktop**, click **Extract**, then **Quit**.
 ### Go to the packages in a terminal
 Open **LXTerminal** from the taskbar and run:
-```
+```sysadmin@lubuntu:~$
 cd Desktop
+>> sysadmin@lubuntu:~/Desktop$
 ls
 cd LibreOffice_6.0.1.1_Linux_x86-64_deb
+>> sysadmin@lubuntu:~/Desktop/LibreOffice_6.0.1.1_Linux_x86-64_deb$
 cd DEBS
-ls
 ```
 !stuck Where people get stuck | The extracted folder is named `...6.0.1.1...`, not `6.0.1` like the archive. Type `cd Li` and press [[Tab]] to complete it exactly.
 ### Install every package with dpkg
-```
+```sysadmin@lubuntu:~/Desktop/LibreOffice_6.0.1.1_Linux_x86-64_deb/DEBS$
 sudo dpkg -i *.deb
 ```
-Enter `Train1ng$` if `sudo` asks. `*.deb` installs every Debian package in the folder at once. Wait for the prompt to return, then type `exit`.
+Enter `Train1ng$` if `sudo` asks. `*.deb` installs every Debian package in the folder at once. Wait for the prompt to return, then close the terminal:
+```sysadmin@lubuntu:~/Desktop/LibreOffice_6.0.1.1_Linux_x86-64_deb/DEBS$
+exit
+```
 !shot The terminal after `sudo dpkg -i *.deb` finishes.
 ### Launch it
 Open **Start > Office > LibreOffice 6.0 Writer**.

@@ -1,4 +1,8 @@
 @lede Settings and Control Panel together hold almost every option a user will ask you to change. You will check the installed Windows version, adjust resolution and power plans, tighten browser privacy and security zones, show hidden files and extensions, and raise User Account Control.
+@vm Win7|192.168.1.7/24|sysadmin|Train1ng$|Listed in the PDF
+ only the optional challenge tasks use it
+@vm Win8.1|192.168.1.8/24|sysadmin|Train1ng$
+@vm Win10|192.168.1.10/24|Sysadmin|Train1ng$
 @vms Win8.1, Win10
 
 == overview | Why this lab matters
@@ -6,9 +10,7 @@ A lot of help desk work is configuration: "my screen is too small," "my laptop g
 The lab also touches two settings with security weight. **Show file extensions** helps users spot a file named `invoice.pdf.exe` for what it is. **User Account Control** decides how loudly Windows warns before a program makes system changes. Both appear on the exam as security best practices, not just preferences.
 
 == environment | The environment you're working in
-| Machine | IP address | Account | Password |
-| Win8.1 | `192.168.1.8/24` | `sysadmin` | `Train1ng$` |
-| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+{{VMTABLE}}
 The lab has no internet, so the Internet Explorer home page won't load. That doesn't affect any of the settings.
 !tip Internet Explorer is retired | Microsoft retired Internet Explorer in 2022. The **Internet Options** applet you'll use still matters: Windows uses it for proxy settings, security zones, and some app connections, and Edge reads several of these settings.
 
@@ -23,19 +25,18 @@ The lab has no internet, so the Internet Explorer home page won't load. That doe
 | Action Center > Change User Account Control settings | Control Panel > User Accounts > **Change User Account Control settings**, or search "UAC" |
 
 == walkthrough | Walkthrough
-## Task 1: Settings
+## Task 1: Settings <<1.1–1.2>>
+@@ Win10
 ### Check the Windows version and build (Win10)
-Log in to **Win10**. Right-click **Start > Settings > System**, scroll down the left pane, and click **About**. Under **Windows specifications**, note the **Version** and **OS Build**. They tell you which feature update is installed.
+Open the **Win10** console, click the splash screen, and sign in as `sysadmin` with `Train1ng$`. Right-click **Start > Settings > System**, scroll down the left pane, and click **About**. Under **Windows specifications**, note the **Version** and **OS Build**. They tell you which feature update is installed.
 !shot The About page showing Version and OS Build.
-```
-%% The same information from the Run box or a prompt
-winver
-systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
-```
+!tip Optional extra, not a lab step | The same information is one command away: `winver` in the Run box, or `systeminfo | findstr /B /C:"OS Name" /C:"OS Version"` in a Command Prompt.
+@@ Win8.1
 ### Change the display resolution (Win8.1)
-Log in to **Win8.1**. Open **Start > PC settings > PC and devices > Display**. The resolution is `1024 x 768`. Move the slider to `1280 x 768`, click **Apply**, then **Keep changes**. The screen gets wider. Change it back to `1024 x 768`.
+Open the **Win8.1** console, click the splash screen, and sign in as `sysadmin`. Click **Start > PC settings > PC and devices > Display**. The resolution is `1024 x 768`. Move the slider to `1280 x 768`, click **Apply**, then **Keep changes**. The screen gets wider. Change it back to `1024 x 768`.
 !tip Why Windows asks you to keep changes | If a resolution doesn't display, you can't see the button. Windows reverts automatically after about 15 seconds unless you confirm.
-## Task 2: Power Options (Win8.1)
+## Task 2: Power Options <<2.1>>
+@@ Win8.1
 ### Choose a plan
 Go back to **PC settings** and click **Control Panel** at the bottom of the left pane. Set **View by** to **Small icons** and open **Power Options**. Select **Balanced (recommended)**, then click **Change plan settings > Change advanced power settings**.
 ### Change the advanced settings
@@ -47,28 +48,41 @@ Click **Change settings that are currently unavailable**, then set:
 | Display > Turn off display after | 30 minutes |
 Click **OK** and close the plan window.
 !shot The Power Options advanced settings window with your changes.
-## Task 3: Internet Options (Win8.1)
+## Task 3: Internet Options <<2.2>>
+@@ Win8.1
+### Set the home page
+Right-click **Start > Control Panel** (it stays in Small icons) and click **Internet Options**. On the **General** tab, type this address in the **Home page** box:
+```Home page:
+https://www.netdevgroup.com/
+```
+This is the page Internet Explorer opens to. With no internet in the lab, it won't load; that's expected.
 ### Clear browsing data
-Right-click **Start > Control Panel > Internet Options**. Under **Browsing history**, click **Delete**. Make sure **Tracking Protection, ActiveX Filtering and Do Not Track** is unchecked, leave the other defaults, and click **Delete**.
+Under **Browsing history**, click **Delete**. Make sure **Tracking Protection, ActiveX Filtering and Do Not Track** is unchecked, leave the other defaults, and click **Delete**.
 ### Change history settings
 Click **Settings** under Browsing history. Select **Every time I visit the webpage**. On the **History** tab, set **Days to keep pages in history** to `10`. Click **OK**.
 ### Review security zones
 Open the **Security** tab. Select **Internet** and click **Custom level** to see the many settings you can restrict, then **Cancel**.
-Select **Trusted sites > Sites**, uncheck **Require server verification (https:) for all sites in this zone**, enter the site address the lab gives you, click **Add**, then **Close**. Click **Custom level** for Trusted sites: most options are enabled, because you trust these sites. Click **Cancel**.
+Select **Trusted sites > Sites**, uncheck **Require server verification (https:) for all sites in this zone**, type the address below in **Add this website to the zone**, click **Add**, then **Close**.
+```Add this website to the zone:
+https://www.netdevgroup.com/
+``` Click **Custom level** for Trusted sites: most options are enabled, because you trust these sites. Click **Cancel**.
 !shot The Trusted sites window with a site added.
 ### Block pop-ups and third-party cookies
-On the **Privacy** tab, make sure **Turn on Pop-up Blocker** is checked, then click **Advanced**. Check **Override automatic cookie handling** and choose **Block** for **Third-party Cookies**. Click **OK** twice.
+On the **Privacy** tab, make sure **Turn on Pop-up Blocker** is checked, then click **Advanced**. Check **Override automatic cookie handling**, choose **Block** for **Third-party Cookies**, and click **OK**. Back in Internet Properties, click **OK** to save everything, including the home page.
 !shot The Advanced Privacy Settings window blocking third-party cookies.
-## Task 4: Personalization (Win8.1)
+## Task 4: Personalization <<2.3>>
+@@ Win8.1
 ### Apply a high contrast theme
 In Control Panel, open **Personalization** and click **High Contrast #1**. Then click **Desktop Background**, pick a color, and click **Save changes**. Close the window.
-## Task 5: Hidden files and extensions (Win8.1)
+## Task 5: Hidden files and extensions <<2.4>>
+@@ Win8.1
 ### Show hidden items
 Open **File Explorer > Local Disk (C:)**. On the **View** tab, check **Hidden items**. The hidden **ProgramData** folder appears. Open **Program Files > TightVNC** and look at the file names.
 ### Show file extensions
 Open **Control Panel > Folder Options > View** and uncheck **Hide extensions for known file types**. Click **OK**. Back in the TightVNC folder, names now end in `.exe`, `.txt`, and so on.
 !shot The TightVNC folder showing file extensions.
-## Task 6: User Account Control (Win8.1)
+## Task 6: User Account Control <<2.5>>
+@@ Win8.1
 ### Raise UAC to Always notify
 Open **Control Panel > Action Center > Change User Account Control settings**. Drag the slider to the top, **Always notify**, and click **OK**. Accept the UAC prompt.
 !shot The UAC settings slider at Always notify.

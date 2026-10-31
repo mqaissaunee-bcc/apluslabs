@@ -12,6 +12,7 @@
   --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
   --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
   --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --m-win7:#1F5FA8; --m-win81:#0B7377; --m-win10:#6A3FB0; --m-lub:#B4481A; --m-newlub:#8A5A00; --m-bg:#F3F6FA;
   --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
   --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
@@ -22,13 +23,15 @@
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}}
 :root[data-theme="dark"]{
   --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
@@ -108,6 +111,22 @@ main p,main li{max-width:68ch}
 p.shotline{margin:.5rem 0}
 pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
 pre.cmd .c{color:var(--code-dim)}
+pre.cmd .pr{color:var(--code-dim);user-select:none;-webkit-user-select:none}
+pre.cmd.file{border-left:4px solid var(--tag)}
+.fcap{font-size:.85rem;color:var(--ink-2);margin:.6rem 0 -.3rem}
+.m-win7{--mc:var(--m-win7)} .m-win81{--mc:var(--m-win81)} .m-win10{--mc:var(--m-win10)} .m-lub{--mc:var(--m-lub)} .m-newlub{--mc:var(--m-newlub)}
+.mrun{border-left:5px solid var(--mc);padding:.1rem 0 .1rem .9rem;margin:1rem 0 1.25rem}
+.mband{display:inline-flex;align-items:center;gap:.4rem;margin:0 0 .25rem -.9rem;padding:.3rem .8rem .3rem .7rem;background:var(--m-bg);border:1px solid var(--mc);border-left:5px solid var(--mc);border-radius:0 6px 6px 0;font-weight:700;color:var(--mc);font-family:var(--f-display)}
+.onm{display:inline-block;font-weight:700;color:var(--mc);border:1px solid var(--mc);border-radius:4px;padding:0 .35rem;font-size:.88em;background:var(--m-bg)}
+.pdfref{display:inline-block;margin-left:.5rem;font-family:var(--f-body);font-weight:600;font-size:.75rem;color:var(--ink-2);border:1px solid var(--rule);border-radius:3px;padding:0 .4rem;vertical-align:middle}
+.topo{margin:1rem 0;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--surface-2)}
+.topo .bus{text-align:center;font-family:var(--f-mono);font-size:.85rem;color:var(--ink-2);margin:0 0 .3rem;padding-bottom:.3rem;border-bottom:4px solid var(--ink)}
+.topo ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+.topo li{position:relative;margin-top:.9rem;border:2px solid var(--mc);border-top-width:6px;border-radius:6px;padding:.35rem .7rem;background:var(--surface);text-align:center;min-width:7.5rem}
+.topo li::before{content:"";position:absolute;top:-1.05rem;left:50%;height:.9rem;border-left:2px solid var(--ink)}
+.topo li b{display:block;color:var(--mc)} .topo li span{font-family:var(--f-mono);font-size:.85rem}
+.vmnote{font-size:.8rem;color:var(--ink-2)} .topo li.unused{border-style:dashed;opacity:.75}
+.topo .hosted{font-size:.85rem;color:var(--ink-2);text-align:center;margin:.5rem 0 0}
 .copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
 .tbl{overflow-x:auto;margin:.75rem 0}
 table{border-collapse:collapse;width:100%;font-size:.94rem}
@@ -136,17 +155,13 @@ footer p{margin:.25rem 0;max-width:80ch}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media print{
+  .mrun{border-left-color:#000} .mband,.onm{color:#000;border-color:#000;background:#fff}
   .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
   body{background:#fff;color:#000} .wrap{display:block;padding:0}
   main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
-
-#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
-#fullsteps .step h3.fh .n{margin-right:.5rem}
-#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
-#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab10-v1:">
@@ -163,7 +178,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 </div></header>
 <div class="ticket"><div class="ticket-in">
   <div class="stub"><span class="lbl">Lab</span><span class="no">10</span><span class="series">CompTIA A+ Lab Series v4</span></div>
-  <div class="tk-body"><h1>Windows Customizations</h1><p class="lede">Users notice their desktop more than any other part of Windows, and they'll ask you to change it. You will set desktop icons, appearance, screen saver lock, and text size, then customize the Start menu, taskbar, and notification area on Windows 7 and Windows 10.</p><dl class="fields"><div><dt>Time</dt><dd>25–35 min</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Machines</dt><dd>Win7, Win10</dd></div><div><dt>Exam domains</dt><dd>Core 2: Operating Systems</dd></div></dl></div>
+  <div class="tk-body"><h1>Windows Customizations</h1><p class="lede">Users notice their desktop more than any other part of Windows, and they'll ask you to change it. You will set desktop icons, appearance, screen saver lock, and text size, then customize the Start menu, taskbar, and notification area on Windows 7 and Windows 10.</p><dl class="fields"><div><dt>Time</dt><dd>25–35 min</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Machines</dt><dd>Win7, Win8.1, Win10</dd></div><div><dt>Exam domains</dt><dd>Core 2: Operating Systems</dd></div></dl></div>
 </div></div>
 <div class="wrap">
 <nav class="toc" aria-label="On this page"><details><summary>On this page</summary>
@@ -172,7 +187,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: customization and accessibility</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -181,6 +196,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <li><a href="#evidence"><span>Evidence to capture</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#cheat"><span>Cheat sheet</span><span class="tick" aria-hidden="true"></span></a></li></ol></details></nav>
 <main id="main" tabindex="-1">
+<p> no step uses it</p>
 <section id="overview" aria-labelledby="h-overview">
 <h2 id="h-overview">Why this lab matters</h2>
 <p>Customization tickets look small, but they're frequent, and doing them quickly builds trust with users. More importantly, a few of these "preferences" have real security or accessibility weight. A <strong>screen saver that requires sign-in on resume</strong> locks an unattended PC. <strong>Text size and scaling</strong>, larger scroll bars, and <strong>contrast</strong> themes make a PC usable for someone with low vision.</p>
@@ -190,7 +206,8 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="environment" aria-labelledby="h-environment">
 <h2 id="h-environment">The environment you're working in</h2>
-<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code class="inl">192.168.1.7/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<p class="fcap">Lab Settings, exactly as listed in the PDF</p><div class="tbl"><table><thead><tr><th scope="col">Virtual Machine</th><th scope="col">IP Address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code>192.168.1.7/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Win8.1<br><span class="vmnote">Listed in the PDF</span></td><td><code>192.168.1.8/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Win10</td><td><code>192.168.1.10/24</code></td><td><code>Sysadmin</code></td><td><code>Train1ng$</code></td></tr></tbody></table></div><p class="fcap">The PDF capitalizes the Win10 account as <code>Sysadmin</code>. Windows user names aren't case-sensitive, so <code>sysadmin</code> works too. The password is case-sensitive.</p>
+<div class="topo" role="img" aria-label="Pod topology: Win7 at 192.168.1.7/24, Win8.1 at 192.168.1.8/24, Win10 at 192.168.1.10/24, all on 192.168.1.0/24"><div class="bus">192.168.1.0/24 (one flat subnet, no router or internet)</div><ul><li class="m-win7"><b><span aria-hidden="true">🪟</span> Win7</b><span>.7</span></li><li class="m-win81 unused"><b><span aria-hidden="true">🪟</span> Win8.1</b><span>.8</span></li><li class="m-win10"><b><span aria-hidden="true">🪟</span> Win10</b><span>.10</span></li></ul></div>
 <p>The VMs have no sound hardware, so the Sounds dialog shows options but plays nothing.</p>
 
 <div class="done-row"><input type="checkbox" id="done-environment" data-done="environment"><label for="done-environment">Mark this section reviewed</label></div>
@@ -203,10 +220,11 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="walkthrough" aria-labelledby="h-walkthrough">
 <h2 id="h-walkthrough">Walkthrough</h2>
-<p class="task-head">Task 1: Desktop settings (Win7)</p>
+<p class="task-head">Task 1: Desktop settings <span class="pdfref">PDF 1.1</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
 <h3><span class="n">1</span>Put Control Panel on the desktop</h3>
-<p>Log in to <strong>Win7</strong>. Right-click the desktop > <strong>Personalize > Change desktop icons</strong>. Check <strong>Control Panel</strong> and click <strong>OK</strong>. A Control Panel icon appears on the desktop.</p>
+<p>Open the <strong>Win7</strong> console and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Right-click the desktop > <strong>Personalize > Change desktop icons</strong>. Check <strong>Control Panel</strong> and click <strong>OK</strong>. A Control Panel icon appears on the desktop.</p>
 </div>
 <div class="step">
 <h3><span class="n">2</span>Change the account picture</h3>
@@ -231,10 +249,12 @@ footer p{margin:.25rem 0;max-width:80ch}
 <h3><span class="n">6</span>Look at text size</h3>
 <p>Click <strong>Display</strong> in the left pane. Note the text size options, click <strong>Set custom text size (DPI)</strong> to see the percentages, then <strong>Cancel</strong> and close the window.</p>
 </div>
-<p class="task-head">Task 2: Personalization (Win10)</p>
+</div>
+<p class="task-head">Task 2: Personalization <span class="pdfref">PDF 1.2</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">7</span>Set the background</h3>
-<p>Log in to <strong>Win10</strong>. Open <strong>Start > Settings > Personalization > Background</strong>. Choose <strong>Picture</strong>, pick an image, and choose a fit (Fill, Fit, Stretch, Tile, Center, or Span).</p>
+<p>Open the <strong>Win10</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code>. Open <strong>Start > Settings > Personalization</strong>; make sure <strong>Background</strong> is selected. Choose <strong>Picture</strong>, pick an image, and choose a fit (Fill, Fit, Stretch, Tile, Center, or Span).</p>
 </div>
 <div class="step">
 <h3><span class="n">8</span>Set colors and dark mode</h3>
@@ -245,10 +265,12 @@ footer p{margin:.25rem 0;max-width:80ch}
 <h3><span class="n">9</span>Explore Start settings</h3>
 <p>Click <strong>Start</strong> in the left pane and try options such as <strong>Use Start full screen</strong>. Change them back if you prefer.</p>
 </div>
-<p class="task-head">Task 3: Taskbar and Start menu (Win7)</p>
+</div>
+<p class="task-head">Task 3: Taskbar and Start menu <span class="pdfref">PDF 2.1</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
 <h3><span class="n">10</span>Open Taskbar properties</h3>
-<p>On <strong>Win7</strong>, right-click the taskbar > <strong>Properties</strong>. Typical taskbar settings:</p>
+<p>Change focus to <strong>Win7</strong> (sign back in as <code class="inl">sysadmin</code> if needed). Right-click the taskbar > <strong>Properties</strong>. Typical taskbar settings:</p>
 <div class="tbl"><table><thead><tr><th scope="col">Setting</th><th scope="col">Typical</th></tr></thead><tbody><tr><td>Lock the taskbar</td><td>Unchecked (while you customize)</td></tr><tr><td>Auto-hide the taskbar</td><td>Unchecked</td></tr><tr><td>Use small icons</td><td>Checked</td></tr><tr><td>Taskbar location</td><td>Bottom</td></tr><tr><td>Taskbar buttons</td><td>Never combine</td></tr></tbody></table></div>
 </div>
 <div class="step">
@@ -268,10 +290,12 @@ footer p{margin:.25rem 0;max-width:80ch}
 <h3><span class="n">14</span>Add the Desktop toolbar</h3>
 <p>On the <strong>Toolbars</strong> tab, check <strong>Desktop</strong> and click <strong>OK</strong>. A <strong>Desktop</strong> toolbar appears near the notification area; click its double arrows to browse.</p>
 </div>
-<p class="task-head">Task 4: Taskbar (Win10)</p>
+</div>
+<p class="task-head">Task 4: Taskbar <span class="pdfref">PDF 2.2</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">15</span>Pin an app</h3>
-<p>On <strong>Win10</strong>, open <strong>Start</strong>, right-click <strong>Calendar</strong>, and choose <strong>More > Pin to taskbar</strong>.</p>
+<p>Change focus back to <strong>Win10</strong>. Open <strong>Start</strong>, right-click <strong>Calendar</strong>, and choose <strong>More > Pin to taskbar</strong>.</p>
 </div>
 <div class="step">
 <h3><span class="n">16</span>Choose system icons</h3>
@@ -279,76 +303,9 @@ footer p{margin:.25rem 0;max-width:80ch}
 <p class="shotline"><span class="shot">Screenshot</span>Win10 Turn system icons on or off, with Calendar pinned to the taskbar.</p>
 <p>The lab is complete.</p>
 </div>
+</div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
-</section>
-
-<section id="fullsteps" aria-labelledby="h-fullsteps">
-<h2 id="h-fullsteps">Full lab steps</h2>
-<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
-<p class="task-head">Task 1 - Configuration Settings on Windows</p>
-<p class="task-head">Task 1.1 - Configure Desktop Property Settings in Win7</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win7 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Right-click anywhere on the desktop and select Personalize from the context menu.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> In the Personalization window, click on Change desktop icons located in the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> In the Desktop Icon Settings window, check the checkbox next to Control Panel and click OK. This will place an icon for the Control Panel directly on the desktop for quick access.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Verify that a Control Panel icon now appears on the desktop.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Change focus back to the Personalization window and click on Change your account picture located in the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> This window will allow you to change the avatar that you can use for your account. To change, click on the picture you would like and then click on the Change Picture button. If you wish to use your own picture avatar, click on Browse for more pictures. This allows you to search your computer for the appropriate picture to use.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Click on the Windows Color icon.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Notice the Window Color and Appearance window appears. This allows you to change the color/font/size of various Windows items like the desktop, scrollbar, hyperlinks, menus, etc. Select Scrollbar from the Item dropdown menu and choose 30 as the Size. Click OK.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Scroll bars</span>Win7 Window Color and Appearance with Scrollbar size 30.</label></li></div><div class="step"><h3 class="fh"><span class="n">11</span> Back on the Personalization window, notice the size of the scrollbar is now larger than before. Click on the Sounds icon.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> In the Sound window, this will allow you to change the sound effects of all the action items. Microsoft has included many sound effects to choose from, or you can change a sound with any sound file with a ".WAV" file type. Review the available options and click Cancel. This lab environment does not feature sound ability from any of the virtual machines.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Back on the Personalization window, click on the Screen Saver icon.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Here, you can select a screen saver. Choose Blank from the Screensaver dropdown menu (this will configure the system to have a blank black screen as the screen saver). Once the screensaver is selected, you can set the number of minutes to wait before the screen saver turns on. In this example, 15 minutes is configured. You can also require the user to enter a password to return to the system by placing a check next to On resume, display logon screen. Click OK when finished.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Screen saver</span>Win7 Screen Saver Settings with Blank, 15 minutes, and logon screen on resume.</label></li></div><div class="step"><h3 class="fh"><span class="n">15</span> Back on the Personalization window, click on Display located near the bottom in the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">16</span> On the Display window, the configuration options here allow for the customization of the display properties, including screen resolution, color calibration, clear text settings, and text size. Notice the three radio buttons that allow you to select different text sizes being displayed on the screen. Click on Set custom text size (DPI) from the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">17</span> In the Custom DPI Setting window, notice the available DPI percentage values. Click Cancel.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">18</span> Close the Display window.</h3></div>
-<p class="task-head">Task 1.2 - Configure Desktop Property Settings in Win10</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Click on the Start button and then click on the Settings icon.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Click on Personalization to customize the look and feel of your desktop. Challenge Task: There are several options for customizing the look and feel in Windows 10 with desktop backgrounds, color accents, and a variety of settings to tweak the interface. In this exercise you will be shown a few ways to customize the appearance and make the experience a little more personal and have an opportunity to continue the exploration further by experimenting with other menu selections on your own.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Ensure that Background is selected from the left pane. Proceed by clicking on the Background dropdown menu and selecting the Picture option.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Click the image you want to use. Then click the Choose a fit dropdown menu and select the option that best suits the image (fill, stretch, center, span, etc.).</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Click on Colors from the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Here you can choose colors that affect things like the taskbar and the Start menu. Experiment by picking a color. Underneath the Show accent color on the following surfaces, select the checkbox for Start, taskbar, and action center.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Colors</span>Win10 Colors page with Dark mode and the accent color applied.</label></li></div><div class="step"><h3 class="fh"><span class="n">10</span> Also, notice that there is an option made available here that allows you to choose a light or dark theme. Select the Dark theme and see the change.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Click on the Start button and view the color of the Start menu. Notice that the color is different based on the color that was chosen for the Start, taskbar, and action center checkbox. You can also notice right away that the taskbar changed color.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Change focus back to the Settings window. Click on Start from the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> The setting options available here allow you to customize certain options for the Start menu, like choosing to show the Start menu in full-screen mode. Experiment selecting various options to see how the Start menu changes and what are your personal preferences.</h3></div>
-<p class="task-head">Task 2 - Configure Taskbar Property Settings</p>
-<p class="task-head">Task 2.1 - Configure Taskbar Settings in Win7</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Change focus to the Win7 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> If you need to log back in, log in as sysadmin using Train1ng$ as the password.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Right-click on the Taskbar and then click on Properties from the menu.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Notice the Taskbar and Start Menu Properties window appears. On the Taskbar tab, the typical settings are noted below. Click on Customize. Taskbar Appearance                       Typical Setting Lock the Taskbar                         Unchecked Auto-Hide the Taskbar                    Unchecked Use Small Icons                          Checked Taskbar Location on Screen               Bottom Taskbar Button                           Never Combine</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Taskbar</span>Win10 system icons settings with Calendar pinned.</label></li></div><div class="step"><h3 class="fh"><span class="n">5</span> A Notification Area Icons window appears. Below are the settings to select which icons appear on the taskbar. This gives you the ability to configure which icons will appear in the notification area. Check the checkbox next to Always show all icons and notifications on the taskbar. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Notice that the icons in the notification area now all appear without having to expand anything.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> On the Taskbar and Start Menu Properties window, click the Customize button again.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> In the Notification Area Icons window, click on the Turn system icons on or off link.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Here, you can change which system icons to turn off/on. Select Off from the dropdown menu next to Clock. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Notice that the clock display is now gone from the taskbar.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Back on the Notification Area Icons window, click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> On the Taskbar and Start Menu Properties window, click on the Start Menu tab, followed by clicking on the Customize button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Here, you can customize links, icons, and menu options in the Start menu. Underneath Computer, select the Don't display this item radio button. Underneath Control Panel, select the Display as a menu radio button. Click OK.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Start menu</span>Win7 Start menu with Control Panel as a menu and Computer removed.</label></li></div><div class="step"><h3 class="fh"><span class="n">14</span> Click the Start button and take note of the appearance of Computer and Control Panel.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> Change focus to the Taskbar and Start Menu Properties window and click Apply.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">16</span> Click the Start button again and notice the changes. The Computer icon is now gone, and the Control Panel has a menu selection made available.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">17</span> Change focus to the Taskbar and Start Menu Properties window. Click on the Toolbars tab and check the Desktop checkbox. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">18</span> Notice the Desktop icon appears in the toolbar next to the notification area. Click the double-arrows and review the available selections.</h3></div>
-<p class="task-head">Task 2.2 - Configure Taskbar Settings in Win10</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Change focus back to the Win10 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Click on the Start menu. Right-click on Calender and select More &gt; Pin to taskbar.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Notice the Calendar app is now displayed in the taskbar.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> To modify the notification area in the taskbar, right-click any open area on the taskbar and then click Taskbar Settings.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Scroll down to the Notification Area section and click the Turn system icons on or off link.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Review the list of system icons and toggle each one on or off to personalize to your liking. Challenge Task: Continue to explore the taskbar right-click context menu for other customizations that will work for you.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> The lab is now complete; you may end the reservation.</h3></div>
-<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: customization and accessibility</h2>
@@ -468,7 +425,7 @@ footer p{margin:.25rem 0;max-width:80ch}
     b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
     b.addEventListener('click',function(){
       var code=pre.querySelector('code'), clone=code.cloneNode(true);
-      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      [].forEach.call(clone.querySelectorAll('.c,.pr'),function(x){x.remove();});
       var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
       function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
@@ -486,167 +443,5 @@ footer p{margin:.25rem 0;max-width:80ch}
   if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
 })();
 </script>
-
-<!-- ===== LAB MODE (begin) — self-contained; safe to remove as a block ===== -->
-<style id="lab-mode-css">
-/* Floating toggle button — always available, top-right */
-.pm-toggle{position:fixed;top:10px;right:12px;z-index:2147483100;display:inline-flex;
-  align-items:center;gap:7px;min-height:40px;padding:0 15px;cursor:pointer;
-  font:600 .85rem/1 var(--f-body);border-radius:999px;
-  background:var(--accent);color:var(--accent-ink);border:1px solid transparent;
-  box-shadow:0 4px 14px rgba(0,0,0,.28)}
-.pm-toggle:hover{filter:brightness(1.08)}
-.pm-toggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.pm-toggle .pm-ico{font-family:var(--f-mono);font-weight:700}
-@media print{.pm-toggle{display:none!important}}
-
-/* ---- When lab mode is ON ---- */
-html[data-present="on"] body{line-height:1.5}
-/* Collapse the sidebar grid to a single column and go full width */
-html[data-present="on"] .wrap{display:block;max-width:100%;padding:8px 14px 90px}
-
-/* Hide page chrome that wastes room in a narrow column */
-html[data-present="on"] .toc,
-html[data-present="on"] header.bar,
-html[data-present="on"] .badges,
-html[data-present="on"] .ticket .lede,
-html[data-present="on"] .ticket .fields,
-html[data-present="on"] .done-row{display:none!important}
-
-/* Slim the title block down to a compact header */
-html[data-present="on"] .ticket{margin:0 0 10px}
-html[data-present="on"] .ticket-in{padding:10px 14px}
-html[data-present="on"] .ticket h1{font-size:1.15rem;line-height:1.25;margin:2px 0 0}
-
-/* Show one section at a time */
-html[data-present="on"] #main > section{display:none}
-html[data-present="on"] #main > section.pm-current{display:block;animation:pm-fade .18s ease}
-@keyframes pm-fade{from{opacity:0}to{opacity:1}}
-
-/* Readability bump for the one visible section */
-html[data-present="on"] #main > section{font-size:1.05rem}
-html[data-present="on"] #main > section h2{font-size:1.2rem}
-html[data-present="on"] .step h3,
-html[data-present="on"] .step h4{font-size:1.04rem}
-html[data-present="on"] .cmd{font-size:1rem;white-space:pre-wrap;word-break:break-word}
-
-/* Slim bottom control dock for advancing through sections */
-.pm-dock{display:none}
-html[data-present="on"] .pm-dock{position:fixed;left:0;right:0;bottom:0;z-index:2147483100;
-  display:flex;align-items:center;gap:8px;padding:8px 12px;
-  padding-bottom:calc(8px + env(safe-area-inset-bottom,0));
-  background:var(--surface);border-top:1px solid var(--rule)}
-.pm-dock button{flex:0 0 auto;min-height:40px;min-width:44px;padding:0 14px;cursor:pointer;
-  font:700 .9rem/1 var(--f-body);border-radius:9px;
-  background:var(--surface-2);color:var(--ink);border:1px solid var(--rule)}
-.pm-dock button:hover{background:var(--accent);color:var(--accent-ink)}
-.pm-dock button:disabled{opacity:.4;cursor:not-allowed}
-.pm-dock button:disabled:hover{background:var(--surface-2);color:var(--ink)}
-.pm-dock .pm-where{flex:1 1 auto;text-align:center;min-width:0;
-  font:600 .82rem/1.25 var(--f-body);color:var(--ink-2);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pm-dock .pm-where b{color:var(--ink);display:block;font-size:.9rem}
-.pm-dock .pm-exit{background:transparent}
-</style>
-
-<div class="pm-dock" id="pmDock" aria-hidden="true">
-  <button type="button" data-pm="prev" aria-label="Previous section">◀</button>
-  <div class="pm-where"><span id="pmCount"></span><b id="pmName"></b></div>
-  <button type="button" data-pm="next" aria-label="Next section">▶</button>
-  <button type="button" data-pm="exit" class="pm-exit" aria-label="Exit lab mode">✕</button>
-</div>
-
-<script id="lab-mode-js">
-(function () {
-  "use strict";
-  var root = document.documentElement;
-  var KEY = "aplus:labmode:v1";               // shared across all A+ companion pages
-  var sections = [], idx = 0;
-  var dock, countEl, nameEl, prevBtn, nextBtn;
-
-  function labelFor(sec) {
-    var h = sec.querySelector("h2");
-    if (!h) return sec.id || "Section";
-    return (h.textContent || "").replace(/\s+/g, " ").trim();
-  }
-
-  function show(i) {
-    if (!sections.length) return;
-    idx = Math.max(0, Math.min(sections.length - 1, i));
-    sections.forEach(function (s, n) { s.classList.toggle("pm-current", n === idx); });
-    if (countEl) countEl.textContent = (idx + 1) + " / " + sections.length;
-    if (nameEl) nameEl.textContent = labelFor(sections[idx]);
-    if (prevBtn) prevBtn.disabled = idx === 0;
-    if (nextBtn) nextBtn.disabled = idx === sections.length - 1;
-    window.scrollTo(0, 0);
-  }
-
-  function enter() {
-    sections = Array.prototype.slice.call(document.querySelectorAll("#main > section"));
-    root.setAttribute("data-present", "on");
-    if (dock) dock.setAttribute("aria-hidden", "false");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "true");
-      btn.querySelector(".pm-txt").textContent = "Exit lab mode"; }
-    try { localStorage.setItem(KEY, "1"); } catch (e) {}
-    show(0);
-  }
-
-  function exit() {
-    root.removeAttribute("data-present");
-    sections.forEach(function (s) { s.classList.remove("pm-current"); });
-    if (dock) dock.setAttribute("aria-hidden", "true");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "false");
-      btn.querySelector(".pm-txt").textContent = "Lab mode"; }
-    try { localStorage.setItem(KEY, "0"); } catch (e) {}
-  }
-
-  function toggle() { root.getAttribute("data-present") === "on" ? exit() : enter(); }
-
-  function build() {
-    var btn = document.createElement("button");
-    btn.className = "pm-toggle"; btn.id = "pmToggle"; btn.type = "button";
-    btn.setAttribute("aria-pressed", "false");
-    btn.title = "Lab mode — steps beside the lab, one section at a time (Shift+L)";
-    btn.innerHTML = '<span class="pm-ico" aria-hidden="true">⇥</span><span class="pm-txt">Lab mode</span>';
-    btn.addEventListener("click", toggle);
-    document.body.appendChild(btn);
-
-    dock = document.getElementById("pmDock");
-    countEl = document.getElementById("pmCount");
-    nameEl = document.getElementById("pmName");
-    if (dock) {
-      prevBtn = dock.querySelector('[data-pm="prev"]');
-      nextBtn = dock.querySelector('[data-pm="next"]');
-      dock.addEventListener("click", function (e) {
-        var t = e.target.closest("[data-pm]"); if (!t) return;
-        var a = t.getAttribute("data-pm");
-        if (a === "prev") show(idx - 1);
-        else if (a === "next") show(idx + 1);
-        else if (a === "exit") exit();
-      });
-    }
-
-    document.addEventListener("keydown", function (e) {
-      if (e.shiftKey && (e.key === "L" || e.key === "l")) {
-        var tag = (e.target && e.target.tagName) || "";
-        if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
-        e.preventDefault(); toggle(); return;
-      }
-      if (root.getAttribute("data-present") !== "on") return;
-      if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); show(idx + 1); }
-      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(idx - 1); }
-      else if (e.key === "Escape") { e.preventDefault(); exit(); }
-    });
-  }
-
-  if (document.readyState === "loading")
-    document.addEventListener("DOMContentLoaded", build);
-  else build();
-})();
-</script>
-<!-- ===== LAB MODE (end) ===== -->
-
 </body>
 </html>

@@ -1,14 +1,15 @@
 @lede Regular maintenance keeps a PC fast, and backups are the only thing that saves a user's files when it fails. You will clean up and optimize a drive on a schedule, roll a system back with a restore point, and back up and restore files with two different Windows tools.
+@vm Win7|192.168.1.7/24|sysadmin|Train1ng$|Backup and Restore
+@vm Win8.1|192.168.1.8/24|sysadmin|Train1ng$|Cleanup, optimize, restore point
+ holds the Backup share
+@vm Win10|192.168.1.10/24|Sysadmin|Train1ng$|File History
 
 == overview | Why this lab matters
 Maintenance and recovery are two sides of the same job. **Disk Cleanup** and **Optimize Drives** keep storage healthy and are easy to automate. **System Restore** undoes system changes such as a bad driver or update, without touching personal files. **Backup and Restore** and **File History** protect the personal files themselves.
 Knowing which tool fixes which problem is the point. A restore point won't bring back a deleted spreadsheet, and a file backup won't fix a broken driver. And a backup you've never restored from is only a hope, which is why this lab has you delete a folder and get it back.
 
 == environment | The environment you're working in
-| Machine | Computer name | Used for |
-| Win8.1 | Win8-1 | Disk Cleanup, scheduling, Optimize Drives, System Restore; hosts the `Backup` share |
-| Win7 | Win7 | Backup and Restore to drive **Data (E:)** |
-| Win10 | Win10 | File History to `\\WIN8-1\Backup` |
+{{VMTABLE}}
 All use `sysadmin` / `Train1ng$`. Win7 has an **Installs** folder on the desktop that you'll delete and restore.
 !stuck Typo in the PDF | After the System Restore reboot the PDF says `Train1ing$`. The password is `Train1ng$`.
 !tip Timing | System Restore takes about 8 minutes and the first backup about 4. Start them and read ahead while they run.
@@ -23,38 +24,42 @@ All use `sysadmin` / `Train1ng$`. Win7 has an **Installs** folder on the desktop
 | File History | Still in Control Panel > File History (removed from Settings). The **Windows Backup** app backs up folders, apps, and settings to OneDrive. |
 
 == walkthrough | Walkthrough
-## Task 1: Disk Cleanup (Win8.1)
+## Task 1: Disk Cleanup <<1.1>>
+@@ Win8.1
 ### Run a cleanup
-Log in to **Win8.1**. Right-click **Start > Search**, type `disk cleanup`, and open **Free up disk space by deleting unnecessary files**. Wait for the scan.
+Open the **Win8.1** console, click the splash screen, and sign in as `sysadmin` with `Train1ng$`. Right-click **Start > Search**, type `disk cleanup`, and open **Free up disk space by deleting unnecessary files**. Wait for the scan.
 ### Include system files
 Click **Clean up system files**. It rescans and adds system areas (such as old update files and error reports) that only an administrator can clean. Click each item to read its description, note the total space, and click **OK > Delete Files**. It takes 2–3 minutes and closes on its own.
 !shot The Disk Cleanup window after Clean up system files, showing the items and total space.
-## Task 2: Schedule a cleanup (Win8.1)
+## Task 2: Schedule a cleanup <<1.2>>
+@@ Win8.1
 ### Save a cleanup profile
-Right-click **Start > Search**, type the command below, and open it:
-```
+Right-click **Start > Search**, type the command below in the search field, and click its result:
+```Search box:
 cleanmgr /sageset:1
 ```
 Click **Clean up system files**, check every box, and click **OK**. This saves your choices in the Registry as profile **1**.
 ### Create a basic task
-Open **Control Panel > Administrative Tools > Task Scheduler** and click **Create Basic Task** in the Actions pane:
+Click **Start > Control Panel**, set **View by** to **Small icons**, click **Administrative Tools**, and double-click **Task Scheduler**. Leave Administrative Tools open (Task 3 uses it). In Task Scheduler, click **Create Basic Task** in the Actions pane:
 | Wizard page | Value |
 | Name | `Disk Cleanup` |
 | Trigger | Weekly, recur every 1 week, today's day, start 10–15 minutes from now |
 | Action | Start a program |
-| Program/script | `C:\Windows\System32\cleanmgr.exe` |
+| Program/script | **Browse**, make sure you're in `C:\Windows\System32`, type `cleanmgr.exe`, **Open** |
 | Add arguments | `/sagerun:1` |
 Click **Finish**.
 ### Set it for Windows 8.1 and watch it run
 In **Task Scheduler Library**, double-click **Disk Cleanup**, change **Configure for** to **Windows 8.1**, and click **OK**. When the start time passes, the status shows **Running**, or check **Last Run Time**.
 !shot Task Scheduler Library showing the Disk Cleanup task with its trigger or Last Run Time.
-## Task 3: Optimize the drive (Win8.1)
+## Task 3: Optimize the drive <<2.1>>
+@@ Win8.1
 ### Turn on scheduled optimization
 In Administrative Tools, open **Defragment and Optimize Drives**. Under **Scheduled optimization**, click **Turn on**, check **Run on a schedule**, choose **Weekly**, and click **OK**.
 ### Analyze, then optimize
 Select **(C:)** and click **Analyze**. Note the percent fragmented in **Current status**. Then click **Optimize** (3–4 minutes) and check the new percentage.
 !shot Optimize Drives showing C: after optimization.
-## Task 4: System Restore (Win8.1)
+## Task 4: System Restore <<3, steps 1–16>>
+@@ Win8.1
 ### Create a restore point
 Open **Control Panel > System > System protection** and click **Create**. Name it `Background Configuration` and click **Create**, then **Close**.
 ### Make a change you can see
@@ -63,28 +68,33 @@ Right-click the desktop > **Personalize > Desktop Background**. Choose **Solid C
 Back on the **System Protection** tab, click **System Restore > Next**. Select **Background Configuration**, click **Next > Finish**, and confirm with **Yes**. Windows restarts (about 8 minutes). Sign back in: the background is the original color. Click **Close** on the confirmation.
 !shot The System Restore confirmation after signing back in.
 !tip What System Restore does and doesn't touch | It rolls back system files, installed programs, drivers, settings, and the Registry. It doesn't restore or delete personal files such as documents and photos.
-## Task 5: Backup and Restore (Win7)
+## Task 5: Backup and Restore <<4.1>>
+@@ Win7
 ### Set up the backup
-Log in to **Win7**. Open **Start > All Programs > Maintenance > Backup and Restore > Set up backup**. Choose **Data (E:)** as the destination, then **Let me choose**. Check all the **Data Files** boxes and **Local Disk (C:)**, and *uncheck* **Include a system image**. Review the schedule and click **Save settings and run backup** (about 4 minutes).
+Open the **Win7** console and sign in as `sysadmin` with `Train1ng$`. Open **Start > All Programs > Maintenance > Backup and Restore > Set up backup**. Choose **Data (E:)** as the destination, then **Let me choose**. Check all the **Data Files** boxes and **Local Disk (C:)**, and *uncheck* **Include a system image**. Review the schedule and click **Save settings and run backup** (about 4 minutes).
 ### Delete the Installs folder for real
 Right-click **Installs** on the desktop > **Delete > Yes**. Then right-click the **Recycle Bin > Empty Recycle Bin > Yes**. The folder is gone.
 ### Restore it
 In Backup and Restore, click **Restore my files > Browse for folders**. Open **sysadmin's backup > Desktop**, select **Installs**, click **Add folder**, then **Next**. Keep **In the original location** and click **Restore**, then **Finish**. Open Installs to confirm the files are back.
 !shot The Restore Files window with the Installs folder selected, or the restored folder on the desktop.
-## Task 6: File History (Win10)
+## Task 6: File History <<4.2–4.3>>
+@@ Win10
 ### Point File History at a network share
-Log in to **Win10**. Open **Control Panel > Save backup copies of your files with File History**. Click **Select a network location > Add network location**, double-click **Win8-1**, select **Backup**, and click **Select folder**. Highlight `\\WIN8-1\Backup` and click **OK**.
+Open the **Win10** console, click the splash screen, and sign in as `sysadmin`. Click **Start > Control Panel > Save backup copies of your files with File History**. Click **Select a network location > Add network location**, double-click **Win8-1**, select **Backup**, and click **Select folder**. Highlight `\\WIN8-1\Backup` and click **OK**.
 ### Exclude everything but Documents
 Click **Exclude folders > Add** and add each library except Documents (Camera Roll, Music, Pictures, Saved Pictures, Videos), one at a time. Click **Save changes**. Look through **Advanced settings** (how often to save, how long to keep versions) and click **Cancel**.
 ### Turn it on
 Click **Turn on**. When the first backup finishes you'll see its time, and **Run now** becomes available.
 !shot File History turned on, showing the network location and last backup time.
+@@ Win8.1
 ### Find the backup on Win8.1
-On **Win8.1**, right-click **Start > Command Prompt (Admin)** and run:
-```
+Switch to **Win8.1**. Right-click **Start > Command Prompt (Admin)** and click **Yes** at UAC. Change to the backup folder, then list it:
+```C:\Windows\system32>
 cd C:\Users\sysadmin\Documents\Backup\sysadmin\Win10
+>> C:\Users\sysadmin\Documents\Backup\sysadmin\WIN10>
 dir
 ```
+You can open the same folder in File Explorer to compare.
 You'll see **Configuration** and **Data** folders. The backed-up files are under Data.
 !shot The dir output on Win8.1 showing the File History folders.
 The lab is complete.

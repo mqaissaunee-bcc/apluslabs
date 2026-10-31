@@ -12,6 +12,7 @@
   --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
   --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
   --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --m-win7:#1F5FA8; --m-win81:#0B7377; --m-win10:#6A3FB0; --m-lub:#B4481A; --m-newlub:#8A5A00; --m-bg:#F3F6FA;
   --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
   --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
@@ -22,13 +23,15 @@
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}}
 :root[data-theme="dark"]{
   --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
@@ -108,6 +111,22 @@ main p,main li{max-width:68ch}
 p.shotline{margin:.5rem 0}
 pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
 pre.cmd .c{color:var(--code-dim)}
+pre.cmd .pr{color:var(--code-dim);user-select:none;-webkit-user-select:none}
+pre.cmd.file{border-left:4px solid var(--tag)}
+.fcap{font-size:.85rem;color:var(--ink-2);margin:.6rem 0 -.3rem}
+.m-win7{--mc:var(--m-win7)} .m-win81{--mc:var(--m-win81)} .m-win10{--mc:var(--m-win10)} .m-lub{--mc:var(--m-lub)} .m-newlub{--mc:var(--m-newlub)}
+.mrun{border-left:5px solid var(--mc);padding:.1rem 0 .1rem .9rem;margin:1rem 0 1.25rem}
+.mband{display:inline-flex;align-items:center;gap:.4rem;margin:0 0 .25rem -.9rem;padding:.3rem .8rem .3rem .7rem;background:var(--m-bg);border:1px solid var(--mc);border-left:5px solid var(--mc);border-radius:0 6px 6px 0;font-weight:700;color:var(--mc);font-family:var(--f-display)}
+.onm{display:inline-block;font-weight:700;color:var(--mc);border:1px solid var(--mc);border-radius:4px;padding:0 .35rem;font-size:.88em;background:var(--m-bg)}
+.pdfref{display:inline-block;margin-left:.5rem;font-family:var(--f-body);font-weight:600;font-size:.75rem;color:var(--ink-2);border:1px solid var(--rule);border-radius:3px;padding:0 .4rem;vertical-align:middle}
+.topo{margin:1rem 0;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--surface-2)}
+.topo .bus{text-align:center;font-family:var(--f-mono);font-size:.85rem;color:var(--ink-2);margin:0 0 .3rem;padding-bottom:.3rem;border-bottom:4px solid var(--ink)}
+.topo ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+.topo li{position:relative;margin-top:.9rem;border:2px solid var(--mc);border-top-width:6px;border-radius:6px;padding:.35rem .7rem;background:var(--surface);text-align:center;min-width:7.5rem}
+.topo li::before{content:"";position:absolute;top:-1.05rem;left:50%;height:.9rem;border-left:2px solid var(--ink)}
+.topo li b{display:block;color:var(--mc)} .topo li span{font-family:var(--f-mono);font-size:.85rem}
+.vmnote{font-size:.8rem;color:var(--ink-2)} .topo li.unused{border-style:dashed;opacity:.75}
+.topo .hosted{font-size:.85rem;color:var(--ink-2);text-align:center;margin:.5rem 0 0}
 .copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
 .tbl{overflow-x:auto;margin:.75rem 0}
 table{border-collapse:collapse;width:100%;font-size:.94rem}
@@ -136,17 +155,13 @@ footer p{margin:.25rem 0;max-width:80ch}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media print{
+  .mrun{border-left-color:#000} .mband,.onm{color:#000;border-color:#000;background:#fff}
   .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
   body{background:#fff;color:#000} .wrap{display:block;padding:0}
   main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
-
-#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
-#fullsteps .step h3.fh .n{margin-right:.5rem}
-#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
-#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab11-v1:">
@@ -172,7 +187,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: remote access tools</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -191,7 +206,9 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="environment" aria-labelledby="h-environment">
 <h2 id="h-environment">The environment you're working in</h2>
-<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code class="inl">192.168.1.7/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<p class="fcap">Lab Settings, exactly as listed in the PDF</p><div class="tbl"><table><thead><tr><th scope="col">Virtual Machine</th><th scope="col">IP Address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code>192.168.1.7/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Win10</td><td><code>192.168.1.10/24</code></td><td><code>Sysadmin</code></td><td><code>Train1ng$</code></td></tr></tbody></table></div><p class="fcap">The PDF capitalizes the Win10 account as <code>Sysadmin</code>. Windows user names aren't case-sensitive, so <code>sysadmin</code> works too. The password is case-sensitive.</p>
+<div class="topo" role="img" aria-label="Pod topology: Win7 at 192.168.1.7/24, Win10 at 192.168.1.10/24, all on 192.168.1.0/24"><div class="bus">192.168.1.0/24 (one flat subnet, no router or internet)</div><ul><li class="m-win7"><b><span aria-hidden="true">🪟</span> Win7</b><span>.7</span></li><li class="m-win10"><b><span aria-hidden="true">🪟</span> Win10</b><span>.10</span></li></ul></div>
+<p>In this lab the colored band shows which VM <strong>console</strong> you're sitting at. When you work inside a remote session, an inline label such as <span class="onm m-win7"><span aria-hidden="true">🪟</span> On Win7:</span> marks the machine your clicks actually happen on.</p>
 <div class="tbl"><table><thead><tr><th scope="col">TightVNC setting</th><th scope="col">Value</th></tr></thead><tbody><tr><td>VNC password and admin password</td><td><code class="inl">VNCpwd</code></td></tr><tr><td>Win7 installer</td><td><code class="inl">Installs\tightvnc-2.8.8-gpl-setup-32bit</code> (Server + Viewer)</td></tr><tr><td>Win10 installer</td><td><code class="inl">Toolbox\tightvnc-2.8.8-gpl-setup-64bit</code> (Viewer only)</td></tr></tbody></table></div>
 <div class="call tip"><span class="k">Good to know before you start</span><p>An RDP connection to Win7 signs out anyone using Win7's own console. When you later go back to Win7 directly, you'll sign in again and see what the remote session left behind.</p></div>
 
@@ -205,209 +222,125 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="walkthrough" aria-labelledby="h-walkthrough">
 <h2 id="h-walkthrough">Walkthrough</h2>
-<p class="task-head">Task 1: Enable Remote Desktop on Win7</p>
+<p class="task-head">Task 1: Enable Remote Desktop on Win7 <span class="pdfref">PDF 1.1</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
 <h3><span class="n">1</span>Turn it on</h3>
-<p>Log in to <strong>Win7</strong>. Click <strong>Start</strong>, right-click <strong>Computer > Properties > Remote settings</strong>. On the <strong>Remote</strong> tab, select <strong>Allow connections from computers running any version of Remote Desktop (less secure)</strong> and click <strong>Apply</strong>.</p>
+<p>Open the <strong>Win7</strong> console and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Click <strong>Start</strong>, right-click <strong>Computer</strong>, and choose <strong>Properties</strong>. Click <strong>Remote settings</strong> in the left pane. On the <strong>Remote</strong> tab, select <strong>Allow connections from computers running any version of Remote Desktop (less secure)</strong> and click <strong>Apply</strong>.</p>
 <div class="call tip"><span class="k">Why "less secure"?</span><p>The other option requires Network Level Authentication, which older clients don't support. The lab uses the broad setting for compatibility. On real PCs, choose NLA.</p></div>
 </div>
 <div class="step">
 <h3><span class="n">2</span>Check who may connect</h3>
-<p>Click <strong>Select Users</strong>. sysadmin already has access because administrators are allowed by default. Click <strong>OK</strong> twice.</p>
+<p>Click <strong>Select Users</strong>. sysadmin already has access because administrators are allowed by default. Click <strong>OK</strong>, then <strong>OK</strong> again in System Properties.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The Win7 Remote tab with Remote Desktop allowed.</p>
 </div>
 <div class="step">
 <h3><span class="n">3</span>Allow it through the firewall</h3>
-<p>Open <strong>Control Panel > Windows Firewall > Allow a program or feature through Windows Firewall > Change settings</strong>. Check <strong>Remote Desktop</strong> and its <strong>Home/Work (Private)</strong> column. Click <strong>OK</strong>. Log off Win7.</p>
-</div>
-<p class="task-head">Task 2: Enable Remote Desktop on Win10</p>
-<div class="step">
-<h3><span class="n">4</span>Turn it on in Settings</h3>
-<p>Log in to <strong>Win10</strong>. Right-click <strong>Start > Settings > System > Remote Desktop</strong>, switch <strong>Enable Remote Desktop</strong> on, and click <strong>Confirm</strong>. Click <strong>Select users that can remotely access this PC</strong> and confirm sysadmin has access.</p>
+<p>In the System window, click <strong>Control Panel Home</strong>, set <strong>View by</strong> to <strong>Small icons</strong>, and click <strong>Windows Firewall</strong>. Click <strong>Allow a program or feature through Windows Firewall</strong>, then <strong>Change settings</strong>. Make sure <strong>Remote Desktop</strong> is checked, and its <strong>Home/Work (Private)</strong> column too. Click <strong>OK</strong> and close Windows Firewall.</p>
 </div>
 <div class="step">
-<h3><span class="n">5</span>Check the firewall rule</h3>
-<p>In the Settings search box, type <code class="inl">firewall</code> and open <strong>Allow an app through Windows Firewall</strong>. Click <strong>Change settings</strong> and make sure <strong>Remote Desktop</strong> is checked for <strong>Private</strong>. Click <strong>OK</strong>.</p>
+<h3><span class="n">4</span>Log off Win7</h3>
+<p>Click <strong>Start</strong>, the arrow next to <strong>Shut down</strong>, and <strong>Log off</strong>. (An RDP session can't share the console with a signed-in user on Windows 7.)</p>
+</div>
+</div>
+<p class="task-head">Task 2: Enable Remote Desktop on Win10 <span class="pdfref">PDF 1.2</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
+<div class="step">
+<h3><span class="n">5</span>Turn it on in Settings</h3>
+<p>Open the <strong>Win10</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Right-click <strong>Start > Settings > System > Remote Desktop</strong>. Click the <strong>Off</strong> switch under <strong>Enable Remote Desktop</strong> and click <strong>Confirm</strong>. Under <strong>User accounts</strong>, click <strong>Select users that can remotely access this PC</strong>, confirm sysadmin has access (add it if needed), and click <strong>OK</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">6</span>Check the firewall rule</h3>
+<p>In the <strong>Find a setting</strong> box, start typing <code class="inl">Windows Firewall</code> and click <strong>Allow an app through Windows Firewall</strong>. Click <strong>Change settings</strong> and make sure <strong>Remote Desktop</strong> is checked, and its <strong>Private</strong> column too. Click <strong>OK</strong>. Leave Win10 open.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The Win10 firewall allowed-apps list with Remote Desktop checked for Private.</p>
 </div>
-<p class="task-head">Task 3: Connect from Win10 to Win7</p>
+</div>
+<p class="task-head">Task 3: Connect from Win10 to Win7 <span class="pdfref">PDF 1.3</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
-<h3><span class="n">6</span>Open Remote Desktop Connection</h3>
-<p>On Win10, search for <strong>Remote Desktop Connection</strong> and open it (or run <code class="inl">mstsc</code>). Click <strong>Show Options</strong>, enter <code class="inl">192.168.1.7</code> as the computer and <code class="inl">sysadmin</code> as the user name, and click <strong>Connect</strong>. Enter <code class="inl">Train1ng$</code>, then click <strong>Yes</strong> at the certificate warning.</p>
+<h3><span class="n">7</span>Open Remote Desktop Connection</h3>
+<p>On <strong>Win10</strong>, click the search button, start typing <code class="inl">Remote Desktop Connection</code>, and open it. Click <strong>Show Options</strong> and enter:</p>
+<pre class="cmd" data-prompt="Computer:"><code><span class="pr" aria-hidden="true">Computer: </span>192.168.1.7</code></pre>
+<pre class="cmd" data-prompt="User name:"><code><span class="pr" aria-hidden="true">User name: </span>sysadmin</code></pre>
+<p>Click <strong>Connect</strong>. When asked for credentials, enter <code class="inl">Train1ng$</code> and click <strong>OK</strong>. Click <strong>Yes</strong> at the certificate warning.</p>
 <div class="call stuck"><span class="k">Certificate warning</span><p>RDP uses a self-signed certificate on each PC, so the client can't verify it. In a lab that's expected. On a real network, a warning you don't expect can mean you're connecting to the wrong machine.</p></div>
 </div>
 <div class="step">
-<h3><span class="n">7</span>Work on the remote desktop</h3>
-<p>The connection bar at the top shows you're on Win7. Create a text document on the desktop named <code class="inl">remote access</code>, open it, type <code class="inl">This file was created remotely from Win10.</code>, save, and close.</p>
+<h3><span class="n">8</span>Work on the remote desktop</h3>
+<p><span class="onm m-win7"><span aria-hidden="true">🪟</span> On Win7:</span> You're still at the Win10 console, but everything inside the RDP window happens on Win7; the connection bar at the top says so. Right-click the desktop, choose <strong>New > Text Document</strong>, name it <code class="inl">remote access</code>, and press <kbd>Enter</kbd>. Open it, type <code class="inl">This file was created remotely from Win10.</code>, click <strong>File > Save</strong>, and close Notepad.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The RDP session to Win7 showing the connection bar and the remote access file.</p>
 </div>
 <div class="step">
-<h3><span class="n">8</span>Disconnect</h3>
+<h3><span class="n">9</span>Disconnect</h3>
 <p>Click the <strong>X</strong> on the connection bar and click <strong>OK</strong>.</p>
 </div>
-<p class="task-head">Task 4: Connect from Win7 to Win10</p>
+</div>
+<p class="task-head">Task 4: Connect from Win7 to Win10 <span class="pdfref">PDF 1.4</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
-<h3><span class="n">9</span>Confirm the file at the Win7 console</h3>
-<p>Go to <strong>Win7</strong> directly and sign in. Open <strong>remote access</strong>, add a line <code class="inl">Confirmed by Win7 client.</code>, save, and close.</p>
+<h3><span class="n">10</span>Confirm the file at the Win7 console</h3>
+<p>Go to the <strong>Win7</strong> console directly (not through Win10) and sign in as <code class="inl">sysadmin</code>. Open <strong>remote access</strong> on the desktop, add a new line <code class="inl">Confirmed by Win7 client.</code>, click <strong>File > Save</strong>, and close Notepad.</p>
 </div>
 <div class="step">
-<h3><span class="n">10</span>Open a session to Win10</h3>
-<p>Search for <strong>Remote Desktop Connection</strong>, connect to <code class="inl">192.168.1.10</code> as <code class="inl">sysadmin</code> / <code class="inl">Train1ng$</code>, and click <strong>Yes</strong> at the certificate prompt. If it doesn't start right away, wait 2–3 minutes.</p>
+<h3><span class="n">11</span>Open a session to Win10</h3>
+<p>Click <strong>Start</strong>, type <code class="inl">Remote Desktop</code> in the search field, and open <strong>Remote Desktop Connection</strong>. Enter the Win10 address and click <strong>Connect</strong>:</p>
+<pre class="cmd" data-prompt="Computer:"><code><span class="pr" aria-hidden="true">Computer: </span>192.168.1.10</code></pre>
+<p>Enter user name <code class="inl">sysadmin</code> and password <code class="inl">Train1ng$</code>, click <strong>OK</strong>, and click <strong>Yes</strong> at the certificate prompt. If the session doesn't start right away, wait 2–3 minutes. The connection bar shows the Win10 address.</p>
 </div>
-<p class="task-head">Task 5: Troubleshoot over RDP</p>
+</div>
+<p class="task-head">Task 5: Troubleshoot over RDP <span class="pdfref">PDF 1.5</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
-<h3><span class="n">11</span>Capture performance data</h3>
-<p>In the Win10 session, right-click the taskbar > <strong>Task Manager > More details > Performance</strong>. Right-click the <strong>CPU</strong> graph and choose <strong>Copy</strong>.</p>
+<h3><span class="n">12</span>Capture performance data</h3>
+<p><span class="onm m-win10"><span aria-hidden="true">🪟</span> On Win10:</span> You're at the Win7 console, working inside the RDP window on Win10. Right-click the taskbar and choose <strong>Task Manager</strong>, make sure you're in <strong>More details</strong>, and click <strong>Performance</strong>. Right-click the <strong>CPU</strong> graph and choose <strong>Copy</strong>.</p>
 </div>
 <div class="step">
-<h3><span class="n">12</span>Save it to a file</h3>
-<p>Create <code class="inl">remote session.txt</code> on the remote desktop, open it, <strong>Paste</strong>, and save. You now have a snapshot of the remote PC's CPU details to compare later.</p>
+<h3><span class="n">13</span>Save it to a file</h3>
+<p><span class="onm m-win10"><span aria-hidden="true">🪟</span> On Win10:</span> Still in the session, right-click the desktop, choose <strong>New > Text Document</strong>, and name it <code class="inl">remote session.txt</code>. Open it, right-click, choose <strong>Paste</strong>, and click <strong>File > Save</strong>. Close the file and Task Manager.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The remote session.txt file showing the pasted CPU summary.</p>
 </div>
 <div class="step">
-<h3><span class="n">13</span>Disconnect properly</h3>
-<p>Close Task Manager, then <strong>Start > Power > Disconnect</strong>.</p>
+<h3><span class="n">14</span>Disconnect properly</h3>
+<p><span class="onm m-win10"><span aria-hidden="true">🪟</span> On Win10:</span> Click <strong>Start > Power > Disconnect</strong>. You're back on the Win7 console; leave it open.</p>
 <div class="call tip"><span class="k">Disconnect or sign out?</span><p><strong>Disconnect</strong> leaves your programs running on the remote PC so you can reconnect. <strong>Sign out</strong> closes them. Signing out is cleaner when you're done.</p></div>
 </div>
-<p class="task-head">Task 6: TightVNC</p>
+</div>
+<p class="task-head">Task 6: TightVNC <span class="pdfref">PDF 2.1–2.3</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
-<h3><span class="n">14</span>Install the server on Win7</h3>
-<p>On <strong>Win7</strong>, open <strong>Installs</strong> on the desktop and run <code class="inl">tightvnc-2.8.8-gpl-setup-32bit</code>. Accept the license, choose <strong>Typical</strong>, keep all boxes checked (file associations, service, firewall exception), and install. Accept UAC.</p>
+<h3><span class="n">15</span>Install the server on Win7</h3>
+<p>On <strong>Win7</strong>, open <strong>Installs</strong> on the desktop and double-click this package. Click <strong>Run</strong> at the security warning.</p>
+<pre class="cmd" data-prompt="File to run:"><code><span class="pr" aria-hidden="true">File to run: </span>tightvnc-2.8.8-gpl-setup-32bit</code></pre>
+<p>Click <strong>Next</strong>, accept the license, <strong>Next</strong>, choose <strong>Typical</strong>, keep every box checked (file associations, server options, firewall exceptions), <strong>Next</strong>, then <strong>Install</strong>. Click <strong>Yes</strong> at UAC.</p>
 </div>
 <div class="step">
-<h3><span class="n">15</span>Set the passwords</h3>
-<p>Select <strong>Require password-based authentication</strong> and enter <code class="inl">VNCpwd</code> twice. Select <strong>Protect control interface with an administrative password</strong> and enter <code class="inl">VNCpwd</code> twice. Click <strong>OK</strong>, then <strong>Finish</strong>.</p>
+<h3><span class="n">16</span>Set the passwords</h3>
+<p>In <strong>TightVNC Server: Set Passwords</strong>, select <strong>Require password-based authentication</strong> and enter <code class="inl">VNCpwd</code> in both fields. Select <strong>Protect control interface with an administrative password</strong> and enter <code class="inl">VNCpwd</code> in both fields. Click <strong>OK</strong>, then <strong>Finish</strong>.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The TightVNC Set Passwords window with both options selected.</p>
 </div>
 <div class="step">
-<h3><span class="n">16</span>Check the service settings</h3>
-<p>Open <strong>Start > All Programs > TightVNC > TightVNC Server (Service Mode) > TightVNC Service - Offline Configuration</strong> and accept UAC. On the <strong>Server</strong> tab, under <strong>Miscellaneous</strong>, uncheck <strong>Hide desktop wallpaper</strong> and <strong>Show icon in the notification area</strong>. Click <strong>OK</strong>.</p>
+<h3><span class="n">17</span>Check the service settings</h3>
+<p>The service is already running and starts at boot. Open <strong>Start > All Programs > TightVNC > TightVNC Server (Service Mode) > TightVNC Service - Offline Configuration</strong> and click <strong>Yes</strong> at UAC. If the window doesn't appear, click its taskbar icon. On the <strong>Server</strong> tab, under <strong>Miscellaneous</strong>, make sure <strong>Hide desktop wallpaper</strong> and <strong>Show icon in the notification area</strong> are unchecked. Click <strong>OK</strong>.</p>
+</div>
+</div>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
+<div class="step">
+<h3><span class="n">18</span>Install only the viewer on Win10</h3>
+<p>Change focus to <strong>Win10</strong> (sign in as <code class="inl">sysadmin</code> if needed). Open <strong>Toolbox</strong> on the desktop and double-click this package; click <strong>Run</strong> if warned.</p>
+<pre class="cmd" data-prompt="File to run:"><code><span class="pr" aria-hidden="true">File to run: </span>tightvnc-2.8.8-gpl-setup-64bit</code></pre>
+<p>Click <strong>Next</strong>, accept the terms, <strong>Next</strong>, and choose <strong>Custom</strong>. Click the drop-down next to <strong>TightVNC Server</strong> and choose <strong>Entire feature will be unavailable</strong>, then <strong>Next</strong>. Keep all boxes checked, <strong>Next</strong>, <strong>Install</strong>, <strong>Yes</strong> at UAC, and <strong>Finish</strong>.</p>
 </div>
 <div class="step">
-<h3><span class="n">17</span>Install only the viewer on Win10</h3>
-<p>On <strong>Win10</strong>, open <strong>Toolbox</strong> and run <code class="inl">tightvnc-2.8.8-gpl-setup-64bit</code>. Choose <strong>Custom</strong>, set <strong>TightVNC Server</strong> to <strong>Entire feature will be unavailable</strong>, and finish the install.</p>
-</div>
-<div class="step">
-<h3><span class="n">18</span>Connect with VNC</h3>
-<p>Search for and open <strong>TightVNC Viewer</strong>. Enter <code class="inl">192.168.1.7</code> as the Remote Host, click <strong>Connect</strong>, and enter <code class="inl">VNCpwd</code>. You're now viewing and controlling Win7's actual console.</p>
+<h3><span class="n">19</span>Connect with VNC</h3>
+<p>Search for <strong>TightVNC Viewer</strong> and open it. In <strong>New TightVNC Connection</strong>, enter the Remote Host and click <strong>Connect</strong>, then enter <code class="inl">VNCpwd</code> and click <strong>OK</strong>:</p>
+<pre class="cmd" data-prompt="Remote Host:"><code><span class="pr" aria-hidden="true">Remote Host: </span>192.168.1.7</code></pre>
+<p>You're now viewing and controlling Win7's actual console.</p>
 <p class="shotline"><span class="shot">Screenshot</span>TightVNC Viewer on Win10 showing the Win7 desktop.</p>
 <p>The lab is complete.</p>
 </div>
+</div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
-</section>
-
-<section id="fullsteps" aria-labelledby="h-fullsteps">
-<h2 id="h-fullsteps">Full lab steps</h2>
-<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
-<p class="task-head">Task 1 - Utilizing Remote Desktop</p>
-<p class="task-head">Task 1.1 - Configuring Remote Desktop in Win7</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win7 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Click on the Start button followed by right-clicking on Computer and selecting Properties.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> In the System window, click on Remote settings located in the left pane.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Remote data</span>remote session.txt showing the pasted CPU summary.</label></li></div><div class="step"><h3 class="fh"><span class="n">5</span> In the System Properties window, on the Remote tab, select the radio button next to Allow connections only from computers running any version of Remote Desktop (less secure). Click Apply.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Click on the Select Users button to check and see which users have access.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Notice that sysadmin already has access. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Back on the System Properties window, click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> On the System window, click on the Control Panel Home link in the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Configure the View by to display Small icons and click on Windows Firewall.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Click on Allow a program or feature through Windows Firewall in the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Click on the Change settings button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Scroll down and make sure the checkbox next to Remote Desktop is checked, as well as the checkbox underneath the Home/Work (Private) column for Remote Desktop. Click OK.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Firewall</span>Win10 allowed-apps list with Remote Desktop checked for Private.</label></li></div><div class="step"><h3 class="fh"><span class="n">14</span> Close the Windows Firewall window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> Click the Start button and click the arrow next to Shut down, selecting Log off. Remote Desktop is now configured on the Win7. Next, you will be configuring Remote Desktop on the Win10 system so they can communicate, then you will verify connectivity across the network.</h3></div>
-<p class="task-head">Task 1.2 - Configuring Remote Desktop in Win10</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 virtual machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Right-click the Start menu and click on Settings.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> In the Settings window, click on the System icon.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Click on Remote Desktop from the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> In the right pane, click on the Off icon underneath Enable Remote Desktop to enable the feature.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> When prompted, click on Confirm.</h3><div class="call tip"><span class="k">Note</span><p>Notice that the options for enabling remote desktop are now visible.</p></div></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Scroll down in the right pane and underneath the User accounts heading, click on the Select users that can remotely access this PC link.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Make sure the sysadmin already has access. If needed, add the sysadmin to provide access. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> In the Find a setting search box, located in the left pane, start typing Windows Firewall. From the search results, click on Allow an app through Windows Firewall.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Click on the Change settings button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Scroll down and ensure that the checkbox next to Remote Desktop is checked, as well as underneath the Private column for Remote Desktop. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Leave the Win10 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 1.3 - Connect from the Win10 VM to Win7 Using Remote Desktop</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> On the Win10 VM, click on the Search Windows button and start typing Remote Desktop Connection. From the search results, click on Remote Desktop Connection.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> In the Remote Desktop Connection window, click on Show Options to expand the view for more options.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Type 192.168.1.7 in the Computer text field to enter the IP address of the Win7 machine. Type sysadmin in the User name field. Click Connect.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> When prompted for credentials, type Train1ng$ in the Password field. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> When prompted about the certificate, click Yes to continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> This will open an RDP connection to the Win7 machine. You will see a connection bar at the top of the window indicating the system you are accessing. Right-click anywhere on the desktop and select New &gt; Text Document.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Name the new text document remote access and press the Enter key once finished to save the filename.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Double-click the remote access file and type, "This file was created remotely from Win10."</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Click File &gt; Save to save the changes made.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Close the remote access - Notepad window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Exit the remote desktop session by clicking on the X located at the top connection bar.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> When prompted, click OK to continue.</h3></div>
-<p class="task-head">Task 1.4 - Connect to Win10 Using Remote Desktop</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Change focus back to the Win7 machine by directly accessing it (not from Win10).</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Once logged in, notice the text file, remote access, is visible on the desktop. Double- click on the file to open it. Notice the message inside the text file. In a new line, type, "Confirmed by Win7 client."</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">RDP session</span>The session to Win7 with the connection bar and the remote access file.</label></li></div><div class="step"><h3 class="fh"><span class="n">4</span> Click File &gt; Save to save changes.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Once saved, close the remote access - Notepad window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Click the Start button and in the search field, type Remote Desktop. Click on the Remote Desktop Connection search result to launch the application.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Type in the IP address of the Win10 machine, which should be 192.168.1.10. Click Connect.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> When prompted for credentials, type sysadmin in the User name field and enter Train1ng$ in the Password field. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> When prompted for certificate validation, click Yes to continue.</h3><div class="call tip"><span class="k">Note</span><p>If the remote session does not initiate immediately, wait 2-3 minutes.</p></div></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Once connected, notice the connection bar at the top and the IP address. You have successfully connected to the Win10 machine via a remote session. Leave the Win7 window open to continue with the next task.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">RDP host</span>Win7 Remote tab with Remote Desktop allowed.</label></li></div><p class="task-head">Task 1.5 - Using Remote Desktop and Task Manager for Troubleshooting</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win7 machine with an active remote session to the Win10 machine, right-click the taskbar and select Task Manager.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> In the Task Manager window, ensure that you are viewing the More details view. Click the Performance tab.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> The Performance tab is a summary view of hardware and network usage on the system. Viewing these values allows you to observe anomalies that could be causing the slowdown. To save the current information for later comparisons, right-click on the CPU graph in the left pane and select Copy. This will add the information to the clipboard, so it can be passed to a text file and saved.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Right-click anywhere on the desktop and select New &gt; Text Document.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Name the new file remote session.txt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Double-click the remote session file to open it.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Once opened, right-click anywhere in the white space and select Paste.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Notice the values from the CPU Task Manager graph have been passed to the text document. Click File &gt; Save.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Once saved, close the text document window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Close the Task Manager window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Click the Start button and then proceed to click on the Power button, followed by clicking on Disconnect to end your remote session.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Leave the Win7 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 2 - Utilizing a Third-Party Tool for Remote Desktop</p>
-<p class="task-head">Task 2.1 - Installing TightVNC on Win7</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win7 machine, double-click the Installs folder located on the desktop.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev6"><span class="shot">VNC session</span>TightVNC Viewer on Win10 showing the Win7 desktop.</label></li></div><div class="step"><h3 class="fh"><span class="n">2</span> Double-click on the tightvnc-2.8.8-gpl-setup-32bit Windows Installer Package file.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> When prompted with a security warning, click Run to continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> The setup wizard will appear. Click Next to continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> On the next step, review the terms and accept them. Click Next to continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Click on the Typical button as the installation option.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> The next screen has several options regarding file associations, server options, and firewall exceptions. Make sure all boxes are checked and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Click the Install button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> When prompted for user account control, click Yes to continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> In the TightVNC Server: Set Passwords window, select the radio button for Require password-based authentication (make sure this box is always checked) and type VNCpwd for both password fields. Next, select the radio button for Protect control interface with an administrative password and type VNCpwd for both password fields. Click OK.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">VNC passwords</span>TightVNC Set Passwords with both options selected.</label></li></div><div class="step"><h3 class="fh"><span class="n">11</span> Once finished, click the Finish button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Now the VNC server is installed, and by default, the VNC server service is already started and configured to start automatically when the machine boots. Click the Start button and navigate to All Programs &gt; TightVNC &gt; TightVNC Server (Service Mode) and click on TightVNC Service - Offline Configuration.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> When prompted with user account control, click Yes to continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> If the window does not appear automatically, check the taskbar and click on the application's icon to maximize the window on the screen. On the Server tab, in the Miscellaneous pane, ensure that the checkboxes for Hide desktop wallpaper and Show icon in the notification area are unchecked. Click OK.</h3></div>
-<p class="task-head">Task 2.2 - Installing TightVNC on Win10</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Change focus to the Win10 virtual machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> If not logged in, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Double-click the Toolbox folder located on the desktop.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Double-click on the tightvnc-2.8.8-gpl-setup-64bit Windows Installer Package file to begin installing the application.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> If prompted with a security warning, click Run.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> When the setup wizard appears, click Next to continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Accept the terms and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> When presented with setup options, click on Custom.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> We only want to install the TightVNC Viewer. To do so, click the dropdown menu next to TightVNC Server and select Entire feature will be unavailable. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> On the next screen, make sure all boxes are checked and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> When ready, click Install.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> If prompted with user account control, click Yes to continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Once the wizard finishes installing, click Finish.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> Leave the Win10 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 2.3 - Using TightVNC Viewer on Win10</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Click the Windows Search icon and type TightVNC Viewer in the search field. Click on TightVNC Viewer from the search results.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> In the New TightVNC Connection, type 192.168.1.7 in the Remote Host field. Click Connect.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> When prompted for authentication, type VNCpwd in the Password field. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Notice that a successful remote session is made with the Win7 system.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> The lab is now complete; you may end the reservation.</h3></div>
-<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: remote access tools</h2>
@@ -532,7 +465,7 @@ mstsc /v:server01 /admin</code></pre>
     b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
     b.addEventListener('click',function(){
       var code=pre.querySelector('code'), clone=code.cloneNode(true);
-      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      [].forEach.call(clone.querySelectorAll('.c,.pr'),function(x){x.remove();});
       var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
       function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
@@ -550,167 +483,5 @@ mstsc /v:server01 /admin</code></pre>
   if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
 })();
 </script>
-
-<!-- ===== LAB MODE (begin) — self-contained; safe to remove as a block ===== -->
-<style id="lab-mode-css">
-/* Floating toggle button — always available, top-right */
-.pm-toggle{position:fixed;top:10px;right:12px;z-index:2147483100;display:inline-flex;
-  align-items:center;gap:7px;min-height:40px;padding:0 15px;cursor:pointer;
-  font:600 .85rem/1 var(--f-body);border-radius:999px;
-  background:var(--accent);color:var(--accent-ink);border:1px solid transparent;
-  box-shadow:0 4px 14px rgba(0,0,0,.28)}
-.pm-toggle:hover{filter:brightness(1.08)}
-.pm-toggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.pm-toggle .pm-ico{font-family:var(--f-mono);font-weight:700}
-@media print{.pm-toggle{display:none!important}}
-
-/* ---- When lab mode is ON ---- */
-html[data-present="on"] body{line-height:1.5}
-/* Collapse the sidebar grid to a single column and go full width */
-html[data-present="on"] .wrap{display:block;max-width:100%;padding:8px 14px 90px}
-
-/* Hide page chrome that wastes room in a narrow column */
-html[data-present="on"] .toc,
-html[data-present="on"] header.bar,
-html[data-present="on"] .badges,
-html[data-present="on"] .ticket .lede,
-html[data-present="on"] .ticket .fields,
-html[data-present="on"] .done-row{display:none!important}
-
-/* Slim the title block down to a compact header */
-html[data-present="on"] .ticket{margin:0 0 10px}
-html[data-present="on"] .ticket-in{padding:10px 14px}
-html[data-present="on"] .ticket h1{font-size:1.15rem;line-height:1.25;margin:2px 0 0}
-
-/* Show one section at a time */
-html[data-present="on"] #main > section{display:none}
-html[data-present="on"] #main > section.pm-current{display:block;animation:pm-fade .18s ease}
-@keyframes pm-fade{from{opacity:0}to{opacity:1}}
-
-/* Readability bump for the one visible section */
-html[data-present="on"] #main > section{font-size:1.05rem}
-html[data-present="on"] #main > section h2{font-size:1.2rem}
-html[data-present="on"] .step h3,
-html[data-present="on"] .step h4{font-size:1.04rem}
-html[data-present="on"] .cmd{font-size:1rem;white-space:pre-wrap;word-break:break-word}
-
-/* Slim bottom control dock for advancing through sections */
-.pm-dock{display:none}
-html[data-present="on"] .pm-dock{position:fixed;left:0;right:0;bottom:0;z-index:2147483100;
-  display:flex;align-items:center;gap:8px;padding:8px 12px;
-  padding-bottom:calc(8px + env(safe-area-inset-bottom,0));
-  background:var(--surface);border-top:1px solid var(--rule)}
-.pm-dock button{flex:0 0 auto;min-height:40px;min-width:44px;padding:0 14px;cursor:pointer;
-  font:700 .9rem/1 var(--f-body);border-radius:9px;
-  background:var(--surface-2);color:var(--ink);border:1px solid var(--rule)}
-.pm-dock button:hover{background:var(--accent);color:var(--accent-ink)}
-.pm-dock button:disabled{opacity:.4;cursor:not-allowed}
-.pm-dock button:disabled:hover{background:var(--surface-2);color:var(--ink)}
-.pm-dock .pm-where{flex:1 1 auto;text-align:center;min-width:0;
-  font:600 .82rem/1.25 var(--f-body);color:var(--ink-2);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pm-dock .pm-where b{color:var(--ink);display:block;font-size:.9rem}
-.pm-dock .pm-exit{background:transparent}
-</style>
-
-<div class="pm-dock" id="pmDock" aria-hidden="true">
-  <button type="button" data-pm="prev" aria-label="Previous section">◀</button>
-  <div class="pm-where"><span id="pmCount"></span><b id="pmName"></b></div>
-  <button type="button" data-pm="next" aria-label="Next section">▶</button>
-  <button type="button" data-pm="exit" class="pm-exit" aria-label="Exit lab mode">✕</button>
-</div>
-
-<script id="lab-mode-js">
-(function () {
-  "use strict";
-  var root = document.documentElement;
-  var KEY = "aplus:labmode:v1";               // shared across all A+ companion pages
-  var sections = [], idx = 0;
-  var dock, countEl, nameEl, prevBtn, nextBtn;
-
-  function labelFor(sec) {
-    var h = sec.querySelector("h2");
-    if (!h) return sec.id || "Section";
-    return (h.textContent || "").replace(/\s+/g, " ").trim();
-  }
-
-  function show(i) {
-    if (!sections.length) return;
-    idx = Math.max(0, Math.min(sections.length - 1, i));
-    sections.forEach(function (s, n) { s.classList.toggle("pm-current", n === idx); });
-    if (countEl) countEl.textContent = (idx + 1) + " / " + sections.length;
-    if (nameEl) nameEl.textContent = labelFor(sections[idx]);
-    if (prevBtn) prevBtn.disabled = idx === 0;
-    if (nextBtn) nextBtn.disabled = idx === sections.length - 1;
-    window.scrollTo(0, 0);
-  }
-
-  function enter() {
-    sections = Array.prototype.slice.call(document.querySelectorAll("#main > section"));
-    root.setAttribute("data-present", "on");
-    if (dock) dock.setAttribute("aria-hidden", "false");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "true");
-      btn.querySelector(".pm-txt").textContent = "Exit lab mode"; }
-    try { localStorage.setItem(KEY, "1"); } catch (e) {}
-    show(0);
-  }
-
-  function exit() {
-    root.removeAttribute("data-present");
-    sections.forEach(function (s) { s.classList.remove("pm-current"); });
-    if (dock) dock.setAttribute("aria-hidden", "true");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "false");
-      btn.querySelector(".pm-txt").textContent = "Lab mode"; }
-    try { localStorage.setItem(KEY, "0"); } catch (e) {}
-  }
-
-  function toggle() { root.getAttribute("data-present") === "on" ? exit() : enter(); }
-
-  function build() {
-    var btn = document.createElement("button");
-    btn.className = "pm-toggle"; btn.id = "pmToggle"; btn.type = "button";
-    btn.setAttribute("aria-pressed", "false");
-    btn.title = "Lab mode — steps beside the lab, one section at a time (Shift+L)";
-    btn.innerHTML = '<span class="pm-ico" aria-hidden="true">⇥</span><span class="pm-txt">Lab mode</span>';
-    btn.addEventListener("click", toggle);
-    document.body.appendChild(btn);
-
-    dock = document.getElementById("pmDock");
-    countEl = document.getElementById("pmCount");
-    nameEl = document.getElementById("pmName");
-    if (dock) {
-      prevBtn = dock.querySelector('[data-pm="prev"]');
-      nextBtn = dock.querySelector('[data-pm="next"]');
-      dock.addEventListener("click", function (e) {
-        var t = e.target.closest("[data-pm]"); if (!t) return;
-        var a = t.getAttribute("data-pm");
-        if (a === "prev") show(idx - 1);
-        else if (a === "next") show(idx + 1);
-        else if (a === "exit") exit();
-      });
-    }
-
-    document.addEventListener("keydown", function (e) {
-      if (e.shiftKey && (e.key === "L" || e.key === "l")) {
-        var tag = (e.target && e.target.tagName) || "";
-        if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
-        e.preventDefault(); toggle(); return;
-      }
-      if (root.getAttribute("data-present") !== "on") return;
-      if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); show(idx + 1); }
-      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(idx - 1); }
-      else if (e.key === "Escape") { e.preventDefault(); exit(); }
-    });
-  }
-
-  if (document.readyState === "loading")
-    document.addEventListener("DOMContentLoaded", build);
-  else build();
-})();
-</script>
-<!-- ===== LAB MODE (end) ===== -->
-
 </body>
 </html>

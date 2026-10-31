@@ -12,6 +12,7 @@
   --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
   --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
   --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --m-win7:#1F5FA8; --m-win81:#0B7377; --m-win10:#6A3FB0; --m-lub:#B4481A; --m-newlub:#8A5A00; --m-bg:#F3F6FA;
   --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
   --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
@@ -22,13 +23,15 @@
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}}
 :root[data-theme="dark"]{
   --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
@@ -108,6 +111,22 @@ main p,main li{max-width:68ch}
 p.shotline{margin:.5rem 0}
 pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
 pre.cmd .c{color:var(--code-dim)}
+pre.cmd .pr{color:var(--code-dim);user-select:none;-webkit-user-select:none}
+pre.cmd.file{border-left:4px solid var(--tag)}
+.fcap{font-size:.85rem;color:var(--ink-2);margin:.6rem 0 -.3rem}
+.m-win7{--mc:var(--m-win7)} .m-win81{--mc:var(--m-win81)} .m-win10{--mc:var(--m-win10)} .m-lub{--mc:var(--m-lub)} .m-newlub{--mc:var(--m-newlub)}
+.mrun{border-left:5px solid var(--mc);padding:.1rem 0 .1rem .9rem;margin:1rem 0 1.25rem}
+.mband{display:inline-flex;align-items:center;gap:.4rem;margin:0 0 .25rem -.9rem;padding:.3rem .8rem .3rem .7rem;background:var(--m-bg);border:1px solid var(--mc);border-left:5px solid var(--mc);border-radius:0 6px 6px 0;font-weight:700;color:var(--mc);font-family:var(--f-display)}
+.onm{display:inline-block;font-weight:700;color:var(--mc);border:1px solid var(--mc);border-radius:4px;padding:0 .35rem;font-size:.88em;background:var(--m-bg)}
+.pdfref{display:inline-block;margin-left:.5rem;font-family:var(--f-body);font-weight:600;font-size:.75rem;color:var(--ink-2);border:1px solid var(--rule);border-radius:3px;padding:0 .4rem;vertical-align:middle}
+.topo{margin:1rem 0;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--surface-2)}
+.topo .bus{text-align:center;font-family:var(--f-mono);font-size:.85rem;color:var(--ink-2);margin:0 0 .3rem;padding-bottom:.3rem;border-bottom:4px solid var(--ink)}
+.topo ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+.topo li{position:relative;margin-top:.9rem;border:2px solid var(--mc);border-top-width:6px;border-radius:6px;padding:.35rem .7rem;background:var(--surface);text-align:center;min-width:7.5rem}
+.topo li::before{content:"";position:absolute;top:-1.05rem;left:50%;height:.9rem;border-left:2px solid var(--ink)}
+.topo li b{display:block;color:var(--mc)} .topo li span{font-family:var(--f-mono);font-size:.85rem}
+.vmnote{font-size:.8rem;color:var(--ink-2)} .topo li.unused{border-style:dashed;opacity:.75}
+.topo .hosted{font-size:.85rem;color:var(--ink-2);text-align:center;margin:.5rem 0 0}
 .copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
 .tbl{overflow-x:auto;margin:.75rem 0}
 table{border-collapse:collapse;width:100%;font-size:.94rem}
@@ -136,17 +155,13 @@ footer p{margin:.25rem 0;max-width:80ch}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media print{
+  .mrun{border-left-color:#000} .mband,.onm{color:#000;border-color:#000;background:#fff}
   .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
   body{background:#fff;color:#000} .wrap{display:block;padding:0}
   main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
-
-#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
-#fullsteps .step h3.fh .n{margin-right:.5rem}
-#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
-#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab08-v1:">
@@ -172,7 +187,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: Windows and Linux commands</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -191,7 +206,8 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="environment" aria-labelledby="h-environment">
 <h2 id="h-environment">The environment you're working in</h2>
-<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win8.1</td><td><code class="inl">192.168.1.8/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Lubuntu</td><td><code class="inl">192.168.1.11/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<p class="fcap">Lab Settings, exactly as listed in the PDF</p><div class="tbl"><table><thead><tr><th scope="col">Virtual Machine</th><th scope="col">IP Address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win8.1</td><td><code>192.168.1.8/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Lubuntu</td><td><code>192.168.1.11/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr></tbody></table></div>
+<div class="topo" role="img" aria-label="Pod topology: Win8.1 at 192.168.1.8/24, Lubuntu at 192.168.1.11/24, all on 192.168.1.0/24"><div class="bus">192.168.1.0/24 (one flat subnet, no router or internet)</div><ul><li class="m-win81"><b><span aria-hidden="true">🪟</span> Win8.1</b><span>.8</span></li><li class="m-lub"><b><span aria-hidden="true">🐧</span> Lubuntu</b><span>.11</span></li></ul></div>
 <p>On Lubuntu, open the terminal from <strong>Menu > System Tools > LXTerminal</strong>.</p>
 <div class="call tip"><span class="k">Good habits from the first command</span><p>Press <kbd>Up</kbd> to recall the last command, <kbd>Tab</kbd> to complete a file or folder name, and <kbd>Ctrl</kbd>+<kbd>C</kbd> to stop a command that's waiting or running. All three work in both cmd and the Linux shell.</p></div>
 
@@ -205,234 +221,154 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="walkthrough" aria-labelledby="h-walkthrough">
 <h2 id="h-walkthrough">Walkthrough</h2>
-<p class="task-head">Task 1: Windows Command Prompt</p>
+<p class="task-head">Task 1: Windows Command Prompt <span class="pdfref">PDF 1.1.1–1.1.3</span></p>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
 <h3><span class="n">1</span>Open cmd and get help</h3>
-<p>Log in to <strong>Win8.1</strong>, right-click <strong>Start > Command Prompt</strong>, and try both ways of getting help:</p>
-<pre class="cmd"><code>dir /?
-help dir</code></pre>
+<p>Open the <strong>Win8.1</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Right-click <strong>Start</strong> and choose <strong>Command Prompt</strong>. Try both ways of getting help:</p>
+<pre class="cmd" data-prompt="C:\Users\sysadmin&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>dir /?
+<span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>help dir</code></pre>
+<div class="call tip"><span class="k">Two habits from the PDF</span><p>Press <kbd>Enter</kbd> after every command, and press <kbd>Up</kbd> to bring back a command you mistyped. <code class="inl">help</code> alone lists every command; <code class="inl">command /?</code> gives help for one.</p></div>
 </div>
 <div class="step">
 <h3><span class="n">2</span>List your home folder</h3>
-<pre class="cmd"><code>dir</code></pre>
-<p>You're in <code class="inl">C:\Users\sysadmin</code>. Open <strong>File Explorer</strong>, go to <code class="inl">C:\Users\sysadmin</code>, and compare. It's the same set of folders, shown two ways.</p>
+<pre class="cmd" data-prompt="C:\Users\sysadmin&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>dir</code></pre>
+<p>You're in <code class="inl">C:\Users\sysadmin</code>. Open <strong>File Explorer</strong> from the taskbar, type <code class="inl">C:\Users\sysadmin</code> in the address bar, and press <kbd>Enter</kbd>. It's the same set of folders, shown two ways.</p>
 </div>
 <div class="step">
 <h3><span class="n">3</span>Move around</h3>
-<pre class="cmd"><code>cd
-cd Documents
-cd
-dir
-cls
-cd ..</code></pre>
-<p><code class="inl">cd</code> alone prints where you are. In the <code class="inl">dir</code> listing, <code class="inl">.</code> is the current folder and <code class="inl">..</code> is the parent. <code class="inl">cls</code> clears the screen.</p>
+<p>Print where you are, list the folder, and move into <strong>Documents</strong>:</p>
+<pre class="cmd" data-prompt="C:\Users\sysadmin&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>cd
+<span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>dir
+<span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>cd Documents</code></pre>
+<p>The prompt changes to show the new location. Print it, list it (note <code class="inl">.</code> for the current folder, <code class="inl">..</code> for the parent, and the <strong>Backup</strong> folder), clear the screen, and go back up:</p>
+<pre class="cmd" data-prompt="C:\Users\sysadmin\Documents&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin\Documents&gt; </span>cd
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\Documents&gt; </span>dir
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\Documents&gt; </span>cls
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\Documents&gt; </span>cd ..</code></pre>
+<p>In File Explorer, double-click <strong>Documents</strong> and compare: the same <strong>Backup</strong> folder is there.</p>
 </div>
 <div class="step">
 <h3><span class="n">4</span>Make folders</h3>
-<pre class="cmd"><code>md CLI
-cd CLI
-md Meeting
-dir</code></pre>
+<pre class="cmd" data-prompt="C:\Users\sysadmin\CLI&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>md CLI
+<span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>dir
+<span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>cd CLI
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>cd
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>md Meeting
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>dir</code></pre>
 </div>
 <div class="step">
 <h3><span class="n">5</span>Create a file by redirection</h3>
-<pre class="cmd"><code>date</code></pre>
-<p><code class="inl">date</code> shows the date and waits for a new one. Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to cancel. Now send its output to a file:</p>
-<pre class="cmd"><code>date&gt;calendar</code></pre>
-<p>Press <kbd>Enter</kbd> once more to get the prompt back. Then:</p>
-<pre class="cmd"><code>dir
-type calendar</code></pre>
+<pre class="cmd" data-prompt="C:\Users\sysadmin\CLI&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>date</code></pre>
+<p><code class="inl">date</code> shows the date and waits for a new one. Press <kbd>Ctrl</kbd>+<kbd>C</kbd> to cancel. Now send its output to a file named <code class="inl">calendar</code>:</p>
+<pre class="cmd" data-prompt="C:\Users\sysadmin\CLI&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>date&gt;calendar</code></pre>
+<p>Press <kbd>Enter</kbd> a second time to get the prompt back. Then check the file and read it:</p>
+<pre class="cmd" data-prompt="C:\Users\sysadmin\CLI&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>dir
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>type calendar</code></pre>
 <div class="call stuck"><span class="k">Where people get stuck</span><p><code class="inl">date&gt;calendar</code> looks frozen because <code class="inl">date</code> is still waiting for input. It isn't; press <kbd>Enter</kbd>.</p></div>
 </div>
 <div class="step">
 <h3><span class="n">6</span>Copy, rename, and delete</h3>
-<pre class="cmd"><code>copy calendar calendar.bk
-move calendar.bk trash
-del trash
-rd Meeting
-dir
-exit</code></pre>
+<p>Check with <code class="inl">dir</code> after each change, as the PDF does:</p>
+<pre class="cmd" data-prompt="C:\Users\sysadmin\CLI&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>copy calendar calendar.bk
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>dir
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>move calendar.bk trash
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>dir
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>del trash
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>dir
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>rd Meeting
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>dir
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\CLI&gt; </span>exit</code></pre>
 <p><code class="inl">move</code> also renames a file when the destination is a new name in the same folder.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The cmd window showing the CLI folder listing after the copy, move, and delete commands.</p>
 </div>
-<p class="task-head">Task 2: Elevated prompt and processes (Win8.1)</p>
+</div>
+<p class="task-head">Task 2: Elevated prompt and processes <span class="pdfref">PDF 1.1.4</span></p>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
 <h3><span class="n">7</span>Open Command Prompt (Admin)</h3>
-<p>Right-click <strong>Start > Command Prompt (Admin)</strong> and accept UAC. The title bar says <strong>Administrator</strong>, and you start in <code class="inl">C:\WINDOWS\system32</code>.</p>
+<p>Right-click <strong>Start > Command Prompt (Admin)</strong> and click <strong>Yes</strong> at UAC. The title bar says <strong>Administrator</strong>, and you start in <code class="inl">C:\WINDOWS\system32</code>. List it (there's a lot of output):</p>
+<pre class="cmd" data-prompt="C:\WINDOWS\system32&gt;"><code><span class="pr" aria-hidden="true">C:\WINDOWS\system32&gt; </span>dir</code></pre>
 </div>
 <div class="step">
 <h3><span class="n">8</span>Use a wildcard and launch a program</h3>
-<pre class="cmd"><code>dir notepad*
-notepad.exe</code></pre>
-<p>The <code class="inl">*</code> matches anything, so <code class="inl">notepad*</code> finds every file starting with "notepad".</p>
+<pre class="cmd" data-prompt="C:\WINDOWS\system32&gt;"><code><span class="pr" aria-hidden="true">C:\WINDOWS\system32&gt; </span>dir notepad*
+<span class="pr" aria-hidden="true">C:\WINDOWS\system32&gt; </span>notepad.exe</code></pre>
+<p>The <code class="inl">*</code> matches anything, so <code class="inl">notepad*</code> finds every file starting with "notepad". Notepad opens because <code class="inl">notepad.exe</code> is in the current folder.</p>
 </div>
 <div class="step">
 <h3><span class="n">9</span>List and end a process</h3>
-<pre class="cmd"><code>tasklist
-taskkill /IM notepad.exe
-taskkill /?
-tasklist</code></pre>
-<p>Find <strong>notepad.exe</strong> in the first list and note its <strong>PID</strong> and <strong>Mem Usage</strong>. After <code class="inl">taskkill</code>, it's gone from the second list. <code class="inl">/IM</code> means "image name".</p>
+<p>Change focus back to the prompt:</p>
+<pre class="cmd" data-prompt="C:\WINDOWS\system32&gt;"><code><span class="pr" aria-hidden="true">C:\WINDOWS\system32&gt; </span>tasklist
+<span class="pr" aria-hidden="true">C:\WINDOWS\system32&gt; </span>taskkill /IM notepad.exe
+<span class="pr" aria-hidden="true">C:\WINDOWS\system32&gt; </span>taskkill /?
+<span class="pr" aria-hidden="true">C:\WINDOWS\system32&gt; </span>tasklist</code></pre>
+<p>Find <strong>notepad.exe</strong> in the first list and note its <strong>PID</strong> and <strong>Mem Usage</strong>. <code class="inl">/IM</code> means "image name". After <code class="inl">taskkill</code>, it's gone from the second list.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The tasklist and taskkill output showing notepad.exe ended.</p>
 </div>
 <div class="step">
 <h3><span class="n">10</span>Sign out from the command line</h3>
-<pre class="cmd"><code>shutdown /?
-shutdown /l</code></pre>
+<pre class="cmd" data-prompt="C:\WINDOWS\system32&gt;"><code><span class="pr" aria-hidden="true">C:\WINDOWS\system32&gt; </span>shutdown /?
+<span class="pr" aria-hidden="true">C:\WINDOWS\system32&gt; </span>shutdown /l</code></pre>
 </div>
-<p class="task-head">Task 3: Linux shell (Lubuntu)</p>
+</div>
+<p class="task-head">Task 3: Linux shell <span class="pdfref">PDF 2.1–2.1.3</span></p>
+<div class="mrun m-lub"><p class="mband"><span aria-hidden="true">🐧</span> On Lubuntu</p>
 <div class="step">
 <h3><span class="n">11</span>Open the terminal and look around</h3>
-<p>Sign in to <strong>Lubuntu</strong>, open <strong>Menu > System Tools > LXTerminal</strong>, and run:</p>
-<pre class="cmd"><code>pwd
-ls
-ls -l</code></pre>
-<p><code class="inl">pwd</code> prints the working directory (<code class="inl">/home/sysadmin</code>, shown as <code class="inl">~</code>). <code class="inl">ls -l</code> adds permissions, owner, size, and date.</p>
+<p>Open the <strong>Lubuntu</strong> console and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Click <strong>Menu > System Tools > LXTerminal</strong>, then run:</p>
+<pre class="cmd" data-prompt="sysadmin@lubuntu:~$"><code><span class="pr" aria-hidden="true">sysadmin@lubuntu:~$ </span>pwd
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~$ </span>ls
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~$ </span>ls -l</code></pre>
+<p><code class="inl">pwd</code> prints the working directory (<code class="inl">/home/sysadmin</code>, shown as <code class="inl">~</code>). <code class="inl">ls -l</code> adds permissions, owner, size, and date. For help in the terminal use <code class="inl">help</code>, or <code class="inl">man command</code> for one command.</p>
 </div>
 <div class="step">
 <h3><span class="n">12</span>Move into Documents</h3>
-<pre class="cmd"><code>cd Documents
-pwd
-ls</code></pre>
+<pre class="cmd" data-prompt="sysadmin@lubuntu:~/Documents$"><code><span class="pr" aria-hidden="true">sysadmin@lubuntu:~$ </span>cd Documents
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents$ </span>pwd
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents$ </span>ls</code></pre>
 </div>
 <div class="step">
 <h3><span class="n">13</span>Make folders and a file</h3>
-<pre class="cmd"><code>mkdir Test
-ls
-cd Test
-pwd
-mkdir Redirect
-ls -l &gt; example
-ls
-cat example</code></pre>
+<pre class="cmd" data-prompt="sysadmin@lubuntu:~/Documents/Test$"><code><span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents$ </span>mkdir Test
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents$ </span>ls
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents$ </span>cd Test
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>pwd
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>mkdir Redirect
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>ls
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>ls -l &gt; example
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>ls
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>cat example</code></pre>
 <p><code class="inl">&gt;</code> sends the output of <code class="inl">ls -l</code> into a file named <code class="inl">example</code>; <code class="inl">cat</code> displays it.</p>
 <div class="call tip"><span class="k">The shell doesn't confirm</span><p>Most Linux commands print nothing when they succeed. No message means it worked. Check with <code class="inl">ls</code>.</p></div>
 </div>
 <div class="step">
 <h3><span class="n">14</span>Copy, rename, and delete files</h3>
-<pre class="cmd"><code>cp example example.bk
-cat example.bk
-mv example.bk sample
-ls
-rm sample
-rm example
-ls</code></pre>
+<pre class="cmd" data-prompt="sysadmin@lubuntu:~/Documents/Test$"><code><span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>cp example example.bk
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>ls
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>cat example.bk
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>mv example.bk sample
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>ls
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>rm sample
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>rm example
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>ls</code></pre>
 </div>
 <div class="step">
 <h3><span class="n">15</span>Remove a folder that isn't empty</h3>
-<pre class="cmd"><code>cd ..
-rmdir Test
-ls Test
-rm -r Test
-ls
-exit</code></pre>
+<pre class="cmd" data-prompt="sysadmin@lubuntu:~/Documents$"><code><span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents/Test$ </span>cd ..
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents$ </span>rmdir Test
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents$ </span>ls Test
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents$ </span>rm -r Test
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents$ </span>ls
+<span class="pr" aria-hidden="true">sysadmin@lubuntu:~/Documents$ </span>exit</code></pre>
 <p><code class="inl">rmdir</code> refuses because <code class="inl">Test</code> still contains <code class="inl">Redirect</code>. <code class="inl">rm -r</code> removes a folder and everything in it.</p>
 <div class="call stuck"><span class="k">Be careful with rm -r</span><p>Linux has no Recycle Bin from the shell. <code class="inl">rm -r</code> deletes immediately and permanently, and with <code class="inl">sudo</code> it can delete system files.</p></div>
 <p class="shotline"><span class="shot">Screenshot</span>The terminal showing rmdir failing, then rm -r succeeding.</p>
 <p>The lab is complete.</p>
 </div>
+</div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
-</section>
-
-<section id="fullsteps" aria-labelledby="h-fullsteps">
-<h2 id="h-fullsteps">Full lab steps</h2>
-<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
-<p class="task-head">Task 1 - Navigating the Command Line Interface in Windows</p>
-<p class="task-head">Task 1.1 - Using the CLI in Win8.1</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win8.1 virtual machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> On the Win8.1 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> To begin interacting with the command line interface, you will need to open a Command Prompt shell. To do so, right-click on the Start button and select Command Prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Notice the Command Prompt window appears. Click inside the shell and type the commands below, followed by pressing the Enter key. The commands below will allow you to receive help on using the parameters for the dir command. Both commands accomplish the same objective of receiving help. C:\Users\sysadmin&gt; help dir When typing commands in the command prompt, typically at the end of every typed command you press the Enter key to initiate the command. Also, if you accidentally misspelled a command, as a shortcut, you can press the up arrow to bring back the previous commands you've entered. To get help at any place in the command prompt, type help and a list of all available commands will display. If you need help with a specific command type &lt;command&gt; /?.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; dir /?
-Or…</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Type the command below and then press the Enter key. The dir command displays a list of the directories and files in the current directory. Notice that you are in the C:\User\sysadmin directory.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; dir</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> To compare the results in the shell with the graphical user interface, click on the File Explorer icon in the taskbar.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> In the File Explorer window, type C:\Users\sysadmin in the search field, followed by pressing the Enter key in the address field.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Notice the folders displayed here and compare them to the dir command from the Command Prompt. The same folders are displayed as this is just another way of navigating through the same system.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Leave the Win8.1 window open to continue with the next task. When interacting with the CLI, the prompt indicates the location of the file system in which you are working. The commands issued pertain to the files that are in the current location unless you specify otherwise. It is very important to know the directory in which you are currently working.</h3><pre class="cmd"><code>1.1.2        Working with Directories</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">1</span> Change focus back to the command prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> In the command prompt window, type the command below, followed by pressing the Enter key to show the current working directory. Notice you are in the C:\User\sysadmin directory.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; cd</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Type the command below and then press Enter. Notice there is a directory called Documents. Let's try to navigate into this directory.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; dir</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Type the command below and press the Enter key. Notice that the prompt changes to C:\Users\sysadmin\Documents. C:\Users\sysadmin&gt; cd Documents</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Enter the cd command to show the current working directory and verify that you are in the Documents folder for the sysadmin user.</h3><pre class="cmd"><code>C:\Users\sysadmin\Documents&gt; cd</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Enter the dir command to view the contents of the current directory. Notice the ".", which represents the current folder (Documents), and the "..", which represents the parent folder (sysadmin). Also, notice that there is a folder called Backup.</h3><pre class="cmd"><code>C:\Users\sysadmin\Documents&gt; dir</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Change focus to the File Explorer window and double-click on the Documents folder.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Compare the results from the command prompt. The same Backup folder is seen.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Change focus to the command prompt and enter the command below, followed by pressing the Enter key to clear the shell. This command is useful when non-pertinent information is filling up the shell.</h3><pre class="cmd"><code>C:\Users\sysadmin\Documents&gt; cls</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Type the command below, followed by pressing the Enter key to move back to the directory above the one in which you are currently working. C:\Users\sysadmin\Documents&gt; cd ..</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Notice you are back in the C:\Users\sysadmin directory or, in other words, the sysadmin folder.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Leave the Win8-1 with the command prompt open to continue with the next task. 1.1.3        Creating Directories and Files In this task, you will create new directories.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">1</span> In the command prompt, type the command below, followed by pressing the Enter key to create a new directory called CLI. C:\Users\sysadmin&gt; md CLI</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Verify that the new directory exists by listing your directory. Enter the dir command.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; dir</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Notice that the CLI directory exists in the current working directory. Now let's change to the CLI directory by entering the cd command below. C:\Users\sysadmin&gt; cd CLI</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Use the cd command to print the current working directory, ensuring that you are in the CLI directory.</h3><pre class="cmd"><code>C:\Users\sysadmin\CLI&gt; cd</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Create another directory, called Meeting, by entering the command below. C:\Users\sysadmin\CLI&gt; md Meeting</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Enter the dir command to verify that the Meeting directory has been created.</h3><pre class="cmd"><code>C:\Users\sysadmin\CLI&gt; dir</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Now, let's create files with the command prompt. The first method you will use to create a file is to send the output of a command to a file. This is called redirection, and you use the greater than "&gt;" redirector symbol. At the command prompt, type the command below. The output of this command will end up being the data in the calendar file you will create.</h3><pre class="cmd"><code>C:\Users\sysadmin\CLI&gt; date</code></pre></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Linux files</span>The terminal showing <code class="inl">cat example</code> output in ~/Documents/Test.</label></li></div><div class="step"><h3 class="fh"><span class="n">8</span> Press CTRL+C to exit the date command.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Now type the command below to redirect the data from the date command to a file named calendar in the current working directory. You will have to press the Enter key a second time to get the prompt back.</h3><pre class="cmd"><code>C:\Users\sysadmin\CLI&gt; date&gt;calendar</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Verify that the calendar file exists by entering the dir command.</h3><pre class="cmd"><code>C:\Users\sysadmin\CLI&gt; dir</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Enter the command below to view the contents of the calendar file. C:\Users\sysadmin\CLI&gt; type calendar</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Enter the command below to create a backup of the calendar file named calendar.bk.</h3><pre class="cmd"><code>C:\Users\sysadmin\CLI&gt; copy calendar calendar.bk</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Verify that the file was copied successfully by using the dir command.</h3><pre class="cmd"><code>C:\Users\sysadmin\CLI&gt; dir</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Type the move command below to rename the calendar.bk file as "trash" followed by pressing the Enter key.</h3><pre class="cmd"><code>C:\Users\sysadmin\CLI&gt; move calendar.bk trash</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> Enter the dir command to see the result of the previous command. Notice that the calendar.bk file was renamed to trash.</h3><pre class="cmd"><code>C:\Users\sysadmin\CLI&gt; dir</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">16</span> Enter the del command below to remove the trash file from the CLI directory. C:\Users\sysadmin\CLI&gt; del trash</h3></div>
-<div class="step"><h3 class="fh"><span class="n">17</span> Verify that the trash file was removed from the CLI directory by entering the dir command.</h3><pre class="cmd"><code>C:\Users\sysadmin\CLI&gt; dir</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">18</span> Type the rd command below to delete the Meeting directory (folder). C:\Users\sysadmin\CLI&gt; rd Meeting</h3></div>
-<div class="step"><h3 class="fh"><span class="n">19</span> Verify the Meeting directory has been removed by entering the dir command.</h3><pre class="cmd"><code>C:\Users\sysadmin\CLI&gt; dir</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">20</span> Type exit followed by pressing the Enter key to quit the command prompt. 1.1.4        Command Prompt with Administrative Privileges Using the Win8.1 system, you will work in the command prompt using elevated privileges. Running certain commands in Windows requires that you have elevated privileges even if you are logged in to an account that has administrative privileges. This is because of security reasons. In this exercise, you will access the command prompt as Administrator to execute some of these commands.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Windows files</span>The cmd window showing the CLI folder after the copy, move, and delete commands.</label></li></div><div class="step"><h3 class="fh"><span class="n">1</span> Right-click the Start button and select Command Prompt (Admin).</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> When prompted with a User Account Control message, click Yes to continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Once the command prompt shell appears, notice the header in the title bar signaling that the prompt is opened with administrator privileges. Enter the dir command, followed by pressing the Enter key to list files and folders available in the current working directory.</h3><pre class="cmd"><code>C:\WINDOWS\system32&gt; dir</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> You'll notice that a lot of output is given due to the number of files and folders present in the C:\WINDOWS\system32 directory, which is the default directory when opening the command prompt with administrative privileges. Try to see if there are any files associated with the Notepad application by entering the command below using a wildcard parameter. C:\WINDOWS\system32&gt; dir notepad*</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Notice a notepad.exe executable file is present. Enter the command below, followed by pressing the Enter key. This command will launch the Notepad application directly from the shell as long as the program's name is in the directory where it is located. Since we are already in C:\WINDOWS\system32, by default, the notepad.exe executable file exists in the current working directory.</h3><pre class="cmd"><code>C:\WINDOWS\system32&gt; notepad.exe</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Notice the Notepad application launches. Change focus to the command prompt and enter the tasklist command to display a list of currently running processes.</h3><pre class="cmd"><code>C:\WINDOWS\system32&gt; tasklist</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Locate notepad.exe from the list and notice the information provided, such as PID and Mem Usage. Enter the command below to terminate the notepad process. This gives you the ability to manage a task and to manually kill a potential rogue process.</h3><pre class="cmd"><code>C:\WINDOWS\system32&gt; taskkill /IM notepad.exe</code></pre></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Processes</span>tasklist and taskkill output showing notepad.exe ended.</label></li></div><div class="step"><h3 class="fh"><span class="n">8</span> Enter the help command below to learn what the IM switch means.</h3><pre class="cmd"><code>C:\WINDOWS\system32&gt; taskkill /?</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Enter the tasklist command once more to verify that the notepad.exe is no longer available.</h3><pre class="cmd"><code>C:\WINDOWS\system32&gt; tasklist</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Enter the help command for the shutdown command. The shutdown command is a command that can be used to shut down, restart, log off, or hibernate your Windows machine.</h3><pre class="cmd"><code>C:\WINDOWS\system32&gt; shutdown /?</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Enter the command below to log off from the Win8.1 system.</h3><pre class="cmd"><code>C:\WINDOWS\system32&gt; shutdown /l</code></pre></div>
-<p class="task-head">Task 2 - Navigating the Command Line Interface in Linux</p>
-<p class="task-head">Task 2.1 - Using the CLI in Lubuntu</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Lubuntu system from the topology.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Sign in as the sysadmin using Train1ng$ as the password.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Click on the Menu button located on the bottom taskbar and navigate to System Tools &gt; LXTerminal to open the terminal window, which in comparison to Windows, is similar to the command prompt with regards to using a command-line interface.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Leave the terminal open to continue with the next task. 2.1.1        View the Contents of a Directory In Linux, when you open the CLI, the prompt indicates the current working directory of the file system, similar to Windows. It is very important to know the directory in which you are currently working.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">1</span> At the terminal, type the command below, followed by pressing the Enter key. This command displays the current working directory path. When typing commands in the terminal, typically at the end of every typed command you press the Enter key to initiate the command. Also, if you accidentally misspelled a command, as a shortcut, you can press the up arrow to bring back the previous commands you've entered. To get help at any place in the terminal, type help and a list of all available commands will display. If you need help for a specific command type man &lt;command&gt;.</h3><pre class="cmd"><code>sysadmin@lubuntu:~$ pwd</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Type the ls command, followed by pressing the Enter key. This command displays a list of files and directories inside the current working directory.</h3><pre class="cmd"><code>sysadmin@lubuntu:~$ ls</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Enter the command below to display a detailed list of files and directories. sysadmin@lubuntu:~$ ls -l</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Leave the terminal open to continue with the next task.</h3><pre class="cmd"><code>2.1.2        Working with Directories</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">1</span> At the terminal prompt, enter the command below to move into the Documents directory. The cd command allows you to change between directories. sysadmin@lubuntu:~$ cd Documents</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Enter the pwd command to identify your current working directory. Notice you are now in the /home/sysadmin/Documents directory.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents$ pwd</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Enter the ls command to view the contents of the Documents directory. Notice no files or directories are present here.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents$ ls</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Leave the terminal open to continue with the next task. 2.1.3        Creating Directories and Files</h3></div>
-<div class="step"><h3 class="fh"><span class="n">1</span> At the terminal, enter the mkdir command below to create a new directory called Test in the current working directory. The command-line is not interactive for many commands. If you do not get an error message, you may assume your command succeeded. You will not be asked if you are sure you want to continue or be given feedback about the action taken, so it is important to verify the results of your actions.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents$ mkdir Test</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Verify that the new Test directory exists by entering the ls command.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents$ ls</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Enter the cd command below to change to the Test directory.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents$ cd Test</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Enter the pwd command to verify your current working directory.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents/Test$ pwd</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Enter the command below to create a new Redirect directory in Test.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents/Test$ mkdir Redirect</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Enter the ls command to verify that the Redirect directory has been successfully created.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents/Test$ ls</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Now, it's time to create files. The first method you will use to create a file is to send the output of a command to a file. This is called redirection, and you use the greater than "&gt;" or pipe "|" redirector symbol to redirect output from one command into another. This command also lets you chain commands together into a more robust command. Enter the command below to redirect the output from the ls command to a file named example.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents/Test$ ls -l &gt; example</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Verify that the example file exists by entering the ls command.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents/Test$ ls</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> View the contents of the example file by using the cat command. Enter the command below. Notice that the output from the ls -l command is copied in this file.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents/Test$ cat example</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Make a copy of the example file and call it example.bk. Enter the command below.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents/Test$ cp example example.bk</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Verify that the file was created successfully using the ls command.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents/Test$ ls</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Verify that the contents of the file were copied successfully by using the cat command. Enter the command below.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents/Test$ cat example.bk</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Enter the mv command below to rename the example.bk file to sample. Even though the mv command is used to move files, it can also be used to rename files.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents/Test$ mv example.bk sample</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Verify that the file has been renamed successfully by entering the ls command.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents/Test$ ls</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> Enter the command below to delete the sample file.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents/Test$ rm sample</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">16</span> Remove the example file using the rm command.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents/Test$ rm example</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">17</span> Enter the ls command to verify that both the example and sample files have been removed from the Test directory.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents/Test$ ls</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">18</span> Use the cd command to go back to the Documents directory as your working directory. sysadmin@lubuntu:~/Documents/Test$ cd ..</h3></div>
-<div class="step"><h3 class="fh"><span class="n">19</span> Remove the Test directory by entering the command below.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents$ rmdir Test</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">20</span> Notice the message that appears. Enter the ls command below to see what other objects are in the Test directory that are preventing us from being able to delete the directory.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents$ ls Test</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">21</span> Notice there is another directory that we created called Redirect. To remove a directory with subdirectories, we need to use additional parameters along with the rm command. Enter the command below. The -r option for the rm command is used to remove directories and their contents recursively.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents$ rm -r Test</code></pre></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Linux delete</span>The terminal showing rmdir failing and rm -r succeeding.</label></li></div><div class="step"><h3 class="fh"><span class="n">22</span> Enter the ls command to verify that the Test directory is gone.</h3><pre class="cmd"><code>sysadmin@lubuntu:~/Documents$ ls</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">23</span> Type exit followed by pressing the Enter key to quit the terminal.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">24</span> The lab is now complete; you may end the reservation.</h3></div>
-<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: Windows and Linux commands</h2>
@@ -554,7 +490,7 @@ Or…</code></pre></div>
     b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
     b.addEventListener('click',function(){
       var code=pre.querySelector('code'), clone=code.cloneNode(true);
-      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      [].forEach.call(clone.querySelectorAll('.c,.pr'),function(x){x.remove();});
       var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
       function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
@@ -572,167 +508,5 @@ Or…</code></pre></div>
   if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
 })();
 </script>
-
-<!-- ===== LAB MODE (begin) — self-contained; safe to remove as a block ===== -->
-<style id="lab-mode-css">
-/* Floating toggle button — always available, top-right */
-.pm-toggle{position:fixed;top:10px;right:12px;z-index:2147483100;display:inline-flex;
-  align-items:center;gap:7px;min-height:40px;padding:0 15px;cursor:pointer;
-  font:600 .85rem/1 var(--f-body);border-radius:999px;
-  background:var(--accent);color:var(--accent-ink);border:1px solid transparent;
-  box-shadow:0 4px 14px rgba(0,0,0,.28)}
-.pm-toggle:hover{filter:brightness(1.08)}
-.pm-toggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.pm-toggle .pm-ico{font-family:var(--f-mono);font-weight:700}
-@media print{.pm-toggle{display:none!important}}
-
-/* ---- When lab mode is ON ---- */
-html[data-present="on"] body{line-height:1.5}
-/* Collapse the sidebar grid to a single column and go full width */
-html[data-present="on"] .wrap{display:block;max-width:100%;padding:8px 14px 90px}
-
-/* Hide page chrome that wastes room in a narrow column */
-html[data-present="on"] .toc,
-html[data-present="on"] header.bar,
-html[data-present="on"] .badges,
-html[data-present="on"] .ticket .lede,
-html[data-present="on"] .ticket .fields,
-html[data-present="on"] .done-row{display:none!important}
-
-/* Slim the title block down to a compact header */
-html[data-present="on"] .ticket{margin:0 0 10px}
-html[data-present="on"] .ticket-in{padding:10px 14px}
-html[data-present="on"] .ticket h1{font-size:1.15rem;line-height:1.25;margin:2px 0 0}
-
-/* Show one section at a time */
-html[data-present="on"] #main > section{display:none}
-html[data-present="on"] #main > section.pm-current{display:block;animation:pm-fade .18s ease}
-@keyframes pm-fade{from{opacity:0}to{opacity:1}}
-
-/* Readability bump for the one visible section */
-html[data-present="on"] #main > section{font-size:1.05rem}
-html[data-present="on"] #main > section h2{font-size:1.2rem}
-html[data-present="on"] .step h3,
-html[data-present="on"] .step h4{font-size:1.04rem}
-html[data-present="on"] .cmd{font-size:1rem;white-space:pre-wrap;word-break:break-word}
-
-/* Slim bottom control dock for advancing through sections */
-.pm-dock{display:none}
-html[data-present="on"] .pm-dock{position:fixed;left:0;right:0;bottom:0;z-index:2147483100;
-  display:flex;align-items:center;gap:8px;padding:8px 12px;
-  padding-bottom:calc(8px + env(safe-area-inset-bottom,0));
-  background:var(--surface);border-top:1px solid var(--rule)}
-.pm-dock button{flex:0 0 auto;min-height:40px;min-width:44px;padding:0 14px;cursor:pointer;
-  font:700 .9rem/1 var(--f-body);border-radius:9px;
-  background:var(--surface-2);color:var(--ink);border:1px solid var(--rule)}
-.pm-dock button:hover{background:var(--accent);color:var(--accent-ink)}
-.pm-dock button:disabled{opacity:.4;cursor:not-allowed}
-.pm-dock button:disabled:hover{background:var(--surface-2);color:var(--ink)}
-.pm-dock .pm-where{flex:1 1 auto;text-align:center;min-width:0;
-  font:600 .82rem/1.25 var(--f-body);color:var(--ink-2);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pm-dock .pm-where b{color:var(--ink);display:block;font-size:.9rem}
-.pm-dock .pm-exit{background:transparent}
-</style>
-
-<div class="pm-dock" id="pmDock" aria-hidden="true">
-  <button type="button" data-pm="prev" aria-label="Previous section">◀</button>
-  <div class="pm-where"><span id="pmCount"></span><b id="pmName"></b></div>
-  <button type="button" data-pm="next" aria-label="Next section">▶</button>
-  <button type="button" data-pm="exit" class="pm-exit" aria-label="Exit lab mode">✕</button>
-</div>
-
-<script id="lab-mode-js">
-(function () {
-  "use strict";
-  var root = document.documentElement;
-  var KEY = "aplus:labmode:v1";               // shared across all A+ companion pages
-  var sections = [], idx = 0;
-  var dock, countEl, nameEl, prevBtn, nextBtn;
-
-  function labelFor(sec) {
-    var h = sec.querySelector("h2");
-    if (!h) return sec.id || "Section";
-    return (h.textContent || "").replace(/\s+/g, " ").trim();
-  }
-
-  function show(i) {
-    if (!sections.length) return;
-    idx = Math.max(0, Math.min(sections.length - 1, i));
-    sections.forEach(function (s, n) { s.classList.toggle("pm-current", n === idx); });
-    if (countEl) countEl.textContent = (idx + 1) + " / " + sections.length;
-    if (nameEl) nameEl.textContent = labelFor(sections[idx]);
-    if (prevBtn) prevBtn.disabled = idx === 0;
-    if (nextBtn) nextBtn.disabled = idx === sections.length - 1;
-    window.scrollTo(0, 0);
-  }
-
-  function enter() {
-    sections = Array.prototype.slice.call(document.querySelectorAll("#main > section"));
-    root.setAttribute("data-present", "on");
-    if (dock) dock.setAttribute("aria-hidden", "false");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "true");
-      btn.querySelector(".pm-txt").textContent = "Exit lab mode"; }
-    try { localStorage.setItem(KEY, "1"); } catch (e) {}
-    show(0);
-  }
-
-  function exit() {
-    root.removeAttribute("data-present");
-    sections.forEach(function (s) { s.classList.remove("pm-current"); });
-    if (dock) dock.setAttribute("aria-hidden", "true");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "false");
-      btn.querySelector(".pm-txt").textContent = "Lab mode"; }
-    try { localStorage.setItem(KEY, "0"); } catch (e) {}
-  }
-
-  function toggle() { root.getAttribute("data-present") === "on" ? exit() : enter(); }
-
-  function build() {
-    var btn = document.createElement("button");
-    btn.className = "pm-toggle"; btn.id = "pmToggle"; btn.type = "button";
-    btn.setAttribute("aria-pressed", "false");
-    btn.title = "Lab mode — steps beside the lab, one section at a time (Shift+L)";
-    btn.innerHTML = '<span class="pm-ico" aria-hidden="true">⇥</span><span class="pm-txt">Lab mode</span>';
-    btn.addEventListener("click", toggle);
-    document.body.appendChild(btn);
-
-    dock = document.getElementById("pmDock");
-    countEl = document.getElementById("pmCount");
-    nameEl = document.getElementById("pmName");
-    if (dock) {
-      prevBtn = dock.querySelector('[data-pm="prev"]');
-      nextBtn = dock.querySelector('[data-pm="next"]');
-      dock.addEventListener("click", function (e) {
-        var t = e.target.closest("[data-pm]"); if (!t) return;
-        var a = t.getAttribute("data-pm");
-        if (a === "prev") show(idx - 1);
-        else if (a === "next") show(idx + 1);
-        else if (a === "exit") exit();
-      });
-    }
-
-    document.addEventListener("keydown", function (e) {
-      if (e.shiftKey && (e.key === "L" || e.key === "l")) {
-        var tag = (e.target && e.target.tagName) || "";
-        if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
-        e.preventDefault(); toggle(); return;
-      }
-      if (root.getAttribute("data-present") !== "on") return;
-      if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); show(idx + 1); }
-      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(idx - 1); }
-      else if (e.key === "Escape") { e.preventDefault(); exit(); }
-    });
-  }
-
-  if (document.readyState === "loading")
-    document.addEventListener("DOMContentLoaded", build);
-  else build();
-})();
-</script>
-<!-- ===== LAB MODE (end) ===== -->
-
 </body>
 </html>

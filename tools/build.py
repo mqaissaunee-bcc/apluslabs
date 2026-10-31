@@ -33,9 +33,25 @@ def build_lab(L):
         raw=src.read_text(); meta={}
         keep=[]
         for ln in raw.split("\n"):
-            if ln.startswith("@"): k,v=ln[1:].split(" ",1); meta[k]=v.strip()
+            if ln.startswith("@@ "): keep.append(ln)
+            elif ln.startswith("@vm "): meta.setdefault("vmlist",[]).append([x.strip() for x in ln[4:].split("|")])
+            elif ln.startswith("@hosted "): meta["hosted"]=ln[8:].strip()
+            elif ln.split(" ",1)[0] in ("@lede","@vms"): k,v=ln[1:].split(" ",1); meta[k]=v.strip()
             else: keep.append(ln)
         L.update(meta); raw="\n".join(keep)
+    if src.exists() and "vmlist" in L:
+        from markup import MACH
+        vm=L["vmlist"]
+        rows="".join(f"<tr><td>{v[0]}"+(f'<br><span class="vmnote">{v[4]}</span>' if len(v)>4 else "")+f"</td><td><code>{v[1]}</code></td><td><code>{v[2]}</code></td><td><code>{v[3]}</code></td></tr>" for v in vm)
+        tbl=('<p class="fcap">Lab Settings, exactly as listed in the PDF</p><div class="tbl"><table><thead><tr><th scope="col">Virtual Machine</th><th scope="col">IP Address</th>'
+             '<th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody>'+rows+'</tbody></table></div>')
+        nodes="".join(f'<li class="m-{MACH[v[0]][1]}{" unused" if len(v)>4 else ""}"><b><span aria-hidden="true">{MACH[v[0]][0]}</span> {v[0]}</b><span>.{v[1].split("/")[0].split(".")[-1]}</span></li>' for v in vm)
+        label="Pod topology: "+", ".join(f"{v[0]} at {v[1]}" for v in vm)+", all on 192.168.1.0/24"
+        if any(v[2]=="Sysadmin" for v in vm): tbl+='<p class="fcap">The PDF capitalizes the Win10 account as <code>Sysadmin</code>. Windows user names aren\'t case-sensitive, so <code>sysadmin</code> works too. The password is case-sensitive.</p>'
+        hosted=f'<p class="hosted">{L["hosted"]}</p>' if L.get("hosted") else ""
+        topo=f'<div class="topo" role="img" aria-label="{label}"><div class="bus">192.168.1.0/24 (one flat subnet, no router or internet)</div><ul>{nodes}</ul>{hosted}</div>'
+        raw=raw.replace("{{VMTABLE}}", tbl+"\n"+topo) if "{{VMTABLE}}" in raw else raw
+        L["vms"]=", ".join(v[0] for v in vm)
     body = convert(raw, L["cores"]) if src.exists() else pathlib.Path(f"bodies/lab{L['id']}.html").read_text()
     # inject done-rows into tracked sections and build TOC
     toc = []

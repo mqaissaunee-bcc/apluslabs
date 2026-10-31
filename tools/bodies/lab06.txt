@@ -1,14 +1,18 @@
 @lede A printer can be plugged into one PC and shared, or connected straight to the network. You will install a printer driver and a port on Win8.1, share the printer, and connect to it from Win7 the way an office user would.
+@vm Win7|192.168.1.7/24|sysadmin|Train1ng$|Renamed Enterprise
+ connects to the printer
+@vm Win8.1|192.168.1.8/24|sysadmin|Train1ng$|Renamed Reliant
+ hosts the printer
+@vm Win10|192.168.1.10/24|Sysadmin|Train1ng$|Listed in the PDF
+ no step uses it
 
 == overview | Why this lab matters
 Printers generate a steady stream of help desk tickets, and most of them come down to three parts of the setup: the **driver** (software that turns a print job into commands the printer understands), the **port** (where the job goes: USB, a network IP address, or a file), and **sharing** (whether other PCs can reach it).
 In this lab you install a printer on Win8.1 with the Add Printer wizard, choosing each of those parts by hand, then share it as **Generic Office** and add it on Win7 as a network printer. The lab environment has no physical printer, so the port is **FILE:**, which writes the job to a file instead of paper. Every other choice is the same as for a real device.
 
 == environment | The environment you're working in
-| Machine | New name | Workgroup | Role |
-| Win8.1 | `Reliant` | `MYGROUP` | Hosts and shares the printer |
-| Win7 | `Enterprise` | `MYGROUP` | Connects to the shared printer |
-Both use `sysadmin` / `Train1ng$`. If you just finished Lab 05 on the same reservation, the names and workgroup may already be set; check System Properties before changing them.
+{{VMTABLE}}
+Win8.1 (renamed **Reliant**) installs and shares the printer, and Win7 (renamed **Enterprise**) connects to it. If you just finished Lab 05 on the same reservation, the names and workgroup may already be set; check System Properties before changing them.
 !stuck Typo in the PDF | After the Win8.1 restart the PDF says `Train1ing$`. The password is `Train1ng$`.
 
 == then-now | Then vs. now: Windows 11
@@ -21,18 +25,20 @@ Both use `sysadmin` / `Train1ng$`. If you just finished Lab 05 on the same reser
 !tip Mopria and IPP | Microsoft is moving printing to standard protocols (IPP and Mopria) and phasing out new third-party drivers through Windows Update. On new printers, the built-in class driver is often all you need.
 
 == walkthrough | Walkthrough
-## Task 1: Put Win8.1 in the workgroup
+## Task 1: Put Win8.1 in the workgroup and turn on sharing <<1.1, 2.1>>
+@@ Win8.1
 ### Rename and join MYGROUP
-Log in to **Win8.1**. Right-click **This PC** on the desktop > **Properties > Change settings > Change**. Set the computer name to `Reliant` and the workgroup to `MYGROUP`. Click **OK** through the messages, **Close**, then **Restart Now**.
+Open the **Win8.1** console, click the splash screen, and sign in as `sysadmin` with `Train1ng$`. Right-click **This PC** on the desktop > **Properties > Change settings > Change**. Set the computer name to `Reliant` and the workgroup to `MYGROUP`. Click **OK** through the messages, **Close**, then **Restart Now**.
 ### Turn on file and printer sharing
-After signing back in, right-click the network icon > **Open Network and Sharing Center > Change adapter settings**. In **Ethernet > Properties**, confirm **File and Printer Sharing for Microsoft Networks** is checked.
-Open **Change advanced sharing settings** and select **Turn on network discovery** and **Turn on file and printer sharing**. Save or cancel.
+After the restart, sign back in as `sysadmin` (`Train1ng$`; the PDF's `Train1ing$` is a typo). Right-click the network icon > **Open Network and Sharing Center > Change adapter settings**. In **Ethernet > Properties**, confirm **File and Printer Sharing for Microsoft Networks** is checked, click **OK**, and close Network Connections.
+In Network and Sharing Center, open **Change advanced sharing settings** and select **Turn on network discovery** and **Turn on file and printer sharing**. Save or cancel.
 !shot Advanced sharing settings on Win8.1 with discovery and file and printer sharing on.
-## Task 2: Install a local printer (Win8.1)
+## Task 2: Install and share a local printer <<3.1>>
+@@ Win8.1
 ### Start the wizard
-Open **Control Panel > View devices and printers > Add a printer**. Let the search finish (nothing is found), then click **The printer that I want isn't listed**. Choose **Add a local printer or network printer with manual settings** and click **Next**.
+Still on **Win8.1**, click **Start > Control Panel > View devices and printers**, note the devices listed, and click **Add a printer**. Let the search finish (nothing is found), then click **The printer that I want isn't listed**. Choose **Add a local printer or network printer with manual settings** and click **Next**.
 ### Choose the port
-Select **Use an existing port** and pick **FILE: (Print to File)**.
+Select **Use an existing port**, pick **FILE: (Print to File)** from the list, and click **Next**.
 !tip Choosing a port for real | A USB or old parallel (LPT) printer uses an existing port. A printer with its own network card uses **Create a new port > Standard TCP/IP Port**, where you enter its IP address.
 ### Choose the driver
 Under **Manufacturer** choose **Generic**, under **Printers** choose **Generic / Text Only**, and click **Next**. Keep **Use the driver that is currently installed**. Leave the printer name as **Generic / Text Only**.
@@ -41,13 +47,17 @@ Select **Share this printer**, set the share name to `Generic Office`, and click
 ### Confirm the share
 In Devices and Printers, right-click **Generic / Text Only > Printer properties > Sharing**. Confirm **Share this printer** is checked with share name **Generic Office**.
 !shot The printer's Sharing tab showing the share name Generic Office.
-## Task 3: Connect from Win7
+## Task 3: Connect from Win7 <<4.1–4.2>>
+@@ Win7
 ### Put Win7 in the workgroup
-On **Win7**, open **Control Panel > System > Change settings > Change**. Name it `Enterprise`, workgroup `MYGROUP`, and restart.
+Open the **Win7** console and sign in as `sysadmin` with `Train1ng$`. Click **Start > Control Panel**, set **View by** to **Small icons**, and click **System > Change settings > Change**. Name it `Enterprise`, workgroup `MYGROUP`, click **OK** through the welcome and restart messages, **Close**, then **Restart Now**.
 ### Add the network printer
-Sign in, open **Start > Devices and Printers > Add a printer**, and click **Add a network, wireless or Bluetooth printer**. Select **Generic Office** on Reliant when it appears and click **Next**. Windows connects and copies the driver from Reliant. Click **Next**, then **Finish**.
+After the restart, sign in as `sysadmin`, open **Start > Devices and Printers > Add a printer**, and click **Add a network, wireless or Bluetooth printer**. Select **Generic Office** on Reliant when it appears and click **Next**. Windows connects and copies the driver from Reliant. Click **Next**, then **Finish**.
 !shot Devices and Printers on Win7 showing Generic Office on Reliant.
-!stuck If Generic Office doesn't appear | Click **The printer that I want isn't listed > Select a shared printer by name** and type `\\Reliant\Generic Office`.
+!stuck If Generic Office doesn't appear | Click **The printer that I want isn't listed > Select a shared printer by name** and type the path below.
+```Printer path:
+\\Reliant\Generic Office
+```
 The lab is complete.
 
 == reference | Reference: printers

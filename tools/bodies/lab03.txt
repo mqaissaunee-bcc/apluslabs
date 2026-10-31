@@ -1,14 +1,14 @@
 @lede Most "the internet is down" calls are solved on the PC itself. You will set a static IP address, lock down sharing settings, run the built-in troubleshooters, and work through the command-line tools a technician uses to prove where a connection breaks.
+@vm Win7|192.168.1.7/24|sysadmin|Train1ng$
+@vm Win8.1|192.168.1.8/24|sysadmin|Train1ng$|Ping and net use target (computer name Win8-1)
+@vm Win10|192.168.1.10/24|Sysadmin|Train1ng$
 
 == overview | Why this lab matters
 Before you blame the network, check the PC. Is the adapter enabled? Does it have a valid IP address, subnet mask, gateway, and DNS server? Can it reach its neighbor? Its gateway? A name?
 This lab gives you both halves of that check. The **graphical** side is Network and Sharing Center, adapter properties, sharing profiles, and the troubleshooters. The **command-line** side is `ipconfig`, `ping`, `tracert`, `netstat`, `net`, and `nslookup`. The command line is faster, works over a remote session, and gives you output you can paste into a ticket.
 
 == environment | The environment you're working in
-| Machine | Computer name | IP address | Account | Password |
-| Win7 | Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
-| Win8.1 | Win8-1 | `192.168.1.8/24` | `sysadmin` | `Train1ng$` |
-| Win10 | Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+{{VMTABLE}}
 All three machines are on one flat subnet with no router, internet, or DNS server. That's why `tracert` shows one hop and `nslookup` can't resolve names. Those results are expected here.
 !tip Good to know before you start | In Task 1 you change Win7 to `192.168.1.77`. Later commands run from **Win10** and target Win8.1 at `192.168.1.8`, so the change doesn't break anything.
 
@@ -22,19 +22,26 @@ All three machines are on one flat subnet with no router, internet, or DNS serve
 | `ipconfig`, `ping`, `tracert`, `netstat`, `net`, `nslookup` | All the same. PowerShell adds `Test-NetConnection`, `Get-NetIPConfiguration`, and `Resolve-DnsName`. |
 
 == walkthrough | Walkthrough
-## Task 1: Network and Sharing Center (Win7)
+## Task 1: Network and Sharing Center <<1.1–1.2>>
+@@ Win7
 ### Open Network and Sharing Center
-Log in to **Win7**. Open **Start > Control Panel**, set **View by** to **Small icons**, and click **Network and Sharing Center**. Read the options: set up a new connection or network, connect to a network, sharing options, and troubleshoot problems. Click **Connect to a network**; only an Unidentified network shows here.
+Open the **Win7** console and sign in as `sysadmin` with `Train1ng$`. Open **Start > Control Panel**, set **View by** to **Small icons**, and click **Network and Sharing Center**. Read the options: set up a new connection or network, connect to a network, sharing options, and troubleshoot problems. Click **Connect to a network**; only an Unidentified network shows here.
 ### Set a static IP address
 Click **Change adapter settings**, right-click **Local Area Connection**, and choose **Properties**. Double-click **Internet Protocol Version 4 (TCP/IPv4)** and change the IP address to `192.168.1.77`. Leave the subnet mask as `255.255.255.0`. Click **OK** twice.
 !shot The IPv4 Properties window showing 192.168.1.77.
 ### Confirm it from the command line
-Open **Start**, type `cmd`, and open it. Run:
-```
+Click **Start**, type `cmd` in the search field, and click **cmd**. Run:
+```C:\Users\sysadmin>
 ipconfig /all
 ```
-Check that the IPv4 address reads `192.168.1.77`. Type `exit`, then go back to Network and Sharing Center.
-## Task 2: Advanced sharing settings (Win7)
+Check that the IPv4 address reads `192.168.1.77`, then close the prompt:
+```C:\Users\sysadmin>
+exit
+```
+In the Network Connections window, click the **Back** arrow to return to Network and Sharing Center.
+!tip Typo in the PDF | The PDF shows this prompt as `C:\User\sysadmin>`. The real folder is `C:\Users\sysadmin`.
+## Task 2: Advanced sharing settings <<2.1>>
+@@ Win7
 ### Lock down the current profile
 Click **Change advanced sharing settings**. For the **Home or Work** profile:
 | Setting | Choose |
@@ -44,17 +51,20 @@ Click **Change advanced sharing settings**. For the **Home or Work** profile:
 | Password protected sharing | Turn on |
 Read the remaining options, then click **Save changes**.
 !shot The Advanced sharing settings page with your choices.
-## Task 3: Troubleshooters
+## Task 3: Troubleshooters <<3.1–3.2>>
+@@ Win7
 ### Run the Network Adapter troubleshooter (Win7)
 In Network and Sharing Center, click **Troubleshoot problems > Network Adapter > Next**. Watch what it checks. It should find nothing wrong. Click **Close**.
+@@ Win10
 ### Run the network troubleshooter (Win10)
-Log in to **Win10**. Open **Start > Settings > Network & Internet**, and under **Status** click **Troubleshoot**. Read what it reports. Because there's no internet here, it will likely report a problem it can't fix. Click **Close**.
+Open the **Win10** console, click the splash screen, and sign in as `sysadmin` with `Train1ng$`. Open **Start > Settings > Network & Internet**, and under **Status** click **Troubleshoot**. Read what it reports. Because there's no internet here, it will likely report a problem it can't fix. Click **Close**.
 !shot The Win10 network troubleshooter's results.
-## Task 4: Network command-line tools (Win10)
+## Task 4: Network command-line tools <<4.1>>
+@@ Win10
 ### Open an elevated prompt
-Click **Start**, type `cmd`, right-click **Command Prompt**, and choose **Run as administrator**. Accept UAC.
+Stay on **Win10** (the PDF continues there). Click **Start**, type `cmd`, right-click **Command Prompt**, and choose **Run as administrator**. Click **Yes** at UAC. The prompt reads `C:\Windows\system32>`.
 ### ipconfig
-```
+```C:\Windows\system32>
 ipconfig /?
 ipconfig
 ipconfig /all
@@ -62,35 +72,36 @@ ipconfig /all
 From `ipconfig /all`, answer: what's the adapter's MAC address (Physical Address)? Is DHCP enabled? Which DNS servers are set?
 !shot The ipconfig /all output with the Physical Address and DHCP lines visible.
 ### ping and tracert
-```
+```C:\Windows\system32>
 ping 192.168.1.8
 tracert 192.168.1.8
 ```
 Both reach Win8.1. `tracert` shows a single hop because the machines share one subnet.
 ### netstat
-```
+```C:\Windows\system32>
 netstat -help
 netstat -an | more
 ```
 `-a` shows all connections and listening ports; `-n` shows addresses and ports as numbers instead of names. Press [[Space]] to page through the output.
 ### net accounts and net use
-```
+```C:\Windows\system32>
 net
 net accounts
+net use /?
 net use
 ```
-`net accounts` shows password and lockout policy. `net use` with no options lists mapped drives. There are none yet.
+`net accounts` shows password and lockout policy. `net use /?` shows the help for `net use`; `net use` with no options lists mapped drives. There are none yet.
 ### Map and remove a network drive
-```
+```C:\Windows\system32>
 net use * "\\Win8-1\Users\sysadmin\Downloads" /user:sysadmin Train1ng$
 net use
 net use Z: /delete
 ```
-The `*` picks the next free drive letter (Z: here). Run `net use` to see the mapping, then delete it.
+The `*` picks the next free drive letter (Z: here). Run `net use` to see the mapping (drive **Z:**), then delete it and run `net use` again to confirm it's gone.
 !stuck Where people get stuck | The PDF shows this command with curly quotes, which cmd won't accept. Type straight quotes, or use the Copy button here. The computer name is `Win8-1` with a hyphen.
 !shot The net use output showing the Z: drive mapped.
 ### nslookup
-```
+```C:\Windows\system32>
 nslookup
 ```
 With no DNS server in the lab, nslookup reports that it can't find the server. On a real network it names your DNS server and lets you query names. Type `exit` to leave nslookup.

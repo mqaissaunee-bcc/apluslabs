@@ -12,6 +12,7 @@
   --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
   --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
   --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --m-win7:#1F5FA8; --m-win81:#0B7377; --m-win10:#6A3FB0; --m-lub:#B4481A; --m-newlub:#8A5A00; --m-bg:#F3F6FA;
   --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
   --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
@@ -22,13 +23,15 @@
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}}
 :root[data-theme="dark"]{
   --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
@@ -108,6 +111,22 @@ main p,main li{max-width:68ch}
 p.shotline{margin:.5rem 0}
 pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
 pre.cmd .c{color:var(--code-dim)}
+pre.cmd .pr{color:var(--code-dim);user-select:none;-webkit-user-select:none}
+pre.cmd.file{border-left:4px solid var(--tag)}
+.fcap{font-size:.85rem;color:var(--ink-2);margin:.6rem 0 -.3rem}
+.m-win7{--mc:var(--m-win7)} .m-win81{--mc:var(--m-win81)} .m-win10{--mc:var(--m-win10)} .m-lub{--mc:var(--m-lub)} .m-newlub{--mc:var(--m-newlub)}
+.mrun{border-left:5px solid var(--mc);padding:.1rem 0 .1rem .9rem;margin:1rem 0 1.25rem}
+.mband{display:inline-flex;align-items:center;gap:.4rem;margin:0 0 .25rem -.9rem;padding:.3rem .8rem .3rem .7rem;background:var(--m-bg);border:1px solid var(--mc);border-left:5px solid var(--mc);border-radius:0 6px 6px 0;font-weight:700;color:var(--mc);font-family:var(--f-display)}
+.onm{display:inline-block;font-weight:700;color:var(--mc);border:1px solid var(--mc);border-radius:4px;padding:0 .35rem;font-size:.88em;background:var(--m-bg)}
+.pdfref{display:inline-block;margin-left:.5rem;font-family:var(--f-body);font-weight:600;font-size:.75rem;color:var(--ink-2);border:1px solid var(--rule);border-radius:3px;padding:0 .4rem;vertical-align:middle}
+.topo{margin:1rem 0;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--surface-2)}
+.topo .bus{text-align:center;font-family:var(--f-mono);font-size:.85rem;color:var(--ink-2);margin:0 0 .3rem;padding-bottom:.3rem;border-bottom:4px solid var(--ink)}
+.topo ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+.topo li{position:relative;margin-top:.9rem;border:2px solid var(--mc);border-top-width:6px;border-radius:6px;padding:.35rem .7rem;background:var(--surface);text-align:center;min-width:7.5rem}
+.topo li::before{content:"";position:absolute;top:-1.05rem;left:50%;height:.9rem;border-left:2px solid var(--ink)}
+.topo li b{display:block;color:var(--mc)} .topo li span{font-family:var(--f-mono);font-size:.85rem}
+.vmnote{font-size:.8rem;color:var(--ink-2)} .topo li.unused{border-style:dashed;opacity:.75}
+.topo .hosted{font-size:.85rem;color:var(--ink-2);text-align:center;margin:.5rem 0 0}
 .copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
 .tbl{overflow-x:auto;margin:.75rem 0}
 table{border-collapse:collapse;width:100%;font-size:.94rem}
@@ -136,17 +155,13 @@ footer p{margin:.25rem 0;max-width:80ch}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media print{
+  .mrun{border-left-color:#000} .mband,.onm{color:#000;border-color:#000;background:#fff}
   .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
   body{background:#fff;color:#000} .wrap{display:block;padding:0}
   main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
-
-#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
-#fullsteps .step h3.fh .n{margin-right:.5rem}
-#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
-#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab06-v1:">
@@ -172,7 +187,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: printers</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -181,6 +196,9 @@ footer p{margin:.25rem 0;max-width:80ch}
 <li><a href="#evidence"><span>Evidence to capture</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#cheat"><span>Cheat sheet</span><span class="tick" aria-hidden="true"></span></a></li></ol></details></nav>
 <main id="main" tabindex="-1">
+<p> connects to the printer</p>
+<p> hosts the printer</p>
+<p> no step uses it</p>
 <section id="overview" aria-labelledby="h-overview">
 <h2 id="h-overview">Why this lab matters</h2>
 <p>Printers generate a steady stream of help desk tickets, and most of them come down to three parts of the setup: the <strong>driver</strong> (software that turns a print job into commands the printer understands), the <strong>port</strong> (where the job goes: USB, a network IP address, or a file), and <strong>sharing</strong> (whether other PCs can reach it).</p>
@@ -190,8 +208,9 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="environment" aria-labelledby="h-environment">
 <h2 id="h-environment">The environment you're working in</h2>
-<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">New name</th><th scope="col">Workgroup</th><th scope="col">Role</th></tr></thead><tbody><tr><td>Win8.1</td><td><code class="inl">Reliant</code></td><td><code class="inl">MYGROUP</code></td><td>Hosts and shares the printer</td></tr><tr><td>Win7</td><td><code class="inl">Enterprise</code></td><td><code class="inl">MYGROUP</code></td><td>Connects to the shared printer</td></tr></tbody></table></div>
-<p>Both use <code class="inl">sysadmin</code> / <code class="inl">Train1ng$</code>. If you just finished Lab 05 on the same reservation, the names and workgroup may already be set; check System Properties before changing them.</p>
+<p class="fcap">Lab Settings, exactly as listed in the PDF</p><div class="tbl"><table><thead><tr><th scope="col">Virtual Machine</th><th scope="col">IP Address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7<br><span class="vmnote">Renamed Enterprise</span></td><td><code>192.168.1.7/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Win8.1<br><span class="vmnote">Renamed Reliant</span></td><td><code>192.168.1.8/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Win10<br><span class="vmnote">Listed in the PDF</span></td><td><code>192.168.1.10/24</code></td><td><code>Sysadmin</code></td><td><code>Train1ng$</code></td></tr></tbody></table></div><p class="fcap">The PDF capitalizes the Win10 account as <code>Sysadmin</code>. Windows user names aren't case-sensitive, so <code>sysadmin</code> works too. The password is case-sensitive.</p>
+<div class="topo" role="img" aria-label="Pod topology: Win7 at 192.168.1.7/24, Win8.1 at 192.168.1.8/24, Win10 at 192.168.1.10/24, all on 192.168.1.0/24"><div class="bus">192.168.1.0/24 (one flat subnet, no router or internet)</div><ul><li class="m-win7 unused"><b><span aria-hidden="true">🪟</span> Win7</b><span>.7</span></li><li class="m-win81 unused"><b><span aria-hidden="true">🪟</span> Win8.1</b><span>.8</span></li><li class="m-win10 unused"><b><span aria-hidden="true">🪟</span> Win10</b><span>.10</span></li></ul></div>
+<p>Win8.1 (renamed <strong>Reliant</strong>) installs and shares the printer, and Win7 (renamed <strong>Enterprise</strong>) connects to it. If you just finished Lab 05 on the same reservation, the names and workgroup may already be set; check System Properties before changing them.</p>
 <div class="call stuck"><span class="k">Typo in the PDF</span><p>After the Win8.1 restart the PDF says <code class="inl">Train1ing$</code>. The password is <code class="inl">Train1ng$</code>.</p></div>
 
 <div class="done-row"><input type="checkbox" id="done-environment" data-done="environment"><label for="done-environment">Mark this section reviewed</label></div>
@@ -205,25 +224,28 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="walkthrough" aria-labelledby="h-walkthrough">
 <h2 id="h-walkthrough">Walkthrough</h2>
-<p class="task-head">Task 1: Put Win8.1 in the workgroup</p>
+<p class="task-head">Task 1: Put Win8.1 in the workgroup and turn on sharing <span class="pdfref">PDF 1.1, 2.1</span></p>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
 <h3><span class="n">1</span>Rename and join MYGROUP</h3>
-<p>Log in to <strong>Win8.1</strong>. Right-click <strong>This PC</strong> on the desktop > <strong>Properties > Change settings > Change</strong>. Set the computer name to <code class="inl">Reliant</code> and the workgroup to <code class="inl">MYGROUP</code>. Click <strong>OK</strong> through the messages, <strong>Close</strong>, then <strong>Restart Now</strong>.</p>
+<p>Open the <strong>Win8.1</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Right-click <strong>This PC</strong> on the desktop > <strong>Properties > Change settings > Change</strong>. Set the computer name to <code class="inl">Reliant</code> and the workgroup to <code class="inl">MYGROUP</code>. Click <strong>OK</strong> through the messages, <strong>Close</strong>, then <strong>Restart Now</strong>.</p>
 </div>
 <div class="step">
 <h3><span class="n">2</span>Turn on file and printer sharing</h3>
-<p>After signing back in, right-click the network icon > <strong>Open Network and Sharing Center > Change adapter settings</strong>. In <strong>Ethernet > Properties</strong>, confirm <strong>File and Printer Sharing for Microsoft Networks</strong> is checked.</p>
-<p>Open <strong>Change advanced sharing settings</strong> and select <strong>Turn on network discovery</strong> and <strong>Turn on file and printer sharing</strong>. Save or cancel.</p>
+<p>After the restart, sign back in as <code class="inl">sysadmin</code> (<code class="inl">Train1ng$</code>; the PDF's <code class="inl">Train1ing$</code> is a typo). Right-click the network icon > <strong>Open Network and Sharing Center > Change adapter settings</strong>. In <strong>Ethernet > Properties</strong>, confirm <strong>File and Printer Sharing for Microsoft Networks</strong> is checked, click <strong>OK</strong>, and close Network Connections.</p>
+<p>In Network and Sharing Center, open <strong>Change advanced sharing settings</strong> and select <strong>Turn on network discovery</strong> and <strong>Turn on file and printer sharing</strong>. Save or cancel.</p>
 <p class="shotline"><span class="shot">Screenshot</span>Advanced sharing settings on Win8.1 with discovery and file and printer sharing on.</p>
 </div>
-<p class="task-head">Task 2: Install a local printer (Win8.1)</p>
+</div>
+<p class="task-head">Task 2: Install and share a local printer <span class="pdfref">PDF 3.1</span></p>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
 <h3><span class="n">3</span>Start the wizard</h3>
-<p>Open <strong>Control Panel > View devices and printers > Add a printer</strong>. Let the search finish (nothing is found), then click <strong>The printer that I want isn't listed</strong>. Choose <strong>Add a local printer or network printer with manual settings</strong> and click <strong>Next</strong>.</p>
+<p>Still on <strong>Win8.1</strong>, click <strong>Start > Control Panel > View devices and printers</strong>, note the devices listed, and click <strong>Add a printer</strong>. Let the search finish (nothing is found), then click <strong>The printer that I want isn't listed</strong>. Choose <strong>Add a local printer or network printer with manual settings</strong> and click <strong>Next</strong>.</p>
 </div>
 <div class="step">
 <h3><span class="n">4</span>Choose the port</h3>
-<p>Select <strong>Use an existing port</strong> and pick <strong>FILE: (Print to File)</strong>.</p>
+<p>Select <strong>Use an existing port</strong>, pick <strong>FILE: (Print to File)</strong> from the list, and click <strong>Next</strong>.</p>
 <div class="call tip"><span class="k">Choosing a port for real</span><p>A USB or old parallel (LPT) printer uses an existing port. A printer with its own network card uses <strong>Create a new port > Standard TCP/IP Port</strong>, where you enter its IP address.</p></div>
 </div>
 <div class="step">
@@ -239,91 +261,24 @@ footer p{margin:.25rem 0;max-width:80ch}
 <p>In Devices and Printers, right-click <strong>Generic / Text Only > Printer properties > Sharing</strong>. Confirm <strong>Share this printer</strong> is checked with share name <strong>Generic Office</strong>.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The printer's Sharing tab showing the share name Generic Office.</p>
 </div>
-<p class="task-head">Task 3: Connect from Win7</p>
+</div>
+<p class="task-head">Task 3: Connect from Win7 <span class="pdfref">PDF 4.1–4.2</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
 <h3><span class="n">8</span>Put Win7 in the workgroup</h3>
-<p>On <strong>Win7</strong>, open <strong>Control Panel > System > Change settings > Change</strong>. Name it <code class="inl">Enterprise</code>, workgroup <code class="inl">MYGROUP</code>, and restart.</p>
+<p>Open the <strong>Win7</strong> console and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Click <strong>Start > Control Panel</strong>, set <strong>View by</strong> to <strong>Small icons</strong>, and click <strong>System > Change settings > Change</strong>. Name it <code class="inl">Enterprise</code>, workgroup <code class="inl">MYGROUP</code>, click <strong>OK</strong> through the welcome and restart messages, <strong>Close</strong>, then <strong>Restart Now</strong>.</p>
 </div>
 <div class="step">
 <h3><span class="n">9</span>Add the network printer</h3>
-<p>Sign in, open <strong>Start > Devices and Printers > Add a printer</strong>, and click <strong>Add a network, wireless or Bluetooth printer</strong>. Select <strong>Generic Office</strong> on Reliant when it appears and click <strong>Next</strong>. Windows connects and copies the driver from Reliant. Click <strong>Next</strong>, then <strong>Finish</strong>.</p>
+<p>After the restart, sign in as <code class="inl">sysadmin</code>, open <strong>Start > Devices and Printers > Add a printer</strong>, and click <strong>Add a network, wireless or Bluetooth printer</strong>. Select <strong>Generic Office</strong> on Reliant when it appears and click <strong>Next</strong>. Windows connects and copies the driver from Reliant. Click <strong>Next</strong>, then <strong>Finish</strong>.</p>
 <p class="shotline"><span class="shot">Screenshot</span>Devices and Printers on Win7 showing Generic Office on Reliant.</p>
-<div class="call stuck"><span class="k">If Generic Office doesn't appear</span><p>Click <strong>The printer that I want isn't listed > Select a shared printer by name</strong> and type <code class="inl">\\Reliant\Generic Office</code>.</p></div>
+<div class="call stuck"><span class="k">If Generic Office doesn't appear</span><p>Click <strong>The printer that I want isn't listed > Select a shared printer by name</strong> and type the path below.</p></div>
+<pre class="cmd" data-prompt="Printer path:"><code><span class="pr" aria-hidden="true">Printer path: </span>\\Reliant\Generic Office</code></pre>
 <p>The lab is complete.</p>
+</div>
 </div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
-</section>
-
-<section id="fullsteps" aria-labelledby="h-fullsteps">
-<h2 id="h-fullsteps">Full lab steps</h2>
-<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
-<p class="task-head">Task 1 - Assign a Windows Computer to a Workgroup</p>
-<p class="task-head">Task 1.1 - Adding Win8.1 to a Workgroup</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win8.1 virtual machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> On the Win8.1 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Right-click on the This PC icon located on the desktop and select Properties.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> On the System window, click the Change settings link.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> On the System Properties window, click the Change button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> In the Computer name text field, type Reliant, to change the name of this computer. In the Workgroup text field, type MYGROUP to change the name of the Workgroup that this computer will be a member of. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Click OK when the Welcome to the MYGROUP workgroup message is displayed.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> When prompted to restart the computer, click the OK button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> In the System Properties window, click Close.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Click on the Restart Now button to reboot the computer.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Once the system reboots, log in as sysadmin using Train1ing$ as the password.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Sharing on</span>Win8.1 Advanced sharing settings with discovery and file and printer sharing on.</label></li></div><p class="task-head">Task 2 - Configuring Network Settings</p>
-<p class="task-head">Task 2.1 - Modifying Network Settings in Win8.1</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Right-click on the Network icon (located in the notification area) and then click on the Open Network and Sharing Center menu option.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Click on Change adapter settings located in the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Right-click on Ethernet and click on Properties.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Make sure the checkbox for File and Printer Sharing for Microsoft Networks is checked. Click OK to close the window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Close the Network Connections window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> In the Network and Sharing Center window, click on Change advanced sharing settings.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Ensure that the Turn on network discovery and Turn on file and printer sharing radio buttons are selected. Click Save changes or Cancel if the changes are already configured.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Close the Network and Sharing Center window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 3 - Local Printer Setup</p>
-<p class="task-head">Task 3.1 - Adding a Local Printer in Win8.1</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Click on the Start button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Click the Control Panel icon.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> In the Control Panel window, click on View devices and printers.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Notice the currently available devices. Click on Add a printer.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> The Add Printer window will open and will automatically search for shared printers that are already installed on the network. Once the application finishes searching (no printer will be found), click on The printer that I want isn't listed.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Select the radio button for Add a local printer or network printer with manual settings. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> In a real-world situation, you may encounter legacy equipment, and if the printer you intend to install connects using a legacy parallel port (LPT) or even a USB port, then "Use an existing port" would be selected. If the printer has a network interface card (NIC), then "Create a new port" would be chosen. Due to the virtual environment, you will select Use an existing port and select FILE: (Print to File) from the dropdown menu. Click Next to continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> The next step of the wizard will ask to choose a printer driver. Select Generic underneath the Manufacturer pane, followed by selecting Generic / Text Only from the Printers pane. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> When prompted for a version of the printer driver, select Use the driver that is currently installed (recommended), click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> When prompted for a printer name, leave Generic / Text Only as the default name and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> For the next step, select the radio button for Share this printer so that others on your network can find and use it. Type Generic Office in the Share name text field. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Click Finish. Normally, you would want to print a test page, so you would click on the Print a Test Page button. Since there is no physical printer, we will not be printing a test page.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> In the Devices and Printers window, right-click the Generic / Text Only printer and click Printer properties.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Connected</span>Win7 Devices and Printers showing Generic Office on Reliant.</label></li></div><div class="step"><h3 class="fh"><span class="n">14</span> In the Generic / Text Only Properties window, click the Sharing tab and ensure that the checkbox is selected for Share this printer with Generic Office as the Share name. Click OK when finished.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Shared printer</span>The Generic / Text Only Sharing tab with share name Generic Office.</label></li></div><p class="task-head">Task 4 - Network Printer Setup</p>
-<p class="task-head">Task 4.1 - Add Win7 to a Workgroup</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win7 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Click the Start button, then click Control Panel on the right side of the menu.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> In the Control Panel window, change the View by to Small icons. Click on System.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> On the System window, locate the Computer name, domain &amp; workgroup settings section, click the Change settings link.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> On the System Properties window, click the Change button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Under Computer name, type Enterprise to change the name of this computer. Under Workgroup, type MYGROUP to change the name of the Workgroup of which this computer will be a member. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Click OK when the Welcome to the MYGROUP Workgroup window is displayed.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Next, a window will be displayed, reminding you that you need to reboot for the changes to take effect. Click the OK button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Click the Close button in the System Properties window to close the window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> When prompted, click on the Restart Now button to reboot the computer.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Leave the Win7 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 4.2 - Adding a Network Workgroup Printer</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Once the Win7 machine reboots, log back in as sysadmin using Train1ng$ as the password.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Click the Start button, then click Devices and Printers on the right side of the menu.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Click on Add a printer.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> In the Add Printer wizard, click on Add a network, wireless or Bluetooth printer.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> The Add Printer wizard will search for shared printers on the network. Notice that the Generic Office printer appears in the list. Select it and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> The wizard will attempt to connect to the printer. Once it successfully connects to the printer, click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> The printer is now added to the Win7 machine to utilize. Click Finish.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> The lab is now complete; you may end the reservation.</h3></div>
-<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: printers</h2>
@@ -451,7 +406,7 @@ net start spooler</code></pre>
     b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
     b.addEventListener('click',function(){
       var code=pre.querySelector('code'), clone=code.cloneNode(true);
-      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      [].forEach.call(clone.querySelectorAll('.c,.pr'),function(x){x.remove();});
       var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
       function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
@@ -469,167 +424,5 @@ net start spooler</code></pre>
   if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
 })();
 </script>
-
-<!-- ===== LAB MODE (begin) — self-contained; safe to remove as a block ===== -->
-<style id="lab-mode-css">
-/* Floating toggle button — always available, top-right */
-.pm-toggle{position:fixed;top:10px;right:12px;z-index:2147483100;display:inline-flex;
-  align-items:center;gap:7px;min-height:40px;padding:0 15px;cursor:pointer;
-  font:600 .85rem/1 var(--f-body);border-radius:999px;
-  background:var(--accent);color:var(--accent-ink);border:1px solid transparent;
-  box-shadow:0 4px 14px rgba(0,0,0,.28)}
-.pm-toggle:hover{filter:brightness(1.08)}
-.pm-toggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.pm-toggle .pm-ico{font-family:var(--f-mono);font-weight:700}
-@media print{.pm-toggle{display:none!important}}
-
-/* ---- When lab mode is ON ---- */
-html[data-present="on"] body{line-height:1.5}
-/* Collapse the sidebar grid to a single column and go full width */
-html[data-present="on"] .wrap{display:block;max-width:100%;padding:8px 14px 90px}
-
-/* Hide page chrome that wastes room in a narrow column */
-html[data-present="on"] .toc,
-html[data-present="on"] header.bar,
-html[data-present="on"] .badges,
-html[data-present="on"] .ticket .lede,
-html[data-present="on"] .ticket .fields,
-html[data-present="on"] .done-row{display:none!important}
-
-/* Slim the title block down to a compact header */
-html[data-present="on"] .ticket{margin:0 0 10px}
-html[data-present="on"] .ticket-in{padding:10px 14px}
-html[data-present="on"] .ticket h1{font-size:1.15rem;line-height:1.25;margin:2px 0 0}
-
-/* Show one section at a time */
-html[data-present="on"] #main > section{display:none}
-html[data-present="on"] #main > section.pm-current{display:block;animation:pm-fade .18s ease}
-@keyframes pm-fade{from{opacity:0}to{opacity:1}}
-
-/* Readability bump for the one visible section */
-html[data-present="on"] #main > section{font-size:1.05rem}
-html[data-present="on"] #main > section h2{font-size:1.2rem}
-html[data-present="on"] .step h3,
-html[data-present="on"] .step h4{font-size:1.04rem}
-html[data-present="on"] .cmd{font-size:1rem;white-space:pre-wrap;word-break:break-word}
-
-/* Slim bottom control dock for advancing through sections */
-.pm-dock{display:none}
-html[data-present="on"] .pm-dock{position:fixed;left:0;right:0;bottom:0;z-index:2147483100;
-  display:flex;align-items:center;gap:8px;padding:8px 12px;
-  padding-bottom:calc(8px + env(safe-area-inset-bottom,0));
-  background:var(--surface);border-top:1px solid var(--rule)}
-.pm-dock button{flex:0 0 auto;min-height:40px;min-width:44px;padding:0 14px;cursor:pointer;
-  font:700 .9rem/1 var(--f-body);border-radius:9px;
-  background:var(--surface-2);color:var(--ink);border:1px solid var(--rule)}
-.pm-dock button:hover{background:var(--accent);color:var(--accent-ink)}
-.pm-dock button:disabled{opacity:.4;cursor:not-allowed}
-.pm-dock button:disabled:hover{background:var(--surface-2);color:var(--ink)}
-.pm-dock .pm-where{flex:1 1 auto;text-align:center;min-width:0;
-  font:600 .82rem/1.25 var(--f-body);color:var(--ink-2);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pm-dock .pm-where b{color:var(--ink);display:block;font-size:.9rem}
-.pm-dock .pm-exit{background:transparent}
-</style>
-
-<div class="pm-dock" id="pmDock" aria-hidden="true">
-  <button type="button" data-pm="prev" aria-label="Previous section">◀</button>
-  <div class="pm-where"><span id="pmCount"></span><b id="pmName"></b></div>
-  <button type="button" data-pm="next" aria-label="Next section">▶</button>
-  <button type="button" data-pm="exit" class="pm-exit" aria-label="Exit lab mode">✕</button>
-</div>
-
-<script id="lab-mode-js">
-(function () {
-  "use strict";
-  var root = document.documentElement;
-  var KEY = "aplus:labmode:v1";               // shared across all A+ companion pages
-  var sections = [], idx = 0;
-  var dock, countEl, nameEl, prevBtn, nextBtn;
-
-  function labelFor(sec) {
-    var h = sec.querySelector("h2");
-    if (!h) return sec.id || "Section";
-    return (h.textContent || "").replace(/\s+/g, " ").trim();
-  }
-
-  function show(i) {
-    if (!sections.length) return;
-    idx = Math.max(0, Math.min(sections.length - 1, i));
-    sections.forEach(function (s, n) { s.classList.toggle("pm-current", n === idx); });
-    if (countEl) countEl.textContent = (idx + 1) + " / " + sections.length;
-    if (nameEl) nameEl.textContent = labelFor(sections[idx]);
-    if (prevBtn) prevBtn.disabled = idx === 0;
-    if (nextBtn) nextBtn.disabled = idx === sections.length - 1;
-    window.scrollTo(0, 0);
-  }
-
-  function enter() {
-    sections = Array.prototype.slice.call(document.querySelectorAll("#main > section"));
-    root.setAttribute("data-present", "on");
-    if (dock) dock.setAttribute("aria-hidden", "false");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "true");
-      btn.querySelector(".pm-txt").textContent = "Exit lab mode"; }
-    try { localStorage.setItem(KEY, "1"); } catch (e) {}
-    show(0);
-  }
-
-  function exit() {
-    root.removeAttribute("data-present");
-    sections.forEach(function (s) { s.classList.remove("pm-current"); });
-    if (dock) dock.setAttribute("aria-hidden", "true");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "false");
-      btn.querySelector(".pm-txt").textContent = "Lab mode"; }
-    try { localStorage.setItem(KEY, "0"); } catch (e) {}
-  }
-
-  function toggle() { root.getAttribute("data-present") === "on" ? exit() : enter(); }
-
-  function build() {
-    var btn = document.createElement("button");
-    btn.className = "pm-toggle"; btn.id = "pmToggle"; btn.type = "button";
-    btn.setAttribute("aria-pressed", "false");
-    btn.title = "Lab mode — steps beside the lab, one section at a time (Shift+L)";
-    btn.innerHTML = '<span class="pm-ico" aria-hidden="true">⇥</span><span class="pm-txt">Lab mode</span>';
-    btn.addEventListener("click", toggle);
-    document.body.appendChild(btn);
-
-    dock = document.getElementById("pmDock");
-    countEl = document.getElementById("pmCount");
-    nameEl = document.getElementById("pmName");
-    if (dock) {
-      prevBtn = dock.querySelector('[data-pm="prev"]');
-      nextBtn = dock.querySelector('[data-pm="next"]');
-      dock.addEventListener("click", function (e) {
-        var t = e.target.closest("[data-pm]"); if (!t) return;
-        var a = t.getAttribute("data-pm");
-        if (a === "prev") show(idx - 1);
-        else if (a === "next") show(idx + 1);
-        else if (a === "exit") exit();
-      });
-    }
-
-    document.addEventListener("keydown", function (e) {
-      if (e.shiftKey && (e.key === "L" || e.key === "l")) {
-        var tag = (e.target && e.target.tagName) || "";
-        if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
-        e.preventDefault(); toggle(); return;
-      }
-      if (root.getAttribute("data-present") !== "on") return;
-      if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); show(idx + 1); }
-      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(idx - 1); }
-      else if (e.key === "Escape") { e.preventDefault(); exit(); }
-    });
-  }
-
-  if (document.readyState === "loading")
-    document.addEventListener("DOMContentLoaded", build);
-  else build();
-})();
-</script>
-<!-- ===== LAB MODE (end) ===== -->
-
 </body>
 </html>

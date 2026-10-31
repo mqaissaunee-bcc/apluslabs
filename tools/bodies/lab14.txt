@@ -1,4 +1,5 @@
 @lede A single drive is a single point of failure. You will mirror two disks into a RAID 1 volume in Disk Management, then pool three more into a parity Storage Space that survives a drive failure and can grow later.
+@vm Win8.1|192.168.1.8/24|sysadmin|Train1ng$
 @vms Win8.1
 
 == overview | Why this lab matters
@@ -7,8 +8,7 @@ Drives fail; the only question is whether the failure costs anything. **RAID** c
 Remember the rule the exam and real life both test: **RAID is not a backup.** A mirror copies a deleted file or a ransomware-encrypted file to both drives instantly.
 
 == environment | The environment you're working in
-| Machine | IP address | Account | Password |
-| Win8.1 | `192.168.1.8/24` | `sysadmin` | `Train1ng$` |
+{{VMTABLE}}
 
 | Disk | Used for |
 | Disk 1 and Disk 2 | RAID 1 mirror, drive **F: Mirrored** |
@@ -23,31 +23,34 @@ Remember the rule the exam and real life both test: **RAID is not a backup.** A 
 | PowerShell | `Get-PhysicalDisk`, `New-StoragePool`, `New-VirtualDisk` manage Storage Spaces from the command line |
 
 == walkthrough | Walkthrough
-## Task 1: Build a RAID 1 mirror
+## Task 1: Build a RAID 1 mirror <<1.1>>
+@@ Win8.1
 ### Open Disk Management
-Log in to **Win8.1**. Right-click **This PC > Manage**, then click **Disk Management**.
+Open the **Win8.1** console, click the splash screen, and sign in as `sysadmin` with `Train1ng$`. Right-click **This PC** on the desktop > **Manage**, then click **Disk Management** in the left pane.
 ### Start the mirrored volume wizard
-Click **Disk 1**, then choose **Action > All Tasks > New Mirrored Volume** and click **Next**.
+Click **Disk 1** (3 GB, unallocated), then choose **Action > All Tasks > New Mirrored Volume** and click **Next**.
 !stuck Where people get stuck | New Mirrored Volume is greyed out unless you select the disk's **unallocated** space, and there must be a second disk with as much free space.
 ### Add the second disk
 Disk 1 is already under **Selected**. Click **Disk 2 > Add >** so both are selected, then **Next**.
 ### Assign a letter and format
-Choose drive letter **F**, set the volume label to `Mirrored`, check **Perform a quick format**, and click **Next > Finish**. Click **Yes** to convert the disks to dynamic.
+Choose drive letter **F**, set the volume label to `Mirrored`, check **Perform a quick format**, and click **Next > Finish**. Click **Yes** to convert the disks from basic to dynamic. Disks 1 and 2 now show as **Mirrored**, **Healthy**. Close Computer Management.
 !shot Disk Management showing Disk 1 and Disk 2 as a Mirrored volume, Healthy.
 ### Check it in This PC
-Open **This PC**. **Mirrored (F:)** appears with the capacity of *one* disk, because the other holds the copy.
-## Task 2: Build a parity Storage Space
+Double-click **This PC** on the desktop. Under **Devices and drives**, **Mirrored (F:)** appears with the capacity of *one* disk, because the other holds the copy.
+## Task 2: Build a parity Storage Space <<1.2>>
+@@ Win8.1
 ### Open Storage Spaces
-On the Start screen, search for `Storage Spaces` and open it. Click **Create a new pool and storage space** and accept UAC.
+Click **Start**, click the **Search** icon in the top-right corner, type `Storage Spaces`, and click the **Storage Spaces** result. Click **Create a new pool and storage space** and accept UAC.
 ### Create the pool
-Select **Disk 3, Disk 4, and Disk 5**, and click **Create pool**.
+Make sure **Disk 3, Disk 4, and Disk 5** (5 GB each) are checked, and click **Create pool**.
 !stuck Before you create the pool | Any data on the disks you select is erased. In the lab they're empty; on a real PC, check first.
 ### Create the space
-Set the name to `Local Data`, drive letter **E:**, file system **NTFS**, and **Resiliency type** to **Parity**. Set the size to `15 GB` and click **Create storage space**.
+Set the name to `Local Data`, drive letter **E:**, file system **NTFS**, and **Resiliency type** to **Parity**. Set the size to `15 GB`, review the configuration, and click **Create storage space**.
+!tip Minimum or maximum? | Step 9 of the PDF says to enter 15 GB in **Size (minimum)**, but the field on screen is labeled **Size (maximum)**. It's the same box; enter `15` GB.
 !tip Thin provisioning | You can set a size larger than the drives actually hold. Windows allocates space as it's used and warns you when the pool runs low, so you can add drives later without rebuilding.
 !shot Storage Spaces showing the pool and the Local Data parity space.
 ### Check it in This PC
-Open **This PC**. **Local Data (E:)** is listed and ready.
+Close Storage Spaces and double-click **This PC**. **Local Data (E:)** is listed and ready, alongside **Mirrored (F:)**.
 The lab is complete.
 
 == reference | Reference: RAID and Storage Spaces

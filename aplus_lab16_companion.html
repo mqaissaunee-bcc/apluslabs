@@ -12,6 +12,7 @@
   --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
   --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
   --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --m-win7:#1F5FA8; --m-win81:#0B7377; --m-win10:#6A3FB0; --m-lub:#B4481A; --m-newlub:#8A5A00; --m-bg:#F3F6FA;
   --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
   --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
@@ -22,13 +23,15 @@
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}}
 :root[data-theme="dark"]{
   --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
@@ -108,6 +111,22 @@ main p,main li{max-width:68ch}
 p.shotline{margin:.5rem 0}
 pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
 pre.cmd .c{color:var(--code-dim)}
+pre.cmd .pr{color:var(--code-dim);user-select:none;-webkit-user-select:none}
+pre.cmd.file{border-left:4px solid var(--tag)}
+.fcap{font-size:.85rem;color:var(--ink-2);margin:.6rem 0 -.3rem}
+.m-win7{--mc:var(--m-win7)} .m-win81{--mc:var(--m-win81)} .m-win10{--mc:var(--m-win10)} .m-lub{--mc:var(--m-lub)} .m-newlub{--mc:var(--m-newlub)}
+.mrun{border-left:5px solid var(--mc);padding:.1rem 0 .1rem .9rem;margin:1rem 0 1.25rem}
+.mband{display:inline-flex;align-items:center;gap:.4rem;margin:0 0 .25rem -.9rem;padding:.3rem .8rem .3rem .7rem;background:var(--m-bg);border:1px solid var(--mc);border-left:5px solid var(--mc);border-radius:0 6px 6px 0;font-weight:700;color:var(--mc);font-family:var(--f-display)}
+.onm{display:inline-block;font-weight:700;color:var(--mc);border:1px solid var(--mc);border-radius:4px;padding:0 .35rem;font-size:.88em;background:var(--m-bg)}
+.pdfref{display:inline-block;margin-left:.5rem;font-family:var(--f-body);font-weight:600;font-size:.75rem;color:var(--ink-2);border:1px solid var(--rule);border-radius:3px;padding:0 .4rem;vertical-align:middle}
+.topo{margin:1rem 0;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--surface-2)}
+.topo .bus{text-align:center;font-family:var(--f-mono);font-size:.85rem;color:var(--ink-2);margin:0 0 .3rem;padding-bottom:.3rem;border-bottom:4px solid var(--ink)}
+.topo ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+.topo li{position:relative;margin-top:.9rem;border:2px solid var(--mc);border-top-width:6px;border-radius:6px;padding:.35rem .7rem;background:var(--surface);text-align:center;min-width:7.5rem}
+.topo li::before{content:"";position:absolute;top:-1.05rem;left:50%;height:.9rem;border-left:2px solid var(--ink)}
+.topo li b{display:block;color:var(--mc)} .topo li span{font-family:var(--f-mono);font-size:.85rem}
+.vmnote{font-size:.8rem;color:var(--ink-2)} .topo li.unused{border-style:dashed;opacity:.75}
+.topo .hosted{font-size:.85rem;color:var(--ink-2);text-align:center;margin:.5rem 0 0}
 .copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
 .tbl{overflow-x:auto;margin:.75rem 0}
 table{border-collapse:collapse;width:100%;font-size:.94rem}
@@ -136,17 +155,13 @@ footer p{margin:.25rem 0;max-width:80ch}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media print{
+  .mrun{border-left-color:#000} .mband,.onm{color:#000;border-color:#000;background:#fff}
   .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
   body{background:#fff;color:#000} .wrap{display:block;padding:0}
   main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
-
-#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
-#fullsteps .step h3.fh .n{margin-right:.5rem}
-#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
-#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab16-v1:">
@@ -172,7 +187,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: virtualization</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -190,7 +205,8 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="environment" aria-labelledby="h-environment">
 <h2 id="h-environment">The environment you're working in</h2>
-<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<p class="fcap">Lab Settings, exactly as listed in the PDF</p><div class="tbl"><table><thead><tr><th scope="col">Virtual Machine</th><th scope="col">IP Address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win10</td><td><code>192.168.1.10/24</code></td><td><code>Sysadmin</code></td><td><code>Train1ng$</code></td></tr></tbody></table></div><p class="fcap">The PDF capitalizes the Win10 account as <code>Sysadmin</code>. Windows user names aren't case-sensitive, so <code>sysadmin</code> works too. The password is case-sensitive.</p>
+<div class="topo" role="img" aria-label="Pod topology: Win10 at 192.168.1.10/24, all on 192.168.1.0/24"><div class="bus">192.168.1.0/24 (one flat subnet, no router or internet)</div><ul><li class="m-win10"><b><span aria-hidden="true">🪟</span> Win10</b><span>.10</span></li></ul><p class="hosted">Inside Win10 you create <b>New-Lubuntu</b>, a nested Hyper-V VM on the Default Switch. Its install sign-in: user <code>student</code>, password <code>Train1ng$</code>.</p></div>
 <div class="tbl"><table><thead><tr><th scope="col">New VM setting</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Name</td><td><code class="inl">New-Lubuntu</code></td></tr><tr><td>Generation</td><td>1</td></tr><tr><td>Startup memory</td><td><code class="inl">2048</code> MB, Dynamic Memory off</td></tr><tr><td>Network</td><td>Default Switch</td></tr><tr><td>Virtual disk</td><td>10 GB</td></tr><tr><td>Install media</td><td>The Lubuntu 18.04.3 desktop <code class="inl">.iso</code> in <code class="inl">C:\Users\sysadmin\Desktop\ToolBox</code></td></tr><tr><td>Lubuntu user</td><td>Your name <code class="inl">Student</code>, user <code class="inl">student</code>, computer <code class="inl">MY-VM</code>, password <code class="inl">Train1ng$</code></td></tr></tbody></table></div>
 <div class="call tip"><span class="k">Nested virtualization</span><p>Win10 is itself a VM, so you're running a VM inside a VM. It works because the lab host exposes virtualization extensions to Win10, but expect the new VM to be slow.</p></div>
 
@@ -204,117 +220,74 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="walkthrough" aria-labelledby="h-walkthrough">
 <h2 id="h-walkthrough">Walkthrough</h2>
-<p class="task-head">Task 1: Check the hardware</p>
+<p class="task-head">Task 1: Check the hardware <span class="pdfref">PDF 1.1</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">1</span>Run systeminfo in an elevated PowerShell</h3>
-<p>Log in to <strong>Win10</strong>. Search for <code class="inl">PowerShell</code>, right-click <strong>Windows PowerShell > Run as administrator</strong>, and accept UAC. Run:</p>
-<pre class="cmd"><code>systeminfo.exe</code></pre>
-<p>Scroll to the bottom. <strong>Hyper-V Requirements</strong> either lists four "Yes" items (VM Monitor Mode Extensions, virtualization enabled in firmware, SLAT, Data Execution Prevention) or says <strong>A hypervisor has been detected</strong>, which means one is already running. Either way, this PC can run Hyper-V.</p>
+<p>Open the <strong>Win10</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Click the search icon, type <code class="inl">PowerShell</code>, right-click <strong>Windows PowerShell > Run as administrator</strong>, and accept UAC. Run:</p>
+<pre class="cmd" data-prompt="PS C:\WINDOWS\system32&gt;"><code><span class="pr" aria-hidden="true">PS C:\WINDOWS\system32&gt; </span>systeminfo.exe</code></pre>
+<p>Scroll to the bottom. <strong>Hyper-V Requirements</strong> either lists four "Yes" items (VM Monitor Mode Extensions, virtualization enabled in firmware, SLAT, Data Execution Prevention) or says <strong>A hypervisor has been detected</strong>, which means one is already running. Either way, this PC can run Hyper-V. Leave PowerShell open.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The Hyper-V Requirements section of systeminfo.</p>
 <div class="call tip"><span class="k">A correction to the PDF</span><p>The PDF calls the CPU feature "VT-c." The extensions Hyper-V needs are <strong>Intel VT-x</strong> or <strong>AMD-V</strong>, plus SLAT (Intel EPT or AMD RVI), turned on in the firmware (Lab 01-A).</p></div>
 </div>
-<p class="task-head">Task 2: Enable Hyper-V</p>
+</div>
+<p class="task-head">Task 2: Enable Hyper-V <span class="pdfref">PDF 1.2–1.3</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">2</span>Enable the feature</h3>
-<p>In the same PowerShell window, run:</p>
-<pre class="cmd"><code>Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All</code></pre>
-<p>Read the output, press <kbd>Y</kbd> and <kbd>Enter</kbd> to restart.</p>
+<p>In the same PowerShell window, run this as one line (the PDF writes <code class="inl">-FeatureName:</code> with a colon; PowerShell also accepts a space there):</p>
+<pre class="cmd" data-prompt="PS C:\WINDOWS\system32&gt;"><code><span class="pr" aria-hidden="true">PS C:\WINDOWS\system32&gt; </span>Enable-WindowsOptionalFeature -Online -FeatureName:Microsoft-Hyper-V -All</code></pre>
+<p>Read the output and press <kbd>Y</kbd>, then <kbd>Enter</kbd>, to accept the default <strong>Yes</strong>. Win10 restarts.</p>
 <div class="call stuck"><span class="k">Where people get stuck</span><p>The PDF splits this command across two lines. Type it as one line, or use the Copy button.</p></div>
 </div>
 <div class="step">
 <h3><span class="n">3</span>Confirm it in Windows Features</h3>
-<p>After signing back in, search for <code class="inl">turn windows features on or off</code> and open it. <strong>Hyper-V</strong> is checked. Click <strong>OK</strong>.</p>
+<p>Sign back in as <code class="inl">sysadmin</code>. Click the search icon, type <code class="inl">turn windows features on or off</code>, and open it. <strong>Hyper-V</strong> is checked. Click <strong>OK</strong>.</p>
 <p class="shotline"><span class="shot">Screenshot</span>Windows Features with Hyper-V checked.</p>
 </div>
-<p class="task-head">Task 3: Create the VM</p>
+</div>
+<p class="task-head">Task 3: Create the VM <span class="pdfref">PDF 1.4</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">4</span>Start the wizard</h3>
 <p>Search for <strong>Hyper-V Manager</strong>, right-click it > <strong>Run as administrator</strong>. Choose <strong>Action > New > Virtual Machine</strong> and click <strong>Next</strong>.</p>
 </div>
 <div class="step">
 <h3><span class="n">5</span>Work through the settings</h3>
-<div class="tbl"><table><thead><tr><th scope="col">Wizard page</th><th scope="col">Choose</th></tr></thead><tbody><tr><td>Specify Name and Location</td><td><code class="inl">New-Lubuntu</code></td></tr><tr><td>Specify Generation</td><td>Generation 1</td></tr><tr><td>Assign Memory</td><td><code class="inl">2048</code> MB; uncheck <strong>Use Dynamic Memory</strong></td></tr><tr><td>Configure Networking</td><td><strong>Default Switch</strong></td></tr><tr><td>Connect Virtual Hard Disk</td><td>Create a new disk, size <code class="inl">10</code> GB</td></tr><tr><td>Installation Options</td><td><strong>Install an operating system from a bootable CD/DVD-ROM > Image file (.iso)</strong>, browse to the Lubuntu ISO in ToolBox</td></tr></tbody></table></div>
-<p>Review the summary and click <strong>Finish</strong>.</p>
-<div class="call stuck"><span class="k">The ISO name in the PDF</span><p>The PDF shows the file as <code class="inl">...desktop-amd6.iso</code>. The real name ends in <code class="inl">amd64.iso</code>. Browse to ToolBox and pick the Lubuntu ISO you see.</p></div>
+<div class="tbl"><table><thead><tr><th scope="col">Wizard page</th><th scope="col">Choose</th></tr></thead><tbody><tr><td>Specify Name and Location</td><td><code class="inl">New-Lubuntu</code></td></tr><tr><td>Specify Generation</td><td>Generation 1</td></tr><tr><td>Assign Memory</td><td><code class="inl">2048</code> MB; uncheck <strong>Use Dynamic Memory</strong></td></tr><tr><td>Configure Networking</td><td><strong>Default Switch</strong></td></tr><tr><td>Connect Virtual Hard Disk</td><td>Create a new disk, size <code class="inl">10</code> GB</td></tr><tr><td>Installation Options</td><td><strong>Install an operating system from a bootable CD/DVD-ROM > Image file (.iso) > Browse</strong>, open the ISO below</td></tr></tbody></table></div>
+<pre class="cmd" data-prompt="ISO path (as printed in the PDF):"><code><span class="pr" aria-hidden="true">ISO path (as printed in the PDF): </span>C:\Users\sysadmin\Desktop\ToolBox\lubuntu-18.04.3-desktop-amd6.iso</code></pre>
+<p>Confirm your selections, click <strong>Next</strong>, review the summary, and click <strong>Finish</strong>. Leave Hyper-V Manager open.</p>
+<div class="call stuck"><span class="k">The ISO name in the PDF</span><p>The PDF prints the file as <code class="inl">...desktop-amd6.iso</code>, which looks truncated (Lubuntu's 64-bit images end in <code class="inl">amd64.iso</code>). Don't type the path; browse to <strong>ToolBox</strong> and pick the Lubuntu <code class="inl">.iso</code> you see there.</p></div>
 <p class="shotline"><span class="shot">Screenshot</span>Hyper-V Manager listing New-Lubuntu.</p>
 </div>
-<p class="task-head">Task 4: Install Lubuntu</p>
+</div>
+<p class="task-head">Task 4: Install Lubuntu <span class="pdfref">PDF 1.5</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">6</span>Start the VM and boot the live image</h3>
-<p>Right-click <strong>New-Lubuntu > Connect</strong>, then click <strong>Start</strong>. Choose <strong>English</strong>, then <strong>Try Lubuntu without installation</strong> with the arrow keys and <kbd>Enter</kbd>.</p>
+<p>In Hyper-V Manager, under <strong>Virtual Machines</strong>, right-click <strong>New-Lubuntu > Connect</strong>, then click <strong>Start</strong>. A connection window opens on Win10; everything from here happens inside it.</p>
+</div>
+</div>
+<div class="mrun m-newlub"><p class="mband"><span aria-hidden="true">🐧</span> On New-Lubuntu</p>
+<div class="step">
+<h3><span class="n">7</span>Boot the live image</h3>
+<p>Choose <strong>English</strong> with the arrow keys and press <kbd>Enter</kbd>, then select <strong>Try Lubuntu without installation</strong> and press <kbd>Enter</kbd>.</p>
 </div>
 <div class="step">
-<h3><span class="n">7</span>Run the installer</h3>
+<h3><span class="n">8</span>Run the installer</h3>
 <p>On the live desktop, double-click <strong>Install Lubuntu 18.04.3 LTS</strong> (drag the window to the center if it's cut off). Then:</p>
 <div class="tbl"><table><thead><tr><th scope="col">Installer step</th><th scope="col">Choose</th></tr></thead><tbody><tr><td>Language, keyboard</td><td>English, default layout</td></tr><tr><td>Updates and other software</td><td>Normal installation (updates are greyed out with no internet)</td></tr><tr><td>Installation type</td><td>Default (erase disk and install); read the other options, then <strong>Install Now > Continue</strong></td></tr><tr><td>Where are you?</td><td>Your location</td></tr><tr><td>Who are you?</td><td>Name <code class="inl">Student</code>, user <code class="inl">student</code>, computer <code class="inl">MY-VM</code>, password <code class="inl">Train1ng$</code>, <strong>Require my password to log in</strong></td></tr></tbody></table></div>
 <div class="call tip"><span class="k">"Erase disk" is safe here</span><p>It erases only the VM's new 10 GB virtual disk, not Win10's drive.</p></div>
 </div>
 <div class="step">
-<h3><span class="n">8</span>Restart and sign in</h3>
+<h3><span class="n">9</span>Restart and sign in</h3>
 <p>When the install finishes, click <strong>Restart Now</strong>, and press <kbd>Enter</kbd> when asked to remove the install media. Sign in with <code class="inl">Train1ng$</code> and close the Update information window.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The new Lubuntu VM at its desktop inside the Hyper-V connection window.</p>
 <p>The lab is complete.</p>
 </div>
+</div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
-</section>
-
-<section id="fullsteps" aria-labelledby="h-fullsteps">
-<h2 id="h-fullsteps">Full lab steps</h2>
-<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
-<p class="task-head">Task 1 - Creating a Virtual Machine Using Hyper-V</p>
-<p class="task-head">Task 1.1 - Verifying that Hyper-V is Available</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> In the taskbar, click on the search icon. Type PowerShell, and from the results, right-click on Windows PowerShell and select Run as Administrator.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Click Yes on the UAC prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> At the prompt, type the command below, followed by pressing the Enter key.</h3><pre class="cmd"><code>PS C:\WINDOWS\system32&gt; systeminfo.exe</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Scroll down to the bottom and locate the Hyper-V Requirements section to check and see if the PC can run Hyper-V. If this says "No" then the system is not capable of running Hyper-V. You can see on this machine a hypervisor has been detected, showing the lab machine is able to run it.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Requirements</span>The Hyper-V Requirements section of systeminfo.</label></li></div><div class="step"><h3 class="fh"><span class="n">8</span> Leave PowerShell open to use in the next section.</h3></div>
-<p class="task-head">Task 1.2 - Enabling Hyper-V</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> At the PowerShell prompt, enter the command below.</h3><pre class="cmd"><code>PS C:\WINDOWS\system32&gt; Enable-WindowsOptionalFeature -Online
--FeatureName:Microsoft-Hyper-V -All</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Carefully read the output of the command to see your choices. Press Y followed by pressing the Enter key to accept the default answer "Yes".</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Your system will restart.</h3></div>
-<p class="task-head">Task 1.3 - Making Sure Hyper-V is Enabled</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Once the system reboots, log back in as sysadmin.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Once logged in, click the search icon on the taskbar and type turn windows features on or off. Click on the Turn Windows features on or off search result.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Verify that a check is in the checkbox next to Hyper-V in the Windows Features dialog box. Click OK. If Hyper-V was not previously enabled, this box would not be checked and would require you check and reboot the machine to apply the change, but you enabled it by entering the command Enable- WindowsOptionalFeature -Online -FeatureName:Microsoft-Hyper-V - All in PowerShell.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Feature</span>Windows Features with Hyper-V checked.</label></li></div><p class="task-head">Task 1.4 - Creating a Virtual Machine</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Click on the search button and type Hyper-V Manager. Right-click the Hyper-V Manager search result and select Run as Administrator.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">VM created</span>Hyper-V Manager listing New-Lubuntu.</label></li></div><div class="step"><h3 class="fh"><span class="n">2</span> In the Hyper-V Manager window, click on the Action menu. Select New and click on Virtual Machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> In the New Virtual Machine Wizard window, click the Next button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> On the Specify Name and Locations step, type New-Lubuntu in the Name text field. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> On the Specify Generation step, leave the default Generation 1 option selected. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> On the Assign Memory step, select the amount of RAM to allocate for your virtual machine. Type 2048 in the Startup memory field to configure 2 GB of RAM of the new VM. Uncheck the checkbox next to Dynamic Memory. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> On the Configure Networking step, use the dropdown menu to select the virtual switch, named Default Switch, which was already pre-configured on the Win10 VM by default.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> On the Connect Virtual Hard Disk step, change the Size setting to 10 GB. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> On the Installation Options step, select the Install an operating system from a bootable CD/DVD-ROM option. Select the Image file (.iso) radio button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Click the Browse button and navigate to the path for the ISO file with the Lubuntu installation files (C:\Users\sysadmin\Desktop\ToolBox\lubuntu-18.04.3-desktop- amd6.iso). Select the lubuntu-18.04.3-desktop-amd6.iso file and click Open.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Back on the New Virtual Machine Wizard, confirm your selections, and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> On the Completing the New Virtual Machine Wizard step, review the settings and click Finish.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> You will now see your newly deployed virtual machine in the list of virtual machines within the Hyper-V Manager. Leave the Win10 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 1.5 - Install Lubuntu on the Virtual Machine</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> In the Hyper-V Manager window and underneath the Virtual Machines section, right-click on New-Lubuntu, and select Connect.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Hyper-V will now prompt you to start your virtual machine. Click the Start button to begin installing the operating system.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> The first step asks what language to use. Select English using the arrow keys, followed by pressing the Enter key.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Using the arrow keys, navigate to the Try Lubuntu without installation selection and press Enter (It will be white when selected).</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Once the virtual machine finishes booting from the live CD, you will arrive at the Lubuntu desktop. On the desktop, there is an icon that will allow you to install Lubuntu to the hard disk and not be running directly from the media. This is a fully operational OS, but it is currently not installed on the hard disk at this point. Double- click the Install Lubuntu 18.04.03 LTS icon to install it to the virtual hard disk. Once the install window appears, you may have to move the window by dragging it more in the center to see the entire window comfortably.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Installed</span>The Lubuntu desktop running in the New-Lubuntu connection window.</label></li></div><div class="step"><h3 class="fh"><span class="n">6</span> In the Install window, select English and click Continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> On the Keyboard Layout step, click Continue to select the default of English.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> On the Updates and other software step, click Continue to accept the default Normal Installation. Notice that Download updates while installing Lubuntu is greyed out because there is no internet connection available in the lab environment.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> On the Installation type step, keep the default, but carefully read the other options on the next screen. Click Install Now.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Review the configuration for installation and click Continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> The next screen will configure your regional settings. You can click on the map nearest your location or type in a city or location nearest you, and the OS will select a location setting suitable to your location. Click Continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> On the next screen, you will be creating the user account.  Type Student in the Your name text box. This will also create a username. Keep the default student.  Type MY-VM in the Your computer's name text box.  Type the lab password Train1ng$ in both the Choose and Confirm password text boxes.  Select the Require my password to login radio button.  Click Continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Notice the installation will begin. This will take several minutes to complete, but you can watch the introductory slideshow as the installation progresses.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Once the installation is complete, click Restart Now (you may need to move the window to see the button).</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> When prompted to remove the installation media, press the Enter key.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">16</span> Once the login screen appears, type Train1ng$ in the password field and click Log In.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">17</span> When the Update information window appears, click Close.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">18</span> You have successfully installed a new virtual machine using Hyper-V. The lab is now complete; you may end the reservation.</h3></div>
-<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: virtualization</h2>
@@ -444,7 +417,7 @@ Stop-VM -Name Test01</code></pre>
     b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
     b.addEventListener('click',function(){
       var code=pre.querySelector('code'), clone=code.cloneNode(true);
-      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      [].forEach.call(clone.querySelectorAll('.c,.pr'),function(x){x.remove();});
       var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
       function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
@@ -462,167 +435,5 @@ Stop-VM -Name Test01</code></pre>
   if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
 })();
 </script>
-
-<!-- ===== LAB MODE (begin) — self-contained; safe to remove as a block ===== -->
-<style id="lab-mode-css">
-/* Floating toggle button — always available, top-right */
-.pm-toggle{position:fixed;top:10px;right:12px;z-index:2147483100;display:inline-flex;
-  align-items:center;gap:7px;min-height:40px;padding:0 15px;cursor:pointer;
-  font:600 .85rem/1 var(--f-body);border-radius:999px;
-  background:var(--accent);color:var(--accent-ink);border:1px solid transparent;
-  box-shadow:0 4px 14px rgba(0,0,0,.28)}
-.pm-toggle:hover{filter:brightness(1.08)}
-.pm-toggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.pm-toggle .pm-ico{font-family:var(--f-mono);font-weight:700}
-@media print{.pm-toggle{display:none!important}}
-
-/* ---- When lab mode is ON ---- */
-html[data-present="on"] body{line-height:1.5}
-/* Collapse the sidebar grid to a single column and go full width */
-html[data-present="on"] .wrap{display:block;max-width:100%;padding:8px 14px 90px}
-
-/* Hide page chrome that wastes room in a narrow column */
-html[data-present="on"] .toc,
-html[data-present="on"] header.bar,
-html[data-present="on"] .badges,
-html[data-present="on"] .ticket .lede,
-html[data-present="on"] .ticket .fields,
-html[data-present="on"] .done-row{display:none!important}
-
-/* Slim the title block down to a compact header */
-html[data-present="on"] .ticket{margin:0 0 10px}
-html[data-present="on"] .ticket-in{padding:10px 14px}
-html[data-present="on"] .ticket h1{font-size:1.15rem;line-height:1.25;margin:2px 0 0}
-
-/* Show one section at a time */
-html[data-present="on"] #main > section{display:none}
-html[data-present="on"] #main > section.pm-current{display:block;animation:pm-fade .18s ease}
-@keyframes pm-fade{from{opacity:0}to{opacity:1}}
-
-/* Readability bump for the one visible section */
-html[data-present="on"] #main > section{font-size:1.05rem}
-html[data-present="on"] #main > section h2{font-size:1.2rem}
-html[data-present="on"] .step h3,
-html[data-present="on"] .step h4{font-size:1.04rem}
-html[data-present="on"] .cmd{font-size:1rem;white-space:pre-wrap;word-break:break-word}
-
-/* Slim bottom control dock for advancing through sections */
-.pm-dock{display:none}
-html[data-present="on"] .pm-dock{position:fixed;left:0;right:0;bottom:0;z-index:2147483100;
-  display:flex;align-items:center;gap:8px;padding:8px 12px;
-  padding-bottom:calc(8px + env(safe-area-inset-bottom,0));
-  background:var(--surface);border-top:1px solid var(--rule)}
-.pm-dock button{flex:0 0 auto;min-height:40px;min-width:44px;padding:0 14px;cursor:pointer;
-  font:700 .9rem/1 var(--f-body);border-radius:9px;
-  background:var(--surface-2);color:var(--ink);border:1px solid var(--rule)}
-.pm-dock button:hover{background:var(--accent);color:var(--accent-ink)}
-.pm-dock button:disabled{opacity:.4;cursor:not-allowed}
-.pm-dock button:disabled:hover{background:var(--surface-2);color:var(--ink)}
-.pm-dock .pm-where{flex:1 1 auto;text-align:center;min-width:0;
-  font:600 .82rem/1.25 var(--f-body);color:var(--ink-2);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pm-dock .pm-where b{color:var(--ink);display:block;font-size:.9rem}
-.pm-dock .pm-exit{background:transparent}
-</style>
-
-<div class="pm-dock" id="pmDock" aria-hidden="true">
-  <button type="button" data-pm="prev" aria-label="Previous section">◀</button>
-  <div class="pm-where"><span id="pmCount"></span><b id="pmName"></b></div>
-  <button type="button" data-pm="next" aria-label="Next section">▶</button>
-  <button type="button" data-pm="exit" class="pm-exit" aria-label="Exit lab mode">✕</button>
-</div>
-
-<script id="lab-mode-js">
-(function () {
-  "use strict";
-  var root = document.documentElement;
-  var KEY = "aplus:labmode:v1";               // shared across all A+ companion pages
-  var sections = [], idx = 0;
-  var dock, countEl, nameEl, prevBtn, nextBtn;
-
-  function labelFor(sec) {
-    var h = sec.querySelector("h2");
-    if (!h) return sec.id || "Section";
-    return (h.textContent || "").replace(/\s+/g, " ").trim();
-  }
-
-  function show(i) {
-    if (!sections.length) return;
-    idx = Math.max(0, Math.min(sections.length - 1, i));
-    sections.forEach(function (s, n) { s.classList.toggle("pm-current", n === idx); });
-    if (countEl) countEl.textContent = (idx + 1) + " / " + sections.length;
-    if (nameEl) nameEl.textContent = labelFor(sections[idx]);
-    if (prevBtn) prevBtn.disabled = idx === 0;
-    if (nextBtn) nextBtn.disabled = idx === sections.length - 1;
-    window.scrollTo(0, 0);
-  }
-
-  function enter() {
-    sections = Array.prototype.slice.call(document.querySelectorAll("#main > section"));
-    root.setAttribute("data-present", "on");
-    if (dock) dock.setAttribute("aria-hidden", "false");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "true");
-      btn.querySelector(".pm-txt").textContent = "Exit lab mode"; }
-    try { localStorage.setItem(KEY, "1"); } catch (e) {}
-    show(0);
-  }
-
-  function exit() {
-    root.removeAttribute("data-present");
-    sections.forEach(function (s) { s.classList.remove("pm-current"); });
-    if (dock) dock.setAttribute("aria-hidden", "true");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "false");
-      btn.querySelector(".pm-txt").textContent = "Lab mode"; }
-    try { localStorage.setItem(KEY, "0"); } catch (e) {}
-  }
-
-  function toggle() { root.getAttribute("data-present") === "on" ? exit() : enter(); }
-
-  function build() {
-    var btn = document.createElement("button");
-    btn.className = "pm-toggle"; btn.id = "pmToggle"; btn.type = "button";
-    btn.setAttribute("aria-pressed", "false");
-    btn.title = "Lab mode — steps beside the lab, one section at a time (Shift+L)";
-    btn.innerHTML = '<span class="pm-ico" aria-hidden="true">⇥</span><span class="pm-txt">Lab mode</span>';
-    btn.addEventListener("click", toggle);
-    document.body.appendChild(btn);
-
-    dock = document.getElementById("pmDock");
-    countEl = document.getElementById("pmCount");
-    nameEl = document.getElementById("pmName");
-    if (dock) {
-      prevBtn = dock.querySelector('[data-pm="prev"]');
-      nextBtn = dock.querySelector('[data-pm="next"]');
-      dock.addEventListener("click", function (e) {
-        var t = e.target.closest("[data-pm]"); if (!t) return;
-        var a = t.getAttribute("data-pm");
-        if (a === "prev") show(idx - 1);
-        else if (a === "next") show(idx + 1);
-        else if (a === "exit") exit();
-      });
-    }
-
-    document.addEventListener("keydown", function (e) {
-      if (e.shiftKey && (e.key === "L" || e.key === "l")) {
-        var tag = (e.target && e.target.tagName) || "";
-        if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
-        e.preventDefault(); toggle(); return;
-      }
-      if (root.getAttribute("data-present") !== "on") return;
-      if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); show(idx + 1); }
-      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(idx - 1); }
-      else if (e.key === "Escape") { e.preventDefault(); exit(); }
-    });
-  }
-
-  if (document.readyState === "loading")
-    document.addEventListener("DOMContentLoaded", build);
-  else build();
-})();
-</script>
-<!-- ===== LAB MODE (end) ===== -->
-
 </body>
 </html>

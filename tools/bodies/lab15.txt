@@ -1,4 +1,6 @@
 @lede Windows ships with an antivirus, a firewall, and two kinds of encryption, and most users never touch their settings. You will run an offline malware scan, read the device health report, allow and remove apps in the firewall, write a custom rule that blocks ping, encrypt a file with EFS, and encrypt and decrypt a whole drive with BitLocker.
+@vm Win7|192.168.1.7/24|sysadmin|Train1ng$
+@vm Win10|192.168.1.10/24|Sysadmin|Train1ng$
 @vms Win7, Win10
 
 == overview | Why this lab matters
@@ -7,9 +9,7 @@ The built-in security tools are good enough that many organizations rely on them
 Encryption has one hard rule: **back up the key**. Lose the EFS certificate or the BitLocker recovery key and the data is gone for good.
 
 == environment | The environment you're working in
-| Machine | IP address | Account | Password |
-| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
-| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+{{VMTABLE}}
 
 | Item | Value |
 | user1 on Win7 | `SuperSecret` |
@@ -17,7 +17,7 @@ Encryption has one hard rule: **back up the key**. Lose the EFS certificate or t
 | EFS key file name | `EFS-key` |
 | BitLocker password | `Train1ng$` |
 | BitLocker recovery key file | `EFS-Recover` (saved with the XPS Document Writer) |
-The VMs have no TPM chip, so Task 6 first changes Group Policy to allow BitLocker with a password instead.
+The VMs have no TPM chip, so Task 7 first changes Group Policy to allow BitLocker with a password instead.
 !tip Timing | The offline scan reboots Win10; you'll cancel it after a few minutes. BitLocker encryption and decryption run in the background and take several minutes each.
 
 == then-now | Then vs. now: Windows 11
@@ -31,62 +31,89 @@ The VMs have no TPM chip, so Task 6 first changes Group Policy to allow BitLocke
 | EFS | Still in Pro and above, not Home |
 
 == walkthrough | Walkthrough
-## Task 1: Malware scans (Win10)
+## Task 1: Malware scans <<1.1>>
+@@ Win10
 ### Open the security dashboard
-Log in to **Win10**. Search for `Windows Defender` and open **Windows Defender Security Center**. The Home page shows the status of each area: a green check is good, a yellow **!** needs attention.
+Open the **Win10** console, click the splash screen, and sign in as `sysadmin` with `Train1ng$`. Click the search icon, type `Windows Defender`, and open **Windows Defender Security Center**. The Home page shows the status of each area: a green check is good, a yellow **!** needs attention.
 ### Look at the scan types
 Click **Virus & threat protection**. **Quick scan** checks the places malware usually hides. Click **Run a new advanced scan** to see **Full scan**, **Custom scan**, and **Windows Defender Offline scan**.
 !shot The advanced scan options page.
 ### Start an offline scan
 Select **Windows Defender Offline scan > Scan now > Scan** and accept UAC. Windows signs you out and restarts into the Defender environment. With no internet it skips the definition update and starts scanning. After a few minutes, click **Cancel scan**; Windows then boots normally.
 !tip When to use the offline scan | Rootkits and some other malware hide from scanners while Windows is running. Booting into a separate environment means the malware isn't loaded, so the scanner can see and remove it.
-## Task 2: Health report (Win10)
+## Task 2: Health report <<1.2>>
+@@ Win10
 ### Read device health
 Sign back in. Open the Windows Defender icon from the hidden tray icons, then **Device performance & health**. Check the **Health report**: storage capacity, device drivers, and apps and software. Green is good, yellow is a recommendation, red is a warning.
 !shot The Device performance & health report.
-## Task 3: Firewall profiles (Win10)
+## Task 3: Firewall profiles <<1.3>>
+@@ Win10
 ### Look at the Private profile
 Click **Firewall & network protection > Private network**. Note the switch that turns the firewall on or off for this profile. Click back and close the window.
-## Task 4: Allowed apps (Win10)
+## Task 4: Allowed apps <<1.4–1.6>>
+@@ Win10
 ### Open the firewall in Control Panel
 Right-click **Start > Run**, enter `Control Panel`, and open **System and Security > Windows Defender Firewall**. Click **Turn Windows Defender Firewall on or off** to see the per-profile settings, then go back.
 ### Allow Windows Media Player on Private networks
 Click **Allow an app or feature through Windows Defender Firewall** (click **Change settings** if the list is greyed out). Select **Windows Media Player > Details**, read it, and click **OK**. Check the box beside Windows Media Player: **Private** is checked automatically.
 ### Add an app that isn't listed
-Click **Allow another app > Browse**, go to `C:\Program Files\Windows Photo Viewer`, select `ImagingDevices.exe`, and click **Open > Add**. **Imaging Devices Console** appears, allowed on Private.
+Click **Allow another app > Browse**, go to the folder below, select `ImagingDevices.exe`, and click **Open**. Confirm **Imaging Devices** appears and click **Add**.
+```Folder:
+C:\Program Files\Windows Photo Viewer
+``` **Imaging Devices Console** appears, allowed on Private.
 !shot The allowed apps list with Windows Media Player and Imaging Devices Console allowed.
 ### Remove it again
 Select **Imaging Devices Console > Remove > Yes**, then **OK**.
-## Task 5: Firewall rules (Win10 and Win7)
-### Confirm ping works both ways
-In Windows Defender Firewall, click **Advanced settings** to open **Windows Defender Firewall with Advanced Security**. Open **cmd** on Win10 and on Win7 and test:
-```
-%% On Win10
+## Task 5: Firewall rules <<1.7–1.8>>
+@@ Win10
+### Open the advanced firewall and test ping from Win10
+In Windows Defender Firewall, click **Advanced settings** in the left pane to open **Windows Defender Firewall with Advanced Security**. Then click the search icon on the taskbar, type `cmd`, press [[Enter]], and ping Win7:
+```C:\Users\sysadmin>
 ping 192.168.1.7
-%% On Win7
+```
+It succeeds.
+@@ Win7
+### Test ping from Win7
+Open the **Win7** console and sign in as `sysadmin` with `Train1ng$`. Click **Start**, type `cmd`, press [[Enter]], and ping Win10:
+```C:\Users\sysadmin>
 ping 192.168.1.10
 ```
-Both succeed.
+It succeeds too. Leave this prompt open; you'll use it twice more.
+@@ Win10
 ### Find the built-in ping rule
-On Win10, click **Inbound Rules** and find **File and Printer Sharing (Echo Request - ICMPv4-In)** for the **Private** profile. Right-click it: it's enabled, which is why Win7 can ping Win10. Leave it enabled.
+Change focus to **Win10**, in **Windows Defender Firewall with Advanced Security**. Click **Inbound Rules** and find **File and Printer Sharing (Echo Request - ICMPv4-In)** for the **Private** profile. Right-click it: it's enabled (the menu offers **Disable Rule**), which is why Win7 can ping Win10. Leave it enabled.
 ### Create a rule that blocks ping
 Right-click **Inbound Rules > New Rule** and set:
 | Wizard step | Choose |
 | Rule type | Custom |
 | Program | All programs |
-| Protocol and Ports | ICMPv4 > **Customize** > Specific ICMP types > **Echo Request** |
+| Protocol and Ports | Protocol type **ICMPv4** > **Customize** > **Specific ICMP types** > check **Echo Request** > **OK** |
 | Scope | Defaults |
 | Action | Block the connection |
 | Profile | Defaults (Domain, Private, Public) |
 | Name | `Block Incoming ICMPv4 Echo Requests` |
+Click **Finish**.
 !shot The new Block Incoming ICMPv4 Echo Requests rule in the Inbound Rules list.
+@@ Win7
 ### Test the block
-On **Win7**, run `ping 192.168.1.10` again. It now times out, because a **block** rule beats the built-in allow rule.
+Change focus to **Win7**. In the same Command Prompt, ping Win10 again:
+```C:\Users\sysadmin>
+ping 192.168.1.10
+```
+It now times out, because a **block** rule beats the built-in allow rule.
 !shot Win7's ping to Win10 timing out.
 ### Disable the block and test again
-On Win10, right-click **Block Incoming ICMPv4 Echo Requests > Disable Rule**. On Win7, `ping 192.168.1.10` succeeds again.
-!stuck The PDF has this backwards | It says ping fails *after* you disable the block rule. It's the reverse: ping fails while the block rule is enabled and works again once you disable it.
-## Task 6: Encrypting File System (Win7)
+This step switches machines partway through.
+{{on Win10}} In **Windows Defender Firewall with Advanced Security**, right-click **Block Incoming ICMPv4 Echo Requests** and choose **Disable Rule**.
+{{on Win7}} Ping Win10 once more, then close the prompt:
+```C:\Users\sysadmin>
+ping 192.168.1.10
+exit
+```
+Ping succeeds again. Leave Win7 open for the next task.
+!stuck The PDF has this backwards | Step 17 says ping fails *after* you disable the block rule. It's the reverse: ping fails while the block rule is enabled (step 13) and works again once you disable it.
+## Task 6: Encrypting File System <<2.1>>
+@@ Win7
 ### Encrypt a file
 On **Win7**, create a text file on the desktop named `encrypted`. Right-click it > **Properties > Advanced**, check **Encrypt contents to secure data**, and click **OK** twice. Choose **Encrypt the file only** and click **OK**. The file name turns green.
 ### Back up the encryption key
@@ -96,9 +123,14 @@ Click the **Back up your encryption key** notification > **Back up now (recommen
 Double-click **encrypted**: it opens for sysadmin with no extra prompt. Now **Switch user** to **user1** (`SuperSecret`), browse to `C:\Users\sysadmin\Desktop` (enter `Train1ng$` if asked), and open **encrypted**. Access is denied.
 !shot The access denied message when user1 opens the encrypted file.
 Log off user1.
-## Task 7: BitLocker without a TPM (Win10)
+## Task 7: BitLocker without a TPM <<2.2>>
+@@ Win10
 ### Allow BitLocker with a password
-On **Win10**, open `gpedit.msc` and go to **Computer Configuration > Administrative Templates > Windows Components > BitLocker Drive Encryption > Operating System Drives**. Double-click **Require additional authentication at startup**, select **Enabled**, and click **OK**. Make sure **Allow BitLocker without a compatible TPM** is checked in that setting's options.
+Change focus to **Win10**. Click the search icon, type the command below, and press [[Enter]]:
+```Search box:
+gpedit.msc
+```
+Go to **Computer Configuration > Administrative Templates > Windows Components > BitLocker Drive Encryption > Operating System Drives**. Double-click **Require additional authentication at startup**, select **Enabled**, and click **OK**. Make sure **Allow BitLocker without a compatible TPM** is checked in that setting's options.
 ### Turn on BitLocker
 Open **Control Panel > BitLocker Drive Encryption > Turn on BitLocker**. Choose **Enter a password** and enter `Train1ng$` twice.
 ### Save the recovery key
@@ -107,20 +139,25 @@ Choose **Print the recovery key**, select **Microsoft XPS Document Writer**, and
 ### Encrypt
 Choose **Encrypt used disk space only**, then **New encryption mode**. Uncheck **Run BitLocker system check** and click **Start encrypting**. Click the notification to watch progress and **Close** when it finishes.
 !shot BitLocker Drive Encryption showing C: with BitLocker on.
-## Task 8: Check and turn off BitLocker with PowerShell (Win10)
+## Task 8: Check and turn off BitLocker with PowerShell <<2.3>>
+@@ Win10
 ### Check status
-Search for **PowerShell ISE**, right-click it > **Run as administrator**, and run:
-```
+Click the search button, type `PowerShell ISE`, right-click **Windows PowerShell ISE** > **Run as administrator**, and click **Yes** at UAC. Check the encryption status of each drive:
+```PS C:\Windows\system32>
 manage-bde -status
 ```
 C: shows as fully encrypted with **XTS-AES 128**.
 ### Decrypt
-```
+Include the quotes around `"C:"`:
+```PS C:\Windows\system32>
 Disable-BitLocker -MountPoint "C:"
 manage-bde -off C:
 manage-bde -status
 ```
-Decryption continues in the background; run `manage-bde -status` again to watch the percentage drop. Type `exit` when it's done.
+Decryption continues in the background; run `manage-bde -status` again to watch the percentage drop. When the drive is fully decrypted, close PowerShell:
+```PS C:\Windows\system32>
+exit
+```
 !stuck Typed straight from the PDF? | The PDF shows `manage-bde –status` with an en dash. Use a normal hyphen.
 !shot manage-bde -status showing decryption in progress or complete.
 The lab is complete.

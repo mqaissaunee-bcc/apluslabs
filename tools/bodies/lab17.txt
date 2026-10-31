@@ -1,4 +1,6 @@
 @lede Anything you type more than twice is worth scripting. You will write the same system-information report three ways (a Windows batch file, a PowerShell script, and a Bash script), run each one, and deal with the safety settings that stop scripts from running.
+@vm Win10|192.168.1.10/24|Sysadmin|Train1ng$
+@vm Lubuntu|192.168.1.11/24|sysadmin|Train1ng$
 @vms Win10, Lubuntu
 
 == overview | Why this lab matters
@@ -7,9 +9,7 @@ This lab writes one job, "report this PC's OS, hardware, and network," in the th
 You'll also meet each platform's guardrail: PowerShell's **execution policy** and Linux's **execute permission**.
 
 == environment | The environment you're working in
-| Machine | IP address | Account | Password |
-| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
-| Lubuntu | `192.168.1.11/24` | `sysadmin` | `Train1ng$` |
+{{VMTABLE}}
 
 | Script | Saved as |
 | Batch | `C:\Users\sysadmin\Sysinfo.bat` |
@@ -27,16 +27,17 @@ You'll also meet each platform's guardrail: PowerShell's **execution policy** an
 | Bash only on Linux | **WSL** runs Bash on Windows: `wsl --install` |
 
 == walkthrough | Walkthrough
-## Task 1: A Windows batch file (Win10)
+## Task 1: A Windows batch file <<1>>
+@@ Win10
 ### Look at the available commands
-Log in to **Win10**, open **Command Prompt**, and run:
+Open the **Win10** console, click the splash screen, and sign in as `sysadmin` with `Train1ng$`. Click the search icon, type `cmd`, and open **Command Prompt**. List the built-in commands one page at a time:
+```C:\Users\sysadmin>
+HELP | MORE
 ```
-help | more
-```
-Press [[Space]] for the next page and [[Q]] to quit. Find `echo`, `findstr`, `rem`, and `systeminfo`.
+Press [[Space]] for the next page and [[Q]] to quit. Find `echo`, `findstr`, `rem`, and `systeminfo` (`wmic` is a separate program, so it isn't in this list).
 ### Write the script in Notepad
-Open **Notepad** and type (or copy) the script:
-```
+Click the search icon, type `Notepad`, and open it. Type (or copy) the script:
+```file Sysinfo.bat
 @ECHO OFF
 :: This batch file reveals OS, hardware, and networking configuration.
 TITLE My System Info
@@ -45,7 +46,7 @@ ECHO Please wait... Checking system information.
 ECHO ============================
 ECHO OS INFO
 ECHO ============================
-rem findstr searches for a text string. Enter findstr /? for details.
+rem findstr is used for searching for a text string in files. For more inline information, you can enter findstr /? at the command prompt.
 systeminfo | findstr /c:"OS Name"
 systeminfo | findstr /c:"OS Version"
 systeminfo | findstr /c:"System Type"
@@ -63,31 +64,34 @@ ipconfig | findstr IPv4 >> info.txt
 ipconfig | findstr IPv6 >> info.txt
 PAUSE
 ```
+!stuck Keep wrapped lines whole | The PDF wraps the long `rem` line onto two lines. Type it as **one** line. If `information, you can enter...` lands on its own line, cmd tries to run it as a command and prints an error.
 ### Save it as a .bat file
 Choose **File > Save As**, go to `C:\Users\sysadmin`, set **Save as type** to **All Files**, and name it `Sysinfo.bat`.
 !stuck Where people get stuck | If Save as type stays on **Text Documents**, Notepad saves `Sysinfo.bat.txt`, which won't run. Choose All Files, or put the name in quotes: `"Sysinfo.bat"`. Run `dir` to check.
 ### Run it
-```
+```C:\Users\sysadmin>
 dir
 Sysinfo.bat
 ```
 Watch the OS and hardware sections print on screen. Press any key at `PAUSE`. The network lines don't appear because `>>` sent them to a file:
-```
+```C:\Users\sysadmin>
 dir
 more info.txt
 ```
 !shot The batch file's output in Command Prompt.
 !shot The contents of info.txt.
 Close Command Prompt and Notepad.
-## Task 2: A PowerShell script (Win10)
+## Task 2: A PowerShell script <<2>>
+@@ Win10
 ### Open PowerShell ISE as administrator
 Search for `PowerShell ISE`, right-click it > **Run as administrator**, and accept UAC. Move to your home folder:
+```PS C:\WINDOWS\system32>
+cd c:\users\sysadmin
 ```
-cd C:\Users\sysadmin
-```
+The prompt changes to `PS C:\users\sysadmin>`.
 ### Write the script
-Choose **File > New** and enter:
-```
+Choose **File > New** and enter this in the **Untitled.ps1** script pane:
+```file win10info.ps1
 Write-Output "Computer name is:"
 Get-Content env:computername
 Write-Output "Windows version is:"
@@ -103,17 +107,21 @@ Get-NetIPAddress -AddressFamily IPv4 | Sort-Object -Property InterfaceIndex | Fo
 ```
 Save it as `C:\Users\sysadmin\win10info.ps1`.
 ### Try to run it
-```
+```PS C:\users\sysadmin>
 .\win10info.ps1
 ```
 It fails with **running scripts is disabled on this system**. That's the execution policy doing its job.
 !shot The execution policy error.
 ### Allow local scripts, then run it again
-```
+```PS C:\users\sysadmin>
 Set-ExecutionPolicy RemoteSigned
+```
+Click **Yes to All** in the Execution Policy Change window. Then run the script again:
+```PS C:\users\sysadmin>
 .\win10info.ps1
 ```
-Click **Yes to All** at the prompt. The script now runs.
+The script now runs.
+!tip Which prompt? | The PDF shows these commands at `PS C:\WINDOWS\system32>`, but its own screenshots show `PS C:\users\sysadmin>`, because you ran `cd` first. `.\win10info.ps1` only works from the folder the script is in.
 !shot The win10info.ps1 output.
 !tip What RemoteSigned means | Scripts you write on this PC run; scripts downloaded from the internet must be signed by a trusted publisher. It's the usual choice for admins. On a real PC, `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser` changes it only for you.
 ### Compare the two scripts
@@ -122,14 +130,16 @@ Click **Yes to All** at the prompt. The script now runs.
 | `%COMPUTERNAME%` | `$env:computername` (or `Get-Content env:computername`) |
 | `systeminfo` piped to `findstr` | `Get-WmiObject` / `Get-CimInstance` returning objects with named properties |
 | `>> info.txt` | `Out-File info.txt -Append` (or `>>`) |
-## Task 3: A Bash script (Lubuntu)
+## Task 3: A Bash script <<3>>
+@@ Lubuntu
 ### Open nano
-Sign in to **Lubuntu**, open **Menu > System Tools > LXTerminal**, and run:
-```
+Open the **Lubuntu** console and sign in as `sysadmin` with `Train1ng$`. Open **Menu > System Tools > LXTerminal** and start the nano editor:
+```sysadmin@lubuntu:~$
 nano
 ```
 ### Write the script
-```
+Type these lines into nano (not at the prompt):
+```file lhostinfo.sh
 #!/bin/bash
 echo "Computer name is: " $HOSTNAME
 echo "Operating System and distribution:"
@@ -149,12 +159,14 @@ hostname -i
 ### Save it
 Press [[Ctrl]]+[[O]], type `lhostinfo.sh`, and press [[Enter]]. Press [[Ctrl]]+[[X]] to leave nano (or keep it open and use a second terminal).
 ### Make it executable and run it
-Open a second terminal (or use the same one) and run:
-```
+
+Open a second terminal (**Menu > System Tools > LXTerminal**) and run:
+```sysadmin@lubuntu:~$
 chmod 755 lhostinfo.sh
 ls -l lhostinfo.sh
 ./lhostinfo.sh
 ```
+(`ls -l` is an extra check, not in the PDF.)
 `ls -l` now shows `-rwxr-xr-x`: the `x` is execute permission. `./` tells Bash the script is in the current folder, which isn't in the search path.
 !shot The `ls -l` line showing execute permission, and the script's output.
 The lab is complete.

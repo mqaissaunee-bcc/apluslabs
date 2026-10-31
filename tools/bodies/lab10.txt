@@ -1,4 +1,8 @@
 @lede Users notice their desktop more than any other part of Windows, and they'll ask you to change it. You will set desktop icons, appearance, screen saver lock, and text size, then customize the Start menu, taskbar, and notification area on Windows 7 and Windows 10.
+@vm Win7|192.168.1.7/24|sysadmin|Train1ng$
+@vm Win8.1|192.168.1.8/24|sysadmin|Train1ng$|Listed in the PDF
+ no step uses it
+@vm Win10|192.168.1.10/24|Sysadmin|Train1ng$
 @vms Win7, Win10
 
 == overview | Why this lab matters
@@ -6,9 +10,7 @@ Customization tickets look small, but they're frequent, and doing them quickly b
 You'll also see how the same settings moved from Control Panel's Personalization window in Windows 7 to the Settings app in Windows 10, which helps you find anything on Windows 11.
 
 == environment | The environment you're working in
-| Machine | IP address | Account | Password |
-| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
-| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+{{VMTABLE}}
 The VMs have no sound hardware, so the Sounds dialog shows options but plays nothing.
 
 == then-now | Then vs. now: Windows 11
@@ -23,9 +25,10 @@ The VMs have no sound hardware, so the Sounds dialog shows options but plays not
 | Pin Calendar to the taskbar | Right-click any app in Start > **Pin to taskbar** |
 
 == walkthrough | Walkthrough
-## Task 1: Desktop settings (Win7)
+## Task 1: Desktop settings <<1.1>>
+@@ Win7
 ### Put Control Panel on the desktop
-Log in to **Win7**. Right-click the desktop > **Personalize > Change desktop icons**. Check **Control Panel** and click **OK**. A Control Panel icon appears on the desktop.
+Open the **Win7** console and sign in as `sysadmin` with `Train1ng$`. Right-click the desktop > **Personalize > Change desktop icons**. Check **Control Panel** and click **OK**. A Control Panel icon appears on the desktop.
 ### Change the account picture
 In Personalization, click **Change your account picture**, choose a picture, and click **Change Picture**. **Browse for more pictures** lets you use your own.
 ### Make the scroll bars bigger
@@ -39,17 +42,19 @@ Click **Screen Saver**. Choose **Blank**, set **Wait** to `15` minutes, check **
 !tip Why this matters | "On resume, display logon screen" means an unattended PC locks itself after 15 minutes. Many security policies require it.
 ### Look at text size
 Click **Display** in the left pane. Note the text size options, click **Set custom text size (DPI)** to see the percentages, then **Cancel** and close the window.
-## Task 2: Personalization (Win10)
+## Task 2: Personalization <<1.2>>
+@@ Win10
 ### Set the background
-Log in to **Win10**. Open **Start > Settings > Personalization > Background**. Choose **Picture**, pick an image, and choose a fit (Fill, Fit, Stretch, Tile, Center, or Span).
+Open the **Win10** console, click the splash screen, and sign in as `sysadmin`. Open **Start > Settings > Personalization**; make sure **Background** is selected. Choose **Picture**, pick an image, and choose a fit (Fill, Fit, Stretch, Tile, Center, or Span).
 ### Set colors and dark mode
 Click **Colors**. Pick an accent color and check **Start, taskbar, and action center** under **Show accent color on the following surfaces**. Choose **Dark**. Open Start to see the color applied.
 !shot The Win10 Colors page with Dark mode and the accent color applied.
 ### Explore Start settings
 Click **Start** in the left pane and try options such as **Use Start full screen**. Change them back if you prefer.
-## Task 3: Taskbar and Start menu (Win7)
+## Task 3: Taskbar and Start menu <<2.1>>
+@@ Win7
 ### Open Taskbar properties
-On **Win7**, right-click the taskbar > **Properties**. Typical taskbar settings:
+Change focus to **Win7** (sign back in as `sysadmin` if needed). Right-click the taskbar > **Properties**. Typical taskbar settings:
 | Setting | Typical |
 | Lock the taskbar | Unchecked (while you customize) |
 | Auto-hide the taskbar | Unchecked |
@@ -65,9 +70,10 @@ On the **Start Menu** tab, click **Customize**. Under **Computer**, choose **Don
 !shot The Win7 Start menu with Control Panel shown as a menu and Computer removed.
 ### Add the Desktop toolbar
 On the **Toolbars** tab, check **Desktop** and click **OK**. A **Desktop** toolbar appears near the notification area; click its double arrows to browse.
-## Task 4: Taskbar (Win10)
+## Task 4: Taskbar <<2.2>>
+@@ Win10
 ### Pin an app
-On **Win10**, open **Start**, right-click **Calendar**, and choose **More > Pin to taskbar**.
+Change focus back to **Win10**. Open **Start**, right-click **Calendar**, and choose **More > Pin to taskbar**.
 ### Choose system icons
 Right-click the taskbar > **Taskbar settings**. Under **Notification area**, click **Turn system icons on or off** and toggle a few.
 !shot Win10 Turn system icons on or off, with Calendar pinned to the taskbar.

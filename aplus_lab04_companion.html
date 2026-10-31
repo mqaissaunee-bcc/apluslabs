@@ -12,6 +12,7 @@
   --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
   --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
   --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --m-win7:#1F5FA8; --m-win81:#0B7377; --m-win10:#6A3FB0; --m-lub:#B4481A; --m-newlub:#8A5A00; --m-bg:#F3F6FA;
   --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
   --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
@@ -22,13 +23,15 @@
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}}
 :root[data-theme="dark"]{
   --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
@@ -108,6 +111,22 @@ main p,main li{max-width:68ch}
 p.shotline{margin:.5rem 0}
 pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
 pre.cmd .c{color:var(--code-dim)}
+pre.cmd .pr{color:var(--code-dim);user-select:none;-webkit-user-select:none}
+pre.cmd.file{border-left:4px solid var(--tag)}
+.fcap{font-size:.85rem;color:var(--ink-2);margin:.6rem 0 -.3rem}
+.m-win7{--mc:var(--m-win7)} .m-win81{--mc:var(--m-win81)} .m-win10{--mc:var(--m-win10)} .m-lub{--mc:var(--m-lub)} .m-newlub{--mc:var(--m-newlub)}
+.mrun{border-left:5px solid var(--mc);padding:.1rem 0 .1rem .9rem;margin:1rem 0 1.25rem}
+.mband{display:inline-flex;align-items:center;gap:.4rem;margin:0 0 .25rem -.9rem;padding:.3rem .8rem .3rem .7rem;background:var(--m-bg);border:1px solid var(--mc);border-left:5px solid var(--mc);border-radius:0 6px 6px 0;font-weight:700;color:var(--mc);font-family:var(--f-display)}
+.onm{display:inline-block;font-weight:700;color:var(--mc);border:1px solid var(--mc);border-radius:4px;padding:0 .35rem;font-size:.88em;background:var(--m-bg)}
+.pdfref{display:inline-block;margin-left:.5rem;font-family:var(--f-body);font-weight:600;font-size:.75rem;color:var(--ink-2);border:1px solid var(--rule);border-radius:3px;padding:0 .4rem;vertical-align:middle}
+.topo{margin:1rem 0;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--surface-2)}
+.topo .bus{text-align:center;font-family:var(--f-mono);font-size:.85rem;color:var(--ink-2);margin:0 0 .3rem;padding-bottom:.3rem;border-bottom:4px solid var(--ink)}
+.topo ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+.topo li{position:relative;margin-top:.9rem;border:2px solid var(--mc);border-top-width:6px;border-radius:6px;padding:.35rem .7rem;background:var(--surface);text-align:center;min-width:7.5rem}
+.topo li::before{content:"";position:absolute;top:-1.05rem;left:50%;height:.9rem;border-left:2px solid var(--ink)}
+.topo li b{display:block;color:var(--mc)} .topo li span{font-family:var(--f-mono);font-size:.85rem}
+.vmnote{font-size:.8rem;color:var(--ink-2)} .topo li.unused{border-style:dashed;opacity:.75}
+.topo .hosted{font-size:.85rem;color:var(--ink-2);text-align:center;margin:.5rem 0 0}
 .copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
 .tbl{overflow-x:auto;margin:.75rem 0}
 table{border-collapse:collapse;width:100%;font-size:.94rem}
@@ -136,17 +155,13 @@ footer p{margin:.25rem 0;max-width:80ch}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media print{
+  .mrun{border-left-color:#000} .mband,.onm{color:#000;border-color:#000;background:#fff}
   .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
   body{background:#fff;color:#000} .wrap{display:block;padding:0}
   main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
-
-#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
-#fullsteps .step h3.fh .n{margin-right:.5rem}
-#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
-#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab04-v1:">
@@ -172,7 +187,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: accounts, groups, and policy</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -190,7 +205,8 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="environment" aria-labelledby="h-environment">
 <h2 id="h-environment">The environment you're working in</h2>
-<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code class="inl">192.168.1.7/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win8.1</td><td><code class="inl">192.168.1.8/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<p class="fcap">Lab Settings, exactly as listed in the PDF</p><div class="tbl"><table><thead><tr><th scope="col">Virtual Machine</th><th scope="col">IP Address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code>192.168.1.7/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Win8.1</td><td><code>192.168.1.8/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Win10</td><td><code>192.168.1.10/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr></tbody></table></div>
+<div class="topo" role="img" aria-label="Pod topology: Win7 at 192.168.1.7/24, Win8.1 at 192.168.1.8/24, Win10 at 192.168.1.10/24, all on 192.168.1.0/24"><div class="bus">192.168.1.0/24 (one flat subnet, no router or internet)</div><ul><li class="m-win7"><b><span aria-hidden="true">🪟</span> Win7</b><span>.7</span></li><li class="m-win81"><b><span aria-hidden="true">🪟</span> Win8.1</b><span>.8</span></li><li class="m-win10"><b><span aria-hidden="true">🪟</span> Win10</b><span>.10</span></li></ul></div>
 <p>Accounts you'll create:</p>
 <div class="tbl"><table><thead><tr><th scope="col">User</th><th scope="col">Where</th><th scope="col">Password</th><th scope="col">Type</th></tr></thead><tbody><tr><td>Logan</td><td>Win7</td><td><code class="inl">Password1</code></td><td>Standard</td></tr><tr><td>Logan</td><td>Win8.1 and Win10</td><td><code class="inl">Password1</code></td><td>Changed to Administrator</td></tr><tr><td>Sal (Sal A.)</td><td>Win7</td><td><code class="inl">SuperSecret</code></td><td>Added to Administrators</td></tr></tbody></table></div>
 <div class="call stuck"><span class="k">Typo in the PDF</span><p>In a few places the PDF spells the sysadmin password as <code class="inl">Train1ing$</code>. The real password is still <code class="inl">Train1ng$</code>.</p></div>
@@ -206,36 +222,43 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="walkthrough" aria-labelledby="h-walkthrough">
 <h2 id="h-walkthrough">Walkthrough</h2>
-<p class="task-head">Task 1: Create accounts the easy way</p>
+<p class="task-head">Task 1: Create accounts the easy way <span class="pdfref">PDF 1.1–1.3</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
 <h3><span class="n">1</span>Create a standard user on Win7</h3>
-<p>Log in to <strong>Win7</strong>. Open <strong>Control Panel > User Accounts and Family Safety > User Accounts > Manage another account > Create a new account</strong>. Name it <code class="inl">Logan</code>, leave <strong>Standard user</strong> selected, and click <strong>Create Account</strong>.</p>
+<p>Open the <strong>Win7</strong> console and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Click <strong>Start > Control Panel > User Accounts and Family Safety > User Accounts > Manage another account > Create a new account</strong>. Name it <code class="inl">Logan</code>, leave <strong>Standard user</strong> selected, and click <strong>Create Account</strong>.</p>
 </div>
 <div class="step">
 <h3><span class="n">2</span>Give Logan a password</h3>
-<p>Click <strong>Logan > Create a password</strong>. Enter <code class="inl">Password1</code> twice and click <strong>Create password</strong>.</p>
+<p>Click <strong>Logan > Create a password</strong>. Enter <code class="inl">Password1</code> twice (a hint is optional) and click <strong>Create password</strong>. Close the User Accounts window.</p>
 </div>
 <div class="step">
 <h3><span class="n">3</span>Test what a standard user can't do</h3>
-<p>Log off and sign in as <strong>Logan</strong>. Open <strong>Computer</strong> and try to open <code class="inl">C:\Users\sysadmin</code>. You're refused because the folder belongs to another user. Click <strong>Cancel</strong>.</p>
-<p>Now open <strong>Control Panel > User Accounts > Manage another account</strong>. UAC asks for an <strong>administrator's password</strong>. Click <strong>No</strong>.</p>
+<p>Click <strong>Start</strong>, click the arrow next to <strong>Shut down</strong>, and choose <strong>Log off</strong>. Click Logan's picture and sign in with <code class="inl">Password1</code>. Click <strong>Start > Computer</strong> and try to open <code class="inl">C:\Users\sysadmin</code>. You're refused because the folder belongs to another user. Click <strong>Cancel</strong>.</p>
+<p>Close the window. Now open <strong>Start > Control Panel</strong>, set <strong>View by</strong> to <strong>Small icons</strong>, and click <strong>User Accounts > Manage another account</strong>. UAC asks for an <strong>administrator's password</strong>. Click <strong>No</strong>.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The UAC prompt asking for administrator credentials while signed in as Logan.</p>
 <div class="call tip"><span class="k">This is how admins should work</span><p>Day-to-day work in a standard account, typing admin credentials only when UAC asks, limits what malware can do if you open something bad.</p></div>
 <p>Log off Logan.</p>
 </div>
+</div>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
 <h3><span class="n">4</span>Create an account on Win8.1 and make it an administrator</h3>
-<p>Log in to <strong>Win8.1</strong> as sysadmin. Open <strong>Start > PC Settings > Accounts > Other accounts > Add an account</strong>. Create a local account: user name <code class="inl">Logan</code>, password <code class="inl">Password1</code>, hint <code class="inl">A password with 1</code>. Click <strong>Next</strong>, then <strong>Finish</strong>.</p>
+<p>Open the <strong>Win8.1</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code>. Open <strong>Start > PC Settings > Accounts > Other accounts > Add an account</strong>. Create a local account: user name <code class="inl">Logan</code>, password <code class="inl">Password1</code>, hint <code class="inl">A password with 1</code>. Click <strong>Next</strong>, then <strong>Finish</strong>.</p>
 <p>Click <strong>Logan > Edit</strong>, set <strong>Account type</strong> to <strong>Administrator</strong>, and click <strong>OK</strong>. Sign out (move the pointer to the top-right corner for the charms bar, then Start > sysadmin > Sign out) and sign in as Logan. Windows sets up the new profile.</p>
 </div>
+</div>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">5</span>Do the same on Win10</h3>
-<p>Log in to <strong>Win10</strong> as sysadmin. Open <strong>Start > Settings > Accounts > Family & other people > Add someone else to this PC</strong>. Create <code class="inl">Logan</code> with password <code class="inl">Password1</code> and these security answers:</p>
+<p>Open the <strong>Win10</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code>. Open <strong>Start > Settings > Accounts > Family & other people > Add someone else to this PC</strong>. Create <code class="inl">Logan</code> with password <code class="inl">Password1</code> and these security answers:</p>
 <div class="tbl"><table><thead><tr><th scope="col">Question</th><th scope="col">Answer</th></tr></thead><tbody><tr><td>First pet's name</td><td><code class="inl">Logan Jr</code></td></tr><tr><td>City where you were born</td><td><code class="inl">BigCity</code></td></tr><tr><td>Childhood nickname</td><td><code class="inl">Kidd</code></td></tr></tbody></table></div>
-<p>Click <strong>Logan > Change account type</strong>, choose <strong>Administrator</strong>, and click <strong>OK</strong>. Sign in as Logan to confirm.</p>
+<p>Click <strong>Logan > Change account type</strong>, choose <strong>Administrator</strong>, and click <strong>OK</strong>. Click <strong>Start</strong>, click the <strong>sysadmin</strong> icon, and choose <strong>Logan</strong>; sign in with <code class="inl">Password1</code>. Windows sets up the account for first use.</p>
 <p class="shotline"><span class="shot">Screenshot</span>Win10 Settings showing Logan listed as an Administrator, local account.</p>
 </div>
-<p class="task-head">Task 2: Local Users and Groups (Win7)</p>
+</div>
+<p class="task-head">Task 2: Local Users and Groups <span class="pdfref">PDF 2.1</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
 <h3><span class="n">6</span>Open Computer Management</h3>
 <p>On <strong>Win7</strong>, sign in as sysadmin. Right-click <strong>Computer</strong> on the desktop and choose <strong>Manage</strong>. Expand <strong>Local Users and Groups</strong> and open <strong>Users</strong>.</p>
@@ -252,10 +275,13 @@ footer p{margin:.25rem 0;max-width:80ch}
 <p class="shotline"><span class="shot">Screenshot</span>The Administrators Properties window listing Sal as a member.</p>
 <p>Close Computer Management, log off, and sign in as <strong>Sal A.</strong> Sal can now open other users' folders.</p>
 </div>
-<p class="task-head">Task 3: Enforce a password policy (Win8.1)</p>
+</div>
+<p class="task-head">Task 3: Enforce a password policy <span class="pdfref">PDF 3.1</span></p>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
 <h3><span class="n">9</span>Open the Local Group Policy Editor</h3>
-<p>On <strong>Win8.1</strong>, sign out of Logan and sign in as sysadmin. Right-click <strong>Start > Search</strong>, type <code class="inl">gpedit.msc</code>, and open it.</p>
+<p>Change focus to <strong>Win8.1</strong>. Click <strong>Start</strong>, click the <strong>Logan</strong> icon in the top-right corner, and choose <strong>Sign out</strong>. Sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Right-click <strong>Start > Search</strong>, type the name below, and click the <strong>gpedit</strong> result.</p>
+<pre class="cmd" data-prompt="Search box:"><code><span class="pr" aria-hidden="true">Search box: </span>gpedit.msc</code></pre>
 </div>
 <div class="step">
 <h3><span class="n">10</span>Set the password policy</h3>
@@ -270,10 +296,13 @@ footer p{margin:.25rem 0;max-width:80ch}
 <p class="shotline"><span class="shot">Screenshot</span>The error saying the password doesn't meet policy requirements.</p>
 <div class="call stuck"><span class="k">Where people get stuck</span><p><kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>Del</kbd> on your own keyboard goes to <em>your</em> computer, not the VM. Use the NETLAB+ <strong>Send CTRL+ALT+DEL</strong> menu item.</p></div>
 </div>
-<p class="task-head">Task 4: Active Directory tools (Win10)</p>
+</div>
+<p class="task-head">Task 4: Active Directory tools <span class="pdfref">PDF 4.1–4.2</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">12</span>Install RSAT</h3>
-<p>On <strong>Win10</strong>, sign out of Logan and sign in as sysadmin. Open the <strong>Toolbox</strong> folder on the desktop and double-click <code class="inl">WindowsTH-RSAT_WS_1709-x64.msu</code>. Click <strong>Yes</strong>, then <strong>I Accept</strong>. It takes a few minutes. Click <strong>Close</strong> when it finishes.</p>
+<p>Change focus to <strong>Win10</strong>. If you're signed in as Logan, sign out and sign back in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Open the <strong>Toolbox</strong> folder on the desktop and double-click this file:</p>
+<pre class="cmd" data-prompt="File to run:"><code><span class="pr" aria-hidden="true">File to run: </span>WindowsTH-RSAT_WS_1709-x64.msu</code></pre>
 </div>
 <div class="step">
 <h3><span class="n">13</span>Open Active Directory Users and Computers</h3>
@@ -281,123 +310,9 @@ footer p{margin:.25rem 0;max-width:80ch}
 <p class="shotline"><span class="shot">Screenshot</span>Administrative Tools listing the Active Directory snap-ins.</p>
 <p>The console opens but can't reach a domain controller. Right-click <strong>Active Directory Users and Computers</strong> in the left pane to see <strong>Change Domain</strong> and <strong>Change Domain Controller</strong>. The lab is complete.</p>
 </div>
+</div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
-</section>
-
-<section id="fullsteps" aria-labelledby="h-fullsteps">
-<h2 id="h-fullsteps">Full lab steps</h2>
-<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
-<p class="task-head">Task 1 - Creating and Managing User Accounts</p>
-<p class="task-head">Task 1.1 - Adding and Managing User Accounts in Windows 7</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win7 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Click the Start button, then click Control Panel on the right side of the menu.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> In the Control Panel window, click on User Accounts and Family Safety.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> On the next screen, click User Accounts.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Click on Manage another account.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Click on Create a new account.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> The next page will prompt you to enter the name and account type of the new account. In the New account name text field, type in Logan. For the User Type, make sure the Standard User radio button is selected and then click the Create Account button.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Standard user</span>The UAC prompt asking for admin credentials while signed in as Logan on Win7.</label></li></div><div class="step"><h3 class="fh"><span class="n">9</span> Notice that Logan has is now added to the list of users for this machine. To make a couple of customizations to the account, click on the Logan account.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Click on Create a Password.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> The next window will prompt you to enter a password for the user. For this lab exercise, type Password1 in the New password text field and type it in again for confirmation. You can optionally put in a hint to remind the user what the password might be. Click on the Create password button to complete the process. Passwords keep unauthorized users out of the system and keep the information on the computer safe and secure. But, a password only works if it is difficult to guess or crack. Good password rules:  Security experts currently recommend a minimum of 15 characters.  Use a combination of upper/lower case letters, numbers and special characters.  Do not use common words and NEVER use self-identifying information (spouse's, pet's, children's names, etc.).</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Close the User Accounts window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Click the Start button, then click the arrow next to Shut down and select Log off from the context menu.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Now, log into the newly created Logan account by clicking on the account picture. You will be asked to enter the user's password. Type Password1 followed by pressing the Enter key to log in.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Policy enforced</span>The error refusing Pass2 as Logan's new password.</label></li></div><div class="step"><h3 class="fh"><span class="n">15</span> Click on the Start button and then click on Computer.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">16</span> Using Windows Explorer, navigate to C:\Users\sysadmin. Notice the pop-up window telling you that you cannot access the folder because you do not have the proper credentials. Click the Cancel button to close the window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">17</span> Click the X in the File Explorer window to close it.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">18</span> Click on the Start button and then click on Control Panel.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">19</span> Change the View by: to Small icons.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">20</span> Click on User Accounts.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">21</span> On the User Accounts window, click on Manage another account.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">22</span> This time, you get a User Account Control message prompting you to enter the administrator's password. Standard users cannot create or manage other user accounts. If you entered the administrator's password here, you would be granted access. This is how administrators use their standard accounts but still can perform administrative functions safely. For now, click the No button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">23</span> Log off Logan's account.</h3></div>
-<p class="task-head">Task 1.2 - Adding and Managing User Accounts in Windows 8.1</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win8.1 virtual machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> On the Win8.1 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Adding users in Windows 8.1 (and Windows 10) can be started from the Control Panel, but the applet will take you to PC Settings, which is where most configuration settings are made. Click on the Start button and then click on PC Settings.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Under PC Settings, in the left pane, click on Accounts.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> On the Accounts window, click on Other accounts.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> On the right side of the screen, under Manage other accounts, click on Add an account. Microsoft has a new way for users to be created and assigned to Windows computers in Windows 8.1 and Windows 10. They would like you to create a Microsoft Account, and use that account to access not just Windows computers, but online/cloud files that are stored on Microsoft servers. However, you can still create local user accounts that do not synchronize with Microsoft cloud services.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Enter the following information to create a new user account, then click Next: a. User name: Logan b. Password: Password1 c. Password hint: A password with 1</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Confirm the new user account information and click Finish.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Notice the new user account is now added to the accounts list. To make Logan an administrative account, click on the user Logan, then click the Edit button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Use the pull-down list arrow under Account type and select Administrator. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Log off the sysadmin account. To do so in a Windows 8.1 environment, move your cursor to the top-right corner and wait 2-3 seconds until a navigation bar appears. Click Start.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> On the next window, click on the sysadmin icon and choose to Sign out.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Log into the Logan account. First, while on the splash screen, click anywhere to bring up the login screen. Click on Logan. You will be asked to enter the user's password, enter Password1, and press the Enter key. You have now completed the setup of a new administrative user account.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> Notice that Windows is conducting an initial setup for the newly created account.</h3></div>
-<p class="task-head">Task 1.3 - Adding and Managing User Accounts in Windows 10</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Adding users in Windows 10 can be started from the Control Panel, but the applet will take you to PC Settings, which is where most configuration settings are made. Click on the Start button and then click on the Settings icon.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> In the Windows Settings, click on Accounts.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Click on Family &amp; other people from the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Underneath the Other people header, click on Add someone else to this PC.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Enter the following information for the user Logan to be added, followed by clicking Next: a. User name: Logan b. Password: Password1 c. Security Questions:</h3></div>
-<div class="step"><h3 class="fh"><span class="n">1</span> What was your first pet's name? Logan Jr</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> What was the name of the city where you were born? BigCity</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> What was your childhood nickname? Kidd</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Notice the new user account is now created and that it is a local account. Just like Windows 8.1, a newly created user is automatically a Standard User. To make the Logan user account an administrator, click on Logan, then click the Change Account Type button.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Admin account</span>Win10 Settings showing Logan as an Administrator local account.</label></li></div><div class="step"><h3 class="fh"><span class="n">10</span> Under Account type, change it to Administrator. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Now, log off the sysadmin account and log into the Logan account. Click on the Start button, followed by clicking on the sysadmin icon. Choose the Logan account to sign in.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> You will be asked to enter the user's password, enter Password1 followed by pressing the Enter key.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Notice the Windows operating system is setting up the user account for first-time use.</h3></div>
-<p class="task-head">Task 2 - Using Local Users and Groups in Computer Management</p>
-<p class="task-head">Task 2.1 - Adding and Managing User Accounts in Windows 7</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Change focus to the Win7 machine. Log in as the sysadmin account with Train1ing$ as the password.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Right-click on the Computer icon located on the Desktop and click Manage.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> In the Computer Management window, click on Local Users and Groups from the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> In the center pane, double-click on the Users folder, which will open the list of users.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> In the center pane, right-click anywhere within the whitespace and select New User.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> In the New User window, type in the following: a. User name: Sal b. Full name: Sal A. c. Description: Analyst d. Password: SuperSecret</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Uncheck the checkbox for User must change password at next logon and check the box for Password never expires. Click the Create button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> In the New User window, click the Close button to close the window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> By default, any new user created using the Computer Management tool is a Standard User. To give the user administrative privileges, you must make them a member of the administrator's group. Click on Groups underneath Local Users and Groups from the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Double-click on the Administrators group located in the center pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> In the Administrator Properties window, click on the Add button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> On the Select Users window, type Sal into the Enter the object names to select and then click the Check Names button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> The username should now appear in the format &lt;COMPUTER&gt;\&lt;USER&gt;. If it doesn't, go back and check the spelling of the username and try again. If the username is found, click the OK button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> The Administrator Properties should now show Sal as a member of the Administrators group. Click OK to close the properties window and then close the Computer Management window.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Group</span>The Administrators Properties window listing Sal.</label></li></div><div class="step"><h3 class="fh"><span class="n">15</span> Logout of the sysadmin account and log back in again as Sal A.. Now that Sal is a member of the Administrators group, access to other user's files, and folders is permissible.</h3></div>
-<p class="task-head">Task 3 - Creating and Managing Local Group Policies</p>
-<p class="task-head">Task 3.1 - Using the Local Group Policy Editor in Windows 8.1</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Change focus to the Win8.1 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Click the Start button, followed by clicking on the Logan icon located in the top-right corner. Select Sign out.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Sign on as sysadmin with Train1ing$ as the password.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Once logged in, right-click on the Start button and select Search.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> In the Search text field, type in gpedit.msc followed by clicking on the gpedit search result.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Policy</span>The Password Policy settings in gpedit.msc on Win8.1.</label></li></div><div class="step"><h3 class="fh"><span class="n">6</span> In the Local Group Policy Editor, click the arrow to the left of Windows Settings underneath Computer Configuration, then Security Settings, and finally, Account Policies to expand their respective views.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Under Account Policies, click Password Policy to show all password policy options on the right. Make the following changes by double-clicking on each policy that is listed in the right pane: a. Maximum password age: 90 days b. Minimum password length: 8 characters c. Password must meet complexity requirements: Enabled</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Once the password policy is updated, to make the changes effective, reboot the Windows 8.1 computer. Right-click the Start button and select Shut down or sign out &gt; Restart.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> After rebooting, log in as Logan with Password1 as the password.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Once logged in, you need to enter a CTRL+ALT+DEL sequence. In the NETLAB+ navigation bar, click the arrow next to the Win8.1 virtual machine tab, then click on Send CTRL+ALT+DEL.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Click on Change a password.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Enter Password1 as the old password. For the new password, type Pass2. Confirm the password and then click on the arrow or press the Enter key.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Notice the error message stating that the password does not meet the current policy requirements. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Now, try again to change the password but use Password2 as the new password (it has nine characters). Click OK to confirm the change.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> Logout and log back in as Logan to confirm the new password has been applied successfully.</h3></div>
-<p class="task-head">Task 4 - Active Directory Users and Computers in Windows 10</p>
-<p class="task-head">Task 4.1 - Installing Remote Server Administration Tools (RSAT) in Windows 10</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> If already logged in as Logan, sign out of the Logan account.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log back in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Double-click on the Toolbox folder on the Desktop.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Double-click on the WindowsTH-RSAT_WS_1709-x64.msu file and follow the instructions for installation.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Select Yes to the installer.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Click I Accept to proceed.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> It will take a few minutes to install. Once the installation is complete, click Close. You can also close the Toolbox folder window.</h3></div>
-<p class="task-head">Task 4.2 - Using Administrative Tools and Active Directory in Windows 10</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Click on the Start button and then click on the Control Panel icon.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> In the Control Panel window, change the view to Small icons, and select Administrative Tools form the Control Panel applets After clicking on Administrative Tools, you will see a list of the installed Active Directory Management snap-ins.      Active Directory Users and Computers - can do the majority of AD admin tasks and duties. It does not manage GPOs. It can be used to reset passwords, edit group memberships, unlock users, and much more.      Active Directory Administrative Center - allows management of PowerShell history, password policies, and AD Trash Can.      Active Directory Domains and Trusts - with this tool, you can manage forest functional levels, UPN (User Principal Names), functional levels of multiple domains.     Active Directory Sites and Services - this tool allows you to control and insight into</h3><div class="call tip"><span class="k">Note</span><p>It also allows the management of trusts between forests and domains. Sites and Services. Also, schedule replication and determine AD's topology.</p></div></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev6"><span class="shot">RSAT</span>Administrative Tools listing the Active Directory snap-ins on Win10.</label></li></div><div class="step"><h3 class="fh"><span class="n">3</span> Double-click on Active Directory Users and Computers.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Notice a warning message appears to inform you that this is not for administering the local users and groups but for managing resources in the domain. This lab topology is not a domain, but this demonstrates how to manage resources for Active Directory and domain computers. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> In the Active Directory Users and Computers snap-in, notice that the system is not connected to a domain controller and so it will not be usable for managing resources. Click through the menu options to familiarize yourself with the tool. Try right-clicking on Active Directory Users and Computers in the left panel to see how to connect to or change domains.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> The lab is now complete; you may end the reservation.</h3></div>
-<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: accounts, groups, and policy</h2>
@@ -534,7 +449,7 @@ net accounts /minpwlen:8 /maxpwage:90</code></pre>
     b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
     b.addEventListener('click',function(){
       var code=pre.querySelector('code'), clone=code.cloneNode(true);
-      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      [].forEach.call(clone.querySelectorAll('.c,.pr'),function(x){x.remove();});
       var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
       function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
@@ -552,167 +467,5 @@ net accounts /minpwlen:8 /maxpwage:90</code></pre>
   if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
 })();
 </script>
-
-<!-- ===== LAB MODE (begin) — self-contained; safe to remove as a block ===== -->
-<style id="lab-mode-css">
-/* Floating toggle button — always available, top-right */
-.pm-toggle{position:fixed;top:10px;right:12px;z-index:2147483100;display:inline-flex;
-  align-items:center;gap:7px;min-height:40px;padding:0 15px;cursor:pointer;
-  font:600 .85rem/1 var(--f-body);border-radius:999px;
-  background:var(--accent);color:var(--accent-ink);border:1px solid transparent;
-  box-shadow:0 4px 14px rgba(0,0,0,.28)}
-.pm-toggle:hover{filter:brightness(1.08)}
-.pm-toggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.pm-toggle .pm-ico{font-family:var(--f-mono);font-weight:700}
-@media print{.pm-toggle{display:none!important}}
-
-/* ---- When lab mode is ON ---- */
-html[data-present="on"] body{line-height:1.5}
-/* Collapse the sidebar grid to a single column and go full width */
-html[data-present="on"] .wrap{display:block;max-width:100%;padding:8px 14px 90px}
-
-/* Hide page chrome that wastes room in a narrow column */
-html[data-present="on"] .toc,
-html[data-present="on"] header.bar,
-html[data-present="on"] .badges,
-html[data-present="on"] .ticket .lede,
-html[data-present="on"] .ticket .fields,
-html[data-present="on"] .done-row{display:none!important}
-
-/* Slim the title block down to a compact header */
-html[data-present="on"] .ticket{margin:0 0 10px}
-html[data-present="on"] .ticket-in{padding:10px 14px}
-html[data-present="on"] .ticket h1{font-size:1.15rem;line-height:1.25;margin:2px 0 0}
-
-/* Show one section at a time */
-html[data-present="on"] #main > section{display:none}
-html[data-present="on"] #main > section.pm-current{display:block;animation:pm-fade .18s ease}
-@keyframes pm-fade{from{opacity:0}to{opacity:1}}
-
-/* Readability bump for the one visible section */
-html[data-present="on"] #main > section{font-size:1.05rem}
-html[data-present="on"] #main > section h2{font-size:1.2rem}
-html[data-present="on"] .step h3,
-html[data-present="on"] .step h4{font-size:1.04rem}
-html[data-present="on"] .cmd{font-size:1rem;white-space:pre-wrap;word-break:break-word}
-
-/* Slim bottom control dock for advancing through sections */
-.pm-dock{display:none}
-html[data-present="on"] .pm-dock{position:fixed;left:0;right:0;bottom:0;z-index:2147483100;
-  display:flex;align-items:center;gap:8px;padding:8px 12px;
-  padding-bottom:calc(8px + env(safe-area-inset-bottom,0));
-  background:var(--surface);border-top:1px solid var(--rule)}
-.pm-dock button{flex:0 0 auto;min-height:40px;min-width:44px;padding:0 14px;cursor:pointer;
-  font:700 .9rem/1 var(--f-body);border-radius:9px;
-  background:var(--surface-2);color:var(--ink);border:1px solid var(--rule)}
-.pm-dock button:hover{background:var(--accent);color:var(--accent-ink)}
-.pm-dock button:disabled{opacity:.4;cursor:not-allowed}
-.pm-dock button:disabled:hover{background:var(--surface-2);color:var(--ink)}
-.pm-dock .pm-where{flex:1 1 auto;text-align:center;min-width:0;
-  font:600 .82rem/1.25 var(--f-body);color:var(--ink-2);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pm-dock .pm-where b{color:var(--ink);display:block;font-size:.9rem}
-.pm-dock .pm-exit{background:transparent}
-</style>
-
-<div class="pm-dock" id="pmDock" aria-hidden="true">
-  <button type="button" data-pm="prev" aria-label="Previous section">◀</button>
-  <div class="pm-where"><span id="pmCount"></span><b id="pmName"></b></div>
-  <button type="button" data-pm="next" aria-label="Next section">▶</button>
-  <button type="button" data-pm="exit" class="pm-exit" aria-label="Exit lab mode">✕</button>
-</div>
-
-<script id="lab-mode-js">
-(function () {
-  "use strict";
-  var root = document.documentElement;
-  var KEY = "aplus:labmode:v1";               // shared across all A+ companion pages
-  var sections = [], idx = 0;
-  var dock, countEl, nameEl, prevBtn, nextBtn;
-
-  function labelFor(sec) {
-    var h = sec.querySelector("h2");
-    if (!h) return sec.id || "Section";
-    return (h.textContent || "").replace(/\s+/g, " ").trim();
-  }
-
-  function show(i) {
-    if (!sections.length) return;
-    idx = Math.max(0, Math.min(sections.length - 1, i));
-    sections.forEach(function (s, n) { s.classList.toggle("pm-current", n === idx); });
-    if (countEl) countEl.textContent = (idx + 1) + " / " + sections.length;
-    if (nameEl) nameEl.textContent = labelFor(sections[idx]);
-    if (prevBtn) prevBtn.disabled = idx === 0;
-    if (nextBtn) nextBtn.disabled = idx === sections.length - 1;
-    window.scrollTo(0, 0);
-  }
-
-  function enter() {
-    sections = Array.prototype.slice.call(document.querySelectorAll("#main > section"));
-    root.setAttribute("data-present", "on");
-    if (dock) dock.setAttribute("aria-hidden", "false");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "true");
-      btn.querySelector(".pm-txt").textContent = "Exit lab mode"; }
-    try { localStorage.setItem(KEY, "1"); } catch (e) {}
-    show(0);
-  }
-
-  function exit() {
-    root.removeAttribute("data-present");
-    sections.forEach(function (s) { s.classList.remove("pm-current"); });
-    if (dock) dock.setAttribute("aria-hidden", "true");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "false");
-      btn.querySelector(".pm-txt").textContent = "Lab mode"; }
-    try { localStorage.setItem(KEY, "0"); } catch (e) {}
-  }
-
-  function toggle() { root.getAttribute("data-present") === "on" ? exit() : enter(); }
-
-  function build() {
-    var btn = document.createElement("button");
-    btn.className = "pm-toggle"; btn.id = "pmToggle"; btn.type = "button";
-    btn.setAttribute("aria-pressed", "false");
-    btn.title = "Lab mode — steps beside the lab, one section at a time (Shift+L)";
-    btn.innerHTML = '<span class="pm-ico" aria-hidden="true">⇥</span><span class="pm-txt">Lab mode</span>';
-    btn.addEventListener("click", toggle);
-    document.body.appendChild(btn);
-
-    dock = document.getElementById("pmDock");
-    countEl = document.getElementById("pmCount");
-    nameEl = document.getElementById("pmName");
-    if (dock) {
-      prevBtn = dock.querySelector('[data-pm="prev"]');
-      nextBtn = dock.querySelector('[data-pm="next"]');
-      dock.addEventListener("click", function (e) {
-        var t = e.target.closest("[data-pm]"); if (!t) return;
-        var a = t.getAttribute("data-pm");
-        if (a === "prev") show(idx - 1);
-        else if (a === "next") show(idx + 1);
-        else if (a === "exit") exit();
-      });
-    }
-
-    document.addEventListener("keydown", function (e) {
-      if (e.shiftKey && (e.key === "L" || e.key === "l")) {
-        var tag = (e.target && e.target.tagName) || "";
-        if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
-        e.preventDefault(); toggle(); return;
-      }
-      if (root.getAttribute("data-present") !== "on") return;
-      if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); show(idx + 1); }
-      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(idx - 1); }
-      else if (e.key === "Escape") { e.preventDefault(); exit(); }
-    });
-  }
-
-  if (document.readyState === "loading")
-    document.addEventListener("DOMContentLoaded", build);
-  else build();
-})();
-</script>
-<!-- ===== LAB MODE (end) ===== -->
-
 </body>
 </html>

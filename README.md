@@ -10,14 +10,17 @@ Student companion pages for all 18 labs in the NDG **CompTIA A+ Lab Series v4** 
 - Reference tables for the tools and commands, beyond what the lab uses
 - A troubleshooting table, help desk scenarios, and A+ exam relevance
 - Self-check questions, an evidence (screenshot) checklist, and a printable cheat sheet
+- Machine bands (On Win7, On Win10, On Lubuntu) and exact terminal prompts on every command, so students always know which VM they're on
 - Light/dark mode, text size, print, and progress tracking saved in the browser
+
+Every page has been reconciled step by step and command by command against its NDG PDF. See `RECONCILIATION.md` for the method and per-lab results.
 
 ## Files
 
 - `index.html` is the lab home. It has sorting, Core 1 / Core 2 filters, and each student's progress per lab.
 - `aplus_lab01a_companion.html` through `aplus_lab17_companion.html` are one page per lab.
 - `tools/` holds the build:
-  - `tools/bodies/labNN.txt` holds each lab's content in a short markup format (see `tools/markup.py`). Lab 01-A is in HTML.
+  - `tools/bodies/labNN.txt` holds each lab's content in a short markup format (see `tools/markup.py`). 
   - `tools/shell.py` holds the shared design, header, and scripts.
   - `tools/labs.py` holds lab titles, tools, and exam mapping.
 

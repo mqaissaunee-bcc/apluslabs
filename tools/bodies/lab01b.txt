@@ -1,4 +1,7 @@
 @lede Before you troubleshoot a PC you need to know exactly what's in it. You will inventory the same machines four ways (the System applet, systeminfo, msinfo32, and dxdiag), save reports you can hand to another tech, and compare them with a third-party audit tool.
+@vm Win7|192.168.1.7/24|sysadmin|Train1ng$
+@vm Win8.1|192.168.1.8/24|sysadmin|Train1ng$
+@vm Win10|192.168.1.10/24|sysadmin|Train1ng$
 
 == overview | Why this lab matters
 Most help desk calls start with the same questions: what Windows edition is this, how much RAM, which CPU, what's the BIOS version, which driver is the display using? Windows answers all of them without installing anything, but each tool answers at a different depth.
@@ -6,11 +9,8 @@ The **System** page gives a one-glance summary. **systeminfo** dumps text you ca
 The habit this lab builds is saving a **baseline** report while a system is healthy, so you can compare after something changes.
 
 == environment | The environment you're working in
-| Machine | IP address | Account | Password |
-| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
-| Win8.1 | `192.168.1.8/24` | `sysadmin` | `Train1ng$` |
-| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
-You'll move between all three. Task 3 (msinfo32) works on any of them; the lab continues on Win10. **Free PC Audit** is already on the Win7 desktop.
+{{VMTABLE}}
+You move between all three machines; the colored bands in the walkthrough show which one each run of steps is on. **Free PC Audit** is already on the Win7 desktop.
 !tip Good to know before you start | Run systeminfo from an **elevated** prompt (Run as administrator) on Win7, as the lab asks. Some fields come back incomplete from a standard prompt.
 
 == then-now | Then vs. now: Windows 11
@@ -23,54 +23,68 @@ You'll move between all three. Task 3 (msinfo32) works on any of them; the lab c
 | Free PC Audit (third-party) | Still a free download; many shops use CPU-Z (Lab 13) or their RMM agent's inventory instead. |
 
 == walkthrough | Walkthrough
-## Task 1: The System page
+## Task 1: The System Control Panel applet <<1.1–1.2>>
+@@ Win7
 ### Read the summary on Win7
-Log in to **Win7**. Open **Start > Control Panel**, set **View by** to **Small icons**, and click **System**. Note the Windows edition, processor, installed memory, system type (32- or 64-bit), computer name, and product ID.
+Open the **Win7** console and sign in as `sysadmin` with `Train1ng$`. Click **Start > Control Panel**, set **View by** to **Small icons**, and click **System**. Note the Windows edition, processor, memory, system type (32- or 64-bit), computer name, and product ID. Close the window.
+@@ Win8.1
 ### Use the Power User menu on Win8.1
-Log in to **Win8.1**, right-click **Start**, and choose **System**. It's the same page, reached faster. Close it when you've compared.
-## Task 2: systeminfo
-### Run systeminfo elevated on Win7
-On **Win7**, click **Start**, type `command prompt`, right-click the result, and choose **Run as administrator**. Accept the UAC prompt, then run:
-```
+Open the **Win8.1** console, click the splash screen, and sign in as `sysadmin` with `Train1ng$`. Right-click **Start** (lower-left corner of the taskbar) and click **System**. It's the same page, reached faster. Review the same details and close the window.
+## Task 2: systeminfo.exe <<2.1–2.2>>
+@@ Win7
+### Open an elevated Command Prompt on Win7
+Change focus back to **Win7**. Click **Start**, type `command prompt` in the search box, right-click the first **Command Prompt** result, and choose **Run as administrator**. Click **Yes** at the User Account Control prompt.
+### Run systeminfo, then exit
+```C:\Windows\System32>
 systeminfo.exe
 ```
-Scroll up through the output: OS version and build, install date, last boot time, BIOS version, processor, total memory, hotfixes, and network adapters.
+Scroll up and review the output: OS version and build, install date, BIOS version, processor, total memory, hotfixes, and network adapters. Then close the prompt:
+```C:\Windows\System32>
+exit
+```
 !shot The systeminfo output on Win7, showing the OS and BIOS lines.
+@@ Win10
 ### Run it on Win10
-Log in to **Win10**, right-click **Start > Run**, enter `cmd`, and run `systeminfo.exe` again. Compare the output with Win7. Type `exit` when you're done.
+Open the **Win10** console, click the splash screen, and sign in as `sysadmin` with `Train1ng$`. Right-click **Start**, click **Run**, type the command below, and press [[Enter]]:
+```Run box:
+cmd
 ```
-%% Useful variations on a real PC
-systeminfo | more
-systeminfo > C:\Users\sysadmin\Desktop\sysinfo.txt
-systeminfo /fo csv > sysinfo.csv
-systeminfo | findstr /i "OS Memory BIOS"
+In the Command Prompt window, run systeminfo, review the output, and exit:
+```C:\Windows\System32>
+systeminfo.exe
+exit
 ```
-## Task 3: System Information (msinfo32)
-### Open msinfo32 and explore the categories
-On Win10, right-click **Start > Run** and enter:
+!tip Which prompt will you actually see? | The PDF shows `C:\Windows\System32>` for both machines. A Command Prompt opened from **Run** usually starts in `C:\Users\sysadmin>` instead. The command works the same from either folder. // Leave Win10 open for the next task.
+## Task 3: The MSInfo32 utility <<3.1–3.2>>
+@@ Win10
+### Open System Information
+On **Win10**, right-click **Start > Run**, type the command below, and press [[Enter]] (or click **OK**):
+```Run box:
+msinfo32.exe
 ```
-msinfo32
-```
-Expand each category in the left pane: **Hardware Resources**, **Components**, and **Software Environment**. Then click **System Summary** and read the system model, processor, memory, and BIOS details.
+In the left panel, click the **+** next to each category (System Summary, Hardware Resources, Components, Software Environment) to see what each holds. Then click **System Summary** and inspect the system model, system type, processor, memory, and BIOS information.
 ### Find the display adapter
-Type `Display` in **Find what** at the bottom of the window and click **Find**. Use **Find Next** if needed. It jumps to **Components > Display**.
-!stuck Where people get stuck | Find matches category names and values exactly, and it isn't forgiving. Search for "Display", not "graphics card". If you get nothing, check that **Search selected category only** is unchecked.
+Type `Display` in **Find what** at the bottom of the window and click **Find** (click **Find Next** if needed). It finds **Components > Display**.
+!stuck Where people get stuck | Find matches exact category names and values. Search for `Display`, not "graphics card". If you get nothing, check that **Search selected category only** is unchecked.
 ### Export a report
-With **Components > Display** selected, choose **File > Export**. Go to **Documents**, create a folder named `System Info`, open it, and save the file as `<date>-display_info` (for example `20261017-display_info`).
+With **Components > Display** selected, choose **File > Export**. In the **Export As** dialog, click **Documents** in Quick access. Right-click in the white space, choose **New > New Folder**, name it `System Info`, press [[Enter]], and double-click it. In **File name** type `<date>-display_info` (for example `20261017-display_info`) and click **Save**.
 !shot The Export As dialog showing the System Info folder and your file name.
 ### Open the report
-Open **File Explorer > Documents > System Info** and double-click your file. It's plain text you can attach to a ticket or keep as a baseline. On a real system, copy it somewhere off the PC so it's available if the machine won't boot.
-## Task 4: DirectX Diagnostic Tool
+Close System Information. Open **File Explorer** from the taskbar, go to **Documents > System Info**, and double-click your file. It's a text file with the display adapter information. Close the windows.
+!tip Best practice from the PDF | Save a copy of reports like this somewhere off the PC, so you can still read them if the system won't boot.
+## Task 4: DirectX Diagnostic Tool <<4.1>>
+@@ Win7
 ### Launch dxdiag on Win7
-On **Win7**, click **Start**, type `dxdiag`, and open it. When asked whether to check that drivers are digitally signed, click **No** for this lab. On a real PC, saying **Yes** is the better habit.
+Change focus back to **Win7**. Click **Start**, type `dxdiag` in the search box, and click the **dxdiag** result. (Run box `dxdiag.exe` also works.) When it asks whether to check that drivers are digitally signed, click **No** for this lab.
 ### Read the tabs
-Step through **System**, **Display**, **Sound**, and **Input** with **Next Page**. Check the **Notes** box at the bottom of each tab. That's where dxdiag reports any problem it finds.
+Click **Next Page** to move through **System**, **Display**, **Sound**, and **Input**. Check the **Notes** pane at the bottom of each page; problems are described there.
 ### Save the report
-Click **Save All Information**, choose **Desktop**, keep the name `DxDiag`, and click **Save**. Open the file from the desktop and look through it.
+Click **Save All Information**. In the Save As window click **Desktop**, keep the file name **DxDiag**, and click **Save**. Double-click the **DxDiag** file on the desktop, review it, and close Notepad. Close any other windows but leave Win7 open.
 !shot The DxDiag.txt file open in Notepad.
-## Task 5: Free PC Audit
+## Task 5: Free PC Audit <<5.1>>
+@@ Win7
 ### Run the audit
-On Win7, right-click the **Free PC Audit** desktop shortcut, choose **Run as administrator**, and accept UAC. When the scan finishes, scroll through the **System** tab. It also lists shares and installed hotfixes.
+On **Win7**, right-click the **Free PC Audit** desktop shortcut and choose **Run as administrator**. Click **Yes** at UAC. When the analysis finishes, scroll through the **System** tab; it also lists shares and Windows Update hotfixes.
 !shot Free PC Audit results on the System tab.
 The lab is complete.
 

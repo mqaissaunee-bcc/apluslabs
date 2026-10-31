@@ -1,4 +1,6 @@
 @lede Most support today happens without walking to the user's desk. You will enable Remote Desktop on two machines, open the firewall for it, connect in both directions, troubleshoot over the session, and install and use TightVNC as a third-party alternative.
+@vm Win7|192.168.1.7/24|sysadmin|Train1ng$
+@vm Win10|192.168.1.10/24|Sysadmin|Train1ng$
 @vms Win7, Win10
 
 == overview | Why this lab matters
@@ -7,9 +9,8 @@ Remote access lets you see and control a PC from anywhere on the network: fix a 
 You'll configure both, connect each way, and use Task Manager over the remote session to collect performance information the way you would for a "my PC is slow" call.
 
 == environment | The environment you're working in
-| Machine | IP address | Account | Password |
-| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
-| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+{{VMTABLE}}
+In this lab the colored band shows which VM **console** you're sitting at. When you work inside a remote session, an inline label such as {{on Win7}} marks the machine your clicks actually happen on.
 
 | TightVNC setting | Value |
 | VNC password and admin password | `VNCpwd` |
@@ -27,56 +28,88 @@ You'll configure both, connect each way, and use Task Manager over the remote se
 | TightVNC | Still available. Built-in **Quick Assist** ([[Win]]+[[Ctrl]]+[[Q]]) shares the user's screen over the internet with a code. |
 
 == walkthrough | Walkthrough
-## Task 1: Enable Remote Desktop on Win7
+## Task 1: Enable Remote Desktop on Win7 <<1.1>>
+@@ Win7
 ### Turn it on
-Log in to **Win7**. Click **Start**, right-click **Computer > Properties > Remote settings**. On the **Remote** tab, select **Allow connections from computers running any version of Remote Desktop (less secure)** and click **Apply**.
+Open the **Win7** console and sign in as `sysadmin` with `Train1ng$`. Click **Start**, right-click **Computer**, and choose **Properties**. Click **Remote settings** in the left pane. On the **Remote** tab, select **Allow connections from computers running any version of Remote Desktop (less secure)** and click **Apply**.
 !tip Why "less secure"? | The other option requires Network Level Authentication, which older clients don't support. The lab uses the broad setting for compatibility. On real PCs, choose NLA.
 ### Check who may connect
-Click **Select Users**. sysadmin already has access because administrators are allowed by default. Click **OK** twice.
+Click **Select Users**. sysadmin already has access because administrators are allowed by default. Click **OK**, then **OK** again in System Properties.
 !shot The Win7 Remote tab with Remote Desktop allowed.
 ### Allow it through the firewall
-Open **Control Panel > Windows Firewall > Allow a program or feature through Windows Firewall > Change settings**. Check **Remote Desktop** and its **Home/Work (Private)** column. Click **OK**. Log off Win7.
-## Task 2: Enable Remote Desktop on Win10
+In the System window, click **Control Panel Home**, set **View by** to **Small icons**, and click **Windows Firewall**. Click **Allow a program or feature through Windows Firewall**, then **Change settings**. Make sure **Remote Desktop** is checked, and its **Home/Work (Private)** column too. Click **OK** and close Windows Firewall.
+### Log off Win7
+Click **Start**, the arrow next to **Shut down**, and **Log off**. (An RDP session can't share the console with a signed-in user on Windows 7.)
+## Task 2: Enable Remote Desktop on Win10 <<1.2>>
+@@ Win10
 ### Turn it on in Settings
-Log in to **Win10**. Right-click **Start > Settings > System > Remote Desktop**, switch **Enable Remote Desktop** on, and click **Confirm**. Click **Select users that can remotely access this PC** and confirm sysadmin has access.
+Open the **Win10** console, click the splash screen, and sign in as `sysadmin` with `Train1ng$`. Right-click **Start > Settings > System > Remote Desktop**. Click the **Off** switch under **Enable Remote Desktop** and click **Confirm**. Under **User accounts**, click **Select users that can remotely access this PC**, confirm sysadmin has access (add it if needed), and click **OK**.
 ### Check the firewall rule
-In the Settings search box, type `firewall` and open **Allow an app through Windows Firewall**. Click **Change settings** and make sure **Remote Desktop** is checked for **Private**. Click **OK**.
+In the **Find a setting** box, start typing `Windows Firewall` and click **Allow an app through Windows Firewall**. Click **Change settings** and make sure **Remote Desktop** is checked, and its **Private** column too. Click **OK**. Leave Win10 open.
 !shot The Win10 firewall allowed-apps list with Remote Desktop checked for Private.
-## Task 3: Connect from Win10 to Win7
+## Task 3: Connect from Win10 to Win7 <<1.3>>
+@@ Win10
 ### Open Remote Desktop Connection
-On Win10, search for **Remote Desktop Connection** and open it (or run `mstsc`). Click **Show Options**, enter `192.168.1.7` as the computer and `sysadmin` as the user name, and click **Connect**. Enter `Train1ng$`, then click **Yes** at the certificate warning.
+On **Win10**, click the search button, start typing `Remote Desktop Connection`, and open it. Click **Show Options** and enter:
+```Computer:
+192.168.1.7
+```
+```User name:
+sysadmin
+```
+Click **Connect**. When asked for credentials, enter `Train1ng$` and click **OK**. Click **Yes** at the certificate warning.
 !stuck Certificate warning | RDP uses a self-signed certificate on each PC, so the client can't verify it. In a lab that's expected. On a real network, a warning you don't expect can mean you're connecting to the wrong machine.
 ### Work on the remote desktop
-The connection bar at the top shows you're on Win7. Create a text document on the desktop named `remote access`, open it, type `This file was created remotely from Win10.`, save, and close.
+{{on Win7}} You're still at the Win10 console, but everything inside the RDP window happens on Win7; the connection bar at the top says so. Right-click the desktop, choose **New > Text Document**, name it `remote access`, and press [[Enter]]. Open it, type `This file was created remotely from Win10.`, click **File > Save**, and close Notepad.
 !shot The RDP session to Win7 showing the connection bar and the remote access file.
 ### Disconnect
 Click the **X** on the connection bar and click **OK**.
-## Task 4: Connect from Win7 to Win10
+## Task 4: Connect from Win7 to Win10 <<1.4>>
+@@ Win7
 ### Confirm the file at the Win7 console
-Go to **Win7** directly and sign in. Open **remote access**, add a line `Confirmed by Win7 client.`, save, and close.
+Go to the **Win7** console directly (not through Win10) and sign in as `sysadmin`. Open **remote access** on the desktop, add a new line `Confirmed by Win7 client.`, click **File > Save**, and close Notepad.
 ### Open a session to Win10
-Search for **Remote Desktop Connection**, connect to `192.168.1.10` as `sysadmin` / `Train1ng$`, and click **Yes** at the certificate prompt. If it doesn't start right away, wait 2–3 minutes.
-## Task 5: Troubleshoot over RDP
+Click **Start**, type `Remote Desktop` in the search field, and open **Remote Desktop Connection**. Enter the Win10 address and click **Connect**:
+```Computer:
+192.168.1.10
+```
+Enter user name `sysadmin` and password `Train1ng$`, click **OK**, and click **Yes** at the certificate prompt. If the session doesn't start right away, wait 2–3 minutes. The connection bar shows the Win10 address.
+## Task 5: Troubleshoot over RDP <<1.5>>
+@@ Win7
 ### Capture performance data
-In the Win10 session, right-click the taskbar > **Task Manager > More details > Performance**. Right-click the **CPU** graph and choose **Copy**.
+{{on Win10}} You're at the Win7 console, working inside the RDP window on Win10. Right-click the taskbar and choose **Task Manager**, make sure you're in **More details**, and click **Performance**. Right-click the **CPU** graph and choose **Copy**.
 ### Save it to a file
-Create `remote session.txt` on the remote desktop, open it, **Paste**, and save. You now have a snapshot of the remote PC's CPU details to compare later.
+{{on Win10}} Still in the session, right-click the desktop, choose **New > Text Document**, and name it `remote session.txt`. Open it, right-click, choose **Paste**, and click **File > Save**. Close the file and Task Manager.
 !shot The remote session.txt file showing the pasted CPU summary.
 ### Disconnect properly
-Close Task Manager, then **Start > Power > Disconnect**.
+{{on Win10}} Click **Start > Power > Disconnect**. You're back on the Win7 console; leave it open.
 !tip Disconnect or sign out? | **Disconnect** leaves your programs running on the remote PC so you can reconnect. **Sign out** closes them. Signing out is cleaner when you're done.
-## Task 6: TightVNC
+## Task 6: TightVNC <<2.1–2.3>>
+@@ Win7
 ### Install the server on Win7
-On **Win7**, open **Installs** on the desktop and run `tightvnc-2.8.8-gpl-setup-32bit`. Accept the license, choose **Typical**, keep all boxes checked (file associations, service, firewall exception), and install. Accept UAC.
+On **Win7**, open **Installs** on the desktop and double-click this package. Click **Run** at the security warning.
+```File to run:
+tightvnc-2.8.8-gpl-setup-32bit
+```
+Click **Next**, accept the license, **Next**, choose **Typical**, keep every box checked (file associations, server options, firewall exceptions), **Next**, then **Install**. Click **Yes** at UAC.
 ### Set the passwords
-Select **Require password-based authentication** and enter `VNCpwd` twice. Select **Protect control interface with an administrative password** and enter `VNCpwd` twice. Click **OK**, then **Finish**.
+In **TightVNC Server: Set Passwords**, select **Require password-based authentication** and enter `VNCpwd` in both fields. Select **Protect control interface with an administrative password** and enter `VNCpwd` in both fields. Click **OK**, then **Finish**.
 !shot The TightVNC Set Passwords window with both options selected.
 ### Check the service settings
-Open **Start > All Programs > TightVNC > TightVNC Server (Service Mode) > TightVNC Service - Offline Configuration** and accept UAC. On the **Server** tab, under **Miscellaneous**, uncheck **Hide desktop wallpaper** and **Show icon in the notification area**. Click **OK**.
+The service is already running and starts at boot. Open **Start > All Programs > TightVNC > TightVNC Server (Service Mode) > TightVNC Service - Offline Configuration** and click **Yes** at UAC. If the window doesn't appear, click its taskbar icon. On the **Server** tab, under **Miscellaneous**, make sure **Hide desktop wallpaper** and **Show icon in the notification area** are unchecked. Click **OK**.
+@@ Win10
 ### Install only the viewer on Win10
-On **Win10**, open **Toolbox** and run `tightvnc-2.8.8-gpl-setup-64bit`. Choose **Custom**, set **TightVNC Server** to **Entire feature will be unavailable**, and finish the install.
+Change focus to **Win10** (sign in as `sysadmin` if needed). Open **Toolbox** on the desktop and double-click this package; click **Run** if warned.
+```File to run:
+tightvnc-2.8.8-gpl-setup-64bit
+```
+Click **Next**, accept the terms, **Next**, and choose **Custom**. Click the drop-down next to **TightVNC Server** and choose **Entire feature will be unavailable**, then **Next**. Keep all boxes checked, **Next**, **Install**, **Yes** at UAC, and **Finish**.
 ### Connect with VNC
-Search for and open **TightVNC Viewer**. Enter `192.168.1.7` as the Remote Host, click **Connect**, and enter `VNCpwd`. You're now viewing and controlling Win7's actual console.
+Search for **TightVNC Viewer** and open it. In **New TightVNC Connection**, enter the Remote Host and click **Connect**, then enter `VNCpwd` and click **OK**:
+```Remote Host:
+192.168.1.7
+```
+You're now viewing and controlling Win7's actual console.
 !shot TightVNC Viewer on Win10 showing the Win7 desktop.
 The lab is complete.
 

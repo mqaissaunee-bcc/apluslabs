@@ -12,6 +12,7 @@
   --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
   --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
   --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --m-win7:#1F5FA8; --m-win81:#0B7377; --m-win10:#6A3FB0; --m-lub:#B4481A; --m-newlub:#8A5A00; --m-bg:#F3F6FA;
   --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
   --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
@@ -22,13 +23,15 @@
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}}
 :root[data-theme="dark"]{
   --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
@@ -108,6 +111,22 @@ main p,main li{max-width:68ch}
 p.shotline{margin:.5rem 0}
 pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
 pre.cmd .c{color:var(--code-dim)}
+pre.cmd .pr{color:var(--code-dim);user-select:none;-webkit-user-select:none}
+pre.cmd.file{border-left:4px solid var(--tag)}
+.fcap{font-size:.85rem;color:var(--ink-2);margin:.6rem 0 -.3rem}
+.m-win7{--mc:var(--m-win7)} .m-win81{--mc:var(--m-win81)} .m-win10{--mc:var(--m-win10)} .m-lub{--mc:var(--m-lub)} .m-newlub{--mc:var(--m-newlub)}
+.mrun{border-left:5px solid var(--mc);padding:.1rem 0 .1rem .9rem;margin:1rem 0 1.25rem}
+.mband{display:inline-flex;align-items:center;gap:.4rem;margin:0 0 .25rem -.9rem;padding:.3rem .8rem .3rem .7rem;background:var(--m-bg);border:1px solid var(--mc);border-left:5px solid var(--mc);border-radius:0 6px 6px 0;font-weight:700;color:var(--mc);font-family:var(--f-display)}
+.onm{display:inline-block;font-weight:700;color:var(--mc);border:1px solid var(--mc);border-radius:4px;padding:0 .35rem;font-size:.88em;background:var(--m-bg)}
+.pdfref{display:inline-block;margin-left:.5rem;font-family:var(--f-body);font-weight:600;font-size:.75rem;color:var(--ink-2);border:1px solid var(--rule);border-radius:3px;padding:0 .4rem;vertical-align:middle}
+.topo{margin:1rem 0;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--surface-2)}
+.topo .bus{text-align:center;font-family:var(--f-mono);font-size:.85rem;color:var(--ink-2);margin:0 0 .3rem;padding-bottom:.3rem;border-bottom:4px solid var(--ink)}
+.topo ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+.topo li{position:relative;margin-top:.9rem;border:2px solid var(--mc);border-top-width:6px;border-radius:6px;padding:.35rem .7rem;background:var(--surface);text-align:center;min-width:7.5rem}
+.topo li::before{content:"";position:absolute;top:-1.05rem;left:50%;height:.9rem;border-left:2px solid var(--ink)}
+.topo li b{display:block;color:var(--mc)} .topo li span{font-family:var(--f-mono);font-size:.85rem}
+.vmnote{font-size:.8rem;color:var(--ink-2)} .topo li.unused{border-style:dashed;opacity:.75}
+.topo .hosted{font-size:.85rem;color:var(--ink-2);text-align:center;margin:.5rem 0 0}
 .copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
 .tbl{overflow-x:auto;margin:.75rem 0}
 table{border-collapse:collapse;width:100%;font-size:.94rem}
@@ -136,17 +155,13 @@ footer p{margin:.25rem 0;max-width:80ch}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media print{
+  .mrun{border-left-color:#000} .mband,.onm{color:#000;border-color:#000;background:#fff}
   .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
   body{background:#fff;color:#000} .wrap{display:block;padding:0}
   main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
-
-#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
-#fullsteps .step h3.fh .n{margin-right:.5rem}
-#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
-#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab09-v1:">
@@ -163,7 +178,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 </div></header>
 <div class="ticket"><div class="ticket-in">
   <div class="stub"><span class="lbl">Lab</span><span class="no">09</span><span class="series">CompTIA A+ Lab Series v4</span></div>
-  <div class="tk-body"><h1>Windows Control Panel & Settings</h1><p class="lede">Settings and Control Panel together hold almost every option a user will ask you to change. You will check the installed Windows version, adjust resolution and power plans, tighten browser privacy and security zones, show hidden files and extensions, and raise User Account Control.</p><dl class="fields"><div><dt>Time</dt><dd>40–50 min</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Machines</dt><dd>Win8.1, Win10</dd></div><div><dt>Exam domains</dt><dd>Core 2: Operating Systems<br>Core 2: Security</dd></div></dl></div>
+  <div class="tk-body"><h1>Windows Control Panel & Settings</h1><p class="lede">Settings and Control Panel together hold almost every option a user will ask you to change. You will check the installed Windows version, adjust resolution and power plans, tighten browser privacy and security zones, show hidden files and extensions, and raise User Account Control.</p><dl class="fields"><div><dt>Time</dt><dd>40–50 min</dd></div><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Machines</dt><dd>Win7, Win8.1, Win10</dd></div><div><dt>Exam domains</dt><dd>Core 2: Operating Systems<br>Core 2: Security</dd></div></dl></div>
 </div></div>
 <div class="wrap">
 <nav class="toc" aria-label="On this page"><details><summary>On this page</summary>
@@ -172,7 +187,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: Settings, Control Panel, and shortcuts</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -181,6 +196,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <li><a href="#evidence"><span>Evidence to capture</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#cheat"><span>Cheat sheet</span><span class="tick" aria-hidden="true"></span></a></li></ol></details></nav>
 <main id="main" tabindex="-1">
+<p> only the optional challenge tasks use it</p>
 <section id="overview" aria-labelledby="h-overview">
 <h2 id="h-overview">Why this lab matters</h2>
 <p>A lot of help desk work is configuration: "my screen is too small," "my laptop goes to sleep during presentations," "I can't see the file extension," "is this PC up to date?" Each answer lives in a specific Settings page or Control Panel applet, and knowing where is what makes you fast.</p>
@@ -190,7 +206,8 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="environment" aria-labelledby="h-environment">
 <h2 id="h-environment">The environment you're working in</h2>
-<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win8.1</td><td><code class="inl">192.168.1.8/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<p class="fcap">Lab Settings, exactly as listed in the PDF</p><div class="tbl"><table><thead><tr><th scope="col">Virtual Machine</th><th scope="col">IP Address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7<br><span class="vmnote">Listed in the PDF</span></td><td><code>192.168.1.7/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Win8.1</td><td><code>192.168.1.8/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Win10</td><td><code>192.168.1.10/24</code></td><td><code>Sysadmin</code></td><td><code>Train1ng$</code></td></tr></tbody></table></div><p class="fcap">The PDF capitalizes the Win10 account as <code>Sysadmin</code>. Windows user names aren't case-sensitive, so <code>sysadmin</code> works too. The password is case-sensitive.</p>
+<div class="topo" role="img" aria-label="Pod topology: Win7 at 192.168.1.7/24, Win8.1 at 192.168.1.8/24, Win10 at 192.168.1.10/24, all on 192.168.1.0/24"><div class="bus">192.168.1.0/24 (one flat subnet, no router or internet)</div><ul><li class="m-win7 unused"><b><span aria-hidden="true">🪟</span> Win7</b><span>.7</span></li><li class="m-win81"><b><span aria-hidden="true">🪟</span> Win8.1</b><span>.8</span></li><li class="m-win10"><b><span aria-hidden="true">🪟</span> Win10</b><span>.10</span></li></ul></div>
 <p>The lab has no internet, so the Internet Explorer home page won't load. That doesn't affect any of the settings.</p>
 <div class="call tip"><span class="k">Internet Explorer is retired</span><p>Microsoft retired Internet Explorer in 2022. The <strong>Internet Options</strong> applet you'll use still matters: Windows uses it for proxy settings, security zones, and some app connections, and Edge reads several of these settings.</p></div>
 
@@ -204,21 +221,24 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="walkthrough" aria-labelledby="h-walkthrough">
 <h2 id="h-walkthrough">Walkthrough</h2>
-<p class="task-head">Task 1: Settings</p>
+<p class="task-head">Task 1: Settings <span class="pdfref">PDF 1.1–1.2</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">1</span>Check the Windows version and build (Win10)</h3>
-<p>Log in to <strong>Win10</strong>. Right-click <strong>Start > Settings > System</strong>, scroll down the left pane, and click <strong>About</strong>. Under <strong>Windows specifications</strong>, note the <strong>Version</strong> and <strong>OS Build</strong>. They tell you which feature update is installed.</p>
+<p>Open the <strong>Win10</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Right-click <strong>Start > Settings > System</strong>, scroll down the left pane, and click <strong>About</strong>. Under <strong>Windows specifications</strong>, note the <strong>Version</strong> and <strong>OS Build</strong>. They tell you which feature update is installed.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The About page showing Version and OS Build.</p>
-<pre class="cmd"><code><span class="c">The same information from the Run box or a prompt</span>
-winver
-systeminfo | findstr /B /C:"OS Name" /C:"OS Version"</code></pre>
+<div class="call tip"><span class="k">Optional extra, not a lab step</span><p>The same information is one command away: <code class="inl">winver</code> in the Run box, or <code class="inl">systeminfo | findstr /B /C:"OS Name" /C:"OS Version"</code> in a Command Prompt.</p></div>
 </div>
+</div>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
 <h3><span class="n">2</span>Change the display resolution (Win8.1)</h3>
-<p>Log in to <strong>Win8.1</strong>. Open <strong>Start > PC settings > PC and devices > Display</strong>. The resolution is <code class="inl">1024 x 768</code>. Move the slider to <code class="inl">1280 x 768</code>, click <strong>Apply</strong>, then <strong>Keep changes</strong>. The screen gets wider. Change it back to <code class="inl">1024 x 768</code>.</p>
+<p>Open the <strong>Win8.1</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code>. Click <strong>Start > PC settings > PC and devices > Display</strong>. The resolution is <code class="inl">1024 x 768</code>. Move the slider to <code class="inl">1280 x 768</code>, click <strong>Apply</strong>, then <strong>Keep changes</strong>. The screen gets wider. Change it back to <code class="inl">1024 x 768</code>.</p>
 <div class="call tip"><span class="k">Why Windows asks you to keep changes</span><p>If a resolution doesn't display, you can't see the button. Windows reverts automatically after about 15 seconds unless you confirm.</p></div>
 </div>
-<p class="task-head">Task 2: Power Options (Win8.1)</p>
+</div>
+<p class="task-head">Task 2: Power Options <span class="pdfref">PDF 2.1</span></p>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
 <h3><span class="n">3</span>Choose a plan</h3>
 <p>Go back to <strong>PC settings</strong> and click <strong>Control Panel</strong> at the bottom of the left pane. Set <strong>View by</strong> to <strong>Small icons</strong> and open <strong>Power Options</strong>. Select <strong>Balanced (recommended)</strong>, then click <strong>Change plan settings > Change advanced power settings</strong>.</p>
@@ -230,140 +250,66 @@ systeminfo | findstr /B /C:"OS Name" /C:"OS Version"</code></pre>
 <p>Click <strong>OK</strong> and close the plan window.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The Power Options advanced settings window with your changes.</p>
 </div>
-<p class="task-head">Task 3: Internet Options (Win8.1)</p>
+</div>
+<p class="task-head">Task 3: Internet Options <span class="pdfref">PDF 2.2</span></p>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
-<h3><span class="n">5</span>Clear browsing data</h3>
-<p>Right-click <strong>Start > Control Panel > Internet Options</strong>. Under <strong>Browsing history</strong>, click <strong>Delete</strong>. Make sure <strong>Tracking Protection, ActiveX Filtering and Do Not Track</strong> is unchecked, leave the other defaults, and click <strong>Delete</strong>.</p>
+<h3><span class="n">5</span>Set the home page</h3>
+<p>Right-click <strong>Start > Control Panel</strong> (it stays in Small icons) and click <strong>Internet Options</strong>. On the <strong>General</strong> tab, type this address in the <strong>Home page</strong> box:</p>
+<pre class="cmd" data-prompt="Home page:"><code><span class="pr" aria-hidden="true">Home page: </span>https://www.netdevgroup.com/</code></pre>
+<p>This is the page Internet Explorer opens to. With no internet in the lab, it won't load; that's expected.</p>
 </div>
 <div class="step">
-<h3><span class="n">6</span>Change history settings</h3>
+<h3><span class="n">6</span>Clear browsing data</h3>
+<p>Under <strong>Browsing history</strong>, click <strong>Delete</strong>. Make sure <strong>Tracking Protection, ActiveX Filtering and Do Not Track</strong> is unchecked, leave the other defaults, and click <strong>Delete</strong>.</p>
+</div>
+<div class="step">
+<h3><span class="n">7</span>Change history settings</h3>
 <p>Click <strong>Settings</strong> under Browsing history. Select <strong>Every time I visit the webpage</strong>. On the <strong>History</strong> tab, set <strong>Days to keep pages in history</strong> to <code class="inl">10</code>. Click <strong>OK</strong>.</p>
 </div>
 <div class="step">
-<h3><span class="n">7</span>Review security zones</h3>
+<h3><span class="n">8</span>Review security zones</h3>
 <p>Open the <strong>Security</strong> tab. Select <strong>Internet</strong> and click <strong>Custom level</strong> to see the many settings you can restrict, then <strong>Cancel</strong>.</p>
-<p>Select <strong>Trusted sites > Sites</strong>, uncheck <strong>Require server verification (https:) for all sites in this zone</strong>, enter the site address the lab gives you, click <strong>Add</strong>, then <strong>Close</strong>. Click <strong>Custom level</strong> for Trusted sites: most options are enabled, because you trust these sites. Click <strong>Cancel</strong>.</p>
+<p>Select <strong>Trusted sites > Sites</strong>, uncheck <strong>Require server verification (https:) for all sites in this zone</strong>, type the address below in <strong>Add this website to the zone</strong>, click <strong>Add</strong>, then <strong>Close</strong>.</p>
+<pre class="cmd" data-prompt="Add this website to the zone:"><code><span class="pr" aria-hidden="true">Add this website to the zone: </span>https://www.netdevgroup.com/</code></pre>
 <p class="shotline"><span class="shot">Screenshot</span>The Trusted sites window with a site added.</p>
 </div>
 <div class="step">
-<h3><span class="n">8</span>Block pop-ups and third-party cookies</h3>
-<p>On the <strong>Privacy</strong> tab, make sure <strong>Turn on Pop-up Blocker</strong> is checked, then click <strong>Advanced</strong>. Check <strong>Override automatic cookie handling</strong> and choose <strong>Block</strong> for <strong>Third-party Cookies</strong>. Click <strong>OK</strong> twice.</p>
+<h3><span class="n">9</span>Block pop-ups and third-party cookies</h3>
+<p>On the <strong>Privacy</strong> tab, make sure <strong>Turn on Pop-up Blocker</strong> is checked, then click <strong>Advanced</strong>. Check <strong>Override automatic cookie handling</strong>, choose <strong>Block</strong> for <strong>Third-party Cookies</strong>, and click <strong>OK</strong>. Back in Internet Properties, click <strong>OK</strong> to save everything, including the home page.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The Advanced Privacy Settings window blocking third-party cookies.</p>
 </div>
-<p class="task-head">Task 4: Personalization (Win8.1)</p>
+</div>
+<p class="task-head">Task 4: Personalization <span class="pdfref">PDF 2.3</span></p>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
-<h3><span class="n">9</span>Apply a high contrast theme</h3>
+<h3><span class="n">10</span>Apply a high contrast theme</h3>
 <p>In Control Panel, open <strong>Personalization</strong> and click <strong>High Contrast #1</strong>. Then click <strong>Desktop Background</strong>, pick a color, and click <strong>Save changes</strong>. Close the window.</p>
 </div>
-<p class="task-head">Task 5: Hidden files and extensions (Win8.1)</p>
+</div>
+<p class="task-head">Task 5: Hidden files and extensions <span class="pdfref">PDF 2.4</span></p>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
-<h3><span class="n">10</span>Show hidden items</h3>
+<h3><span class="n">11</span>Show hidden items</h3>
 <p>Open <strong>File Explorer > Local Disk (C:)</strong>. On the <strong>View</strong> tab, check <strong>Hidden items</strong>. The hidden <strong>ProgramData</strong> folder appears. Open <strong>Program Files > TightVNC</strong> and look at the file names.</p>
 </div>
 <div class="step">
-<h3><span class="n">11</span>Show file extensions</h3>
+<h3><span class="n">12</span>Show file extensions</h3>
 <p>Open <strong>Control Panel > Folder Options > View</strong> and uncheck <strong>Hide extensions for known file types</strong>. Click <strong>OK</strong>. Back in the TightVNC folder, names now end in <code class="inl">.exe</code>, <code class="inl">.txt</code>, and so on.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The TightVNC folder showing file extensions.</p>
 </div>
-<p class="task-head">Task 6: User Account Control (Win8.1)</p>
+</div>
+<p class="task-head">Task 6: User Account Control <span class="pdfref">PDF 2.5</span></p>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
-<h3><span class="n">12</span>Raise UAC to Always notify</h3>
+<h3><span class="n">13</span>Raise UAC to Always notify</h3>
 <p>Open <strong>Control Panel > Action Center > Change User Account Control settings</strong>. Drag the slider to the top, <strong>Always notify</strong>, and click <strong>OK</strong>. Accept the UAC prompt.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The UAC settings slider at Always notify.</p>
 <p>The lab is complete.</p>
 </div>
+</div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
-</section>
-
-<section id="fullsteps" aria-labelledby="h-fullsteps">
-<h2 id="h-fullsteps">Full lab steps</h2>
-<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
-<p class="task-head">Task 1 - Using Settings to Make Configurations</p>
-<p class="task-head">Task 1.1 - Determine the Current Updates Installed in Win10</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 virtual machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Right-click the Start menu and click on Settings.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Click on System from the Windows Settings screen.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> In the left pane, click on About, which is located at the bottom, so you will have to scroll down.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> In the right panel, scroll to the Windows specifications heading and identify the Version and OS Build. This will display the latest major update installed. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Version</span>Win10 About page showing Version and OS Build.</label></li></div><p class="task-head">Task 1.2 - Changing the Display Resolution in Win8.1</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win8.1 virtual machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> On the Win8.1 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Click the Start button located on the bottom taskbar.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Click on PC settings.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> In the left pane, click on PC and devices.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Click on Display.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> In the right pane, notice the current resolution is configured to 1024 x 768. Move the slider to change it to 1280 x 768. Click Apply.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> When prompted for confirmation, click Keep changes.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Notice the screen is now wider. Change back to the 1024 x 768 resolution. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 2 - Configuring Win8.1 with Control Panel Applets</p>
-<p class="task-head">Task 2.1 - Personalization Control Panel Applet</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win8.1 machine, on the PC and devices screen, click the back arrow to go back to the PC settings screen.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Click on Control Panel located at the bottom in the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Change the View by to Small icons.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Click on Power Options.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Click the radio button next to Balanced (recommended) to change to the Balanced power plan.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Click on Change plan settings to the right of Balanced (recommended).</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Click on Change advanced power settings.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> In the Power Options window, click on Change settings that are currently unavailable.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Scroll through all the options and familiarize yourself with the available options. Expand Hard disk by clicking on the + symbol, then continue to expand Turn off hard disk after. Change the setting for Turn off hard disk after to 45 Minutes.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Scroll down and expand Sleep &gt; Sleep after. Change Sleep after to Never (type the number 0).</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Expand USB settings &gt; USB selective suspend setting, and change the USB selective suspend setting to Disable.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Expand Display &gt; Turn off display after, and change Turn off display after to 30 Minutes.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Click OK to save the changes.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Close the Edit Plan Settings window. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 2.2 - Internet Options Control Panel Applet</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win8.1 machine, right-click the Start button and select Control Panel.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Notice how the Control Panel view stayed as Small icons. Click on the Internet Options applet.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Notice the Internet Properties window appears. There are many changes that can be made on the General tab, including changing the home page, deleting temporary Internet files, clearing cookies, and choosing settings to be sure to get the latest field. This is the website that you will be taken to when Internet Explorer is opened. (Since this environment is configured with no Internet access, the configured homepage will not be accessible.)</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Click the Delete button under the Browsing history section.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Internet Explorer will store several types of data on the system when you surf the Internet. Periodically deleting this data will help keep your hard drive clean and remove unnecessary files. Ensure that the Tracking Protection, ActiveX Filtering, and Do Not Track option is unchecked, and the rest are left at their defaults. Click Delete.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Back on the Internet Properties window, click the Settings button under the Browsing history section.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> In the Website Data Settings window, select the radio button next to Every time I visit the webpage to ensure that you view the newest version from the original server for that website.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Click on the History tab. Reduce the number of Days to keep pages in history to 10. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Back on the Internet Properties window, click on the Security tab. On the Security tab, the Internet is categorized into four different zones (Internet, Local intranet, Trusted sites, and Restricted sites). You can select a security level for each zone. Local, Trusted, and Restricted zones include the Sites button, to allow individual site inclusion and exclusion. The Sites button is not available if Internet is the selected zone.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Trusted sites</span>The Trusted sites window with a site added.</label></li></div><div class="step"><h3 class="fh"><span class="n">10</span> Click on the Internet zone and then click the Custom level button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Review the numerous settings that can be managed here. Disabling many of the options in these settings and then adding Trusted Sites with Custom Levels enabled is a best practice. Click Cancel to exit from the window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Back on the Internet Properties window, click on Trusted sites followed by clicking on the Sites button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> In the Trusted sites window, uncheck Requires server verification. Type by clicking the Add button. Click Close once finished.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Ensure that Trusted sites is highlighted and click the Custom Level button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> Notice that most settings are enabled. Trusted sites can be added to your list to allow things like popups and JavaScript to run. JavaScript or spyware could potentially damage your PC or compromise your security, but you could add them because the sites are known to you and not expected to be malicious. Click Cancel to close the Security Settings - Trusted Sites Zone window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">16</span> Back on the Internet Properties window, click on the Privacy tab. The Privacy tab allows you to choose your cookie settings and whether to allow popup windows. A cookie is a small text file that a website places on a PC to store information such as a user's surfing habits or store personal information about you that a website gathers when you visit it. Popups are usually just annoying ads, but a few can be malicious, launching harmful scripts in the background, or trying to get spyware onto a PC.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">17</span> Ensure that there is a check in the checkbox for Turn on Pop-up Blocker. Click the Advanced button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">18</span> Enable Override automatic cookie handling, then proceed by selecting the radio button next to Block, underneath Third-party Cookies. Click OK to save the configuration.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Cookies</span>Advanced Privacy Settings blocking third-party cookies.</label></li></div><div class="step"><h3 class="fh"><span class="n">19</span> Back on the Internet Properties window, click OK. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">20</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 2.3 - Control Panel Personalization Applet</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win8.1 machine, ensure that the Control Panel window is opened. Click on Personalization.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> In the Personalization window, scroll down in the themes pane and click on High Contrast #1. This will change the overall look and feel of the Windows system by using a preconfigured theme.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Notice the change in the Window's theme. To change the background, click on Desktop Background.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Choose the desired color and click Save changes. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Close the Personalization window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 2.4 - Folder Options Control Panel Applet</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Click on the File Explorer icon located in the taskbar.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> In the File Explorer, double-click on Local Disk (C:).</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Review the available folders. Click on the View menu item located near the top of the window and check the checkbox next to Hidden items.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Notice the available folders now. You should see a hidden folder appear called ProgramData, which was not visible before due to it being a hidden folder by default. Double-click on the Program Files folder.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Double-click on the TightVNC folder and notice the filenames within the folder.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Right-click the Start button and click on Control Panel.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> In the Control Panel window, click on Folder Options.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> In the Folder Options window, click on the View tab and uncheck the checkbox next to Hide extensions for known file types. Click OK to save changes.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Power</span>The Power Options advanced settings with your changes.</label></li></div><div class="step"><h3 class="fh"><span class="n">9</span> Change focus to the File Explorer window with the TightVNC folder opened. Notice the filenames now display their known extensions like .exe and .txt. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Extensions</span>The TightVNC folder showing file extensions.</label></li></div><div class="step"><h3 class="fh"><span class="n">10</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 2.5 - Action Control Panel Applet for Configuring User Account Control</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win8.1 machine, change focus to the Control Panel window. If it is not already opened, open it.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Click on Action Center from the Control Panel window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> In the left pane, click on Change User Account Control Settings.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Change the slider all the way up to indicate Always notify (highest setting). Click OK.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev6"><span class="shot">UAC</span>The UAC slider at Always notify.</label></li></div><div class="step"><h3 class="fh"><span class="n">5</span> Notice the User Account Control warning appears, click Yes to continue. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> The lab is now complete; you may end the reservation.</h3></div>
-<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: Settings, Control Panel, and shortcuts</h2>
@@ -492,7 +438,7 @@ powercfg /energy</code></pre>
     b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
     b.addEventListener('click',function(){
       var code=pre.querySelector('code'), clone=code.cloneNode(true);
-      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      [].forEach.call(clone.querySelectorAll('.c,.pr'),function(x){x.remove();});
       var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
       function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
@@ -510,167 +456,5 @@ powercfg /energy</code></pre>
   if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
 })();
 </script>
-
-<!-- ===== LAB MODE (begin) — self-contained; safe to remove as a block ===== -->
-<style id="lab-mode-css">
-/* Floating toggle button — always available, top-right */
-.pm-toggle{position:fixed;top:10px;right:12px;z-index:2147483100;display:inline-flex;
-  align-items:center;gap:7px;min-height:40px;padding:0 15px;cursor:pointer;
-  font:600 .85rem/1 var(--f-body);border-radius:999px;
-  background:var(--accent);color:var(--accent-ink);border:1px solid transparent;
-  box-shadow:0 4px 14px rgba(0,0,0,.28)}
-.pm-toggle:hover{filter:brightness(1.08)}
-.pm-toggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.pm-toggle .pm-ico{font-family:var(--f-mono);font-weight:700}
-@media print{.pm-toggle{display:none!important}}
-
-/* ---- When lab mode is ON ---- */
-html[data-present="on"] body{line-height:1.5}
-/* Collapse the sidebar grid to a single column and go full width */
-html[data-present="on"] .wrap{display:block;max-width:100%;padding:8px 14px 90px}
-
-/* Hide page chrome that wastes room in a narrow column */
-html[data-present="on"] .toc,
-html[data-present="on"] header.bar,
-html[data-present="on"] .badges,
-html[data-present="on"] .ticket .lede,
-html[data-present="on"] .ticket .fields,
-html[data-present="on"] .done-row{display:none!important}
-
-/* Slim the title block down to a compact header */
-html[data-present="on"] .ticket{margin:0 0 10px}
-html[data-present="on"] .ticket-in{padding:10px 14px}
-html[data-present="on"] .ticket h1{font-size:1.15rem;line-height:1.25;margin:2px 0 0}
-
-/* Show one section at a time */
-html[data-present="on"] #main > section{display:none}
-html[data-present="on"] #main > section.pm-current{display:block;animation:pm-fade .18s ease}
-@keyframes pm-fade{from{opacity:0}to{opacity:1}}
-
-/* Readability bump for the one visible section */
-html[data-present="on"] #main > section{font-size:1.05rem}
-html[data-present="on"] #main > section h2{font-size:1.2rem}
-html[data-present="on"] .step h3,
-html[data-present="on"] .step h4{font-size:1.04rem}
-html[data-present="on"] .cmd{font-size:1rem;white-space:pre-wrap;word-break:break-word}
-
-/* Slim bottom control dock for advancing through sections */
-.pm-dock{display:none}
-html[data-present="on"] .pm-dock{position:fixed;left:0;right:0;bottom:0;z-index:2147483100;
-  display:flex;align-items:center;gap:8px;padding:8px 12px;
-  padding-bottom:calc(8px + env(safe-area-inset-bottom,0));
-  background:var(--surface);border-top:1px solid var(--rule)}
-.pm-dock button{flex:0 0 auto;min-height:40px;min-width:44px;padding:0 14px;cursor:pointer;
-  font:700 .9rem/1 var(--f-body);border-radius:9px;
-  background:var(--surface-2);color:var(--ink);border:1px solid var(--rule)}
-.pm-dock button:hover{background:var(--accent);color:var(--accent-ink)}
-.pm-dock button:disabled{opacity:.4;cursor:not-allowed}
-.pm-dock button:disabled:hover{background:var(--surface-2);color:var(--ink)}
-.pm-dock .pm-where{flex:1 1 auto;text-align:center;min-width:0;
-  font:600 .82rem/1.25 var(--f-body);color:var(--ink-2);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pm-dock .pm-where b{color:var(--ink);display:block;font-size:.9rem}
-.pm-dock .pm-exit{background:transparent}
-</style>
-
-<div class="pm-dock" id="pmDock" aria-hidden="true">
-  <button type="button" data-pm="prev" aria-label="Previous section">◀</button>
-  <div class="pm-where"><span id="pmCount"></span><b id="pmName"></b></div>
-  <button type="button" data-pm="next" aria-label="Next section">▶</button>
-  <button type="button" data-pm="exit" class="pm-exit" aria-label="Exit lab mode">✕</button>
-</div>
-
-<script id="lab-mode-js">
-(function () {
-  "use strict";
-  var root = document.documentElement;
-  var KEY = "aplus:labmode:v1";               // shared across all A+ companion pages
-  var sections = [], idx = 0;
-  var dock, countEl, nameEl, prevBtn, nextBtn;
-
-  function labelFor(sec) {
-    var h = sec.querySelector("h2");
-    if (!h) return sec.id || "Section";
-    return (h.textContent || "").replace(/\s+/g, " ").trim();
-  }
-
-  function show(i) {
-    if (!sections.length) return;
-    idx = Math.max(0, Math.min(sections.length - 1, i));
-    sections.forEach(function (s, n) { s.classList.toggle("pm-current", n === idx); });
-    if (countEl) countEl.textContent = (idx + 1) + " / " + sections.length;
-    if (nameEl) nameEl.textContent = labelFor(sections[idx]);
-    if (prevBtn) prevBtn.disabled = idx === 0;
-    if (nextBtn) nextBtn.disabled = idx === sections.length - 1;
-    window.scrollTo(0, 0);
-  }
-
-  function enter() {
-    sections = Array.prototype.slice.call(document.querySelectorAll("#main > section"));
-    root.setAttribute("data-present", "on");
-    if (dock) dock.setAttribute("aria-hidden", "false");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "true");
-      btn.querySelector(".pm-txt").textContent = "Exit lab mode"; }
-    try { localStorage.setItem(KEY, "1"); } catch (e) {}
-    show(0);
-  }
-
-  function exit() {
-    root.removeAttribute("data-present");
-    sections.forEach(function (s) { s.classList.remove("pm-current"); });
-    if (dock) dock.setAttribute("aria-hidden", "true");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "false");
-      btn.querySelector(".pm-txt").textContent = "Lab mode"; }
-    try { localStorage.setItem(KEY, "0"); } catch (e) {}
-  }
-
-  function toggle() { root.getAttribute("data-present") === "on" ? exit() : enter(); }
-
-  function build() {
-    var btn = document.createElement("button");
-    btn.className = "pm-toggle"; btn.id = "pmToggle"; btn.type = "button";
-    btn.setAttribute("aria-pressed", "false");
-    btn.title = "Lab mode — steps beside the lab, one section at a time (Shift+L)";
-    btn.innerHTML = '<span class="pm-ico" aria-hidden="true">⇥</span><span class="pm-txt">Lab mode</span>';
-    btn.addEventListener("click", toggle);
-    document.body.appendChild(btn);
-
-    dock = document.getElementById("pmDock");
-    countEl = document.getElementById("pmCount");
-    nameEl = document.getElementById("pmName");
-    if (dock) {
-      prevBtn = dock.querySelector('[data-pm="prev"]');
-      nextBtn = dock.querySelector('[data-pm="next"]');
-      dock.addEventListener("click", function (e) {
-        var t = e.target.closest("[data-pm]"); if (!t) return;
-        var a = t.getAttribute("data-pm");
-        if (a === "prev") show(idx - 1);
-        else if (a === "next") show(idx + 1);
-        else if (a === "exit") exit();
-      });
-    }
-
-    document.addEventListener("keydown", function (e) {
-      if (e.shiftKey && (e.key === "L" || e.key === "l")) {
-        var tag = (e.target && e.target.tagName) || "";
-        if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
-        e.preventDefault(); toggle(); return;
-      }
-      if (root.getAttribute("data-present") !== "on") return;
-      if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); show(idx + 1); }
-      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(idx - 1); }
-      else if (e.key === "Escape") { e.preventDefault(); exit(); }
-    });
-  }
-
-  if (document.readyState === "loading")
-    document.addEventListener("DOMContentLoaded", build);
-  else build();
-})();
-</script>
-<!-- ===== LAB MODE (end) ===== -->
-
 </body>
 </html>

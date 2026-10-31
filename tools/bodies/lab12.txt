@@ -1,4 +1,8 @@
 @lede When Windows misbehaves, you need evidence before you need a fix. You will run a troubleshooter, capture a memory dump, read reliability history and event logs, boot into Safe Mode with a boot log, repair system files with SFC and DISM, and record a user's steps to reproduce a problem.
+@vm Win7|192.168.1.7/24|sysadmin|Train1ng$
+@vm Win8.1|192.168.1.8/24|sysadmin|Train1ng$|Listed in the PDF
+ only the optional challenge tasks use it
+@vm Win10|192.168.1.10/24|Sysadmin|Train1ng$|DISM task
 @vms Win7, Win10
 
 == overview | Why this lab matters
@@ -7,9 +11,7 @@ Good troubleshooting follows a method: identify the problem, form a theory, test
 Each produces something you can save and attach to a ticket, which is what escalation to a senior tech or vendor requires.
 
 == environment | The environment you're working in
-| Machine | IP address | Account | Password |
-| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
-| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+{{VMTABLE}}
 Almost everything happens on Win7; DISM runs on Win10. Win7 has Firefox and a **Files** folder on the desktop for the Steps Recorder task.
 !tip Timing | `sfc /scannow` takes 5–7 minutes and DISM `/ScanHealth` 4–6 minutes. The Safe Mode task needs two restarts. Read ahead while they run.
 
@@ -24,66 +26,99 @@ Almost everything happens on Win7; DISM runs on Win10. Win7 has Firefox and a **
 | Problem Steps Recorder (`psr`) | **Steps Recorder is deprecated** and being removed. Use **Snipping Tool** screen recording or Quick Assist instead. |
 
 == walkthrough | Walkthrough
-## Task 1: Troubleshooters (Win7)
+## Task 1: Troubleshooters <<1.1>>
+@@ Win7
 ### Open the list
-Log in to **Win7**. Open **Start**, type `action center`, open it, and click **Troubleshooting**. Click **View all** in the left pane.
+Open the **Win7** console and sign in as `sysadmin` with `Train1ng$`. Click **Start**, type `action center` in the search field, and open **Action Center**. Scroll down and click **Troubleshooting**. Click **View all** in the left pane.
 ### Run the Aero troubleshooter as administrator
-Right-click **Aero** and choose **Run as administrator**, then **Next**. It reports that the video driver isn't WDDM-compatible and suggests updating it. Click **Next** to let it try; it can't fix this one. Click **View detailed information**, read it, then **Next** and **Close**.
+Right-click **Aero** and choose **Run as administrator**, then **Next**. It reports that the video driver isn't WDDM-compatible and suggests updating it. Click **Next** to let it try; it can't fix this one. Click **View detailed information**, read it, click **Next**, then **Close**. Close the Troubleshooting window.
 !shot The Aero troubleshooter's detailed results.
 !tip What a troubleshooter gives you | Even when it can't fix the problem, it names it. Here, "update the video driver" is your next step.
-## Task 2: Dump file (Win7)
+## Task 2: Dump file <<1.2>>
+@@ Win7
 ### Create a dump of explorer.exe
-Right-click the taskbar > **Start Task Manager > Processes**. Right-click **explorer.exe** and choose **Create Dump File**. Wait 1–2 minutes, note the path in the message, and click **OK**.
+Right-click the taskbar > **Start Task Manager > Processes**. Right-click **explorer.exe** and choose **Create Dump File**. Wait 1–2 minutes, note the path in the message, and click **OK**. Close Task Manager.
 !shot The message showing where the dump file was saved.
-## Task 3: Reliability Monitor (Win7)
+## Task 3: Reliability Monitor <<1.3>>
+@@ Win7
 ### Read the reliability history
-Open **Start**, type `reliability`, and click **View reliability history**. Click a day in the chart to see its events. Red **X** = critical event (an app or Windows failure), yellow **!** = warning, blue **i** = information. Note the links at the bottom: save history, view all problem reports, check for solutions.
+Open **Start**, type `reliability`, and click **View reliability history**. Click a day in the chart to see its events. Red **X** = critical event (an app or Windows failure), yellow **!** = warning, blue **i** = information. Note the links at the bottom: save history, view all problem reports, check for solutions. (The PDF's example Notepad crash is from 2018; your chart will differ.) Close Reliability Monitor.
 !shot The Reliability Monitor chart with a day selected.
-## Task 4: Event Viewer (Win7)
+## Task 4: Event Viewer <<1.4>>
+@@ Win7
 ### Read the summary
 Open **Start**, type `Event Viewer`, and press [[Enter]]. On **Overview and Summary**, collapse everything except **Summary of Administrative Events**. Expand each type (Critical, Error, Warning, Information, Audit Success) and double-click an event for details, such as **Event ID 1002**, an application hang.
 ### Look at the Security log
 Expand **Windows Logs > Security** and double-click an event. Read its details and **Close**.
 ### Save an event
-Right-click the same event > **Save Selected Events**. Save as `C:\Users\sysadmin\event.evtx` and click **OK** at the display information prompt. In File Explorer, double-click `event.evtx`: it opens in Event Viewer.
+Right-click the same event > **Save Selected Events**. Type this in **File name**, click **Save**, and click **OK** at the display information prompt (keep the defaults):
+```File name:
+C:\Users\sysadmin\event.evtx
+```
+Open File Explorer, go to `C:\Users\sysadmin`, and double-click `event.evtx`: it opens in Event Viewer. Close all remaining windows.
 !shot Event Viewer showing a Security event's details, or the saved event.evtx open.
-## Task 5: Safe Mode and boot logging (Win7)
+## Task 5: Safe Mode and boot logging <<1.5>>
+@@ Win7
 ### Set Safe boot with a boot log
-Open **Start**, type `msconfig`, and press [[Enter]]. On the **Boot** tab, check **Safe boot** with **Minimal**, and check **Boot log**. Click **OK** and restart.
+Click **Start**, type the command below in the search field, and press [[Enter]]:
+```Start search:
+msconfig
+```
+On the **Boot** tab, check **Safe boot** with **Minimal** selected, and check **Boot log**. Click **OK**. Then **Start >** arrow next to **Shut down > Restart**.
 !shot The msconfig Boot tab with Safe boot (Minimal) and Boot log checked.
 ### Save the safe-mode boot log
-Sign in. Close the Safe Mode help window and notice the plain, low-resolution desktop. Open **Start**, type `C:\Windows\ntbtlog.txt`, and press [[Enter]]. Save a copy as `C:\Users\sysadmin\safeboot.txt`.
+Sign in as `sysadmin`. Read, then close, the Safe Mode help window and notice the plain, low-resolution desktop. Click **Start**, type the path below in the search field, and press [[Enter]]:
+```Start search:
+C:\Windows\ntbtlog.txt
+```
+In Notepad choose **File > Save As**, type the name below, click **Save**, and close Notepad:
+```File name:
+C:\Users\sysadmin\safeboot.txt
+```
 ### Go back to a normal boot
 Open `msconfig` again, uncheck **Safe boot** on the Boot tab, click **OK**, and restart.
 !stuck Where people get stuck | msconfig's Safe boot setting sticks until you clear it. If you forget, the PC boots into Safe Mode every time.
 ### Compare the two logs
-After signing in, open `C:\Windows\ntbtlog.txt` (now the normal-boot log, because Boot log is still checked) and `C:\Users\sysadmin\safeboot.txt`. Put them side by side. The normal boot loads many more drivers; a driver that loads normally but not in Safe Mode is a suspect when Safe Mode works and normal mode doesn't.
-!shot The two boot logs side by side.
-## Task 6: System File Checker (Win7)
-### Run SFC
-Open **cmd** as administrator and run:
+After signing in, open both files from the Start search box, one after the other:
+```Start search:
+C:\Windows\ntbtlog.txt
+C:\Users\sysadmin\safeboot.txt
 ```
+The first is now the normal-boot log, because Boot log is still checked. Put the two Notepad windows side by side, compare, then close both. The normal boot loads many more drivers; a driver that loads normally but not in Safe Mode is a suspect when Safe Mode works and normal mode doesn't.
+!shot The two boot logs side by side.
+## Task 6: System File Checker <<1.6>>
+@@ Win7
+### Run SFC
+Click **Start**, type `cmd`, right-click **cmd.exe**, choose **Run as administrator**, and click **Yes** at UAC. Run:
+```C:\Windows\system32>
 sfc /scannow
 ```
-It takes 5–7 minutes and should report no integrity violations.
+It takes 5–7 minutes and should report no integrity violations. Close the prompt.
 !shot The sfc /scannow result.
-## Task 7: DISM (Win10)
+## Task 7: DISM <<1.7>>
+@@ Win10
 ### Check, scan, and repair the Windows image
-Log in to **Win10**, open **Command Prompt** as administrator, and run these in order:
-```
+Open the **Win10** console, click the splash screen, and sign in as `sysadmin`. Click the search button, type `cmd`, right-click **Command Prompt**, choose **Run as administrator**, and click **Yes**. Run these in order:
+```C:\Windows\system32>
 DISM /Online /Cleanup-Image /CheckHealth
 DISM /Online /Cleanup-Image /ScanHealth
 DISM /Online /Cleanup-Image /RestoreHealth
 ```
-`/CheckHealth` is a quick check. `/ScanHealth` does a full scan (4–6 minutes). `/RestoreHealth` repairs the component store that SFC copies good files from.
+`/CheckHealth` is a quick check. `/ScanHealth` does a full scan (4–6 minutes). `/RestoreHealth` repairs the component store that SFC copies good files from. Close the prompt when it finishes.
+!tip The PDF repeats step numbers here | Section 1.7 numbers its steps 1–5, then 4–7 again. Follow them in page order; nothing is missing.
 !shot The DISM /RestoreHealth result.
-## Task 8: Steps Recorder (Win7)
+## Task 8: Steps Recorder <<1.8>>
+@@ Win7
 ### Record a problem
-On **Win7**, open **Start**, type `Problem Steps Recorder`, and open **Record steps to reproduce a problem**. Click **Start Record**, open **Firefox**, and wait for the connection error.
+Change focus back to **Win7**. Click **Start**, type `Problem Steps Recorder`, and click **Record steps to reproduce a problem**. Click **Start Record**. Open **Firefox**, type the address below in the address bar, and press [[Enter]]:
+```Firefox address bar:
+www.netdevgroup.com
+```
+Wait for Firefox's error; there's no internet in the lab, so the connection fails. That failure is the "problem" you're recording.
 ### Highlight the error
-Click **Add Comment**, drag a box around the error, type `Unable to connect to website.`, and click **OK**. Click **Stop Record** and save it to the desktop **Files** folder as `PSR-test`.
+Click **Add Comment**, drag a box around the error, type `Unable to connect to website.`, and click **OK**. Click **Stop Record**. In **Save As**, choose the **Files** folder on the desktop, name it `PSR-test`, and click **Save**.
 ### Review the recording
-Open **Files > PSR-test.zip** and double-click the **Problem_** file inside. Click **Ask me later** if Internet Explorer setup appears. Scroll through the steps, screenshots, and your comment.
+On the desktop, open **Files**, double-click **PSR-test.zip**, and double-click the **Problem_** file inside. Click **Ask me later** if Internet Explorer setup appears. Scroll through the steps, screenshots, and your comment.
 !shot The Steps Recorder report showing your highlighted comment.
 The lab is complete.
 

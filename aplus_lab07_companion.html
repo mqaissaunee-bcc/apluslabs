@@ -12,6 +12,7 @@
   --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
   --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
   --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --m-win7:#1F5FA8; --m-win81:#0B7377; --m-win10:#6A3FB0; --m-lub:#B4481A; --m-newlub:#8A5A00; --m-bg:#F3F6FA;
   --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
   --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
@@ -22,13 +23,15 @@
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}}
 :root[data-theme="dark"]{
   --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
@@ -108,6 +111,22 @@ main p,main li{max-width:68ch}
 p.shotline{margin:.5rem 0}
 pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
 pre.cmd .c{color:var(--code-dim)}
+pre.cmd .pr{color:var(--code-dim);user-select:none;-webkit-user-select:none}
+pre.cmd.file{border-left:4px solid var(--tag)}
+.fcap{font-size:.85rem;color:var(--ink-2);margin:.6rem 0 -.3rem}
+.m-win7{--mc:var(--m-win7)} .m-win81{--mc:var(--m-win81)} .m-win10{--mc:var(--m-win10)} .m-lub{--mc:var(--m-lub)} .m-newlub{--mc:var(--m-newlub)}
+.mrun{border-left:5px solid var(--mc);padding:.1rem 0 .1rem .9rem;margin:1rem 0 1.25rem}
+.mband{display:inline-flex;align-items:center;gap:.4rem;margin:0 0 .25rem -.9rem;padding:.3rem .8rem .3rem .7rem;background:var(--m-bg);border:1px solid var(--mc);border-left:5px solid var(--mc);border-radius:0 6px 6px 0;font-weight:700;color:var(--mc);font-family:var(--f-display)}
+.onm{display:inline-block;font-weight:700;color:var(--mc);border:1px solid var(--mc);border-radius:4px;padding:0 .35rem;font-size:.88em;background:var(--m-bg)}
+.pdfref{display:inline-block;margin-left:.5rem;font-family:var(--f-body);font-weight:600;font-size:.75rem;color:var(--ink-2);border:1px solid var(--rule);border-radius:3px;padding:0 .4rem;vertical-align:middle}
+.topo{margin:1rem 0;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--surface-2)}
+.topo .bus{text-align:center;font-family:var(--f-mono);font-size:.85rem;color:var(--ink-2);margin:0 0 .3rem;padding-bottom:.3rem;border-bottom:4px solid var(--ink)}
+.topo ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+.topo li{position:relative;margin-top:.9rem;border:2px solid var(--mc);border-top-width:6px;border-radius:6px;padding:.35rem .7rem;background:var(--surface);text-align:center;min-width:7.5rem}
+.topo li::before{content:"";position:absolute;top:-1.05rem;left:50%;height:.9rem;border-left:2px solid var(--ink)}
+.topo li b{display:block;color:var(--mc)} .topo li span{font-family:var(--f-mono);font-size:.85rem}
+.vmnote{font-size:.8rem;color:var(--ink-2)} .topo li.unused{border-style:dashed;opacity:.75}
+.topo .hosted{font-size:.85rem;color:var(--ink-2);text-align:center;margin:.5rem 0 0}
 .copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
 .tbl{overflow-x:auto;margin:.75rem 0}
 table{border-collapse:collapse;width:100%;font-size:.94rem}
@@ -136,17 +155,13 @@ footer p{margin:.25rem 0;max-width:80ch}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media print{
+  .mrun{border-left-color:#000} .mband,.onm{color:#000;border-color:#000;background:#fff}
   .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
   body{background:#fff;color:#000} .wrap{display:block;padding:0}
   main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
-
-#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
-#fullsteps .step h3.fh .n{margin-right:.5rem}
-#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
-#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab07-v1:">
@@ -172,7 +187,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: maintenance and backup</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -181,6 +196,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <li><a href="#evidence"><span>Evidence to capture</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#cheat"><span>Cheat sheet</span><span class="tick" aria-hidden="true"></span></a></li></ol></details></nav>
 <main id="main" tabindex="-1">
+<p> holds the Backup share</p>
 <section id="overview" aria-labelledby="h-overview">
 <h2 id="h-overview">Why this lab matters</h2>
 <p>Maintenance and recovery are two sides of the same job. <strong>Disk Cleanup</strong> and <strong>Optimize Drives</strong> keep storage healthy and are easy to automate. <strong>System Restore</strong> undoes system changes such as a bad driver or update, without touching personal files. <strong>Backup and Restore</strong> and <strong>File History</strong> protect the personal files themselves.</p>
@@ -190,7 +206,8 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="environment" aria-labelledby="h-environment">
 <h2 id="h-environment">The environment you're working in</h2>
-<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">Computer name</th><th scope="col">Used for</th></tr></thead><tbody><tr><td>Win8.1</td><td>Win8-1</td><td>Disk Cleanup, scheduling, Optimize Drives, System Restore; hosts the <code class="inl">Backup</code> share</td></tr><tr><td>Win7</td><td>Win7</td><td>Backup and Restore to drive <strong>Data (E:)</strong></td></tr><tr><td>Win10</td><td>Win10</td><td>File History to <code class="inl">\\WIN8-1\Backup</code></td></tr></tbody></table></div>
+<p class="fcap">Lab Settings, exactly as listed in the PDF</p><div class="tbl"><table><thead><tr><th scope="col">Virtual Machine</th><th scope="col">IP Address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7<br><span class="vmnote">Backup and Restore</span></td><td><code>192.168.1.7/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Win8.1<br><span class="vmnote">Cleanup, optimize, restore point</span></td><td><code>192.168.1.8/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Win10<br><span class="vmnote">File History</span></td><td><code>192.168.1.10/24</code></td><td><code>Sysadmin</code></td><td><code>Train1ng$</code></td></tr></tbody></table></div><p class="fcap">The PDF capitalizes the Win10 account as <code>Sysadmin</code>. Windows user names aren't case-sensitive, so <code>sysadmin</code> works too. The password is case-sensitive.</p>
+<div class="topo" role="img" aria-label="Pod topology: Win7 at 192.168.1.7/24, Win8.1 at 192.168.1.8/24, Win10 at 192.168.1.10/24, all on 192.168.1.0/24"><div class="bus">192.168.1.0/24 (one flat subnet, no router or internet)</div><ul><li class="m-win7 unused"><b><span aria-hidden="true">🪟</span> Win7</b><span>.7</span></li><li class="m-win81 unused"><b><span aria-hidden="true">🪟</span> Win8.1</b><span>.8</span></li><li class="m-win10 unused"><b><span aria-hidden="true">🪟</span> Win10</b><span>.10</span></li></ul></div>
 <p>All use <code class="inl">sysadmin</code> / <code class="inl">Train1ng$</code>. Win7 has an <strong>Installs</strong> folder on the desktop that you'll delete and restore.</p>
 <div class="call stuck"><span class="k">Typo in the PDF</span><p>After the System Restore reboot the PDF says <code class="inl">Train1ing$</code>. The password is <code class="inl">Train1ng$</code>.</p></div>
 <div class="call tip"><span class="k">Timing</span><p>System Restore takes about 8 minutes and the first backup about 4. Start them and read ahead while they run.</p></div>
@@ -205,27 +222,30 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="walkthrough" aria-labelledby="h-walkthrough">
 <h2 id="h-walkthrough">Walkthrough</h2>
-<p class="task-head">Task 1: Disk Cleanup (Win8.1)</p>
+<p class="task-head">Task 1: Disk Cleanup <span class="pdfref">PDF 1.1</span></p>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
 <h3><span class="n">1</span>Run a cleanup</h3>
-<p>Log in to <strong>Win8.1</strong>. Right-click <strong>Start > Search</strong>, type <code class="inl">disk cleanup</code>, and open <strong>Free up disk space by deleting unnecessary files</strong>. Wait for the scan.</p>
+<p>Open the <strong>Win8.1</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Right-click <strong>Start > Search</strong>, type <code class="inl">disk cleanup</code>, and open <strong>Free up disk space by deleting unnecessary files</strong>. Wait for the scan.</p>
 </div>
 <div class="step">
 <h3><span class="n">2</span>Include system files</h3>
 <p>Click <strong>Clean up system files</strong>. It rescans and adds system areas (such as old update files and error reports) that only an administrator can clean. Click each item to read its description, note the total space, and click <strong>OK > Delete Files</strong>. It takes 2–3 minutes and closes on its own.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The Disk Cleanup window after Clean up system files, showing the items and total space.</p>
 </div>
-<p class="task-head">Task 2: Schedule a cleanup (Win8.1)</p>
+</div>
+<p class="task-head">Task 2: Schedule a cleanup <span class="pdfref">PDF 1.2</span></p>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
 <h3><span class="n">3</span>Save a cleanup profile</h3>
-<p>Right-click <strong>Start > Search</strong>, type the command below, and open it:</p>
-<pre class="cmd"><code>cleanmgr /sageset:1</code></pre>
+<p>Right-click <strong>Start > Search</strong>, type the command below in the search field, and click its result:</p>
+<pre class="cmd" data-prompt="Search box:"><code><span class="pr" aria-hidden="true">Search box: </span>cleanmgr /sageset:1</code></pre>
 <p>Click <strong>Clean up system files</strong>, check every box, and click <strong>OK</strong>. This saves your choices in the Registry as profile <strong>1</strong>.</p>
 </div>
 <div class="step">
 <h3><span class="n">4</span>Create a basic task</h3>
-<p>Open <strong>Control Panel > Administrative Tools > Task Scheduler</strong> and click <strong>Create Basic Task</strong> in the Actions pane:</p>
-<div class="tbl"><table><thead><tr><th scope="col">Wizard page</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Name</td><td><code class="inl">Disk Cleanup</code></td></tr><tr><td>Trigger</td><td>Weekly, recur every 1 week, today's day, start 10–15 minutes from now</td></tr><tr><td>Action</td><td>Start a program</td></tr><tr><td>Program/script</td><td><code class="inl">C:\Windows\System32\cleanmgr.exe</code></td></tr><tr><td>Add arguments</td><td><code class="inl">/sagerun:1</code></td></tr></tbody></table></div>
+<p>Click <strong>Start > Control Panel</strong>, set <strong>View by</strong> to <strong>Small icons</strong>, click <strong>Administrative Tools</strong>, and double-click <strong>Task Scheduler</strong>. Leave Administrative Tools open (Task 3 uses it). In Task Scheduler, click <strong>Create Basic Task</strong> in the Actions pane:</p>
+<div class="tbl"><table><thead><tr><th scope="col">Wizard page</th><th scope="col">Value</th></tr></thead><tbody><tr><td>Name</td><td><code class="inl">Disk Cleanup</code></td></tr><tr><td>Trigger</td><td>Weekly, recur every 1 week, today's day, start 10–15 minutes from now</td></tr><tr><td>Action</td><td>Start a program</td></tr><tr><td>Program/script</td><td><strong>Browse</strong>, make sure you're in <code class="inl">C:\Windows\System32</code>, type <code class="inl">cleanmgr.exe</code>, <strong>Open</strong></td></tr><tr><td>Add arguments</td><td><code class="inl">/sagerun:1</code></td></tr></tbody></table></div>
 <p>Click <strong>Finish</strong>.</p>
 </div>
 <div class="step">
@@ -233,7 +253,9 @@ footer p{margin:.25rem 0;max-width:80ch}
 <p>In <strong>Task Scheduler Library</strong>, double-click <strong>Disk Cleanup</strong>, change <strong>Configure for</strong> to <strong>Windows 8.1</strong>, and click <strong>OK</strong>. When the start time passes, the status shows <strong>Running</strong>, or check <strong>Last Run Time</strong>.</p>
 <p class="shotline"><span class="shot">Screenshot</span>Task Scheduler Library showing the Disk Cleanup task with its trigger or Last Run Time.</p>
 </div>
-<p class="task-head">Task 3: Optimize the drive (Win8.1)</p>
+</div>
+<p class="task-head">Task 3: Optimize the drive <span class="pdfref">PDF 2.1</span></p>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
 <h3><span class="n">6</span>Turn on scheduled optimization</h3>
 <p>In Administrative Tools, open <strong>Defragment and Optimize Drives</strong>. Under <strong>Scheduled optimization</strong>, click <strong>Turn on</strong>, check <strong>Run on a schedule</strong>, choose <strong>Weekly</strong>, and click <strong>OK</strong>.</p>
@@ -243,7 +265,9 @@ footer p{margin:.25rem 0;max-width:80ch}
 <p>Select <strong>(C:)</strong> and click <strong>Analyze</strong>. Note the percent fragmented in <strong>Current status</strong>. Then click <strong>Optimize</strong> (3–4 minutes) and check the new percentage.</p>
 <p class="shotline"><span class="shot">Screenshot</span>Optimize Drives showing C: after optimization.</p>
 </div>
-<p class="task-head">Task 4: System Restore (Win8.1)</p>
+</div>
+<p class="task-head">Task 4: System Restore <span class="pdfref">PDF 3, steps 1–16</span></p>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
 <h3><span class="n">8</span>Create a restore point</h3>
 <p>Open <strong>Control Panel > System > System protection</strong> and click <strong>Create</strong>. Name it <code class="inl">Background Configuration</code> and click <strong>Create</strong>, then <strong>Close</strong>.</p>
@@ -258,10 +282,12 @@ footer p{margin:.25rem 0;max-width:80ch}
 <p class="shotline"><span class="shot">Screenshot</span>The System Restore confirmation after signing back in.</p>
 <div class="call tip"><span class="k">What System Restore does and doesn't touch</span><p>It rolls back system files, installed programs, drivers, settings, and the Registry. It doesn't restore or delete personal files such as documents and photos.</p></div>
 </div>
-<p class="task-head">Task 5: Backup and Restore (Win7)</p>
+</div>
+<p class="task-head">Task 5: Backup and Restore <span class="pdfref">PDF 4.1</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
 <h3><span class="n">11</span>Set up the backup</h3>
-<p>Log in to <strong>Win7</strong>. Open <strong>Start > All Programs > Maintenance > Backup and Restore > Set up backup</strong>. Choose <strong>Data (E:)</strong> as the destination, then <strong>Let me choose</strong>. Check all the <strong>Data Files</strong> boxes and <strong>Local Disk (C:)</strong>, and <em>uncheck</em> <strong>Include a system image</strong>. Review the schedule and click <strong>Save settings and run backup</strong> (about 4 minutes).</p>
+<p>Open the <strong>Win7</strong> console and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Open <strong>Start > All Programs > Maintenance > Backup and Restore > Set up backup</strong>. Choose <strong>Data (E:)</strong> as the destination, then <strong>Let me choose</strong>. Check all the <strong>Data Files</strong> boxes and <strong>Local Disk (C:)</strong>, and <em>uncheck</em> <strong>Include a system image</strong>. Review the schedule and click <strong>Save settings and run backup</strong> (about 4 minutes).</p>
 </div>
 <div class="step">
 <h3><span class="n">12</span>Delete the Installs folder for real</h3>
@@ -272,10 +298,12 @@ footer p{margin:.25rem 0;max-width:80ch}
 <p>In Backup and Restore, click <strong>Restore my files > Browse for folders</strong>. Open <strong>sysadmin's backup > Desktop</strong>, select <strong>Installs</strong>, click <strong>Add folder</strong>, then <strong>Next</strong>. Keep <strong>In the original location</strong> and click <strong>Restore</strong>, then <strong>Finish</strong>. Open Installs to confirm the files are back.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The Restore Files window with the Installs folder selected, or the restored folder on the desktop.</p>
 </div>
-<p class="task-head">Task 6: File History (Win10)</p>
+</div>
+<p class="task-head">Task 6: File History <span class="pdfref">PDF 4.2–4.3</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">14</span>Point File History at a network share</h3>
-<p>Log in to <strong>Win10</strong>. Open <strong>Control Panel > Save backup copies of your files with File History</strong>. Click <strong>Select a network location > Add network location</strong>, double-click <strong>Win8-1</strong>, select <strong>Backup</strong>, and click <strong>Select folder</strong>. Highlight <code class="inl">\\WIN8-1\Backup</code> and click <strong>OK</strong>.</p>
+<p>Open the <strong>Win10</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code>. Click <strong>Start > Control Panel > Save backup copies of your files with File History</strong>. Click <strong>Select a network location > Add network location</strong>, double-click <strong>Win8-1</strong>, select <strong>Backup</strong>, and click <strong>Select folder</strong>. Highlight <code class="inl">\\WIN8-1\Backup</code> and click <strong>OK</strong>.</p>
 </div>
 <div class="step">
 <h3><span class="n">15</span>Exclude everything but Documents</h3>
@@ -286,135 +314,21 @@ footer p{margin:.25rem 0;max-width:80ch}
 <p>Click <strong>Turn on</strong>. When the first backup finishes you'll see its time, and <strong>Run now</strong> becomes available.</p>
 <p class="shotline"><span class="shot">Screenshot</span>File History turned on, showing the network location and last backup time.</p>
 </div>
+</div>
+<div class="mrun m-win81"><p class="mband"><span aria-hidden="true">🪟</span> On Win8.1</p>
 <div class="step">
 <h3><span class="n">17</span>Find the backup on Win8.1</h3>
-<p>On <strong>Win8.1</strong>, right-click <strong>Start > Command Prompt (Admin)</strong> and run:</p>
-<pre class="cmd"><code>cd C:\Users\sysadmin\Documents\Backup\sysadmin\Win10
-dir</code></pre>
+<p>Switch to <strong>Win8.1</strong>. Right-click <strong>Start > Command Prompt (Admin)</strong> and click <strong>Yes</strong> at UAC. Change to the backup folder, then list it:</p>
+<pre class="cmd" data-prompt="C:\Users\sysadmin\Documents\Backup\sysadmin\WIN10&gt;"><code><span class="pr" aria-hidden="true">C:\Windows\system32&gt; </span>cd C:\Users\sysadmin\Documents\Backup\sysadmin\Win10
+<span class="pr" aria-hidden="true">C:\Users\sysadmin\Documents\Backup\sysadmin\WIN10&gt; </span>dir</code></pre>
+<p>You can open the same folder in File Explorer to compare.</p>
 <p>You'll see <strong>Configuration</strong> and <strong>Data</strong> folders. The backed-up files are under Data.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The dir output on Win8.1 showing the File History folders.</p>
 <p>The lab is complete.</p>
 </div>
+</div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
-</section>
-
-<section id="fullsteps" aria-labelledby="h-fullsteps">
-<h2 id="h-fullsteps">Full lab steps</h2>
-<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
-<p class="task-head">Task 1 - Running the Disk Cleanup Utility</p>
-<p class="task-head">Task 1.1 - Running Disk Cleanup on Win8.1</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win8.1 virtual machine.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev7"><span class="shot">Backup files</span>The <code class="inl">dir</code> output on Win8.1 showing the File History folders.</label></li></div><div class="step"><h3 class="fh"><span class="n">2</span> On the Win8.1 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Right-click the Start menu and click on Search.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Type disk cleanup in the search field and click on Free up disk space by deleting unnecessary files.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Notice the Disk Cleanup utility appears and starts scanning the system. Wait until the utility finishes scanning.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Once the Disk Cleanup utility finishes scanning, notice the checkboxes in the Files to delete pane. These indicate which areas have files that can be cleaned up and the amount of disk space that can be recovered. Under normal operations, the users can be taught to perform the basic disk clean periodically. Now Windows would want to protect the system from a too aggressive cleanup, so system-level files, which also can collect quite a bit of junk, are not included but can be triggered by an "administrator" (a user with Administrator privileges). To access the system file cleanup area, click on the Clean up system files button.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Cleanup</span>Disk Cleanup after Clean up system files, showing the total space.</label></li></div><div class="step"><h3 class="fh"><span class="n">8</span> Notice another system scan takes place. The Disk Cleanup utility will be refreshed and will reappear with additional folders and areas to be cleaned up. Leave the defaulted checkboxes and review each item to understand what is being cleaned. Clicking on each entry will show a description. Notice the total amount of disk space to be cleaned. Click OK to initiate the cleanup process.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> When prompted, click Delete Files to confirm the process.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> The process should take about 2-3 minutes to complete. Once completed, the utility will close on its own. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 1.2 - Scheduling Disk Cleanup for Win8.1</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Right-click the Start menu and click on Search.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Type cleanmgr /sageset:1 in the search field and click on its respective icon.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Once the Disk Cleanup Settings window appears, click on the Clean up system files button to open all the files and areas.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Check all of the checkboxes and click OK. This process will create a set of registry keys that will store the cleanup settings you just have chosen. The value (1) you put in the command line allows you to store different cleanup options that can be run by the scheduler by using the /sagerun:n switch.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Click on the Start button, followed by clicking on Control Panel.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Click on Administrative Tools with the View by set to Small icons.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Double-click on Task Scheduler.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> In the Task Scheduler window, on the right-side pane, underneath Actions, click on Create a Basic Task.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> In the Create Basic Task Wizard window, type Disk Cleanup in the Name text field and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> You will now be directed through a series of questions for scheduling options. First, you are asked when you want the task to start. Click the radio button next to Weekly and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Next, specify the options for the scheduled task. Set the start time to 10-15 minutes after your current time. This should give you enough time to finish the wizard before it initiates. Leave the value of 1 in the Recur every text field. Set the day of the week to your current day. Click the Next button.     Start (date and time) - this indicates when the scheduled task will be run for the first time. It is important to choose a starting time when the computer will not be in use. Even though the task will run in the background, it will slow the computer down and an unsuspecting user might think the computer is malfunctioning and reboot.     Recur every - this indicates whether to run the task every week (1) every other week (2) every third week (3) and so on.     Sunday, Monday, Tuesday, etc. checkboxes - this will say on which day(s) of the week to run the scheduled task.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Restore point</span>The System Restore confirmation after the reboot.</label></li></div><div class="step"><h3 class="fh"><span class="n">12</span> On the next step, ensure that Start a program is selected and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Click the Browse button for Program/script.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> In the Windows Explorer window, ensure that you are in the C:\Windows\System32 directory and type cleanmgr.exe in the File name text field. Click Open.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> The program name will now display in the Program/script text field. Type /sagerun:1 in the Add arguments (optional) text field. This will use the folder and area cleanup settings you configured earlier. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">16</span> On the Finish page, confirm the settings and click Finish.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">17</span> Back on the Task Scheduler window, on the left pane, click on the Task Scheduler Library folder. Notice the Disk Cleanup task is now listed in the center pane.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Schedule</span>The Disk Cleanup task in Task Scheduler Library with its trigger or Last Run Time.</label></li></div><div class="step"><h3 class="fh"><span class="n">18</span> Double-click on the Disk Cleanup task in the center pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">19</span> In the Disk Cleanup Properties window, select the list arrow next to the Configure for option and change it to Windows 8.1. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">20</span> At this point, if enough time has passed for the scheduled task, you should see a status of Running for the Disk Cleanup task. If you miss the running status, you can check the last time the schedule was run by looking at the Last Run Time column.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">21</span> Close the Task Scheduler window. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">22</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 2 - Running the Disk Defragmentation Utility</p>
-<p class="task-head">Task 2.1 - Running Disk Defragmentation in Win8.1</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> On the Win8.1 machine, with Administrative Tools opened, double-click on Defragment and Optimize Drives.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> To change the scheduled defragment and optimization times, click the Turn on button in the Scheduled optimization pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Notice a pop-up window appears. Check the checkbox for Run on a schedule (recommended). Select Weekly from the Frequency dropdown menu and click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Initiate the Disk Defragmentation utility by first analyzing the disk. Select (C:) from the list of drives and click the Analyze button.</h3><div class="call tip"><span class="k">Note</span><p>The disk analysis should take about 1-2 minutes.</p></div></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Optimize</span>Optimize Drives showing C: after optimization.</label></li></div><div class="step"><h3 class="fh"><span class="n">5</span> Once the disk analysis completes, notice the percentage of fragmented for C: underneath the Current status column. In this example, 2% of the disk is fragmented, meaning that the overall disk consists of 2% of files that are not placed next to each other on the hard drive. Proceed by making sure that (C:) is highlighted and click the Optimize button. The disk defragmentation for this virtual machine should take about 3-4 minutes.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Once the defragmentation completes, notice the percentage underneath the Current status column. Click Close when finished. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Close the Administrative Tools window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Leave the Win8.1 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 3 - Creating System Restore Points</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win8.1 system, in the Control Panel window, click on the System applet.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Click on System protection from the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> In the System Properties window, on the System Protection tab, click the Create button to begin creating a restore point.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> When prompted to enter a description for the restore point, type Background Configuration in the text field and click the Create button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Notice the utility will create the restore point. Once finished, click the Close button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Now, change the background to test the restore point. Right-click on the desktop and click Personalize.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> In the Personalization window, click on the Desktop Background link.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Ensure that Solid Colors is selected from the dropdown menu for Picture location and select any color that is different from the current background color. Click Save changes.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Close the Personalization window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Change focus to the System Properties window, while on the System Protection tab, click on the System Restore button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Notice the System Restore wizard appears. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> A list of all the recent restore points will be shown. To view older restore points, you may check the box for Show more restore points. Select the Background Configuration restore point and then click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Verify the restore point information and click the Finish button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> When prompted, click Yes to continue.</h3><div class="call tip"><span class="k">Note</span><p>The system restore process should take about 8 minutes.</p></div></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> Once the system restore point has been completed, the Windows OS will reboot itself. Log back into the system as sysadmin using Train1ing$ as the password.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">16</span> When logged in, notice the desktop background has reverted to its original settings. On the System Restore confirmation window, click the Close button. Challenge Task: As a challenge, try to recreate this task in a different version of Windows OS that is made available in this lab environment. This will help show similarities and differences between the versions.</h3></div>
-<p class="task-head">Task 4 - Windows Backup</p>
-<p class="task-head">Task 4.1 - Initiating a Backup Process on Win7</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win7 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Click the Start button and navigate to All Programs &gt; Maintenance &gt; Backup and Restore.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> The first thing that will need to be done is to configure the backup settings. Click on the Set up backup link.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> The first step involves telling Windows where to backup the files. You can use the second partition that you are not backing up for this lab. Select Data (E:) and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> The next step of the wizard will ask what you would like to backup. Select the Let me choose radio button and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Select all the checkboxes under the Data Files and select the checkbox for Local Disk (C:) under Computer. Uncheck the Include a system image of drives: System Reserved, (C:). Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> On the Review your backup settings step, confirm the settings and check the schedule. You can change the schedule by clicking on Change schedule. Once confirmed, click Save settings and run backup.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Notice the backup will run for the first time and will continue to run according to the schedule that has been set.</h3><div class="call tip"><span class="k">Note</span><p>The backup process should take about 4 minutes.</p></div></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Now, to test the backup. There is a folder named Installs on the desktop that contains several programs. Right-click the Installs folder and click Delete.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> When prompted, click Yes.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Right-click the Recycle Bin and select Empty Recycle Bin.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> When prompted, click Yes.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Change focus to the Backup and Restore window. Click on the Restore my files button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> In the Restore Files window, click on the Browse for folders button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">16</span> On the left pane, click on sysadmin's backup followed by double-clicking on the Desktop folder in the right pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">17</span> Select the Installs folder and click on the Add folder button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">18</span> Back on the Restore Files window, notice the Installs folder is listed. Click Next.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">File restore</span>The restored Installs folder on Win7 (or the Restore Files window).</label></li></div><div class="step"><h3 class="fh"><span class="n">19</span> When asked where to restore the files, ensure that In the original location radio button is selected and click the Restore button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">20</span> Once the restore process successfully completes, click Finish.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">21</span> Notice the Installs folder is back on the desktop. When opened, all original files should be present. Challenge Task: As a challenge, try to recreate this task in the Win10 machine that is made available in this lab environment. This will help show similarities and differences between the versions. Do note that the Backup and Recovery utility has been stripped from Windows 8.1 and instead only includes the System Image backup utility.</h3></div>
-<p class="task-head">Task 4.2 - Initiating a Backup Process on Win10</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Click on the Start button and then click Control Panel.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Click on Save backup copies of your files with File History.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> If there is no network location showing, click on Select a network location.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Click on Add network location.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Double-click on Win8-1.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Select Backup and then click on Select folder.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Click \\WIN8-1\Backup to highlight it and click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Click on Exclude Folders from the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Click on Add.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Click on each Library and Add all but the Documents Library. You will have to repeat this step for each library separately. (Camera Roll, Music, Pictures, Saved Pictures, Videos)</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Click on Save Changes once you have added your selections.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> Click on Advanced Settings from the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">16</span> Click through the options to see how you could personalize the backup options. Once finished review, click Cancel.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">17</span> Click the Turn on button to enable File History and to start the backup process. The information note in the yellow strip above may show up when you are backing up file that have been encrypted with EFS. File History will not back up sensitive data.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev6"><span class="shot">File History</span>File History turned on with the network location and last backup time.</label></li></div><div class="step"><h3 class="fh"><span class="n">18</span> It will take a few minutes to complete the backup, but you will see the timestamp of when the backup is completed. Run now will become available to do manual backups. Click the X in the top-right corner to close.</h3></div>
-<p class="task-head">Task 4.3 - Log in to the Win8.1 System to Find the Backup.</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Accessing MMC is similar to Windows 8.1 and Windows 10. Access the Win8.1 virtual machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Right-click on the Windows Button located in the lower-left corner of the screen. The Power User Menu will open. Click on Command Prompt (Admin).</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Click Yes to answer the UAC question.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Change directories to the location of the Backup folder on C:\. C:\Windows\system32&gt; cd C:\Users\sysadmin\Documents\Backup\sysadmin\Win10</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> At the prompt, enter the dir command. Notice a Configurations and Data folder are present. If you explore the Data directory further, you'll notice that the backup files are located here. Practice by accessing the same directory using the File Explorer.</h3><pre class="cmd"><code>C:\Users\sysadmin\Documents\Backup\sysadmin\WIN10&gt; dir</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> The lab is now complete; you may end the reservation.</h3></div>
-<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: maintenance and backup</h2>
@@ -547,7 +461,7 @@ Checkpoint-Computer -Description "Before driver update" -RestorePointType MODIFY
     b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
     b.addEventListener('click',function(){
       var code=pre.querySelector('code'), clone=code.cloneNode(true);
-      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      [].forEach.call(clone.querySelectorAll('.c,.pr'),function(x){x.remove();});
       var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
       function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
@@ -565,167 +479,5 @@ Checkpoint-Computer -Description "Before driver update" -RestorePointType MODIFY
   if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
 })();
 </script>
-
-<!-- ===== LAB MODE (begin) — self-contained; safe to remove as a block ===== -->
-<style id="lab-mode-css">
-/* Floating toggle button — always available, top-right */
-.pm-toggle{position:fixed;top:10px;right:12px;z-index:2147483100;display:inline-flex;
-  align-items:center;gap:7px;min-height:40px;padding:0 15px;cursor:pointer;
-  font:600 .85rem/1 var(--f-body);border-radius:999px;
-  background:var(--accent);color:var(--accent-ink);border:1px solid transparent;
-  box-shadow:0 4px 14px rgba(0,0,0,.28)}
-.pm-toggle:hover{filter:brightness(1.08)}
-.pm-toggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.pm-toggle .pm-ico{font-family:var(--f-mono);font-weight:700}
-@media print{.pm-toggle{display:none!important}}
-
-/* ---- When lab mode is ON ---- */
-html[data-present="on"] body{line-height:1.5}
-/* Collapse the sidebar grid to a single column and go full width */
-html[data-present="on"] .wrap{display:block;max-width:100%;padding:8px 14px 90px}
-
-/* Hide page chrome that wastes room in a narrow column */
-html[data-present="on"] .toc,
-html[data-present="on"] header.bar,
-html[data-present="on"] .badges,
-html[data-present="on"] .ticket .lede,
-html[data-present="on"] .ticket .fields,
-html[data-present="on"] .done-row{display:none!important}
-
-/* Slim the title block down to a compact header */
-html[data-present="on"] .ticket{margin:0 0 10px}
-html[data-present="on"] .ticket-in{padding:10px 14px}
-html[data-present="on"] .ticket h1{font-size:1.15rem;line-height:1.25;margin:2px 0 0}
-
-/* Show one section at a time */
-html[data-present="on"] #main > section{display:none}
-html[data-present="on"] #main > section.pm-current{display:block;animation:pm-fade .18s ease}
-@keyframes pm-fade{from{opacity:0}to{opacity:1}}
-
-/* Readability bump for the one visible section */
-html[data-present="on"] #main > section{font-size:1.05rem}
-html[data-present="on"] #main > section h2{font-size:1.2rem}
-html[data-present="on"] .step h3,
-html[data-present="on"] .step h4{font-size:1.04rem}
-html[data-present="on"] .cmd{font-size:1rem;white-space:pre-wrap;word-break:break-word}
-
-/* Slim bottom control dock for advancing through sections */
-.pm-dock{display:none}
-html[data-present="on"] .pm-dock{position:fixed;left:0;right:0;bottom:0;z-index:2147483100;
-  display:flex;align-items:center;gap:8px;padding:8px 12px;
-  padding-bottom:calc(8px + env(safe-area-inset-bottom,0));
-  background:var(--surface);border-top:1px solid var(--rule)}
-.pm-dock button{flex:0 0 auto;min-height:40px;min-width:44px;padding:0 14px;cursor:pointer;
-  font:700 .9rem/1 var(--f-body);border-radius:9px;
-  background:var(--surface-2);color:var(--ink);border:1px solid var(--rule)}
-.pm-dock button:hover{background:var(--accent);color:var(--accent-ink)}
-.pm-dock button:disabled{opacity:.4;cursor:not-allowed}
-.pm-dock button:disabled:hover{background:var(--surface-2);color:var(--ink)}
-.pm-dock .pm-where{flex:1 1 auto;text-align:center;min-width:0;
-  font:600 .82rem/1.25 var(--f-body);color:var(--ink-2);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pm-dock .pm-where b{color:var(--ink);display:block;font-size:.9rem}
-.pm-dock .pm-exit{background:transparent}
-</style>
-
-<div class="pm-dock" id="pmDock" aria-hidden="true">
-  <button type="button" data-pm="prev" aria-label="Previous section">◀</button>
-  <div class="pm-where"><span id="pmCount"></span><b id="pmName"></b></div>
-  <button type="button" data-pm="next" aria-label="Next section">▶</button>
-  <button type="button" data-pm="exit" class="pm-exit" aria-label="Exit lab mode">✕</button>
-</div>
-
-<script id="lab-mode-js">
-(function () {
-  "use strict";
-  var root = document.documentElement;
-  var KEY = "aplus:labmode:v1";               // shared across all A+ companion pages
-  var sections = [], idx = 0;
-  var dock, countEl, nameEl, prevBtn, nextBtn;
-
-  function labelFor(sec) {
-    var h = sec.querySelector("h2");
-    if (!h) return sec.id || "Section";
-    return (h.textContent || "").replace(/\s+/g, " ").trim();
-  }
-
-  function show(i) {
-    if (!sections.length) return;
-    idx = Math.max(0, Math.min(sections.length - 1, i));
-    sections.forEach(function (s, n) { s.classList.toggle("pm-current", n === idx); });
-    if (countEl) countEl.textContent = (idx + 1) + " / " + sections.length;
-    if (nameEl) nameEl.textContent = labelFor(sections[idx]);
-    if (prevBtn) prevBtn.disabled = idx === 0;
-    if (nextBtn) nextBtn.disabled = idx === sections.length - 1;
-    window.scrollTo(0, 0);
-  }
-
-  function enter() {
-    sections = Array.prototype.slice.call(document.querySelectorAll("#main > section"));
-    root.setAttribute("data-present", "on");
-    if (dock) dock.setAttribute("aria-hidden", "false");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "true");
-      btn.querySelector(".pm-txt").textContent = "Exit lab mode"; }
-    try { localStorage.setItem(KEY, "1"); } catch (e) {}
-    show(0);
-  }
-
-  function exit() {
-    root.removeAttribute("data-present");
-    sections.forEach(function (s) { s.classList.remove("pm-current"); });
-    if (dock) dock.setAttribute("aria-hidden", "true");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "false");
-      btn.querySelector(".pm-txt").textContent = "Lab mode"; }
-    try { localStorage.setItem(KEY, "0"); } catch (e) {}
-  }
-
-  function toggle() { root.getAttribute("data-present") === "on" ? exit() : enter(); }
-
-  function build() {
-    var btn = document.createElement("button");
-    btn.className = "pm-toggle"; btn.id = "pmToggle"; btn.type = "button";
-    btn.setAttribute("aria-pressed", "false");
-    btn.title = "Lab mode — steps beside the lab, one section at a time (Shift+L)";
-    btn.innerHTML = '<span class="pm-ico" aria-hidden="true">⇥</span><span class="pm-txt">Lab mode</span>';
-    btn.addEventListener("click", toggle);
-    document.body.appendChild(btn);
-
-    dock = document.getElementById("pmDock");
-    countEl = document.getElementById("pmCount");
-    nameEl = document.getElementById("pmName");
-    if (dock) {
-      prevBtn = dock.querySelector('[data-pm="prev"]');
-      nextBtn = dock.querySelector('[data-pm="next"]');
-      dock.addEventListener("click", function (e) {
-        var t = e.target.closest("[data-pm]"); if (!t) return;
-        var a = t.getAttribute("data-pm");
-        if (a === "prev") show(idx - 1);
-        else if (a === "next") show(idx + 1);
-        else if (a === "exit") exit();
-      });
-    }
-
-    document.addEventListener("keydown", function (e) {
-      if (e.shiftKey && (e.key === "L" || e.key === "l")) {
-        var tag = (e.target && e.target.tagName) || "";
-        if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
-        e.preventDefault(); toggle(); return;
-      }
-      if (root.getAttribute("data-present") !== "on") return;
-      if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); show(idx + 1); }
-      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(idx - 1); }
-      else if (e.key === "Escape") { e.preventDefault(); exit(); }
-    });
-  }
-
-  if (document.readyState === "loading")
-    document.addEventListener("DOMContentLoaded", build);
-  else build();
-})();
-</script>
-<!-- ===== LAB MODE (end) ===== -->
-
 </body>
 </html>

@@ -1,4 +1,8 @@
 @lede Windows hides its real administration tools a click or two away from the desktop. You will build your own MMC console, schedule a task, carve a disk into volumes, end a hung program, trace a stalled process, and change and restore a Registry setting safely.
+@vm Win7|192.168.1.7/24|sysadmin|Train1ng$
+@vm Win8.1|192.168.1.8/24|sysadmin|Train1ng$
+@vm Win10|192.168.1.10/24|sysadmin|Train1ng$|Listed in the PDF
+ only an optional practice note mentions it
 
 == overview | Why this lab matters
 A technician's toolkit lives in a handful of Microsoft Management Console **snap-ins** plus Task Manager, Resource Monitor, and the Registry Editor. Knowing them by name and by shortcut is half the job: when a user calls, you need to open the right tool in seconds.
@@ -6,10 +10,7 @@ This lab covers the full range. **MMC** lets you build a custom console with onl
 The Registry task also teaches the rule that matters most: **back up before you change anything**, and know how to put it back.
 
 == environment | The environment you're working in
-| Machine | IP address | Account | Password |
-| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
-| Win8.1 | `192.168.1.8/24` | `sysadmin` | `Train1ng$` |
-| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+{{VMTABLE}}
 Win7 does the MMC console, Disk Management, Task Manager, and Registry tasks. Win8.1 does Task Scheduler, the newer Task Manager, and Resource Monitor. Win7 has a second disk (**Disk 2**) with unallocated space for the volume task.
 !tip Good to know before you start | Every tool here needs administrator rights, so expect a UAC prompt each time. Click **Yes**.
 
@@ -23,69 +24,85 @@ Win7 does the MMC console, Disk Management, Task Manager, and Registry tasks. Wi
 | Registry Editor | Same, plus an address bar: paste a key path and press [[Enter]] |
 
 == walkthrough | Walkthrough
-## Task 1: Build an MMC console (Win7)
+## Task 1: Build an MMC console <<1.1, steps 1–15>>
+@@ Win7
 ### Open an empty console
-On **Win7**, open **Start**, type `run`, open **Run**, and enter:
-```
+Open the **Win7** console and sign in as `sysadmin` with `Train1ng$`. Click **Start**, type `run` in the search field, and click **Run**. Type the command below and click **OK**:
+```Run box:
 mmc
 ```
-Accept UAC. You get an empty **Console1** window.
+If UAC prompts, click **Yes**. You get an empty **Console1** window.
 ### Add three snap-ins
 Choose **File > Add/Remove Snap-in**. Add **Disk Management** (choose **This computer**, then **Finish**), **Event Viewer** (Local computer), and **Task Scheduler** (Local computer). Click **OK** when all three are in **Selected snap-ins**.
 !shot The Add or Remove Snap-ins window with all three snap-ins selected.
 ### Save the console
-Choose **File > Save As** and save it as `C:\Users\sysadmin\console`. Windows adds the `.msc` extension. Close the console.
-## Task 2: Schedule a task (Win8.1)
+Choose **File > Save As**, type this in the **File name** box, and click **Save**. Windows adds the `.msc` extension. Close the console.
+```File name:
+C:\Users\sysadmin\console
+```
+## Task 2: Schedule a task <<1.2, steps 1–24>>
+@@ Win8.1
 ### Add Task Scheduler to a console
-On **Win8.1**, right-click **Start > Run**, enter `mmc`, and add the **Task Scheduler** snap-in for the local computer.
+Open the **Win8.1** console, click the splash screen, and sign in as `sysadmin` with `Train1ng$`. Right-click **Start** and click **Run**, type `mmc`, click **OK**, and accept UAC. Choose **File > Add/Remove Snap-in**, select **Task Scheduler**, click **Add >**, keep **Local computer**, click **OK**, then **OK** again.
 ### Create the task
 Select **Task Scheduler** in the left pane and choose **Action > Create Task**. Fill in:
 | Tab | Setting |
 | General | Name and Description: `Notepad` |
 | Triggers | **New** > Begin the task: **At log on** |
-| Actions | **New** > Start a program > Browse to `C:\windows\system32\notepad.exe` |
+| Actions | **New** > Start a program > **Browse**, type `C:\windows\system32\notepad.exe` in File name, **Open** |
 Click **OK** to close each window.
 !shot The Create Task window, or the new Notepad task listed in Task Scheduler Library.
 !tip Create Task or Create Basic Task? | **Create Basic Task** is a wizard with fewer options. **Create Task** shows every tab (General, Triggers, Actions, Conditions, Settings), which is what you'll use for real work.
 ### Save, sign out, and test
-Close the console and save it as `C:\Users\sysadmin\console`. Sign out from the Start screen and sign back in. Notepad should open on its own. Close it.
-## Task 3: Create volumes in Disk Management (Win7)
+Close the console with the **X** and click **Yes** to save the console settings. In **Save As**, type `C:\Users\sysadmin\console`, click **Save**, and close MMC. Click **Start**, click the **sysadmin** icon in the top-right corner, and choose **Sign out**. Sign back in as `sysadmin`: Notepad opens on its own. Close it.
+## Task 3: Create volumes in Disk Management <<2.1, steps 1–19>>
+@@ Win7
 ### Open your saved console
-On **Win7**, open **Start**, type `console.msc`, and open it. Double-click **Disk Management** under Console Root.
+Navigate back to **Win7**. Click **Start**, type the name below in the search box, and click **console**. Accept UAC, then double-click **Disk Management** under **Console Root**.
+```Start search:
+console.msc
+```
 ### Create an NTFS volume
-Right-click the **Unallocated** space on **Disk 2** and choose **New Simple Volume**. Use these settings:
+Right-click the **Unallocated** 5 GB space on **Disk 2**, choose **New Simple Volume**, and click **Next**. Use these settings, then review and click **Finish**:
 | Wizard page | Value |
 | Volume size | `2048` MB |
 | Drive letter | `S` |
 | File system | NTFS, Volume label `NTFS` |
 !stuck Where people get stuck | Disk 2 is below the bottom of the window. Maximize the console or scroll the lower pane to find it. Right-click the black **Unallocated** bar, not the disk label on the left.
 ### Create a FAT32 volume
-Right-click the remaining unallocated space (about 3 GB) and create a second simple volume: `2048` MB, drive letter `L`, file system **FAT32**, label `FAT32`.
+The new partition appears in blue. Right-click the remaining **Unallocated** 3 GB and create a second simple volume: `2048` MB, drive letter `L`, file system **FAT32**, label `FAT32`. Review and click **Finish**.
 !shot Disk Management showing the new S: (NTFS) and L: (FAT32) volumes on Disk 2.
 ### Check in Computer
 Close the console, saving it when asked, and double-click **Computer** on the desktop. You should see drives **S:** and **L:**.
-## Task 4: Task Manager
+## Task 4: Task Manager <<3.1–3.2>>
+@@ Win7
 ### End an application on Win7
-Open **Notepad**. Right-click the taskbar and choose **Start Task Manager**. On the **Applications** tab, select Notepad and click **End Task**.
+Still on **Win7**, click **Start**, type `notepad`, and open **Notepad**. Right-click the taskbar and choose **Start Task Manager**. On the **Applications** tab, select Notepad and click **End Task**.
 ### Tour the Win7 tabs
-Look at **Processes** (running programs and their memory), **Services**, **Performance**, **Networking**, and **Users**. Then on **Processes**, select `taskmgr.exe` and click **End Process** to close Task Manager itself.
+Look at **Processes** (running programs and their memory), **Services**, **Performance**, **Networking**, and **Users**. Then on **Processes**, select `taskmgr.exe`, click **End Process**, and confirm **End process** to close Task Manager itself.
 !stuck Before you end a process | Ending a process discards unsaved work, and ending a system process can crash Windows. End only what you recognize, and prefer ending the app from the Applications or Processes view.
+@@ Win8.1
 ### Compare the newer Task Manager on Win8.1
-On **Win8.1**, right-click the taskbar and choose **Task Manager**. Click **More details**. The **Processes** tab now combines apps and background processes with live CPU, memory, disk, and network columns. Note the newer **App history** and **Startup** tabs. Right-click **Task Manager** in the list and choose **End task**.
+Navigate back to **Win8.1**. Right-click the taskbar and choose **Task Manager**. Click **More details**. The **Processes** tab now combines apps and background processes with live CPU, memory, disk, and network columns. Note the newer **App history** and **Startup** tabs. Right-click **Task Manager** in the list and choose **End task**.
 !shot The Win8.1 Task Manager in More details view.
-## Task 5: Resource Monitor (Win8.1)
+## Task 5: Resource Monitor <<4.1, steps 1–6>>
+@@ Win8.1
 ### Open Resource Monitor
 Open Task Manager again, click **More details**, go to **Performance**, and click **Open Resource Monitor** at the bottom. Look at each tab: Overview, CPU, Memory, Disk, and Network.
 ### Analyze a wait chain
 On the **CPU** tab, find `explorer.exe` under **Image**, right-click it, and choose **Analyze Wait Chain**. A hung process shows in red; the wait chain names the process it's waiting on, which is often the real culprit.
 !shot The Analyze Wait Chain window for explorer.exe.
 Close all windows on Win8.1.
-## Task 6: Change and restore a Registry setting (Win7)
+## Task 6: Change and restore a Registry setting <<5.1, steps 1–27>>
+@@ Win7
 ### Back up the Registry first
-On **Win7**, open **Start**, type `regedit`, and open it. Accept UAC. Right-click **Computer** at the top of the tree, choose **Export**, and save as `C:\Users\sysadmin\Documents\Reg-Backup.reg`.
+Navigate back to **Win7**. Click **Start**, type `regedit` in the search box, and open it. Accept UAC. Right-click **Computer** at the top of the tree, choose **Export**, type this in **File name**, and click **Save**:
+```File name:
+C:\Users\sysadmin\Documents\Reg-Backup.reg
+```
 ### Rename the Recycle Bin
 Go to this key (on Windows 10 and 11 you can paste it into the address bar):
-```
+```Registry key:
 HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{645FF040-5081-101B-9F08-00AA002F954E}
 ```
 **(Default)** reads *(value not set)*. Double-click it, type `Trash Bin` as the Value data, and click **OK**. Right-click the desktop and choose **Refresh**. The Recycle Bin is now **Trash Bin**.
@@ -93,7 +110,8 @@ HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\CLSID\{645F
 ### Export just that key
 Right-click the `{645FF040-...}` key and choose **Export**. Save it to the **Desktop** as `Trash Bin`.
 ### Undo the change, then re-import it
-Double-click **(Default)**, delete the text, and click **OK**. Refresh the desktop: it says **Recycle Bin** again. Close Regedit, then double-click **Trash Bin.reg** on the desktop and click **Yes** through the warnings. Refresh again: the name is back to **Trash Bin**, restored from your export.
+Double-click **(Default)**, delete the text, and click **OK**. Refresh the desktop: it says **Recycle Bin** again. Close Regedit with the **X**. Double-click **Trash Bin** (the `.reg` file) on the desktop, click **Yes** at UAC, click **Yes** to confirm the import, then **OK**. Refresh the desktop again: the name is back to **Trash Bin**, restored from your export.
+!tip The PDF's numbering skips here | In section 5.1 the PDF jumps from step 17 to 19, and from 22 to 27. Nothing is missing; those numbers just aren't used.
 The lab is complete.
 
 == reference | Reference: admin tools and shortcuts

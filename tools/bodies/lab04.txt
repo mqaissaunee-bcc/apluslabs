@@ -1,14 +1,14 @@
 @lede Every person on a PC should have their own account with only the rights they need. You will create standard and administrator accounts three ways, add a user to the Administrators group, enforce a password policy with Group Policy, and open the tools used to manage domain accounts.
+@vm Win7|192.168.1.7/24|sysadmin|Train1ng$
+@vm Win8.1|192.168.1.8/24|sysadmin|Train1ng$
+@vm Win10|192.168.1.10/24|sysadmin|Train1ng$
 
 == overview | Why this lab matters
 Accounts are the first security control on any PC. A **standard user** can run programs and change their own settings. An **administrator** can install software, change system settings, and read other users' files. Giving everyone admin rights is the most common way a small malware problem becomes a big one.
 You'll see the two ways Windows creates accounts: the friendly **Settings/User Accounts** path, and **Local Users and Groups** (`lusrmgr.msc`), which gives you every field and group membership. Then you'll use the **Local Group Policy Editor** to make Windows enforce password rules instead of just hoping people follow them. Finally you'll install **RSAT** and open **Active Directory Users and Computers**, the tool most help desks use all day in a domain.
 
 == environment | The environment you're working in
-| Machine | IP address | Account | Password |
-| Win7 | `192.168.1.7/24` | `sysadmin` | `Train1ng$` |
-| Win8.1 | `192.168.1.8/24` | `sysadmin` | `Train1ng$` |
-| Win10 | `192.168.1.10/24` | `sysadmin` | `Train1ng$` |
+{{VMTABLE}}
 Accounts you'll create:
 | User | Where | Password | Type |
 | Logan | Win7 | `Password1` | Standard |
@@ -27,29 +27,33 @@ The machines are in a **workgroup**, not a domain, so the Active Directory tools
 | Control Panel > Administrative Tools | Start > All apps > **Windows Tools** |
 
 == walkthrough | Walkthrough
-## Task 1: Create accounts the easy way
+## Task 1: Create accounts the easy way <<1.1–1.3>>
+@@ Win7
 ### Create a standard user on Win7
-Log in to **Win7**. Open **Control Panel > User Accounts and Family Safety > User Accounts > Manage another account > Create a new account**. Name it `Logan`, leave **Standard user** selected, and click **Create Account**.
+Open the **Win7** console and sign in as `sysadmin` with `Train1ng$`. Click **Start > Control Panel > User Accounts and Family Safety > User Accounts > Manage another account > Create a new account**. Name it `Logan`, leave **Standard user** selected, and click **Create Account**.
 ### Give Logan a password
-Click **Logan > Create a password**. Enter `Password1` twice and click **Create password**.
+Click **Logan > Create a password**. Enter `Password1` twice (a hint is optional) and click **Create password**. Close the User Accounts window.
 ### Test what a standard user can't do
-Log off and sign in as **Logan**. Open **Computer** and try to open `C:\Users\sysadmin`. You're refused because the folder belongs to another user. Click **Cancel**.
-Now open **Control Panel > User Accounts > Manage another account**. UAC asks for an **administrator's password**. Click **No**.
+Click **Start**, click the arrow next to **Shut down**, and choose **Log off**. Click Logan's picture and sign in with `Password1`. Click **Start > Computer** and try to open `C:\Users\sysadmin`. You're refused because the folder belongs to another user. Click **Cancel**.
+Close the window. Now open **Start > Control Panel**, set **View by** to **Small icons**, and click **User Accounts > Manage another account**. UAC asks for an **administrator's password**. Click **No**.
 !shot The UAC prompt asking for administrator credentials while signed in as Logan.
 !tip This is how admins should work | Day-to-day work in a standard account, typing admin credentials only when UAC asks, limits what malware can do if you open something bad.
 Log off Logan.
+@@ Win8.1
 ### Create an account on Win8.1 and make it an administrator
-Log in to **Win8.1** as sysadmin. Open **Start > PC Settings > Accounts > Other accounts > Add an account**. Create a local account: user name `Logan`, password `Password1`, hint `A password with 1`. Click **Next**, then **Finish**.
+Open the **Win8.1** console, click the splash screen, and sign in as `sysadmin`. Open **Start > PC Settings > Accounts > Other accounts > Add an account**. Create a local account: user name `Logan`, password `Password1`, hint `A password with 1`. Click **Next**, then **Finish**.
 Click **Logan > Edit**, set **Account type** to **Administrator**, and click **OK**. Sign out (move the pointer to the top-right corner for the charms bar, then Start > sysadmin > Sign out) and sign in as Logan. Windows sets up the new profile.
+@@ Win10
 ### Do the same on Win10
-Log in to **Win10** as sysadmin. Open **Start > Settings > Accounts > Family & other people > Add someone else to this PC**. Create `Logan` with password `Password1` and these security answers:
+Open the **Win10** console, click the splash screen, and sign in as `sysadmin`. Open **Start > Settings > Accounts > Family & other people > Add someone else to this PC**. Create `Logan` with password `Password1` and these security answers:
 | Question | Answer |
 | First pet's name | `Logan Jr` |
 | City where you were born | `BigCity` |
 | Childhood nickname | `Kidd` |
-Click **Logan > Change account type**, choose **Administrator**, and click **OK**. Sign in as Logan to confirm.
+Click **Logan > Change account type**, choose **Administrator**, and click **OK**. Click **Start**, click the **sysadmin** icon, and choose **Logan**; sign in with `Password1`. Windows sets up the account for first use.
 !shot Win10 Settings showing Logan listed as an Administrator, local account.
-## Task 2: Local Users and Groups (Win7)
+## Task 2: Local Users and Groups <<2.1>>
+@@ Win7
 ### Open Computer Management
 On **Win7**, sign in as sysadmin. Right-click **Computer** on the desktop and choose **Manage**. Expand **Local Users and Groups** and open **Users**.
 ### Create Sal
@@ -64,9 +68,13 @@ Uncheck **User must change password at next logon**, check **Password never expi
 Open **Groups**, double-click **Administrators**, and click **Add**. Type `Sal`, click **Check Names** (it becomes `WIN7\Sal`, underlined), and click **OK** twice.
 !shot The Administrators Properties window listing Sal as a member.
 Close Computer Management, log off, and sign in as **Sal A.** Sal can now open other users' folders.
-## Task 3: Enforce a password policy (Win8.1)
+## Task 3: Enforce a password policy <<3.1>>
+@@ Win8.1
 ### Open the Local Group Policy Editor
-On **Win8.1**, sign out of Logan and sign in as sysadmin. Right-click **Start > Search**, type `gpedit.msc`, and open it.
+Change focus to **Win8.1**. Click **Start**, click the **Logan** icon in the top-right corner, and choose **Sign out**. Sign in as `sysadmin` with `Train1ng$`. Right-click **Start > Search**, type the name below, and click the **gpedit** result.
+```Search box:
+gpedit.msc
+```
 ### Set the password policy
 Expand **Computer Configuration > Windows Settings > Security Settings > Account Policies > Password Policy** and double-click each setting:
 | Policy | Set to |
@@ -79,9 +87,13 @@ Right-click **Start > Shut down or sign out > Restart**. Sign in as **Logan** (`
 Try the new password `Pass2`. It's refused because it's too short. Click **OK**, try again with `Password2`, and it's accepted. Sign out and back in as Logan with `Password2`.
 !shot The error saying the password doesn't meet policy requirements.
 !stuck Where people get stuck | [[Ctrl]]+[[Alt]]+[[Del]] on your own keyboard goes to *your* computer, not the VM. Use the NETLAB+ **Send CTRL+ALT+DEL** menu item.
-## Task 4: Active Directory tools (Win10)
+## Task 4: Active Directory tools <<4.1–4.2>>
+@@ Win10
 ### Install RSAT
-On **Win10**, sign out of Logan and sign in as sysadmin. Open the **Toolbox** folder on the desktop and double-click `WindowsTH-RSAT_WS_1709-x64.msu`. Click **Yes**, then **I Accept**. It takes a few minutes. Click **Close** when it finishes.
+Change focus to **Win10**. If you're signed in as Logan, sign out and sign back in as `sysadmin` with `Train1ng$`. Open the **Toolbox** folder on the desktop and double-click this file:
+```File to run:
+WindowsTH-RSAT_WS_1709-x64.msu
+``` Click **Yes**, then **I Accept**. It takes a few minutes. Click **Close** when it finishes.
 ### Open Active Directory Users and Computers
 Open **Control Panel**, set **Small icons**, and open **Administrative Tools**. Note the AD tools RSAT added, then double-click **Active Directory Users and Computers**. Read the warning that this tool manages domain accounts, not local ones, and click **OK**.
 !shot Administrative Tools listing the Active Directory snap-ins.

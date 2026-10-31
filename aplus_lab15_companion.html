@@ -12,6 +12,7 @@
   --stuck:#A3241C; --stuck-bg:#FBEDEB; --tip:#1D6644; --tip-bg:#E7F3EC;
   --now:#5B3D99; --now-bg:#F1ECFA; --code-bg:#13202F; --code-ink:#E4ECF5; --code-dim:#93A6BC;
   --focus:#1C5689; --shadow:0 1px 0 #C7D0DA;
+  --m-win7:#1F5FA8; --m-win81:#0B7377; --m-win10:#6A3FB0; --m-lub:#B4481A; --m-newlub:#8A5A00; --m-bg:#F3F6FA;
   --f-display:"Bahnschrift","DIN Alternate","DIN 2014","Arial Narrow",system-ui,sans-serif;
   --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
   --f-mono:"Cascadia Mono","Cascadia Code",Consolas,"SFMono-Regular",Menlo,monospace;
@@ -22,13 +23,15 @@
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}}
 :root[data-theme="dark"]{
   --bg:#0E1621; --surface:#152131; --surface-2:#1B293B; --ink:#E5EBF2; --ink-2:#A9B6C6;
   --rule:#2D3D52; --accent:#86BDEB; --accent-ink:#0E1621; --tag:#F2B705; --tag-ink:#2E2300;
   --stuck:#FF968C; --stuck-bg:#33201F; --tip:#86D3AE; --tip-bg:#15302A;
   --now:#C4AEF5; --now-bg:#251F3A; --code-bg:#0A111A; --code-ink:#E4ECF5; --code-dim:#8597AC;
-  --focus:#F2B705; --shadow:0 1px 0 #2D3D52; color-scheme:dark;}
+  --focus:#F2B705; --shadow:0 1px 0 #2D3D52;
+  --m-win7:#7FB2EE; --m-win81:#5FD0D3; --m-win10:#B9A0F2; --m-lub:#F5A07A; --m-newlub:#E8C46A; --m-bg:#17253A; color-scheme:dark;}
 *,*::before,*::after{box-sizing:border-box}
 html{font-size:calc(100% * var(--scale,1));scroll-padding-top:4.5rem}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);line-height:1.6}
@@ -108,6 +111,22 @@ main p,main li{max-width:68ch}
 p.shotline{margin:.5rem 0}
 pre.cmd{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:6px;padding:.8rem 4.8rem .8rem 1rem;overflow-x:auto;font-size:.92rem;margin:.6rem 0}
 pre.cmd .c{color:var(--code-dim)}
+pre.cmd .pr{color:var(--code-dim);user-select:none;-webkit-user-select:none}
+pre.cmd.file{border-left:4px solid var(--tag)}
+.fcap{font-size:.85rem;color:var(--ink-2);margin:.6rem 0 -.3rem}
+.m-win7{--mc:var(--m-win7)} .m-win81{--mc:var(--m-win81)} .m-win10{--mc:var(--m-win10)} .m-lub{--mc:var(--m-lub)} .m-newlub{--mc:var(--m-newlub)}
+.mrun{border-left:5px solid var(--mc);padding:.1rem 0 .1rem .9rem;margin:1rem 0 1.25rem}
+.mband{display:inline-flex;align-items:center;gap:.4rem;margin:0 0 .25rem -.9rem;padding:.3rem .8rem .3rem .7rem;background:var(--m-bg);border:1px solid var(--mc);border-left:5px solid var(--mc);border-radius:0 6px 6px 0;font-weight:700;color:var(--mc);font-family:var(--f-display)}
+.onm{display:inline-block;font-weight:700;color:var(--mc);border:1px solid var(--mc);border-radius:4px;padding:0 .35rem;font-size:.88em;background:var(--m-bg)}
+.pdfref{display:inline-block;margin-left:.5rem;font-family:var(--f-body);font-weight:600;font-size:.75rem;color:var(--ink-2);border:1px solid var(--rule);border-radius:3px;padding:0 .4rem;vertical-align:middle}
+.topo{margin:1rem 0;padding:1rem;border:1px solid var(--rule);border-radius:8px;background:var(--surface-2)}
+.topo .bus{text-align:center;font-family:var(--f-mono);font-size:.85rem;color:var(--ink-2);margin:0 0 .3rem;padding-bottom:.3rem;border-bottom:4px solid var(--ink)}
+.topo ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
+.topo li{position:relative;margin-top:.9rem;border:2px solid var(--mc);border-top-width:6px;border-radius:6px;padding:.35rem .7rem;background:var(--surface);text-align:center;min-width:7.5rem}
+.topo li::before{content:"";position:absolute;top:-1.05rem;left:50%;height:.9rem;border-left:2px solid var(--ink)}
+.topo li b{display:block;color:var(--mc)} .topo li span{font-family:var(--f-mono);font-size:.85rem}
+.vmnote{font-size:.8rem;color:var(--ink-2)} .topo li.unused{border-style:dashed;opacity:.75}
+.topo .hosted{font-size:.85rem;color:var(--ink-2);text-align:center;margin:.5rem 0 0}
 .copy{position:absolute;top:.4rem;right:.4rem;min-height:36px;padding:.2rem .6rem;border:1px solid var(--code-dim);background:transparent;color:var(--code-ink);border-radius:4px;font:inherit;font-size:.8rem;cursor:pointer}
 .tbl{overflow-x:auto;margin:.75rem 0}
 table{border-collapse:collapse;width:100%;font-size:.94rem}
@@ -136,17 +155,13 @@ footer p{margin:.25rem 0;max-width:80ch}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media print{
+  .mrun{border-left-color:#000} .mband,.onm{color:#000;border-color:#000;background:#fff}
   .bar,.toc,.copy,.done-row,.reveal,.skip-link{display:none!important}
   body{background:#fff;color:#000} .wrap{display:block;padding:0}
   main section{border:0;padding:0;margin:0 0 1rem;break-inside:auto}
   .ans{display:block!important} pre.cmd{background:#f2f2f2;color:#000;border:1px solid #999}
   .stub{background:#fff;border:2px solid #000}
 }
-
-#fullsteps .step h3.fh{font-weight:600;font-size:.95rem;line-height:1.5;margin:0;display:block}
-#fullsteps .step h3.fh .n{margin-right:.5rem}
-#fullsteps .shotmark{margin:.55rem 0 0;padding:.5rem .7rem;border-left:3px solid var(--accent);background:var(--surface-2);border-radius:8px;font-size:.88rem;color:var(--ink)}
-#fullsteps .shotmark b{color:var(--accent)}
 </style>
 </head>
 <body data-prefix="aplus-lab15-v1:">
@@ -172,7 +187,7 @@ footer p{margin:.25rem 0;max-width:80ch}
 <ol><li><a href="#overview"><span>Why this lab matters</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#environment"><span>The environment you're working in</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#then-now"><span>Then vs. now: Windows 11</span><span class="tick" aria-hidden="true"></span></a></li>
-<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li><li><a href="#fullsteps"><span>Full lab steps</span><span class="tick" aria-hidden="true"></span></a></li>
+<li><a href="#walkthrough"><span>Walkthrough</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#reference"><span>Reference: Windows security tools</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#stuck"><span>Where people get stuck</span><span class="tick" aria-hidden="true"></span></a></li>
 <li><a href="#on-the-job"><span>On the job</span><span class="tick" aria-hidden="true"></span></a></li>
@@ -191,9 +206,10 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="environment" aria-labelledby="h-environment">
 <h2 id="h-environment">The environment you're working in</h2>
-<div class="tbl"><table><thead><tr><th scope="col">Machine</th><th scope="col">IP address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code class="inl">192.168.1.7/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr><tr><td>Win10</td><td><code class="inl">192.168.1.10/24</code></td><td><code class="inl">sysadmin</code></td><td><code class="inl">Train1ng$</code></td></tr></tbody></table></div>
+<p class="fcap">Lab Settings, exactly as listed in the PDF</p><div class="tbl"><table><thead><tr><th scope="col">Virtual Machine</th><th scope="col">IP Address</th><th scope="col">Account</th><th scope="col">Password</th></tr></thead><tbody><tr><td>Win7</td><td><code>192.168.1.7/24</code></td><td><code>sysadmin</code></td><td><code>Train1ng$</code></td></tr><tr><td>Win10</td><td><code>192.168.1.10/24</code></td><td><code>Sysadmin</code></td><td><code>Train1ng$</code></td></tr></tbody></table></div><p class="fcap">The PDF capitalizes the Win10 account as <code>Sysadmin</code>. Windows user names aren't case-sensitive, so <code>sysadmin</code> works too. The password is case-sensitive.</p>
+<div class="topo" role="img" aria-label="Pod topology: Win7 at 192.168.1.7/24, Win10 at 192.168.1.10/24, all on 192.168.1.0/24"><div class="bus">192.168.1.0/24 (one flat subnet, no router or internet)</div><ul><li class="m-win7"><b><span aria-hidden="true">🪟</span> Win7</b><span>.7</span></li><li class="m-win10"><b><span aria-hidden="true">🪟</span> Win10</b><span>.10</span></li></ul></div>
 <div class="tbl"><table><thead><tr><th scope="col">Item</th><th scope="col">Value</th></tr></thead><tbody><tr><td>user1 on Win7</td><td><code class="inl">SuperSecret</code></td></tr><tr><td>EFS key backup password</td><td><code class="inl">mypassword</code></td></tr><tr><td>EFS key file name</td><td><code class="inl">EFS-key</code></td></tr><tr><td>BitLocker password</td><td><code class="inl">Train1ng$</code></td></tr><tr><td>BitLocker recovery key file</td><td><code class="inl">EFS-Recover</code> (saved with the XPS Document Writer)</td></tr></tbody></table></div>
-<p>The VMs have no TPM chip, so Task 6 first changes Group Policy to allow BitLocker with a password instead.</p>
+<p>The VMs have no TPM chip, so Task 7 first changes Group Policy to allow BitLocker with a password instead.</p>
 <div class="call tip"><span class="k">Timing</span><p>The offline scan reboots Win10; you'll cancel it after a few minutes. BitLocker encryption and decryption run in the background and take several minutes each.</p></div>
 
 <div class="done-row"><input type="checkbox" id="done-environment" data-done="environment"><label for="done-environment">Mark this section reviewed</label></div>
@@ -206,10 +222,11 @@ footer p{margin:.25rem 0;max-width:80ch}
 </section>
 <section id="walkthrough" aria-labelledby="h-walkthrough">
 <h2 id="h-walkthrough">Walkthrough</h2>
-<p class="task-head">Task 1: Malware scans (Win10)</p>
+<p class="task-head">Task 1: Malware scans <span class="pdfref">PDF 1.1</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">1</span>Open the security dashboard</h3>
-<p>Log in to <strong>Win10</strong>. Search for <code class="inl">Windows Defender</code> and open <strong>Windows Defender Security Center</strong>. The Home page shows the status of each area: a green check is good, a yellow <strong>!</strong> needs attention.</p>
+<p>Open the <strong>Win10</strong> console, click the splash screen, and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Click the search icon, type <code class="inl">Windows Defender</code>, and open <strong>Windows Defender Security Center</strong>. The Home page shows the status of each area: a green check is good, a yellow <strong>!</strong> needs attention.</p>
 </div>
 <div class="step">
 <h3><span class="n">2</span>Look at the scan types</h3>
@@ -221,18 +238,24 @@ footer p{margin:.25rem 0;max-width:80ch}
 <p>Select <strong>Windows Defender Offline scan > Scan now > Scan</strong> and accept UAC. Windows signs you out and restarts into the Defender environment. With no internet it skips the definition update and starts scanning. After a few minutes, click <strong>Cancel scan</strong>; Windows then boots normally.</p>
 <div class="call tip"><span class="k">When to use the offline scan</span><p>Rootkits and some other malware hide from scanners while Windows is running. Booting into a separate environment means the malware isn't loaded, so the scanner can see and remove it.</p></div>
 </div>
-<p class="task-head">Task 2: Health report (Win10)</p>
+</div>
+<p class="task-head">Task 2: Health report <span class="pdfref">PDF 1.2</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">4</span>Read device health</h3>
 <p>Sign back in. Open the Windows Defender icon from the hidden tray icons, then <strong>Device performance & health</strong>. Check the <strong>Health report</strong>: storage capacity, device drivers, and apps and software. Green is good, yellow is a recommendation, red is a warning.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The Device performance & health report.</p>
 </div>
-<p class="task-head">Task 3: Firewall profiles (Win10)</p>
+</div>
+<p class="task-head">Task 3: Firewall profiles <span class="pdfref">PDF 1.3</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">5</span>Look at the Private profile</h3>
 <p>Click <strong>Firewall & network protection > Private network</strong>. Note the switch that turns the firewall on or off for this profile. Click back and close the window.</p>
 </div>
-<p class="task-head">Task 4: Allowed apps (Win10)</p>
+</div>
+<p class="task-head">Task 4: Allowed apps <span class="pdfref">PDF 1.4–1.6</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
 <h3><span class="n">6</span>Open the firewall in Control Panel</h3>
 <p>Right-click <strong>Start > Run</strong>, enter <code class="inl">Control Panel</code>, and open <strong>System and Security > Windows Defender Firewall</strong>. Click <strong>Turn Windows Defender Firewall on or off</strong> to see the per-profile settings, then go back.</p>
@@ -243,243 +266,128 @@ footer p{margin:.25rem 0;max-width:80ch}
 </div>
 <div class="step">
 <h3><span class="n">8</span>Add an app that isn't listed</h3>
-<p>Click <strong>Allow another app > Browse</strong>, go to <code class="inl">C:\Program Files\Windows Photo Viewer</code>, select <code class="inl">ImagingDevices.exe</code>, and click <strong>Open > Add</strong>. <strong>Imaging Devices Console</strong> appears, allowed on Private.</p>
+<p>Click <strong>Allow another app > Browse</strong>, go to the folder below, select <code class="inl">ImagingDevices.exe</code>, and click <strong>Open</strong>. Confirm <strong>Imaging Devices</strong> appears and click <strong>Add</strong>.</p>
+<pre class="cmd" data-prompt="Folder:"><code><span class="pr" aria-hidden="true">Folder: </span>C:\Program Files\Windows Photo Viewer</code></pre>
 <p class="shotline"><span class="shot">Screenshot</span>The allowed apps list with Windows Media Player and Imaging Devices Console allowed.</p>
 </div>
 <div class="step">
 <h3><span class="n">9</span>Remove it again</h3>
 <p>Select <strong>Imaging Devices Console > Remove > Yes</strong>, then <strong>OK</strong>.</p>
 </div>
-<p class="task-head">Task 5: Firewall rules (Win10 and Win7)</p>
+</div>
+<p class="task-head">Task 5: Firewall rules <span class="pdfref">PDF 1.7–1.8</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
-<h3><span class="n">10</span>Confirm ping works both ways</h3>
-<p>In Windows Defender Firewall, click <strong>Advanced settings</strong> to open <strong>Windows Defender Firewall with Advanced Security</strong>. Open <strong>cmd</strong> on Win10 and on Win7 and test:</p>
-<pre class="cmd"><code><span class="c">On Win10</span>
-ping 192.168.1.7
-<span class="c">On Win7</span>
-ping 192.168.1.10</code></pre>
-<p>Both succeed.</p>
+<h3><span class="n">10</span>Open the advanced firewall and test ping from Win10</h3>
+<p>In Windows Defender Firewall, click <strong>Advanced settings</strong> in the left pane to open <strong>Windows Defender Firewall with Advanced Security</strong>. Then click the search icon on the taskbar, type <code class="inl">cmd</code>, press <kbd>Enter</kbd>, and ping Win7:</p>
+<pre class="cmd" data-prompt="C:\Users\sysadmin&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>ping 192.168.1.7</code></pre>
+<p>It succeeds.</p>
+</div>
+</div>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
+<div class="step">
+<h3><span class="n">11</span>Test ping from Win7</h3>
+<p>Open the <strong>Win7</strong> console and sign in as <code class="inl">sysadmin</code> with <code class="inl">Train1ng$</code>. Click <strong>Start</strong>, type <code class="inl">cmd</code>, press <kbd>Enter</kbd>, and ping Win10:</p>
+<pre class="cmd" data-prompt="C:\Users\sysadmin&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>ping 192.168.1.10</code></pre>
+<p>It succeeds too. Leave this prompt open; you'll use it twice more.</p>
+</div>
+</div>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
+<div class="step">
+<h3><span class="n">12</span>Find the built-in ping rule</h3>
+<p>Change focus to <strong>Win10</strong>, in <strong>Windows Defender Firewall with Advanced Security</strong>. Click <strong>Inbound Rules</strong> and find <strong>File and Printer Sharing (Echo Request - ICMPv4-In)</strong> for the <strong>Private</strong> profile. Right-click it: it's enabled (the menu offers <strong>Disable Rule</strong>), which is why Win7 can ping Win10. Leave it enabled.</p>
 </div>
 <div class="step">
-<h3><span class="n">11</span>Find the built-in ping rule</h3>
-<p>On Win10, click <strong>Inbound Rules</strong> and find <strong>File and Printer Sharing (Echo Request - ICMPv4-In)</strong> for the <strong>Private</strong> profile. Right-click it: it's enabled, which is why Win7 can ping Win10. Leave it enabled.</p>
-</div>
-<div class="step">
-<h3><span class="n">12</span>Create a rule that blocks ping</h3>
+<h3><span class="n">13</span>Create a rule that blocks ping</h3>
 <p>Right-click <strong>Inbound Rules > New Rule</strong> and set:</p>
-<div class="tbl"><table><thead><tr><th scope="col">Wizard step</th><th scope="col">Choose</th></tr></thead><tbody><tr><td>Rule type</td><td>Custom</td></tr><tr><td>Program</td><td>All programs</td></tr><tr><td>Protocol and Ports</td><td>ICMPv4 > <strong>Customize</strong> > Specific ICMP types > <strong>Echo Request</strong></td></tr><tr><td>Scope</td><td>Defaults</td></tr><tr><td>Action</td><td>Block the connection</td></tr><tr><td>Profile</td><td>Defaults (Domain, Private, Public)</td></tr><tr><td>Name</td><td><code class="inl">Block Incoming ICMPv4 Echo Requests</code></td></tr></tbody></table></div>
+<div class="tbl"><table><thead><tr><th scope="col">Wizard step</th><th scope="col">Choose</th></tr></thead><tbody><tr><td>Rule type</td><td>Custom</td></tr><tr><td>Program</td><td>All programs</td></tr><tr><td>Protocol and Ports</td><td>Protocol type <strong>ICMPv4</strong> > <strong>Customize</strong> > <strong>Specific ICMP types</strong> > check <strong>Echo Request</strong> > <strong>OK</strong></td></tr><tr><td>Scope</td><td>Defaults</td></tr><tr><td>Action</td><td>Block the connection</td></tr><tr><td>Profile</td><td>Defaults (Domain, Private, Public)</td></tr><tr><td>Name</td><td><code class="inl">Block Incoming ICMPv4 Echo Requests</code></td></tr></tbody></table></div>
+<p>Click <strong>Finish</strong>.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The new Block Incoming ICMPv4 Echo Requests rule in the Inbound Rules list.</p>
 </div>
+</div>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
-<h3><span class="n">13</span>Test the block</h3>
-<p>On <strong>Win7</strong>, run <code class="inl">ping 192.168.1.10</code> again. It now times out, because a <strong>block</strong> rule beats the built-in allow rule.</p>
+<h3><span class="n">14</span>Test the block</h3>
+<p>Change focus to <strong>Win7</strong>. In the same Command Prompt, ping Win10 again:</p>
+<pre class="cmd" data-prompt="C:\Users\sysadmin&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>ping 192.168.1.10</code></pre>
+<p>It now times out, because a <strong>block</strong> rule beats the built-in allow rule.</p>
 <p class="shotline"><span class="shot">Screenshot</span>Win7's ping to Win10 timing out.</p>
 </div>
 <div class="step">
-<h3><span class="n">14</span>Disable the block and test again</h3>
-<p>On Win10, right-click <strong>Block Incoming ICMPv4 Echo Requests > Disable Rule</strong>. On Win7, <code class="inl">ping 192.168.1.10</code> succeeds again.</p>
-<div class="call stuck"><span class="k">The PDF has this backwards</span><p>It says ping fails <em>after</em> you disable the block rule. It's the reverse: ping fails while the block rule is enabled and works again once you disable it.</p></div>
+<h3><span class="n">15</span>Disable the block and test again</h3>
+<p>This step switches machines partway through.</p>
+<p><span class="onm m-win10"><span aria-hidden="true">🪟</span> On Win10:</span> In <strong>Windows Defender Firewall with Advanced Security</strong>, right-click <strong>Block Incoming ICMPv4 Echo Requests</strong> and choose <strong>Disable Rule</strong>.</p>
+<p><span class="onm m-win7"><span aria-hidden="true">🪟</span> On Win7:</span> Ping Win10 once more, then close the prompt:</p>
+<pre class="cmd" data-prompt="C:\Users\sysadmin&gt;"><code><span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>ping 192.168.1.10
+<span class="pr" aria-hidden="true">C:\Users\sysadmin&gt; </span>exit</code></pre>
+<p>Ping succeeds again. Leave Win7 open for the next task.</p>
+<div class="call stuck"><span class="k">The PDF has this backwards</span><p>Step 17 says ping fails <em>after</em> you disable the block rule. It's the reverse: ping fails while the block rule is enabled (step 13) and works again once you disable it.</p></div>
 </div>
-<p class="task-head">Task 6: Encrypting File System (Win7)</p>
+</div>
+<p class="task-head">Task 6: Encrypting File System <span class="pdfref">PDF 2.1</span></p>
+<div class="mrun m-win7"><p class="mband"><span aria-hidden="true">🪟</span> On Win7</p>
 <div class="step">
-<h3><span class="n">15</span>Encrypt a file</h3>
+<h3><span class="n">16</span>Encrypt a file</h3>
 <p>On <strong>Win7</strong>, create a text file on the desktop named <code class="inl">encrypted</code>. Right-click it > <strong>Properties > Advanced</strong>, check <strong>Encrypt contents to secure data</strong>, and click <strong>OK</strong> twice. Choose <strong>Encrypt the file only</strong> and click <strong>OK</strong>. The file name turns green.</p>
 </div>
 <div class="step">
-<h3><span class="n">16</span>Back up the encryption key</h3>
+<h3><span class="n">17</span>Back up the encryption key</h3>
 <p>Click the <strong>Back up your encryption key</strong> notification > <strong>Back up now (recommended)</strong>. In the Certificate Export Wizard, keep the default format (a <code class="inl">.pfx</code> file), set the password to <code class="inl">mypassword</code>, name the file <code class="inl">EFS-key</code>, and click <strong>Finish</strong>. Note where it saved.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The Certificate Export Wizard's final page showing the EFS-key file location.</p>
 </div>
 <div class="step">
-<h3><span class="n">17</span>Test access as another user</h3>
+<h3><span class="n">18</span>Test access as another user</h3>
 <p>Double-click <strong>encrypted</strong>: it opens for sysadmin with no extra prompt. Now <strong>Switch user</strong> to <strong>user1</strong> (<code class="inl">SuperSecret</code>), browse to <code class="inl">C:\Users\sysadmin\Desktop</code> (enter <code class="inl">Train1ng$</code> if asked), and open <strong>encrypted</strong>. Access is denied.</p>
 <p class="shotline"><span class="shot">Screenshot</span>The access denied message when user1 opens the encrypted file.</p>
 <p>Log off user1.</p>
 </div>
-<p class="task-head">Task 7: BitLocker without a TPM (Win10)</p>
+</div>
+<p class="task-head">Task 7: BitLocker without a TPM <span class="pdfref">PDF 2.2</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
-<h3><span class="n">18</span>Allow BitLocker with a password</h3>
-<p>On <strong>Win10</strong>, open <code class="inl">gpedit.msc</code> and go to <strong>Computer Configuration > Administrative Templates > Windows Components > BitLocker Drive Encryption > Operating System Drives</strong>. Double-click <strong>Require additional authentication at startup</strong>, select <strong>Enabled</strong>, and click <strong>OK</strong>. Make sure <strong>Allow BitLocker without a compatible TPM</strong> is checked in that setting's options.</p>
+<h3><span class="n">19</span>Allow BitLocker with a password</h3>
+<p>Change focus to <strong>Win10</strong>. Click the search icon, type the command below, and press <kbd>Enter</kbd>:</p>
+<pre class="cmd" data-prompt="Search box:"><code><span class="pr" aria-hidden="true">Search box: </span>gpedit.msc</code></pre>
+<p>Go to <strong>Computer Configuration > Administrative Templates > Windows Components > BitLocker Drive Encryption > Operating System Drives</strong>. Double-click <strong>Require additional authentication at startup</strong>, select <strong>Enabled</strong>, and click <strong>OK</strong>. Make sure <strong>Allow BitLocker without a compatible TPM</strong> is checked in that setting's options.</p>
 </div>
 <div class="step">
-<h3><span class="n">19</span>Turn on BitLocker</h3>
+<h3><span class="n">20</span>Turn on BitLocker</h3>
 <p>Open <strong>Control Panel > BitLocker Drive Encryption > Turn on BitLocker</strong>. Choose <strong>Enter a password</strong> and enter <code class="inl">Train1ng$</code> twice.</p>
 </div>
 <div class="step">
-<h3><span class="n">20</span>Save the recovery key</h3>
+<h3><span class="n">21</span>Save the recovery key</h3>
 <p>Choose <strong>Print the recovery key</strong>, select <strong>Microsoft XPS Document Writer</strong>, and save it as <code class="inl">EFS-Recover</code> in Documents.</p>
 <div class="call tip"><span class="k">Recovery key handling</span><p>On real devices, save the recovery key to the Microsoft account, Active Directory or Entra ID, or a secure file stored <em>off</em> the encrypted drive. The 48-digit key is the only way in if the password is forgotten or the hardware changes.</p></div>
 </div>
 <div class="step">
-<h3><span class="n">21</span>Encrypt</h3>
+<h3><span class="n">22</span>Encrypt</h3>
 <p>Choose <strong>Encrypt used disk space only</strong>, then <strong>New encryption mode</strong>. Uncheck <strong>Run BitLocker system check</strong> and click <strong>Start encrypting</strong>. Click the notification to watch progress and <strong>Close</strong> when it finishes.</p>
 <p class="shotline"><span class="shot">Screenshot</span>BitLocker Drive Encryption showing C: with BitLocker on.</p>
 </div>
-<p class="task-head">Task 8: Check and turn off BitLocker with PowerShell (Win10)</p>
+</div>
+<p class="task-head">Task 8: Check and turn off BitLocker with PowerShell <span class="pdfref">PDF 2.3</span></p>
+<div class="mrun m-win10"><p class="mband"><span aria-hidden="true">🪟</span> On Win10</p>
 <div class="step">
-<h3><span class="n">22</span>Check status</h3>
-<p>Search for <strong>PowerShell ISE</strong>, right-click it > <strong>Run as administrator</strong>, and run:</p>
-<pre class="cmd"><code>manage-bde -status</code></pre>
+<h3><span class="n">23</span>Check status</h3>
+<p>Click the search button, type <code class="inl">PowerShell ISE</code>, right-click <strong>Windows PowerShell ISE</strong> > <strong>Run as administrator</strong>, and click <strong>Yes</strong> at UAC. Check the encryption status of each drive:</p>
+<pre class="cmd" data-prompt="PS C:\Windows\system32&gt;"><code><span class="pr" aria-hidden="true">PS C:\Windows\system32&gt; </span>manage-bde -status</code></pre>
 <p>C: shows as fully encrypted with <strong>XTS-AES 128</strong>.</p>
 </div>
 <div class="step">
-<h3><span class="n">23</span>Decrypt</h3>
-<pre class="cmd"><code>Disable-BitLocker -MountPoint "C:"
-manage-bde -off C:
-manage-bde -status</code></pre>
-<p>Decryption continues in the background; run <code class="inl">manage-bde -status</code> again to watch the percentage drop. Type <code class="inl">exit</code> when it's done.</p>
+<h3><span class="n">24</span>Decrypt</h3>
+<p>Include the quotes around <code class="inl">"C:"</code>:</p>
+<pre class="cmd" data-prompt="PS C:\Windows\system32&gt;"><code><span class="pr" aria-hidden="true">PS C:\Windows\system32&gt; </span>Disable-BitLocker -MountPoint "C:"
+<span class="pr" aria-hidden="true">PS C:\Windows\system32&gt; </span>manage-bde -off C:
+<span class="pr" aria-hidden="true">PS C:\Windows\system32&gt; </span>manage-bde -status</code></pre>
+<p>Decryption continues in the background; run <code class="inl">manage-bde -status</code> again to watch the percentage drop. When the drive is fully decrypted, close PowerShell:</p>
+<pre class="cmd" data-prompt="PS C:\Windows\system32&gt;"><code><span class="pr" aria-hidden="true">PS C:\Windows\system32&gt; </span>exit</code></pre>
 <div class="call stuck"><span class="k">Typed straight from the PDF?</span><p>The PDF shows <code class="inl">manage-bde –status</code> with an en dash. Use a normal hyphen.</p></div>
 <p class="shotline"><span class="shot">Screenshot</span>manage-bde -status showing decryption in progress or complete.</p>
 <p>The lab is complete.</p>
 </div>
+</div>
 
 <div class="done-row"><input type="checkbox" id="done-walkthrough" data-done="walkthrough"><label for="done-walkthrough">Mark this section reviewed</label></div>
-</section>
-
-<section id="fullsteps" aria-labelledby="h-fullsteps">
-<h2 id="h-fullsteps">Full lab steps</h2>
-<p>Every step from the NDG lab guide, in order — enough to run the lab end to end from this page. The walkthrough above is the guided, corrected version (see <em>Then vs. now</em> and <em>Where people get stuck</em> for fixes and Windows 11 equivalents); this section follows the official guide click-by-click. Watch for the 📸 markers.</p>
-<p class="task-head">Task 1 - Windows Defender Security Center</p>
-<p class="task-head">Task 1.1 - Scanning your System for Malware</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Access the Win10 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> On the Win10 splash screen, click anywhere or press any key to show the login prompt.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Click on the Windows Search icon and type Windows Defender. From the search results, click on the Windows Defender Security Center icon. Windows Defender Security Center in Windows 10 acts as a dashboard for all the security features, including third-party security, providing an overview of the risks on the machine. It is designed to simplify and centralize security settings of Windows.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Notice the security center window appears. By default, it will open to the Home dashboard, where you can view the status of all security features and alerts for actions needed to be taken on the system. The dashboard will also display antivirus information, such as when the last scan was performed and when the last definition was updated. There are diverse types of scans that can be performed manually. Click on the Virus &amp; threat protection icon. When all is well, you will see the green checkmark overlay. If an issue requires your attention, you will see a yellow exclamation mark overlay.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Notice a Quick Scan option is available here (if not immediately available, wait a few seconds). As the name indicates, this is a fast scan that targets only the parts of the system where malware is known to hide. Click on the Run a new advanced scan link.    Full scan - This scan will scan your entire hard drive, including all files and programs.    Custom scan - This scan allows you to choose the locations and files which you would like to scan. One method is to select the radio button next to Custom scan and then click the Scan now button. A second method is to right-click a drive, folder, or file and select the Scan with Windows Defender option from the context menu to perform a custom scan.    Windows Defender Offline scan - Depending on the type of malware infecting the system, the antivirus software may not be able to remove it while Windows is running. It may be necessary to run an offline scan.</h3><div class="call tip"><span class="k">Note</span><p>Notice several types of scans are available here: There are two ways that a custom scan can be run.</p></div></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev1"><span class="shot">Scan options</span>The advanced scan options page with Offline scan available.</label></li></div><div class="step"><h3 class="fh"><span class="n">7</span> Select the radio button for Windows Defender Offline scan and click the Scan now button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Click Scan to continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> When prompted with user account control, click Yes.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Notice that Windows will automatically sign you out and reboot the system to begin the scanning process. It will boot using the Windows Defender Antivirus environment. The latest definition update will be installed (if an Internet connection is available). Since this lab environment has no Internet connection, it will skip the update process and begin scanning. This will run a few minutes before the option to cancel pops up. Since this system contains no malware, click the Cancel scan button. The system will attempt to proceed to boot so you can continue with the rest of the lab.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Leave the Win10 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 1.2 - Viewing the Health and Performance Report</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Log back into the system as sysadmin.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Once logged in, click on the Show hidden icons arrow in the System Tray, followed by clicking on the Windows Defender icon (if it isn't visible right away, wait a couple of seconds for the icon to appear).</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> In the Windows Defender Security Center window, click on Device performance &amp; health.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev2"><span class="shot">Health</span>The Device performance & health report.</label></li></div><div class="step"><h3 class="fh"><span class="n">4</span> A colored symbol indicates the status of each of the options: green is good, yellow is a recommendation, and red is a warning. Health report is the header for the area which tells you if there are any issues impacting the device health.  Storage capacity - Checks if your device has enough space to update Windows.  Device driver - Checks the drivers on your device to see if they're functioning properly.  Apps and software - Checks the health of installed apps and running software.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> If a system is having issues that are difficult to resolve or it needs to be refreshed, the Fresh start feature can be used to perform a clean reinstallation and update of Windows while keeping your data and most Windows settings intact. Click the back arrow to go back to the main Windows Defender Security Center dashboard.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Leave the Win10 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 1.3 - Managing Network Security</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> In the Windows Defender window, click on Firewall &amp; network protection.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> This opens the page where you can view network profiles. Click on Private network.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Review the available options on the page. Notice that one of your options here is to turn on/off the firewall. Click the back arrow. Users must have an administrator account to customize the rules in Windows Firewall. Firewall &amp; network protection includes access to several other advanced firewall settings such as Allow an app through firewall, Network and Internet troubleshooter, and others.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Close the Windows Defender Security Center window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Leave the Win10 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 1.4 - Using the Allowed Apps Feature</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Right-click the Start button and click Run.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Type Control Panel in the text field and click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> In the Control Panel window, click on System and Security.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Click on Windows Defender Firewall.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> To enable or disable the Windows Defender Firewall, notice in the left column the Turn Windows Defender Firewall on or off link, click it.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> The customize settings for Windows Defender Firewall appears. Here is where you can set how you want the firewall turned on for each network profile. Click the back arrow.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> In the left column, click the Allow an app or feature through Windows Defender Firewall link. This feature allows any user with an administrator account to change the list of rules and exceptions applied directly for applications.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Notice apps, programs, or features in the list have checkmarks on the left side of their name to show the rule is enabled and used by the Windows Defender Firewall to allow access. The Private and Public columns on the right have checkmarks in them too, to indicate if the rule is active when the device is connected to that particular network profile. Scroll down in the list, and select Windows Media Player, followed by clicking the Details button.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev3"><span class="shot">Allowed apps</span>The allowed apps list with Windows Media Player and Imaging Devices Console.</label></li></div><div class="step"><h3 class="fh"><span class="n">9</span> The details pane gives a bit more information about the application or feature in relevance to the firewall viewpoint. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> Currently, Window Media Player is configured as a "disallowed" application. Check the checkbox to the left of the entry. Notice that the checkmark in the Private column will automatically check itself. This will allow its access in only the private network profile.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Leave the Allowed apps and features window open to continue with the next task.</h3></div>
-<p class="task-head">Task 1.5 - Adding Apps to the Allowed List</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> In the Allowed apps window, click on the Allow another app button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Click the Browse button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> In the Browse window, navigate to C:\Program Files\Windows Photo Viewer directory and select ImagingDevices.exe. Click Open.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Back on the Add an app window, confirm that the Imaging Devices app appears and click Add.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Locate the Imaging Devices Console app in the list. Notice that the app is enabled in the Private network profile.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Leave the Win10 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 1.6 - Removing Apps from the Allowed List</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Select Imaging Devices Console followed by clicking on the Remove button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> When prompted, click Yes to continue.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Notice Imaging Devices Console no longer appears in the list. Click OK to return to the Windows Defender Firewall page.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> Leave the Win10 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 1.7 - Windows Firewall Advanced Security</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> In the Windows Defender Firewall window, on the left pane, click on Advanced settings.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Click the Windows Search icon in the taskbar and type cmd followed by pressing the Enter key.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> In the command prompt window, type the command below, followed by pressing the Enter key. Notice that the Win10 system can successfully ping the Win7 system.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; ping 192.168.1.7</code></pre></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev5"><span class="shot">Blocked ping</span>Win7's ping to Win10 timing out while the rule is enabled.</label></li></div><div class="step"><h3 class="fh"><span class="n">4</span> Access the Win7 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Log in as sysadmin using the password Train1ng$ followed by pressing the Enter key or clicking the arrow button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Once logged in, click the Start button and type cmd followed by pressing the Enter key.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> In the command prompt window, type the command below, followed by pressing the Enter key. Notice that the Win7 system can ping the Win10 system successfully.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; ping 192.168.1.10</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> Change focus to the Win10 window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> While accessing Win10, focus on the Windows Defender Firewall with Advanced Security window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> In the left pane, you will see several types of rules that can be applied. Click on Inbound Rules located in the left pane.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> In the middle pane, notice the number of rules that are in effect. Scroll down the list and locate the File and Printer Sharing (Echo Request - ICMPv4-In) entry for the Private network profile. This rule must be enabled for incoming pings to be allowed. Right-click this entry and notice that the rule is enabled with the ability to disable the rule. Leave the rule enabled for the lab, but if you wanted to prevent incoming pings, you would select Disable Rule.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> You will continue on the Win10 windows machine for the next task.</h3></div>
-<p class="task-head">Task 1.8 - Creating New Rules with Windows Firewall</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> While on the Win10 system, focus on the Windows Defender Firewall with Advanced Security window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Right-click on Inbound Rules and click New Rule.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> In the New Inbound Rule Wizard, select the radio button for Custom. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> On the Program step, ensure that the radio button for All programs is selected and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> On the Protocol and Ports step, select ICMPv4 from the Protocol type dropdown menu. Click the Customize button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> In the Customize ICMP Settings window, select the radio button for Specific ICMP types. From the list of ICMP types, check the checkbox next to Echo Request to enable it. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Back on the New Inbound Rule Wizard, click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> On the Scope step, you can configure specific IP addresses to which the system will respond to. Leave the defaults and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> On the Action step, ensure that Block the connection is selected. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> On the Profile step, this page allows you to control when the rule is active in which network types. Leave the defaults and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> On the Name step, type Block Incoming ICMPv4 Echo Requests in the Name text field. Click Finish.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Change focus to the Win7 system.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> At the command prompt window of the Win7 system, enter the command below. Can the Win7 system still ping successfully?</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; ping 192.168.1.10</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> Change focus to the Win10 system.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> Go back to the Windows Defender Firewall with Advanced Security window on the Win10 system, right-click on the Block Incoming ICMPv4 Echo Requests rule, and select Disable rule.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev4"><span class="shot">Rule</span>The Block Incoming ICMPv4 Echo Requests rule in Inbound Rules.</label></li></div><div class="step"><h3 class="fh"><span class="n">16</span> Change focus to the Win7 system.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">17</span> At the command prompt window of the Win7 system, enter the command below. Notice the Win7 system will not be able to ping successfully now.</h3><pre class="cmd"><code>C:\Users\sysadmin&gt; ping 192.168.1.10</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">18</span> Exit the command prompt window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">19</span> Leave the Win7 window open to continue with the next task.</h3></div>
-<p class="task-head">Task 2 - Windows Encryption</p>
-<p class="task-head">Task 2.1 - Encrypting File System</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Right-click on the Win7 desktop and select New &gt; Text Document.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Name the new file encrypted.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> Right-click the encrypted text file and click on Properties.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> On the General tab, click on the Advanced button.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> On the Advanced Attributes window, check the checkbox for Encrypt contents to secure data. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Back on the encrypted Properties window, click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> A pop-up will appear. This is where you can choose how extensive you want the encryption to be for the data. Select the radio button next to Encrypt the file only. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> A notification appears. Click on the Back up your encryption key notification icon to back up the key.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> In the Encrypting File System window, click Back up now (recommended).</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> In the Certificate Export Wizard, click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Read the selections and then accept the default selection for the file format for the exported encryption certificate and key. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> Type mypassword in the Password field. Type it again in the confirmation field. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Type EFS-key in the File name field. Click Next.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev6"><span class="shot">EFS key</span>The Certificate Export Wizard showing the EFS-key file location.</label></li></div><div class="step"><h3 class="fh"><span class="n">14</span> Review the configurations and take note of the File Name location. Click Finish.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> The export is successful, click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">16</span> Using EFS, you have just encrypted a single file on a per-user basis for sysadmin. Encrypted files can only be accessed by the user who created the encrypted file. The encryption is transparent. Since you are logged in as sysadmin, you will be able to access the file without any additional authentication. If another user account is logged in, the file will not be accessible. Double-click on the encrypted file, notice that it opens.</h3></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev7"><span class="shot">EFS denied</span>Access denied when user1 opens the encrypted file.</label></li></div><div class="step"><h3 class="fh"><span class="n">17</span> Close the Notepad window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">18</span> Click the Start button, click the arrow next to Shut down and click on Switch user.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">19</span> Log in as user1 with SuperSecret as the password.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">20</span> Click on the Windows Explorer icon located in the taskbar.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">21</span> Navigate to C:\Users\sysadmin and if prompted for authentication, enter Train1ng$ as the password.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">22</span> Double-click the Desktop folder.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">23</span> Double-click the encrypted file.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">24</span> Notice a message appears stating that access is denied. Click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">25</span> Log out of user1.</h3></div>
-<p class="task-head">Task 2.2 - Enabling BitLocker without TPM</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Change focus to the Win10 machine.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Click on the Windows Search icon on the Win10 VM and type gpedit.msc in the search field, followed by pressing the Enter key.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> In the Local Group Policy Editor window, navigate to Computer Configuration &gt; Administrative Templates &gt; Windows Components &gt; BitLocker Drive Encryption &gt; Operating System Drives.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">4</span> In the right pane, double-click on Require additional authentication at startup.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> In the pop-up window, select the radio button for Enabled and click OK.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Close the Local Group Policy Editor window.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">7</span> Click the Start button and click on Control Panel.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">8</span> In the Control Panel window, change the view to Small icons and click on BitLocker Drive Encryption.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">9</span> Click Turn on BitLocker.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">10</span> In the pop-up window, let it scan the system and then click Enter a password.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">11</span> Type Train1ng$ in both password fields. Click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">12</span> When asked how to back up your recovery key, click Print the recovery key.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">13</span> Select the Microsoft XPS Document Writer print option. Click Print.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">14</span> In the Save Print Output As window, name the file EFS-Recover and click Save to save the file in the default user Documents location.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">15</span> Back on the BitLocker Drive Encryption window, click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">16</span> Ensure that the radio button for Encrypt used disk space only is selected and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">17</span> On the next step, ensure that New encryption mode is selected and click Next.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">18</span> Uncheck Run BitLocker system check and click Start encrypting.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">19</span> Notice the notification that appears. Click the notification icon to view the progress of the encryption.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">20</span> Once the encryption process completes, click Close and move on to the next task.</h3></div>
-<p class="task-head">Task 2.3 - Disabling BitLocker with PowerShell</p>
-<div class="step"><h3 class="fh"><span class="n">1</span> Click Search and type PowerShell ISE. Right-click the Windows PowerShell ISE entry and select Run as administrator.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">2</span> Click Yes to accept the User Account Control.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">3</span> At the prompt, type manage-bde -status followed by pressing the Enter key to check the encryption status of each drive.</h3><pre class="cmd"><code>PS C:\Windows\system32&gt; manage-bde -status</code></pre><div class="call tip"><span class="k">Note</span><p>Notice that Volume C: is protected and encrypted with XTS-AES 128.</p></div></div>
-<div class="shotmark">📸 <b>Screenshot for your report:</b> <li><label for="ev8"><span class="shot">BitLocker</span>BitLocker showing C: encrypted, and <code class="inl">manage-bde -status</code> output.</label></li></div><div class="step"><h3 class="fh"><span class="n">4</span> At the prompt, type Disable-BitLocker -MountPoint "C:" (include the quotes around "C:") followed by pressing the Enter key.</h3><pre class="cmd"><code>PS C:\Windows\system32&gt; Disable-BitLocker -MountPoint "C:"</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">5</span> Remove the encryption off of the C: drive by entering the manage-bde -off C: command. The decryption continues in the background until the drive is in a fully decrypted status.</h3><pre class="cmd"><code>PS C:\Windows\system32&gt; manage-bde -off C:</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">6</span> Enter the manage-bde -status command to check the status of decryption progress while it is running in the background.</h3><pre class="cmd"><code>PS C:\Windows\system32&gt; manage-bde -status</code></pre></div>
-<div class="step"><h3 class="fh"><span class="n">21</span> Once the drive is completely decrypted, type exit followed by pressing the Enter key to close PowerShell.</h3></div>
-<div class="step"><h3 class="fh"><span class="n">22</span> At this point, you have completed the BitLocker procedure; you may end the reservation.</h3></div>
-<div class="done-row"><input type="checkbox" id="done-fullsteps" data-done="fullsteps"><label for="done-fullsteps">Mark this section reviewed</label></div>
 </section>
 <section id="reference" aria-labelledby="h-reference">
 <h2 id="h-reference">Reference: Windows security tools</h2>
@@ -619,7 +527,7 @@ Disable-BitLocker -MountPoint "C:"</code></pre>
     b.setAttribute('aria-label','Copy command'); pre.appendChild(b);
     b.addEventListener('click',function(){
       var code=pre.querySelector('code'), clone=code.cloneNode(true);
-      [].forEach.call(clone.querySelectorAll('.c'),function(x){x.remove();});
+      [].forEach.call(clone.querySelectorAll('.c,.pr'),function(x){x.remove();});
       var t=clone.textContent.replace(/\n{2,}/g,'\n').trim();
       function ok(){b.textContent='Copied'; say('Command copied.'); setTimeout(function(){b.textContent='Copy'},1500);}
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fallback);} else fallback();
@@ -637,167 +545,5 @@ Disable-BitLocker -MountPoint "C:"</code></pre>
   if(window.matchMedia('(min-width:1000px)').matches) det.open=true;
 })();
 </script>
-
-<!-- ===== LAB MODE (begin) — self-contained; safe to remove as a block ===== -->
-<style id="lab-mode-css">
-/* Floating toggle button — always available, top-right */
-.pm-toggle{position:fixed;top:10px;right:12px;z-index:2147483100;display:inline-flex;
-  align-items:center;gap:7px;min-height:40px;padding:0 15px;cursor:pointer;
-  font:600 .85rem/1 var(--f-body);border-radius:999px;
-  background:var(--accent);color:var(--accent-ink);border:1px solid transparent;
-  box-shadow:0 4px 14px rgba(0,0,0,.28)}
-.pm-toggle:hover{filter:brightness(1.08)}
-.pm-toggle:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.pm-toggle .pm-ico{font-family:var(--f-mono);font-weight:700}
-@media print{.pm-toggle{display:none!important}}
-
-/* ---- When lab mode is ON ---- */
-html[data-present="on"] body{line-height:1.5}
-/* Collapse the sidebar grid to a single column and go full width */
-html[data-present="on"] .wrap{display:block;max-width:100%;padding:8px 14px 90px}
-
-/* Hide page chrome that wastes room in a narrow column */
-html[data-present="on"] .toc,
-html[data-present="on"] header.bar,
-html[data-present="on"] .badges,
-html[data-present="on"] .ticket .lede,
-html[data-present="on"] .ticket .fields,
-html[data-present="on"] .done-row{display:none!important}
-
-/* Slim the title block down to a compact header */
-html[data-present="on"] .ticket{margin:0 0 10px}
-html[data-present="on"] .ticket-in{padding:10px 14px}
-html[data-present="on"] .ticket h1{font-size:1.15rem;line-height:1.25;margin:2px 0 0}
-
-/* Show one section at a time */
-html[data-present="on"] #main > section{display:none}
-html[data-present="on"] #main > section.pm-current{display:block;animation:pm-fade .18s ease}
-@keyframes pm-fade{from{opacity:0}to{opacity:1}}
-
-/* Readability bump for the one visible section */
-html[data-present="on"] #main > section{font-size:1.05rem}
-html[data-present="on"] #main > section h2{font-size:1.2rem}
-html[data-present="on"] .step h3,
-html[data-present="on"] .step h4{font-size:1.04rem}
-html[data-present="on"] .cmd{font-size:1rem;white-space:pre-wrap;word-break:break-word}
-
-/* Slim bottom control dock for advancing through sections */
-.pm-dock{display:none}
-html[data-present="on"] .pm-dock{position:fixed;left:0;right:0;bottom:0;z-index:2147483100;
-  display:flex;align-items:center;gap:8px;padding:8px 12px;
-  padding-bottom:calc(8px + env(safe-area-inset-bottom,0));
-  background:var(--surface);border-top:1px solid var(--rule)}
-.pm-dock button{flex:0 0 auto;min-height:40px;min-width:44px;padding:0 14px;cursor:pointer;
-  font:700 .9rem/1 var(--f-body);border-radius:9px;
-  background:var(--surface-2);color:var(--ink);border:1px solid var(--rule)}
-.pm-dock button:hover{background:var(--accent);color:var(--accent-ink)}
-.pm-dock button:disabled{opacity:.4;cursor:not-allowed}
-.pm-dock button:disabled:hover{background:var(--surface-2);color:var(--ink)}
-.pm-dock .pm-where{flex:1 1 auto;text-align:center;min-width:0;
-  font:600 .82rem/1.25 var(--f-body);color:var(--ink-2);
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pm-dock .pm-where b{color:var(--ink);display:block;font-size:.9rem}
-.pm-dock .pm-exit{background:transparent}
-</style>
-
-<div class="pm-dock" id="pmDock" aria-hidden="true">
-  <button type="button" data-pm="prev" aria-label="Previous section">◀</button>
-  <div class="pm-where"><span id="pmCount"></span><b id="pmName"></b></div>
-  <button type="button" data-pm="next" aria-label="Next section">▶</button>
-  <button type="button" data-pm="exit" class="pm-exit" aria-label="Exit lab mode">✕</button>
-</div>
-
-<script id="lab-mode-js">
-(function () {
-  "use strict";
-  var root = document.documentElement;
-  var KEY = "aplus:labmode:v1";               // shared across all A+ companion pages
-  var sections = [], idx = 0;
-  var dock, countEl, nameEl, prevBtn, nextBtn;
-
-  function labelFor(sec) {
-    var h = sec.querySelector("h2");
-    if (!h) return sec.id || "Section";
-    return (h.textContent || "").replace(/\s+/g, " ").trim();
-  }
-
-  function show(i) {
-    if (!sections.length) return;
-    idx = Math.max(0, Math.min(sections.length - 1, i));
-    sections.forEach(function (s, n) { s.classList.toggle("pm-current", n === idx); });
-    if (countEl) countEl.textContent = (idx + 1) + " / " + sections.length;
-    if (nameEl) nameEl.textContent = labelFor(sections[idx]);
-    if (prevBtn) prevBtn.disabled = idx === 0;
-    if (nextBtn) nextBtn.disabled = idx === sections.length - 1;
-    window.scrollTo(0, 0);
-  }
-
-  function enter() {
-    sections = Array.prototype.slice.call(document.querySelectorAll("#main > section"));
-    root.setAttribute("data-present", "on");
-    if (dock) dock.setAttribute("aria-hidden", "false");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "true");
-      btn.querySelector(".pm-txt").textContent = "Exit lab mode"; }
-    try { localStorage.setItem(KEY, "1"); } catch (e) {}
-    show(0);
-  }
-
-  function exit() {
-    root.removeAttribute("data-present");
-    sections.forEach(function (s) { s.classList.remove("pm-current"); });
-    if (dock) dock.setAttribute("aria-hidden", "true");
-    var btn = document.getElementById("pmToggle");
-    if (btn) { btn.setAttribute("aria-pressed", "false");
-      btn.querySelector(".pm-txt").textContent = "Lab mode"; }
-    try { localStorage.setItem(KEY, "0"); } catch (e) {}
-  }
-
-  function toggle() { root.getAttribute("data-present") === "on" ? exit() : enter(); }
-
-  function build() {
-    var btn = document.createElement("button");
-    btn.className = "pm-toggle"; btn.id = "pmToggle"; btn.type = "button";
-    btn.setAttribute("aria-pressed", "false");
-    btn.title = "Lab mode — steps beside the lab, one section at a time (Shift+L)";
-    btn.innerHTML = '<span class="pm-ico" aria-hidden="true">⇥</span><span class="pm-txt">Lab mode</span>';
-    btn.addEventListener("click", toggle);
-    document.body.appendChild(btn);
-
-    dock = document.getElementById("pmDock");
-    countEl = document.getElementById("pmCount");
-    nameEl = document.getElementById("pmName");
-    if (dock) {
-      prevBtn = dock.querySelector('[data-pm="prev"]');
-      nextBtn = dock.querySelector('[data-pm="next"]');
-      dock.addEventListener("click", function (e) {
-        var t = e.target.closest("[data-pm]"); if (!t) return;
-        var a = t.getAttribute("data-pm");
-        if (a === "prev") show(idx - 1);
-        else if (a === "next") show(idx + 1);
-        else if (a === "exit") exit();
-      });
-    }
-
-    document.addEventListener("keydown", function (e) {
-      if (e.shiftKey && (e.key === "L" || e.key === "l")) {
-        var tag = (e.target && e.target.tagName) || "";
-        if (tag === "INPUT" || tag === "TEXTAREA" || e.target.isContentEditable) return;
-        e.preventDefault(); toggle(); return;
-      }
-      if (root.getAttribute("data-present") !== "on") return;
-      if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); show(idx + 1); }
-      else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); show(idx - 1); }
-      else if (e.key === "Escape") { e.preventDefault(); exit(); }
-    });
-  }
-
-  if (document.readyState === "loading")
-    document.addEventListener("DOMContentLoaded", build);
-  else build();
-})();
-</script>
-<!-- ===== LAB MODE (end) ===== -->
-
 </body>
 </html>
